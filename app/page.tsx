@@ -1,10 +1,76 @@
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center px-6 py-24">
+    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-16">
       <h1 className="text-4xl font-semibold tracking-tight">December Circuit</h1>
-      <p className="mt-6 max-w-xl text-lg leading-8">
-        The directory for the December season is on its way to this page:
-        events, places, maps, and links for booking and flights.
+      <p className="mt-4 max-w-xl text-lg leading-8">
+        Confirmed events for December 2026. Dates below come from the organiser
+        or a named news report, checked on 21 October 2026.
+      </p>
+
+      <h2 className="mt-10 text-2xl font-semibold">Lagos</h2>
+      <ul className="mt-4 space-y-4 text-lg leading-8">
+        <li>
+          <span className="font-medium">17-19 December.</span> Davido, Oriade
+          residency, three nights at the National Theatre, Iganmu.
+        </li>
+        <li>
+          <span className="font-medium">18-30 December.</span> Detty December
+          Fest. Wizkid on 18 December, DJ Tunez and Friends on 24 December,
+          Tungba Christmas on 25 December. Other nights are still marked coming
+          soon.{" "}
+          <a href="https://dettydecfest.com/" className="underline">
+            Organiser&apos;s page
+          </a>
+          .
+        </li>
+        <li>
+          <span className="font-medium">20 December.</span> Flytime House of
+          R&amp;B, Brandy, Eko Convention Centre.
+        </li>
+        <li>
+          <span className="font-medium">21 December.</span> Coca-Cola Rhythm
+          Unplugged, Lil Baby and Kehlani, Eko Convention Centre.
+        </li>
+        <li>
+          <span className="font-medium">22-24 December.</span> Flytime Fest,
+          Eko Convention Centre. Headliners for 2026 are still unannounced.
+        </li>
+        <li>
+          <span className="font-medium">25 December.</span> Flytime Circle, Eko
+          Convention Centre. The lineup is still unannounced.
+        </li>
+      </ul>
+
+      <h2 className="mt-10 text-2xl font-semibold">Calabar</h2>
+      <ul className="mt-4 space-y-4 text-lg leading-8">
+        <li>
+          <span className="font-medium">26-30 December.</span> Carnival
+          Calabar. Theme: Rethinking Our Collective Destiny. Cultural Carnival
+          on the 26th, Junior Carnival on the 27th, Parade of the Bands on the
+          28th, Bikers Carnival on the 29th, street party on the 30th.{" "}
+          <a
+            href="https://www.carnival.crossriverstate.gov.ng/"
+            className="underline"
+          >
+            Official page
+          </a>
+          .
+        </li>
+      </ul>
+
+      <h2 className="mt-10 text-2xl font-semibold">Ghana</h2>
+      <ul className="mt-4 space-y-4 text-lg leading-8">
+        <li>
+          <span className="font-medium">1 December 2026 to 3 January 2027.</span>{" "}
+          December in Ghana, under the Ghana Tourism Authority and the Black
+          Star Experience. These season dates are official. Headliners are still
+          unannounced.
+        </li>
+      </ul>
+
+      <p className="mt-10 max-w-xl text-lg leading-8">
+        Booking stays on each organiser&apos;s own site. Places, maps, and
+        flight search links come next.
       </p>
     </main>
   );
