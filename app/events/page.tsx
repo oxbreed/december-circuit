@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function EventsPage() {
   return (
-    <main id="top" className="pb-24 pt-8 lg:pb-0">
+    <main id="top" className="pb-28 lg:pb-0">
       <EventsSection />
     </main>
   );

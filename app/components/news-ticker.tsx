@@ -19,8 +19,8 @@ function ItemLink({ item }: { item: TickerItem }) {
       rel="noopener noreferrer"
       className="inline-flex items-baseline gap-3 whitespace-nowrap px-4"
     >
-      <span className="text-[10px] uppercase tracking-[0.18em] text-gold">{item.source}</span>
-      <span className="text-sm text-mist">{item.headline}</span>
+      <span className="text-[10px] uppercase tracking-[0.18em] text-oxide">{item.source}</span>
+      <span className="text-sm text-ink">{item.headline}</span>
       {item.published ? (
         <time className="text-xs text-muted">{item.published}</time>
       ) : null}
@@ -66,7 +66,7 @@ export function NewsTicker() {
 
   return (
     <div
-      className="news-ticker border-y border-gold/30 bg-[rgba(8,10,16,0.88)] backdrop-blur-md"
+      className="news-ticker border-y border-gold/40 bg-[#efe4d0]"
       aria-label="Events on file and entertainment headlines"
     >
       {payload === null && !failed ? (

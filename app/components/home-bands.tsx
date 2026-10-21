@@ -45,12 +45,12 @@ function BandHeading({
   return (
     <div className="flex items-end justify-between gap-4">
       <div>
-        <p className="text-[11px] uppercase tracking-[0.28em] text-brass">{kicker}</p>
+        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">{kicker}</p>
         <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
           {title}
         </h2>
       </div>
-      <a href={href} className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-gold">
+      <a href={href} className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-oxide">
         {action}
       </a>
     </div>
@@ -116,7 +116,7 @@ export function HomeBands() {
                 <a
                   key={`${entry.country}-${entry.city}`}
                   href={href}
-                  className="relative h-64 w-56 shrink-0 overflow-hidden rounded-3xl border border-gold/30 shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
+                  className="relative h-64 w-56 shrink-0 overflow-hidden border border-ink/20 shadow-[4px_4px_0_0_rgba(27,104,78,0.2)]"
                 >
                   <img
                     src={atmospheres[index % atmospheres.length]}
@@ -125,11 +125,11 @@ export function HomeBands() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/10" />
                   <div className="relative flex h-full flex-col justify-end p-4">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-brass">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[#f3e6c8]">
                       {entry.country}
                     </p>
-                    <p className="mt-2 font-display text-3xl leading-none">{entry.city}</p>
-                    <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white/75">
+                    <p className="mt-2 font-display text-3xl leading-none text-white">{entry.city}</p>
+                    <p className="mt-3 text-xs uppercase tracking-[0.16em] text-white/80">
                       {entry.count} {entry.count === 1 ? "place" : "places"}
                     </p>
                   </div>
@@ -155,13 +155,13 @@ export function HomeBands() {
         ) : null}
         {pinRecords.length > 0 ? (
           <div
-            className="relative mt-6 h-[22rem] overflow-hidden rounded-3xl border border-gold/30 shadow-[0_18px_50px_rgba(0,0,0,0.35)] md:h-[26rem]"
+            className="relative mt-6 h-[22rem] overflow-hidden border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.2)] md:h-[26rem]"
             role="region"
             aria-label="OpenStreetMap of sourced pins"
           >
             <CircuitMap pins={pinRecords} activeId={activeId} onSelect={setActiveId} />
             {active ? (
-              <div className="absolute top-3 left-3 z-[500] max-w-[calc(100%-4.5rem)] rounded-2xl border border-gold/30 bg-[rgba(8,10,16,0.88)] px-3 py-3 backdrop-blur-md md:max-w-sm">
+              <div className="absolute top-3 left-3 z-[500] max-w-[calc(100%-4.5rem)] border border-ink/15 bg-paper px-3 py-3 md:max-w-sm">
                 {active.url ? (
                   <a
                     href={active.url}
@@ -220,12 +220,12 @@ export function HomeBands() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Search from ${flight.origin} for ${flight.airport}`}
-                className="flex w-72 shrink-0 flex-col rounded-3xl border border-gold/30 bg-[#10151f]/90 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
+                className="flex w-72 shrink-0 flex-col border border-ink/15 bg-chart p-5 shadow-[4px_4px_0_0_rgba(184,67,47,0.16)]"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-brass">Search</p>
                 <p className="mt-4 font-display text-2xl leading-tight">{flight.airport}</p>
                 <p className="mt-3 flex-1 text-sm leading-6 text-muted">From {flight.origin}</p>
-                <span className="mt-6 text-[11px] uppercase tracking-[0.18em] text-gold">
+                <span className="mt-6 text-[11px] uppercase tracking-[0.18em] text-oxide">
                   Search →
                 </span>
               </a>

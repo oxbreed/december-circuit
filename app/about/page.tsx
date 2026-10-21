@@ -9,13 +9,13 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main id="top" className="mx-auto w-full max-w-3xl px-5 pb-28 pt-28 md:px-8">
+    <main id="top" className="mx-auto w-full max-w-3xl px-5 pb-28 pt-28 md:px-8 md:pt-32">
       <p className="text-[11px] uppercase tracking-[0.28em] text-brass">About</p>
       <h1 className="mt-4 font-display text-5xl leading-none tracking-tight md:text-6xl">
         An independent directory
       </h1>
       <p className="mt-6 text-base leading-7 text-muted">{disclaimer}</p>
-      <div className="mt-8 space-y-4 text-base leading-7 text-mist">
+      <div className="mt-8 space-y-4 text-base leading-7 text-ink">
         <p>
           A listing appears only when an organiser page or a named report
           confirms it.

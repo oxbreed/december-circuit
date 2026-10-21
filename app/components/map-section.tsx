@@ -103,7 +103,7 @@ export function MapSection() {
           <div className="mt-4 grid items-start gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(17rem,0.8fr)]">
             <div>
               <div
-                className="relative h-[52vh] min-h-[280px] overflow-hidden rounded-3xl border border-gold/30 shadow-[0_18px_50px_rgba(0,0,0,0.35)] md:h-[min(68vh,640px)]"
+                className="relative h-[52vh] min-h-[280px] overflow-hidden border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.18)] md:h-[min(68vh,640px)]"
                 role="region"
                 aria-label="OpenStreetMap of sourced pins"
               >

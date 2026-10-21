@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function PlacesPage() {
   return (
-    <main id="top" className="pb-24 pt-8 lg:pb-0">
+    <main id="top" className="pb-28 lg:pb-0">
       <Suspense fallback={<PlacesFallback />}>
         <PlacesSection />
       </Suspense>

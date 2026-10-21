@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
-  --background: #07080d;
-  --foreground: #f6f1e7;
+  color-scheme: light;
+  --background: #f4eadc;
+  --foreground: #1a1410;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-paper: #07080d;
-  --color-paper-deep: #121826;
-  --color-ink: #f6f1e7;
-  --color-muted: #b7aa98;
-  --color-line: rgba(228, 201, 138, 0.28);
-  --color-oxide: #e4c98a;
-  --color-brass: #d4b483;
-  --color-brass-light: #f3e2bc;
-  --color-gold: #e4c98a;
-  --color-lagoon: #8fd4e0;
-  --color-chart: #0d1422;
-  --color-mist: #f4efe4;
+  --color-paper: #f4eadc;
+  --color-paper-deep: #e7dcc8;
+  --color-ink: #1a1410;
+  --color-muted: #5c5148;
+  --color-line: rgba(26, 20, 16, 0.14);
+  --color-oxide: #b8432f;
+  --color-brass: #8a6232;
+  --color-brass-light: #b8432f;
+  --color-gold: #8a6232;
+  --color-lagoon: #1b684e;
+  --color-chart: #fffaf4;
+  --color-mist: #1a1410;
   --font-sans: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
@@ -29,8 +29,8 @@
 body {
   overflow-x: clip;
   background:
-    radial-gradient(880px 460px at 100% -10%, rgba(92, 62, 168, 0.28), transparent 58%),
-    radial-gradient(720px 420px at 0% 8%, rgba(110, 196, 214, 0.1), transparent 52%),
+    radial-gradient(920px 420px at 100% -6%, rgba(184, 67, 47, 0.14), transparent 58%),
+    radial-gradient(760px 420px at -8% 0%, rgba(27, 104, 78, 0.12), transparent 54%),
     var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
@@ -42,26 +42,26 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: 30;
-  opacity: 0.16;
-  mix-blend-mode: overlay;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.55) 0.6px, transparent 0.6px);
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(rgba(26, 20, 16, 0.55) 0.55px, transparent 0.55px);
   background-size: 3px 3px;
 }
 
 ::selection {
-  background: rgba(228, 201, 138, 0.35);
-  color: #f6f1e7;
+  background: rgba(184, 67, 47, 0.22);
+  color: #1a1410;
 }
 
 :focus-visible {
-  outline: 2px solid #e4c98a;
+  outline: 2px solid #1b684e;
   outline-offset: 3px;
 }
 
 .chip {
   display: inline-block;
-  border: 1px solid rgba(228, 201, 138, 0.35);
-  background: rgba(8, 10, 16, 0.45);
+  border: 1px solid rgba(138, 98, 50, 0.45);
+  background: transparent;
   color: var(--color-ink);
   padding: 0.4rem 0.7rem;
   font-family: var(--font-sans), sans-serif;
@@ -71,24 +71,25 @@ body::before {
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .chip:hover {
-  border-color: #e4c98a;
+  border-color: #b8432f;
+  color: #b8432f;
 }
 
 .chip[aria-checked="true"] {
-  background: #e4c98a;
-  border-color: #e4c98a;
-  color: #12100c;
+  background: #1b684e;
+  border-color: #1b684e;
+  color: #fffaf4;
 }
 
 .ledger-input {
   width: 100%;
-  border: 1px solid rgba(228, 201, 138, 0.4);
-  border-radius: 0.75rem;
-  background: rgba(8, 10, 16, 0.55);
+  border: 1px solid rgba(26, 20, 16, 0.2);
+  border-radius: 0;
+  background: #fffaf4;
   color: var(--color-ink);
   padding: 0.7rem 0.85rem;
 }
@@ -100,18 +101,18 @@ body::before {
 .leaflet-container {
   height: 100%;
   width: 100%;
-  background: #10141c;
+  background: #e7dfd2;
   font-family: var(--font-sans), sans-serif;
 }
 
 .leaflet-container .leaflet-control-attribution {
   font-size: 11px;
-  background: rgba(7, 8, 13, 0.82);
-  color: #b7aa98;
+  background: rgba(244, 234, 220, 0.92);
+  color: #5c5148;
 }
 
 .leaflet-container .leaflet-control-attribution a {
-  color: #e4c98a;
+  color: #1b684e;
 }
 
 .leaflet-interactive {

@@ -18,15 +18,15 @@ const atmospheres = [
 
 function EventCard({ event, index }: { event: CircuitEvent; index: number }) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold/30 bg-[#10151f]/90 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
+    <article className="flex h-full flex-col overflow-hidden border border-ink/15 bg-chart shadow-[4px_4px_0_0_rgba(184,67,47,0.16)]">
       <div className="relative aspect-[16/10]">
         <img
           src={atmospheres[index % atmospheres.length]}
           alt=""
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
-        <p className="absolute top-4 left-4 rounded-full border border-gold/50 bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-brass backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+        <p className="absolute top-4 left-4 bg-paper px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-ink">
           {event.region}
         </p>
       </div>
@@ -80,17 +80,18 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
 
   if (rail) {
     return (
-      <section id="events" className="mx-auto w-full max-w-6xl px-5 py-14 md:px-8 md:py-16">
+      <section id="events" className="scroll-mt-36 border-y border-ink/10 bg-paper-deep">
+        <div className="mx-auto w-full max-w-6xl px-5 py-12 md:px-8 md:py-14">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.28em] text-brass">Events</p>
+            <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Events</p>
             <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
               On file for December 2026
             </h2>
           </div>
           <a
             href="/events"
-            className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-gold"
+            className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-oxide"
           >
             All events →
           </a>
@@ -105,6 +106,7 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
             ))}
           </div>
         ) : null}
+        </div>
       </section>
     );
   }

@@ -1,5 +1,5 @@
 export const sectionClass =
-  "scroll-mt-28 mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-20";
+  "scroll-mt-36 mx-auto w-full max-w-6xl px-5 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32";
 
 export function SectionIntro({
   kicker,
@@ -13,10 +13,10 @@ export function SectionIntro({
   return (
     <div className="mb-10">
       <div className="flex items-center gap-4">
-        <p className="font-sans text-[11px] uppercase tracking-[0.28em] text-brass">
+        <p className="font-sans text-[11px] uppercase tracking-[0.28em] text-lagoon">
           {kicker}
         </p>
-        <span className="h-px flex-1 bg-gradient-to-r from-brass/70 to-transparent" />
+        <span className="h-px flex-1 bg-gradient-to-r from-oxide/80 to-transparent" />
       </div>
       <h2 className="mt-4 font-display text-4xl leading-none tracking-tight text-ink md:text-6xl">
         {title}

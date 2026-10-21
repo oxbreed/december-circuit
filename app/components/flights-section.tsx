@@ -72,7 +72,7 @@ export function FlightsSection() {
               <article
                 key={group.airport}
                 id={`airport-${airportSlug(group.airport)}`}
-                className="scroll-mt-28 rounded-3xl border border-gold/30 bg-chart px-4 py-4 text-mist shadow-[0_18px_50px_rgba(0,0,0,0.35)] md:px-5"
+                className="scroll-mt-36 border border-ink/15 bg-chart px-4 py-4 text-ink shadow-[4px_4px_0_0_rgba(138,98,50,0.16)] md:px-5"
               >
                 <h3 className="font-display text-[1.65rem] leading-tight tracking-tight">
                   {group.airport}
@@ -85,7 +85,7 @@ export function FlightsSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`Search from ${flight.origin} for ${flight.airport}`}
-                        className="flex items-baseline justify-between gap-4 border-t border-white/15 py-3"
+                        className="flex items-baseline justify-between gap-4 border-t border-line py-3"
                       >
                         <span className="font-mono text-sm">{flight.origin}</span>
                         <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.2em] text-brass-light">
