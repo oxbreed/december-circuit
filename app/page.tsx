@@ -1,4 +1,8 @@
+import { places } from "./places";
+
 export default function Home() {
+  const countries = [...new Set(places.map((place) => place.country))];
+
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-16">
       <h1 className="text-4xl font-semibold tracking-tight">December Circuit</h1>
@@ -68,9 +72,40 @@ export default function Home() {
         </li>
       </ul>
 
+      <h2 className="mt-10 text-2xl font-semibold">Places</h2>
+      <p className="mt-4 max-w-xl text-lg leading-8">
+        132 places with an organiser page. Each name opens that page.
+      </p>
+      {countries.map((country) => {
+        const inCountry = places.filter((place) => place.country === country);
+        const cities = [...new Set(inCountry.map((place) => place.city))];
+        return (
+          <section key={country} className="mt-8">
+            <h3 className="text-xl font-semibold">{country}</h3>
+            {cities.map((city) => (
+              <div key={city} className="mt-4">
+                <h4 className="font-medium">{city}</h4>
+                <ul className="mt-2 space-y-2 text-lg leading-8">
+                  {inCountry
+                    .filter((place) => place.city === city)
+                    .map((place) => (
+                      <li key={`${place.city}-${place.name}`}>
+                        <a href={place.url} className="underline">
+                          {place.name}
+                        </a>
+                        <span> · {place.category}</span>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            ))}
+          </section>
+        );
+      })}
+
       <p className="mt-10 max-w-xl text-lg leading-8">
-        Booking stays on each organiser&apos;s own site. Places, maps, and
-        flight search links come next.
+        Booking stays on each organiser&apos;s own site. Maps and flight search
+        links come next.
       </p>
     </main>
   );
