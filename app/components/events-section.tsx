@@ -5,6 +5,17 @@ import { SectionIntro, sectionClass } from "./section-intro";
 import { EmptyNote, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
 
+const atmospheres = [
+  "/atmosphere/night-stage.jpg",
+  "/atmosphere/night-water.jpg",
+  "/atmosphere/night-lanterns.jpg",
+  "/atmosphere/night-hall.jpg",
+  "/atmosphere/night-street.jpg",
+  "/atmosphere/night-club.jpg",
+  "/atmosphere/night-skyline.jpg",
+  "/atmosphere/night-crowd.jpg",
+];
+
 export function EventsSection() {
   const events = useRecords<CircuitEvent[]>("/api/events");
   const regions =
@@ -45,37 +56,50 @@ export function EventsSection() {
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 {events.data
                   .filter((event) => event.region === region)
-                  .map((event) => (
-                    <article
-                      key={`${event.region}-${event.when}`}
-                      className="flex h-full flex-col rounded-3xl border border-gold/30 bg-[#10151f]/90 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
-                    >
-                      <p className="w-fit rounded-full border border-gold/40 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-brass">
-                        {event.region}
-                      </p>
-                      <h4 className="mt-5 font-display text-3xl leading-none tracking-tight">
-                        {event.when}
-                      </h4>
-                      <p className="mt-4 flex-1 text-sm leading-7 text-muted">
-                        {event.summary}
-                      </p>
-                      {event.url ? (
-                        <a
-                          href={event.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-6 inline-flex items-center justify-between gap-3 text-sm text-brass"
-                        >
-                          <span className="underline decoration-gold/50 underline-offset-4">
-                            {event.urlLabel ?? "Organiser page"}
-                          </span>
-                          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
-                            →
-                          </span>
-                        </a>
-                      ) : null}
-                    </article>
-                  ))}
+                  .map((event) => {
+                    const index = events.data.indexOf(event);
+                    return (
+                      <article
+                        key={`${event.region}-${event.when}`}
+                        className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold/30 bg-[#10151f]/90 shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
+                      >
+                        <div className="relative aspect-[16/10]">
+                          <img
+                            src={atmospheres[index % atmospheres.length]}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+                          <p className="absolute top-4 left-4 rounded-full border border-gold/50 bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-brass backdrop-blur-sm">
+                            {event.region}
+                          </p>
+                        </div>
+                        <div className="flex flex-1 flex-col p-5">
+                          <h4 className="font-display text-3xl leading-none tracking-tight">
+                            {event.when}
+                          </h4>
+                          <p className="mt-4 flex-1 text-sm leading-7 text-muted">
+                            {event.summary}
+                          </p>
+                          {event.url ? (
+                            <a
+                              href={event.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-6 inline-flex items-center justify-between gap-3 text-sm text-brass"
+                            >
+                              <span className="underline decoration-gold/50 underline-offset-4">
+                                {event.urlLabel ?? "Organiser page"}
+                              </span>
+                              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
+                                →
+                              </span>
+                            </a>
+                          ) : null}
+                        </div>
+                      </article>
+                    );
+                  })}
               </div>
             </div>
           ))}
