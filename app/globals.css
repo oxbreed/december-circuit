@@ -117,3 +117,29 @@ body::before {
 .leaflet-interactive {
   cursor: pointer;
 }
+
+.news-ticker-track {
+  animation: news-ticker linear infinite;
+}
+
+.news-ticker:hover .news-ticker-track,
+.news-ticker:focus-within .news-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes news-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-ticker-track {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+  }
+}

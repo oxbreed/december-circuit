@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { disclaimer, nav } from "../brand";
+import { NewsTicker } from "./news-ticker";
 
 function PalmMark() {
   return (
@@ -40,7 +41,8 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
-      <header className="fixed inset-x-0 top-0 z-40 px-3 pt-3 md:px-6 md:pt-4">
+      <header className="fixed inset-x-0 top-0 z-40">
+        <div className="px-3 pt-3 md:px-6 md:pt-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-gold/30 bg-[rgba(8,10,16,0.72)] px-4 py-2.5 shadow-[0_16px_50px_rgba(0,0,0,0.45)] backdrop-blur-xl md:px-6">
           <Link href="/" className="flex items-center gap-2 text-sm tracking-wide text-gold">
             <PalmMark />
@@ -69,9 +71,13 @@ export function SiteChrome({ children }: { children: ReactNode }) {
             Explore the guide
           </Link>
         </div>
+        </div>
+        <div className="mt-2 hidden lg:block">
+          <NewsTicker />
+        </div>
       </header>
       {children}
-      <footer className="border-t border-line pb-24 lg:pb-0">
+      <footer className="border-t border-line pb-36 lg:pb-0">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 md:flex-row md:items-end md:justify-between md:px-8">
           <div>
             <p className="font-display text-3xl text-gold">dirtydecember.info</p>
@@ -82,6 +88,9 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           </p>
         </div>
       </footer>
+      <div className="fixed inset-x-0 bottom-[4.35rem] z-40 lg:hidden">
+        <NewsTicker />
+      </div>
       <nav
         aria-label="Mobile pages"
         className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-6 rounded-2xl border border-gold/30 bg-[rgba(8,10,16,0.78)] px-1 py-2 shadow-[0_16px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl lg:hidden"

@@ -17,6 +17,7 @@ npm run dev
 - `GET /api/places?country=Nigeria&city=Lagos`
 - `GET /api/flights`
 - `GET /api/pins`
+- `GET /api/news`
 
 Pages: `/`, `/events`, `/places`, `/flights`, `/map`, `/about`. The home page shows the confirmed events, city entry points, a map band, and one outbound search per airport. The full place list stays on `/places`.
 
