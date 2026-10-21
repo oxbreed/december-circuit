@@ -3,7 +3,7 @@ import { newsFeedUrls } from "../../news-feeds";
 import { eventTickerItems, type TickerItem } from "../../ticker-events";
 
 const PER_FEED = 6;
-const FEED_TIMEOUT_MS = 12000;
+const FEED_TIMEOUT_MS = 6000;
 
 type NewsPayload = {
   news: TickerItem[];
