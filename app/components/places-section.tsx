@@ -11,9 +11,9 @@ export function PlacesFallback() {
   return (
     <section id="places" className={sectionClass}>
       <SectionIntro
-        index="02"
-        title="Places"
-        lede="Each name opens that organiser page."
+        kicker="Places"
+        title="Organiser pages"
+        lede="Each name opens that organiser page. Cities outside Lagos stay on the list."
       />
       <LoadingLines label="Loading places" />
     </section>
@@ -82,9 +82,9 @@ export function PlacesSection() {
   return (
     <section id="places" className={`${sectionClass} border-t border-line`}>
       <SectionIntro
-        index="02"
-        title="Places"
-        lede="Each name opens that organiser page. Categories come from the file."
+        kicker="Places"
+        title="Organiser pages"
+        lede="Each name opens that organiser page. Categories come from the file. Cities outside Lagos stay on the list."
       />
 
       {all.status === "loading" ? <LoadingLines label="Loading places" /> : null}

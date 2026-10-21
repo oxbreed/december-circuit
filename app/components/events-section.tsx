@@ -18,9 +18,9 @@ export function EventsSection() {
   return (
     <section id="events" className={sectionClass}>
       <SectionIntro
-        index="01"
-        title="Events"
-        lede="December 2026 dates already on file. A link appears only where the record has one."
+        kicker="Events"
+        title="On file for December 2026"
+        lede="Dates come from the organiser or a named news report, checked on 21 October 2026. A link appears only where the record has one."
       />
       {events.status === "loading" ? <LoadingLines label="Loading events" /> : null}
       {events.status === "error" ? (
@@ -38,32 +38,42 @@ export function EventsSection() {
             {events.data.length} on file
           </p>
           {regions.map((region) => (
-            <div key={region} className="mt-8">
-              <h3 className="font-display text-3xl italic tracking-tight">{region}</h3>
-              <div className="mt-2">
+            <div key={region} className="mt-10">
+              <h3 className="font-display text-3xl italic tracking-tight text-gold">
+                {region}
+              </h3>
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
                 {events.data
                   .filter((event) => event.region === region)
                   .map((event) => (
                     <article
                       key={`${event.region}-${event.when}`}
-                      className="grid gap-2 border-t border-line py-5 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-8"
+                      className="flex h-full flex-col rounded-3xl border border-gold/30 bg-[#10151f]/90 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
                     >
-                      <p className="font-display text-[1.7rem] leading-none tracking-tight">
-                        {event.when}
+                      <p className="w-fit rounded-full border border-gold/40 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-brass">
+                        {event.region}
                       </p>
-                      <div>
-                        <p className="max-w-3xl text-lg leading-8">{event.summary}</p>
-                        {event.url ? (
-                          <a
-                            href={event.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-3 inline-block text-oxide underline decoration-1 underline-offset-4"
-                          >
+                      <h4 className="mt-5 font-display text-3xl leading-none tracking-tight">
+                        {event.when}
+                      </h4>
+                      <p className="mt-4 flex-1 text-sm leading-7 text-muted">
+                        {event.summary}
+                      </p>
+                      {event.url ? (
+                        <a
+                          href={event.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-6 inline-flex items-center justify-between gap-3 text-sm text-brass"
+                        >
+                          <span className="underline decoration-gold/50 underline-offset-4">
                             {event.urlLabel ?? "Organiser page"}
-                          </a>
-                        ) : null}
-                      </div>
+                          </span>
+                          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
+                            →
+                          </span>
+                        </a>
+                      ) : null}
                     </article>
                   ))}
               </div>

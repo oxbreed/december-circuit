@@ -92,9 +92,9 @@ export default function CircuitMap({
             center={[pin.latitude, pin.longitude]}
             radius={selected ? 9 : 6}
             pathOptions={{
-              color: selected ? "#1c1612" : "#9e301c",
+              color: selected ? "#f6f1e7" : "#e4c98a",
               weight: selected ? 2 : 1.5,
-              fillColor: selected ? "#c2412d" : "#f3ecdf",
+              fillColor: selected ? "#e4c98a" : "#10151f",
               fillOpacity: 1,
             }}
             eventHandlers={{ click: () => onSelect(id) }}

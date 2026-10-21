@@ -35,8 +35,8 @@ export function FlightsSection() {
   return (
     <section id="flights" className={`${sectionClass} border-t border-line`}>
       <SectionIntro
-        index="03"
-        title="Flights"
+        kicker="Flights"
+        title="Search links"
         lede="Each row opens a Google Flights search. It is a search, not a fare, a seat, or a booking."
       />
       {flights.status === "loading" ? (
@@ -72,7 +72,7 @@ export function FlightsSection() {
               <article
                 key={group.airport}
                 id={`airport-${airportSlug(group.airport)}`}
-                className="scroll-mt-32 border-2 border-ink bg-chart px-4 py-4 text-mist md:px-5"
+                className="scroll-mt-28 rounded-3xl border border-gold/30 bg-chart px-4 py-4 text-mist shadow-[0_18px_50px_rgba(0,0,0,0.35)] md:px-5"
               >
                 <h3 className="font-display text-[1.65rem] leading-tight tracking-tight">
                   {group.airport}

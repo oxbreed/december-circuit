@@ -1,26 +1,27 @@
 export const sectionClass =
-  "scroll-mt-32 mx-auto w-full max-w-6xl px-5 py-14 md:px-8";
+  "scroll-mt-28 mx-auto w-full max-w-6xl px-5 py-16 md:px-8 md:py-20";
 
 export function SectionIntro({
-  index,
+  kicker,
   title,
   lede,
 }: {
-  index: string;
+  kicker: string;
   title: string;
   lede: string;
 }) {
   return (
-    <div className="mb-8 flex items-start gap-4 md:gap-6">
-      <span className="pt-2 font-display text-2xl italic leading-none text-oxide md:text-3xl">
-        {index}
-      </span>
-      <div>
-        <h2 className="font-display text-4xl leading-none tracking-tight md:text-5xl">
-          {title}
-        </h2>
-        <p className="mt-3 max-w-2xl text-base leading-7 text-muted">{lede}</p>
+    <div className="mb-10">
+      <div className="flex items-center gap-4">
+        <p className="font-sans text-[11px] uppercase tracking-[0.28em] text-brass">
+          {kicker}
+        </p>
+        <span className="h-px flex-1 bg-gradient-to-r from-brass/70 to-transparent" />
       </div>
+      <h2 className="mt-4 font-display text-4xl leading-none tracking-tight text-ink md:text-6xl">
+        {title}
+      </h2>
+      <p className="mt-4 max-w-2xl text-base leading-7 text-muted">{lede}</p>
     </div>
   );
 }

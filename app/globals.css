@@ -1,81 +1,96 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light;
-  --background: #f3ecdf;
-  --foreground: #1c1612;
+  color-scheme: dark;
+  --background: #07080d;
+  --foreground: #f6f1e7;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-paper: #f3ecdf;
-  --color-paper-deep: #e7dcc8;
-  --color-ink: #1c1612;
-  --color-muted: #51483f;
-  --color-line: #d5c8b4;
-  --color-oxide: #9e301c;
-  --color-brass: #6e5326;
-  --color-brass-light: #f3d7a1;
-  --color-lagoon: #1d4f48;
-  --color-chart: #121c1a;
-  --color-mist: #e6f0eb;
+  --color-paper: #07080d;
+  --color-paper-deep: #121826;
+  --color-ink: #f6f1e7;
+  --color-muted: #b7aa98;
+  --color-line: rgba(228, 201, 138, 0.28);
+  --color-oxide: #e4c98a;
+  --color-brass: #d4b483;
+  --color-brass-light: #f3e2bc;
+  --color-gold: #e4c98a;
+  --color-lagoon: #8fd4e0;
+  --color-chart: #0d1422;
+  --color-mist: #f4efe4;
   --font-sans: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
 }
 
 body {
   overflow-x: clip;
   background:
-    radial-gradient(880px 360px at 0% -8%, rgba(158, 48, 28, 0.1), transparent 58%),
-    radial-gradient(720px 420px at 100% 0%, rgba(29, 79, 72, 0.09), transparent 52%),
+    radial-gradient(880px 460px at 100% -10%, rgba(92, 62, 168, 0.28), transparent 58%),
+    radial-gradient(720px 420px at 0% 8%, rgba(110, 196, 214, 0.1), transparent 52%),
     var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
 }
 
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.55) 0.6px, transparent 0.6px);
+  background-size: 3px 3px;
+}
+
 ::selection {
-  background: #efcfc7;
-  color: #1c1612;
+  background: rgba(228, 201, 138, 0.35);
+  color: #f6f1e7;
 }
 
 :focus-visible {
-  outline: 2px solid #9e301c;
+  outline: 2px solid #e4c98a;
   outline-offset: 3px;
 }
 
 .chip {
   display: inline-block;
-  border: 1px solid color-mix(in srgb, var(--color-ink) 28%, transparent);
-  background: transparent;
+  border: 1px solid rgba(228, 201, 138, 0.35);
+  background: rgba(8, 10, 16, 0.45);
   color: var(--color-ink);
   padding: 0.4rem 0.7rem;
-  font-family: var(--font-mono), ui-monospace, monospace;
+  font-family: var(--font-sans), sans-serif;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   line-height: 1.2;
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
+  border-radius: 999px;
 }
 
 .chip:hover {
-  border-color: var(--color-ink);
+  border-color: #e4c98a;
 }
 
 .chip[aria-checked="true"] {
-  background: var(--color-ink);
-  border-color: var(--color-ink);
-  color: var(--color-paper);
+  background: #e4c98a;
+  border-color: #e4c98a;
+  color: #12100c;
 }
 
 .ledger-input {
   width: 100%;
-  border: 1px solid var(--color-ink);
-  background: transparent;
+  border: 1px solid rgba(228, 201, 138, 0.4);
+  border-radius: 0.75rem;
+  background: rgba(8, 10, 16, 0.55);
   color: var(--color-ink);
-  padding: 0.6rem 0.75rem;
+  padding: 0.7rem 0.85rem;
 }
 
 .ledger-input::placeholder {
@@ -85,13 +100,18 @@ body {
 .leaflet-container {
   height: 100%;
   width: 100%;
-  background: #e7e2d6;
+  background: #10141c;
   font-family: var(--font-sans), sans-serif;
 }
 
 .leaflet-container .leaflet-control-attribution {
   font-size: 11px;
-  background: rgba(243, 236, 223, 0.92);
+  background: rgba(7, 8, 13, 0.82);
+  color: #b7aa98;
+}
+
+.leaflet-container .leaflet-control-attribution a {
+  color: #e4c98a;
 }
 
 .leaflet-interactive {

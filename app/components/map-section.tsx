@@ -57,8 +57,8 @@ export function MapSection() {
   return (
     <section id="map" className={`${sectionClass} border-t border-line`}>
       <SectionIntro
-        index="04"
-        title="Map"
+        kicker="Map"
+        title="Sourced pins"
         lede="Only places with a sourced coordinate. Directions open an external map from that point."
       />
       {pins.status === "loading" ? <LoadingLines label="Loading pins" /> : null}
@@ -103,7 +103,7 @@ export function MapSection() {
           <div className="mt-4 grid items-start gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(17rem,0.8fr)]">
             <div>
               <div
-                className="relative h-[52vh] min-h-[280px] border-2 border-ink md:h-[min(68vh,640px)]"
+                className="relative h-[52vh] min-h-[280px] overflow-hidden rounded-3xl border border-gold/30 shadow-[0_18px_50px_rgba(0,0,0,0.35)] md:h-[min(68vh,640px)]"
                 role="region"
                 aria-label="OpenStreetMap of sourced pins"
               >
