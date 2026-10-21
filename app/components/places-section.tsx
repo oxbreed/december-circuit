@@ -20,42 +20,63 @@ export function PlacesFallback() {
   );
 }
 
+function unique(values: string[]) {
+  const names: string[] = [];
+  for (const value of values) {
+    if (!names.includes(value)) names.push(value);
+  }
+  return names;
+}
+
 export function PlacesSection() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const country = searchParams.get("country")?.trim() ?? "";
+  const city = searchParams.get("city")?.trim() ?? "";
   const category = searchParams.get("category")?.trim() ?? "";
   const [query, setQuery] = useState("");
   const all = useRecords<Place[]>("/api/places");
-  const listUrl = category
-    ? `/api/places?category=${encodeURIComponent(category)}`
-    : "/api/places";
+
+  const listParams = new URLSearchParams();
+  if (country) listParams.set("country", country);
+  if (city) listParams.set("city", city);
+  if (category) listParams.set("category", category);
+  const queryString = listParams.toString();
+  const listUrl = queryString ? `/api/places?${queryString}` : "/api/places";
   const listed = useRecords<Place[]>(listUrl);
 
-  const categories = useMemo(() => {
+  const countries = useMemo(
+    () => (all.status === "ready" ? unique(all.data.map((place) => place.country)) : []),
+    [all],
+  );
+  const cities = useMemo(() => {
     if (all.status !== "ready") return [];
-    const names: string[] = [];
-    for (const place of all.data) {
-      if (!names.includes(place.category)) names.push(place.category);
-    }
-    return names;
-  }, [all]);
+    const scoped = country
+      ? all.data.filter((place) => place.country.toLowerCase() === country.toLowerCase())
+      : all.data;
+    return unique(scoped.map((place) => place.city));
+  }, [all, country]);
+  const categories = useMemo(
+    () => (all.status === "ready" ? unique(all.data.map((place) => place.category)) : []),
+    [all],
+  );
 
-  function choose(next: string) {
+  function replaceQuery(patch: Record<string, string>) {
     const params = new URLSearchParams(searchParams.toString());
-    if (next) params.set("category", next);
-    else params.delete("category");
+    for (const [key, value] of Object.entries(patch)) {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    }
     const nextQuery = params.toString();
-    router.replace(nextQuery ? `/?${nextQuery}` : "/", { scroll: false });
+    router.replace(nextQuery ? `/places?${nextQuery}` : "/places", { scroll: false });
   }
 
   const needle = query.trim().toLowerCase();
-  const source = category ? listed : all;
+  const source = queryString ? listed : all;
   const visible = source.status === "ready" ? source.data : [];
   const shown = needle
     ? visible.filter((place) =>
-        `${place.name} ${place.city} ${place.country}`
-          .toLowerCase()
-          .includes(needle),
+        `${place.name} ${place.city} ${place.country}`.toLowerCase().includes(needle),
       )
     : visible;
 
@@ -63,28 +84,28 @@ export function PlacesSection() {
     source.status === "ready"
       ? shown.reduce<
           { country: string; cities: { city: string; places: Place[] }[] }[]
-        >((countries, place) => {
-          let country = countries.find((item) => item.country === place.country);
-          if (!country) {
-            country = { country: place.country, cities: [] };
-            countries.push(country);
+        >((list, place) => {
+          let countryGroup = list.find((item) => item.country === place.country);
+          if (!countryGroup) {
+            countryGroup = { country: place.country, cities: [] };
+            list.push(countryGroup);
           }
-          let city = country.cities.find((item) => item.city === place.city);
-          if (!city) {
-            city = { city: place.city, places: [] };
-            country.cities.push(city);
+          let cityGroup = countryGroup.cities.find((item) => item.city === place.city);
+          if (!cityGroup) {
+            cityGroup = { city: place.city, places: [] };
+            countryGroup.cities.push(cityGroup);
           }
-          city.places.push(place);
-          return countries;
+          cityGroup.places.push(place);
+          return list;
         }, [])
       : [];
 
   return (
-    <section id="places" className={`${sectionClass} border-t border-line`}>
+    <section id="places" className={sectionClass}>
       <SectionIntro
         kicker="Places"
         title="Organiser pages"
-        lede="Each name opens that organiser page. Categories come from the file. Cities outside Lagos stay on the list."
+        lede="Each name opens that organiser page. Filter by the country, city, and category already on file."
       />
 
       {all.status === "loading" ? <LoadingLines label="Loading places" /> : null}
@@ -99,26 +120,26 @@ export function PlacesSection() {
         <div>
           <div
             role="radiogroup"
-            aria-label="Category"
+            aria-label="Country"
             className="-mx-5 flex w-full min-w-0 gap-2 overflow-x-auto px-5 pb-3 md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
           >
             <button
               type="button"
               role="radio"
-              aria-checked={category === ""}
+              aria-checked={country === ""}
               className="chip"
-              onClick={() => choose("")}
+              onClick={() => replaceQuery({ country: "", city: "" })}
             >
-              All
+              All countries
             </button>
-            {categories.map((name) => (
+            {countries.map((name) => (
               <button
                 key={name}
                 type="button"
                 role="radio"
-                aria-checked={category.toLowerCase() === name.toLowerCase()}
+                aria-checked={country.toLowerCase() === name.toLowerCase()}
                 className="chip"
-                onClick={() => choose(name)}
+                onClick={() => replaceQuery({ country: name, city: "" })}
               >
                 {name}
               </button>
@@ -127,7 +148,53 @@ export function PlacesSection() {
 
           <label className="mt-4 block max-w-sm">
             <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
-              Name or city
+              City
+            </span>
+            <select
+              value={city}
+              onChange={(event) => replaceQuery({ city: event.target.value })}
+              className="ledger-input mt-2"
+            >
+              <option value="">All cities</option>
+              {cities.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <div
+            role="radiogroup"
+            aria-label="Category"
+            className="-mx-5 mt-4 flex w-full min-w-0 gap-2 overflow-x-auto px-5 pb-3 md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
+          >
+            <button
+              type="button"
+              role="radio"
+              aria-checked={category === ""}
+              className="chip"
+              onClick={() => replaceQuery({ category: "" })}
+            >
+              All categories
+            </button>
+            {categories.map((name) => (
+              <button
+                key={name}
+                type="button"
+                role="radio"
+                aria-checked={category.toLowerCase() === name.toLowerCase()}
+                className="chip"
+                onClick={() => replaceQuery({ category: name })}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+
+          <label className="mt-4 block max-w-sm">
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+              Name
             </span>
             <input
               type="search"
@@ -143,17 +210,10 @@ export function PlacesSection() {
               <LoadingLines label="Loading places" />
             ) : null}
             {source.status === "error" ? (
-              <ErrorNote
-                message="That category did not load."
-                onRetry={source.retry}
-              />
+              <ErrorNote message="That filter did not load." onRetry={source.retry} />
             ) : null}
             {source.status === "ready" && visible.length === 0 ? (
-              <EmptyNote>
-                {category
-                  ? `No places are on file for ${category}.`
-                  : "No places are on file."}
-              </EmptyNote>
+              <EmptyNote>No places are on file for this filter.</EmptyNote>
             ) : null}
             {source.status === "ready" && visible.length > 0 && shown.length === 0 ? (
               <EmptyNote>No filed place matches {query.trim()}.</EmptyNote>
@@ -162,20 +222,19 @@ export function PlacesSection() {
               <div>
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brass">
                   {shown.length} {shown.length === 1 ? "place" : "places"}
-                  {category ? ` in ${shown[0]?.category ?? category}` : ""}
                 </p>
-                {groups.map((country) => (
-                  <div key={country.country} className="mt-8">
+                {groups.map((countryGroup) => (
+                  <div key={countryGroup.country} className="mt-8">
                     <h3 className="font-display text-3xl italic tracking-tight">
-                      {country.country}
+                      {countryGroup.country}
                     </h3>
-                    {country.cities.map((city) => (
-                      <div key={city.city} className="mt-4">
+                    {countryGroup.cities.map((cityGroup) => (
+                      <div key={cityGroup.city} className="mt-4">
                         <h4 className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-                          {city.city}
+                          {cityGroup.city}
                         </h4>
                         <ul className="mt-1">
-                          {city.places.map((place) => (
+                          {cityGroup.places.map((place) => (
                             <li
                               key={`${place.country}-${place.city}-${place.category}-${place.name}`}
                               className="grid gap-1 border-t border-line py-3 sm:grid-cols-[minmax(0,1.5fr)_auto] sm:items-baseline sm:gap-6"

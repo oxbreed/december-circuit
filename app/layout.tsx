@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { SiteChrome } from "./components/site-chrome";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,7 +33,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-sans text-ink">{children}</body>
+      <body className="flex min-h-full flex-col font-sans text-ink">
+        <SiteChrome>{children}</SiteChrome>
+      </body>
     </html>
   );
 }

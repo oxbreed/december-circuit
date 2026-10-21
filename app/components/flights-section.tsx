@@ -33,7 +33,7 @@ export function FlightsSection() {
       : [];
 
   return (
-    <section id="flights" className={`${sectionClass} border-t border-line`}>
+    <section id="flights" className={sectionClass}>
       <SectionIntro
         kicker="Flights"
         title="Search links"

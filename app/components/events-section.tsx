@@ -16,7 +16,44 @@ const atmospheres = [
   "/atmosphere/night-crowd.jpg",
 ];
 
-export function EventsSection() {
+function EventCard({ event, index }: { event: CircuitEvent; index: number }) {
+  return (
+    <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold/30 bg-[#10151f]/90 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
+      <div className="relative aspect-[16/10]">
+        <img
+          src={atmospheres[index % atmospheres.length]}
+          alt=""
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
+        <p className="absolute top-4 left-4 rounded-full border border-gold/50 bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-brass backdrop-blur-sm">
+          {event.region}
+        </p>
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-display text-3xl leading-none tracking-tight">{event.when}</h3>
+        <p className="mt-4 flex-1 text-sm leading-7 text-muted">{event.summary}</p>
+        {event.url ? (
+          <a
+            href={event.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex items-center justify-between gap-3 text-sm text-brass"
+          >
+            <span className="underline decoration-gold/50 underline-offset-4">
+              {event.urlLabel ?? "Organiser page"}
+            </span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
+              →
+            </span>
+          </a>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+export function EventsSection({ rail = false }: { rail?: boolean }) {
   const events = useRecords<CircuitEvent[]>("/api/events");
   const regions =
     events.status === "ready"
@@ -26,13 +63,8 @@ export function EventsSection() {
         }, [])
       : [];
 
-  return (
-    <section id="events" className={sectionClass}>
-      <SectionIntro
-        kicker="Events"
-        title="On file for December 2026"
-        lede="Dates come from the organiser or a named news report, checked on 21 October 2026. A link appears only where the record has one."
-      />
+  const status = (
+    <>
       {events.status === "loading" ? <LoadingLines label="Loading events" /> : null}
       {events.status === "error" ? (
         <ErrorNote
@@ -43,6 +75,48 @@ export function EventsSection() {
       {events.status === "ready" && events.data.length === 0 ? (
         <EmptyNote>No December 2026 events are on file.</EmptyNote>
       ) : null}
+    </>
+  );
+
+  if (rail) {
+    return (
+      <section id="events" className="mx-auto w-full max-w-6xl px-5 py-14 md:px-8 md:py-16">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.28em] text-brass">Events</p>
+            <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
+              On file for December 2026
+            </h2>
+          </div>
+          <a
+            href="/events"
+            className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-gold"
+          >
+            All events →
+          </a>
+        </div>
+        <div className="mt-6">{status}</div>
+        {events.status === "ready" && events.data.length > 0 ? (
+          <div className="-mx-5 mt-2 flex gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0">
+            {events.data.map((event, index) => (
+              <div key={`${event.region}-${event.when}`} className="w-[19rem] shrink-0">
+                <EventCard event={event} index={index} />
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </section>
+    );
+  }
+
+  return (
+    <section id="events" className={sectionClass}>
+      <SectionIntro
+        kicker="Events"
+        title="On file for December 2026"
+        lede="Dates come from the organiser or a named news report, checked on 21 October 2026. A link appears only where the record has one."
+      />
+      {status}
       {events.status === "ready" && events.data.length > 0 ? (
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brass">
@@ -50,56 +124,17 @@ export function EventsSection() {
           </p>
           {regions.map((region) => (
             <div key={region} className="mt-10">
-              <h3 className="font-display text-3xl italic tracking-tight text-gold">
-                {region}
-              </h3>
+              <h3 className="font-display text-3xl italic tracking-tight text-gold">{region}</h3>
               <div className="mt-4 grid gap-4 md:grid-cols-2">
                 {events.data
                   .filter((event) => event.region === region)
-                  .map((event) => {
-                    const index = events.data.indexOf(event);
-                    return (
-                      <article
-                        key={`${event.region}-${event.when}`}
-                        className="flex h-full flex-col overflow-hidden rounded-3xl border border-gold/30 bg-[#10151f]/90 shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
-                      >
-                        <div className="relative aspect-[16/10]">
-                          <img
-                            src={atmospheres[index % atmospheres.length]}
-                            alt=""
-                            className="h-full w-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
-                          <p className="absolute top-4 left-4 rounded-full border border-gold/50 bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-brass backdrop-blur-sm">
-                            {event.region}
-                          </p>
-                        </div>
-                        <div className="flex flex-1 flex-col p-5">
-                          <h4 className="font-display text-3xl leading-none tracking-tight">
-                            {event.when}
-                          </h4>
-                          <p className="mt-4 flex-1 text-sm leading-7 text-muted">
-                            {event.summary}
-                          </p>
-                          {event.url ? (
-                            <a
-                              href={event.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-6 inline-flex items-center justify-between gap-3 text-sm text-brass"
-                            >
-                              <span className="underline decoration-gold/50 underline-offset-4">
-                                {event.urlLabel ?? "Organiser page"}
-                              </span>
-                              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
-                                →
-                              </span>
-                            </a>
-                          ) : null}
-                        </div>
-                      </article>
-                    );
-                  })}
+                  .map((event) => (
+                    <EventCard
+                      key={`${event.region}-${event.when}`}
+                      event={event}
+                      index={events.data.indexOf(event)}
+                    />
+                  ))}
               </div>
             </div>
           ))}

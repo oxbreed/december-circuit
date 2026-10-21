@@ -55,7 +55,7 @@ export function MapSection() {
   }
 
   return (
-    <section id="map" className={`${sectionClass} border-t border-line`}>
+    <section id="map" className={sectionClass}>
       <SectionIntro
         kicker="Map"
         title="Sourced pins"

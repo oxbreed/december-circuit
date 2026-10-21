@@ -14,8 +14,11 @@ npm run dev
 - `GET /api/events`
 - `GET /api/places`
 - `GET /api/places?category=Hotels`
+- `GET /api/places?country=Nigeria&city=Lagos`
 - `GET /api/flights`
 - `GET /api/pins`
+
+Pages: `/`, `/events`, `/places`, `/flights`, `/map`, `/about`. The home page shows the confirmed events, city entry points, a map band, and one outbound search per airport. The full place list stays on `/places`.
 
 The pages load these routes. A place name opens the organiser page stored on that record. A flight row opens its search and is labelled as a search. It is not a fare or a seat.
 
