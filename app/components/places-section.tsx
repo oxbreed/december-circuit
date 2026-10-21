@@ -247,6 +247,9 @@ export function PlacesSection() {
                                 className="text-lg leading-7 text-ink underline decoration-oxide/50 decoration-1 underline-offset-4"
                               >
                                 {place.name}
+                                <span className="mt-1 block text-[11px] font-sans uppercase tracking-[0.14em] text-oxide no-underline">
+                                  Organiser page — leaves this site
+                                </span>
                               </a>
                               <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-brass">
                                 {place.category}

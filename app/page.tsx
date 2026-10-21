@@ -1,11 +1,11 @@
 import { EventsSection } from "./components/events-section";
-import { Hero } from "./components/hero";
+import { GuideSearch } from "./components/guide-search";
 import { HomeBands } from "./components/home-bands";
 
 export default function Home() {
   return (
     <main id="top">
-      <Hero />
+      <GuideSearch />
       <EventsSection rail />
       <HomeBands />
     </main>

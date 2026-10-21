@@ -172,6 +172,9 @@ export function MapSection() {
                             className="leading-6 underline decoration-oxide/50 decoration-1 underline-offset-4"
                           >
                             {pin.name}
+                            <span className="mt-1 block text-[11px] uppercase tracking-[0.14em] text-oxide no-underline">
+                              Organiser page — leaves this site
+                            </span>
                           </a>
                         ) : (
                           <p className="leading-6">{pin.name}</p>

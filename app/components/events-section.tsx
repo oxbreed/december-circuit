@@ -41,7 +41,7 @@ function EventCard({ event, index }: { event: CircuitEvent; index: number }) {
             className="mt-6 inline-flex items-center justify-between gap-3 text-sm text-brass"
           >
             <span className="underline decoration-gold/50 underline-offset-4">
-              {event.urlLabel ?? "Organiser page"}
+              {event.urlLabel ?? "Organiser page"} — leaves this site
             </span>
             <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
               →
