@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { disclaimer, nav } from "../brand";
@@ -36,6 +36,22 @@ function current(pathname: string, href: string) {
 
 export function SiteChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const barRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const node = barRef.current;
+    if (!node) return;
+    const apply = () => {
+      document.documentElement.style.setProperty("--mobile-bar", `${node.offsetHeight}px`);
+    };
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--mobile-bar");
+    };
+  }, []);
 
   return (
     <>
@@ -99,7 +115,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           </p>
         </div>
       </footer>
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden">
+      <div
+        ref={barRef}
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden"
+      >
         <NewsTicker />
         <nav aria-label="Mobile pages" className="grid grid-cols-6 px-1 py-2">
           {nav.map(([label, href]) => (

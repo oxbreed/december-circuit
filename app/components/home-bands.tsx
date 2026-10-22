@@ -68,7 +68,7 @@ export function HomeBands() {
         ) : null}
         {pinRecords.length > 0 ? (
           <div
-            className="map-frame mt-6 h-[22rem] border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.2)] md:h-[26rem]"
+            className="map-frame mt-6 h-[min(22rem,calc(100svh-16.5rem))] border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.2)] lg:h-[26rem]"
             role="region"
             aria-label="OpenStreetMap of sourced pins"
           >
