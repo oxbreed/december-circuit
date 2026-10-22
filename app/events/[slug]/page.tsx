@@ -1,0 +1,68 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { disclaimer } from "../../brand";
+import { DateBlock, PrimaryAction } from "../../components/event-card";
+import { eventNameAndVenue, eventSlug, presentEvent } from "../../event-view";
+import { events } from "../../events";
+
+export function generateStaticParams() {
+  return events.map((event) => ({ slug: eventSlug(event) }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const event = events.find((item) => eventSlug(item) === slug);
+  if (!event) return { title: "Event · dirtydecember.info" };
+  const { name } = eventNameAndVenue(event.summary);
+  return {
+    title: `${name} · dirtydecember.info`,
+    description: event.summary,
+  };
+}
+
+export default async function EventPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const event = events.find((item) => eventSlug(item) === slug);
+  if (!event) notFound();
+  const view = presentEvent(event);
+
+  return (
+    <main id="top" className="mx-auto w-full max-w-3xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-20">
+      <Link
+        href="/events"
+        className="text-[11px] uppercase tracking-[0.2em] text-muted hover:text-oxide"
+      >
+        Events
+      </Link>
+      <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start">
+        <DateBlock when={event.when} />
+        <div className="min-w-0">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
+            {view.category}
+          </p>
+          <h1 className="mt-2 font-display text-4xl leading-[0.95] tracking-tight sm:text-6xl">
+            {view.name}
+          </h1>
+          <p className="mt-4 text-sm text-ink">{view.region}</p>
+          <p className="mt-1 text-sm text-muted">
+            {view.venue ?? "Venue not on file"}
+          </p>
+        </div>
+      </div>
+      <p className="mt-8 text-base leading-8 text-ink">{event.summary}</p>
+      <div className="mt-8">
+        <PrimaryAction event={event} />
+      </div>
+      <p className="mt-8 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
+    </main>
+  );
+}

@@ -1,12 +1,20 @@
-import { EventsSection } from "./components/events-section";
-import { GuideSearch } from "./components/guide-search";
+import { Suspense } from "react";
+import { Discovery } from "./components/discovery";
 import { HomeBands } from "./components/home-bands";
+import { LoadingLines } from "./components/states";
 
 export default function Home() {
   return (
     <main id="top">
-      <GuideSearch />
-      <EventsSection rail />
+      <Suspense
+        fallback={
+          <div className="mx-auto max-w-6xl px-5 pt-28">
+            <LoadingLines label="Loading what is on file." />
+          </div>
+        }
+      >
+        <Discovery home />
+      </Suspense>
       <HomeBands />
     </main>
   );
