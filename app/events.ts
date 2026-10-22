@@ -13,6 +13,8 @@ export const events: CircuitEvent[] = [
     when: "17-19 December",
     summary:
       "Davido, Oriade residency, three nights at the National Theatre, Iganmu.",
+    url: "https://www.dmwhq.com/residency",
+    urlLabel: "Organiser's page",
   },
   {
     region: "Lagos",
@@ -27,24 +29,32 @@ export const events: CircuitEvent[] = [
     region: "Lagos",
     when: "20 December",
     summary: "Flytime House of R&B, Brandy, Eko Convention Centre.",
+    url: "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+    urlLabel: "News report",
   },
   {
     region: "Lagos",
     when: "21 December",
     summary:
       "Coca-Cola Rhythm Unplugged, Lil Baby and Kehlani, Eko Convention Centre.",
+    url: "https://www.stylerave.com/rhythm-unplugged-2026-headliners/",
+    urlLabel: "News report",
   },
   {
     region: "Lagos",
     when: "22-24 December",
     summary:
       "Flytime Fest, Eko Convention Centre. Headliners for 2026 are still unannounced.",
+    url: "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+    urlLabel: "News report",
   },
   {
     region: "Lagos",
     when: "25 December",
     summary:
       "Flytime Circle, Eko Convention Centre. The lineup is still unannounced.",
+    url: "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+    urlLabel: "News report",
   },
   {
     region: "Calabar",

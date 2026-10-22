@@ -172,7 +172,7 @@ export function StayGuide() {
       label: "Organiser page",
     }));
   const bookingEvents: WayItem[] = events
-    .filter((event) => event.ticketsUrl || event.url)
+    .filter((event) => event.ticketsUrl || (event.url && event.urlLabel !== "News report"))
     .map((event) => ({
       key: `${event.region}-${event.when}`,
       city: event.region,

@@ -84,9 +84,20 @@ export function NewsTicker() {
               News feeds did not return any items.
             </span>
           ) : null}
-          {loop.map((item, index) => (
-            <ItemLink key={`${item.kind}-${item.link}-${index}`} item={item} />
-          ))}
+          {items.length > 0 ? (
+            <div className="flex shrink-0 items-center">
+              {items.map((item, index) => (
+                <ItemLink key={`${item.kind}-${item.link}-${index}`} item={item} />
+              ))}
+            </div>
+          ) : null}
+          {items.length > 0 ? (
+            <div className="news-ticker-duplicate flex shrink-0 items-center" aria-hidden="true" inert>
+              {items.map((item, index) => (
+                <ItemLink key={`${item.kind}-${item.link}-${index}-copy`} item={item} />
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

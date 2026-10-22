@@ -64,6 +64,7 @@ export function siteJsonLd() {
     publisher: {
       "@type": "Organization",
       name: publisherName,
+      url: "https://www.oxbreedmanagement.com",
     },
   };
 }
@@ -97,7 +98,7 @@ export function eventJsonLd(event: CircuitEvent) {
     location,
   };
   if (dates.endDate) data.endDate = dates.endDate;
-  if (event.url) {
+  if (event.url && event.urlLabel !== "News report") {
     data.organizer = {
       "@type": "Organization",
       url: event.url,

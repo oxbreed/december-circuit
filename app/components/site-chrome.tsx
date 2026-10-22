@@ -168,7 +168,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               key={href}
               href={href}
               aria-current={current(pathname, href) ? "page" : undefined}
-              className={`min-w-0 px-0.5 py-1 text-center text-[8px] uppercase leading-tight tracking-[0.02em] ${
+              className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-1 text-center text-[12px] font-medium uppercase leading-none tracking-tight ${
                 current(pathname, href) ? "text-oxide" : "text-ink/70"
               }`}
             >

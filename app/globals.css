@@ -330,6 +330,10 @@ body::before {
     overflow-y: hidden;
   }
 
+  .news-ticker-duplicate {
+    display: none;
+  }
+
   .landmark-fade {
     animation: none;
   }

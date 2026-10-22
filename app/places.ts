@@ -103,7 +103,7 @@ export const places: Place[] = [
   { country: "Nigeria", city: "Lagos", category: "Event centres", name: "Landmark Event Centre", url: "https://landmarklagos.com/contact-us-2/" },
   { country: "Nigeria", city: "Lagos", category: "Practical stops", name: "Murtala Muhammed International Airport", url: "https://faan.gov.ng/contact/" },
   { country: "Nigeria", city: "Lagos", category: "Event centres", name: "MUSON Centre", url: "https://muson.org/contact-us/" },
-  { country: "Nigeria", city: "Lagos", category: "Restaurants", name: "NOK by Alara", url: "http://www.nokbyalara.com/welcome" },
+  { country: "Nigeria", city: "Lagos", category: "Restaurants", name: "NOK by Alara", url: "https://www.nokbyalara.com/welcome" },
   { country: "Nigeria", city: "Lagos", category: "Clubs", name: "Quilox", url: "https://www.clubquilox.com/" },
   { country: "Nigeria", city: "Lagos", category: "Practical stops", name: "Reddington Hospital", url: "https://reddingtonhospital.com/contacts/" },
   { country: "Nigeria", city: "Lagos", category: "Restaurants", name: "Shiro Lagos", url: "https://experienceshiro.com/contact-us/" },
