@@ -1,6 +1,7 @@
 import { EventSubmission } from "../components/event-submission";
 import { PartnerOffer } from "../components/partner-offer";
 import { ProductAd } from "../components/product-ad";
+import { directorySignIn } from "../directory-auth";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
@@ -11,6 +12,8 @@ export const metadata = pageMetadata({
 });
 
 export default function ListPage() {
+  const connected = directorySignIn().connected;
+
   return (
     <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-12 pt-16 sm:px-6 md:px-8 md:pt-32 lg:pb-16">
       <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">On this site</p>
@@ -23,10 +26,11 @@ export default function ListPage() {
           Submit an event or a show
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-          The event stays off the public list until it is checked. The button
-          opens an email to hello@dirtydecember.info.
+          {connected
+            ? "The event is saved as unpublished and stays off the public list until it is checked."
+            : "The event stays off the public list until it is checked. The button opens an email to hello@dirtydecember.info."}
         </p>
-        <EventSubmission />
+        <EventSubmission connected={connected} />
       </section>
 
       <section id="place-ad" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
@@ -49,11 +53,11 @@ export default function ListPage() {
           Product ad
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-          The placement is labeled, and this site does not take payment. The
-          product stays off the site until it is checked. The button opens an
-          email to partners@dirtydecember.info.
+          {connected
+            ? "The placement is labeled, and this site does not take payment. The product is saved as unpublished and stays off the site until it is checked."
+            : "The placement is labeled, and this site does not take payment. The product stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
         </p>
-        <ProductAd />
+        <ProductAd connected={connected} />
       </section>
 
       <section id="transport-partnership" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
@@ -61,11 +65,16 @@ export default function ListPage() {
           Transportation partnership
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-          The placement is labeled, and this site does not take payment. The
-          offer stays off the site until it is checked. The button opens an
-          email to partners@dirtydecember.info.
+          {connected
+            ? "The placement is labeled, and this site does not take payment. The offer is saved as unpublished and stays off the site until it is checked."
+            : "The placement is labeled, and this site does not take payment. The offer stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
         </p>
-        <PartnerOffer subject="Transportation partnership" button="Email about transportation" />
+        <PartnerOffer
+          subject="Transportation partnership"
+          button={connected ? "Save this transportation offer" : "Email about transportation"}
+          connected={connected}
+          kind="transportation"
+        />
       </section>
 
       <section id="booking-partnership" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
@@ -73,11 +82,16 @@ export default function ListPage() {
           Booking partnership
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-          The placement is labeled, and this site does not take payment. The
-          offer stays off the site until it is checked. The button opens an
-          email to partners@dirtydecember.info.
+          {connected
+            ? "The placement is labeled, and this site does not take payment. The offer is saved as unpublished and stays off the site until it is checked."
+            : "The placement is labeled, and this site does not take payment. The offer stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
         </p>
-        <PartnerOffer subject="Booking partnership" button="Email about booking" />
+        <PartnerOffer
+          subject="Booking partnership"
+          button={connected ? "Save this booking offer" : "Email about booking"}
+          connected={connected}
+          kind="booking"
+        />
       </section>
     </main>
   );

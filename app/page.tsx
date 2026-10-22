@@ -1,6 +1,7 @@
 import { GuideSearch } from "./components/guide-search";
 import { HomeBands } from "./components/home-bands";
 import { MyTrip } from "./components/my-trip";
+import { ReviewsSection } from "./components/reviews-section";
 import { SponsorSpot } from "./components/sponsor-spot";
 import { StayGuide } from "./components/stay-guide";
 import { defaultDescription, pageMetadata } from "./site";
@@ -18,6 +19,7 @@ export default function Home() {
       <SponsorSpot />
       <MyTrip />
       <StayGuide />
+      <ReviewsSection />
       <HomeBands />
     </main>
   );
