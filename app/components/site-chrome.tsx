@@ -107,7 +107,15 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               dirtydecember<span className="text-oxide">.info</span>
             </p>
             <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
-            <p className="mt-4 font-sans text-sm text-ink">Powered by Oxbreed Management.</p>
+            <p className="mt-4 font-sans text-sm text-ink">
+              <a
+                href="https://www.oxbreedmanagement.com"
+                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+              >
+                Powered by Oxbreed Management
+              </a>
+              .
+            </p>
             <ul className="mt-3 space-y-1 font-sans text-sm leading-6 text-ink">
               <li>
                 <a
