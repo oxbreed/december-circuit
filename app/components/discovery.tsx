@@ -120,6 +120,14 @@ export function Discovery({ home = false }: { home?: boolean }) {
             title="Find an event on file."
             lede="Activity, city, and date use only the lists already stored here."
           />
+          <p className="-mt-6 mb-10">
+            <a
+              href="/list"
+              className="text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              List an event
+            </a>
+          </p>
         </section>
       )}
 

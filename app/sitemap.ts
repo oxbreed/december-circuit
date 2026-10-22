@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/flights",
     "/map",
     "/about",
+    "/list",
     ...events.map((event) => `/events/${eventSlug(event)}`),
     ...citiesOnFile().map((city) => `/cities/${city.slug}`),
   ];

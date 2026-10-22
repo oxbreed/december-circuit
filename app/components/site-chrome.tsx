@@ -125,6 +125,14 @@ export function SiteChrome({ children }: { children: ReactNode }) {
                   Partner enquiries: partners@dirtydecember.info
                 </a>
               </li>
+              <li>
+                <Link
+                  href="/list"
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  List an event
+                </Link>
+              </li>
             </ul>
           </div>
           <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-muted">

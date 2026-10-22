@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { sponsors } from "../sponsors";
 
 function filedSponsor() {
@@ -28,9 +29,17 @@ export function SponsorSpot() {
               <p className="text-sm leading-6 text-ink">{sponsor.name}</p>
             )
           ) : (
-            <p className="text-sm leading-6 text-muted">
-              Paid placement. No sponsor is on file.
-            </p>
+            <>
+              <p className="text-sm leading-6 text-muted">
+                Paid placement. No sponsor is on file.
+              </p>
+              <Link
+                href="/list"
+                className="mt-3 inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+              >
+                List an event or place an ad
+              </Link>
+            </>
           )}
         </div>
       </div>
