@@ -16,7 +16,7 @@ export default function Home() {
       <GuideSearch />
       <section id="events" className="scroll-mt-36 border-y border-ink/10 bg-paper-deep">
         <div className="mx-auto w-full max-w-6xl px-5 py-12 md:px-8 md:py-14">
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Events</p>
               <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">

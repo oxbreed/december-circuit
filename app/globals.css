@@ -117,6 +117,44 @@ body::before {
 }
 
 @media (max-width: 1023px) {
+  html,
+  body {
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .mobile-scroll {
+    height: calc(100svh - var(--mobile-bar, 7rem));
+    max-width: 100%;
+    overflow-x: clip;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .mobile-scroll > footer {
+    padding-bottom: 1.5rem;
+  }
+
+  .mobile-scroll main,
+  .mobile-scroll section,
+  .mobile-scroll article,
+  .mobile-scroll form,
+  .mobile-scroll figure {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .mobile-scroll h1,
+  .mobile-scroll h2,
+  .mobile-scroll h3 {
+    overflow-wrap: break-word;
+  }
+
+  .news-ticker {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
   #map {
     padding-top: 0;
   }

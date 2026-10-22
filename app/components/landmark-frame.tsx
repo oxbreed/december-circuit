@@ -30,7 +30,7 @@ export function LandmarkFrame() {
 
   return (
     <figure
-      className="hidden lg:block"
+      className="min-w-0 max-w-full"
       aria-label="Landmarks in cities on file"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

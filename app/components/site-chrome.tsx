@@ -98,6 +98,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           <NewsTicker />
         </div>
       </header>
+      <div className="mobile-scroll lg:contents">
       {children}
       <footer className="border-t border-ink/15 pb-32 lg:pb-0">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 md:flex-row md:items-end md:justify-between md:px-8">
@@ -115,9 +116,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           </p>
         </div>
       </footer>
+      </div>
       <div
         ref={barRef}
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 max-w-full overflow-x-clip border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden"
       >
         <NewsTicker />
         <nav aria-label="Mobile pages" className="grid grid-cols-6 px-1 py-2">
@@ -126,7 +128,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               key={href}
               href={href}
               aria-current={current(pathname, href) ? "page" : undefined}
-              className={`px-1 py-1 text-center text-[9px] uppercase tracking-[0.08em] ${
+              className={`min-w-0 px-0.5 py-1 text-center text-[9px] uppercase leading-tight tracking-[0.04em] ${
                 current(pathname, href) ? "text-oxide" : "text-ink/70"
               }`}
             >
