@@ -108,6 +108,24 @@ export function SiteChrome({ children }: { children: ReactNode }) {
             </p>
             <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
             <p className="mt-4 font-sans text-sm text-ink">Powered by Oxbreed Management.</p>
+            <ul className="mt-3 space-y-1 font-sans text-sm leading-6 text-ink">
+              <li>
+                <a
+                  href="mailto:hello@dirtydecember.info"
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  Visitor enquiries: hello@dirtydecember.info
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:partners@dirtydecember.info"
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  Partner enquiries: partners@dirtydecember.info
+                </a>
+              </li>
+            </ul>
           </div>
           <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-muted">
             Checked 21 October 2026
