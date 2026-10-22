@@ -19,7 +19,7 @@ npm run dev
 - `GET /api/pins`
 - `GET /api/news`
 
-Pages: `/`, `/events`, `/events/[slug]`, `/places`, `/flights`, `/map`, `/about`. The home page and `/events` share a find bar for activity, city, and date. Those lists come from categories, cities, and event dates already on file. Each confirmed event has a stable page. The full place list stays on `/places`. Flight rows stay on `/flights`.
+Pages: `/`, `/events`, `/events/[slug]`, `/cities/[slug]`, `/places`, `/flights`, `/map`, `/about`. The home page and `/events` share a find bar for activity, city, and date. Those lists come from categories, cities, and event dates already on file. Each confirmed event has a stable page. A city with places or events on file has a page at `/cities/[slug]`. The full place list stays on `/places`. Flight rows stay on `/flights`. `sitemap.xml` and `robots.txt` list those pages.
 
 The pages load these routes. A place name opens the organiser page stored on that record. A flight row opens its search and is labelled as a search. It is not a fare or a seat.
 

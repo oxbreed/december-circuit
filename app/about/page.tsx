@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { disclaimer } from "../brand";
+import { pageMetadata } from "../site";
 
-export const metadata: Metadata = {
-  title: "About · dirtydecember.info",
+export const metadata = pageMetadata({
+  title: "About",
   description:
     "What this independent directory lists, and when a record is allowed on the site.",
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { disclaimer } from "../../brand";
+import { JsonLd } from "../../components/json-ld";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
-import { eventNameAndVenue, eventSlug, presentEvent } from "../../event-view";
+import { eventSlug, presentEvent } from "../../event-view";
 import { events } from "../../events";
+import { eventJsonLd } from "../../jsonld";
+import { pageMetadata } from "../../site";
 
 export function generateStaticParams() {
   return events.map((event) => ({ slug: eventSlug(event) }));
@@ -17,12 +20,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const event = events.find((item) => eventSlug(item) === slug);
-  if (!event) return { title: "Event · dirtydecember.info" };
-  const { name } = eventNameAndVenue(event.summary);
-  return {
-    title: `${name} · dirtydecember.info`,
+  if (!event) return { title: "Event" };
+  const view = presentEvent(event);
+  return pageMetadata({
+    title: view.name,
     description: event.summary,
-  };
+    path: view.href,
+  });
 }
 
 export default async function EventPage({
@@ -37,6 +41,7 @@ export default async function EventPage({
 
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-20">
+      <JsonLd data={eventJsonLd(event)} />
       <Link
         href="/events"
         className="text-[11px] uppercase tracking-[0.2em] text-muted hover:text-oxide"

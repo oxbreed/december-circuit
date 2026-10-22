@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
 import { MapSection } from "../components/map-section";
+import { pageMetadata } from "../site";
 
-export const metadata: Metadata = {
-  title: "Map · dirtydecember.info",
+export const metadata = pageMetadata({
+  title: "Map",
   description: "Sourced coordinates on an OpenStreetMap.",
-};
+  path: "/map",
+});
 
 export default function MapPage() {
   return (

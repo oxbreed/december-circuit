@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Discovery } from "../components/discovery";
 import { LoadingLines } from "../components/states";
+import { pageMetadata } from "../site";
 
-export const metadata: Metadata = {
-  title: "Events · dirtydecember.info",
+export const metadata = pageMetadata({
+  title: "Events",
   description: "Confirmed December 2026 events already on file.",
-};
+  path: "/events",
+});
 
 export default function EventsPage() {
   return (

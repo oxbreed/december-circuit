@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
 import { FlightsSection } from "../components/flights-section";
+import { pageMetadata } from "../site";
 
-export const metadata: Metadata = {
-  title: "Flights · dirtydecember.info",
+export const metadata = pageMetadata({
+  title: "Flights",
   description: "Outbound Google Flights searches. Not fares or seats.",
-};
+  path: "/flights",
+});
 
 export default function FlightsPage() {
   return (

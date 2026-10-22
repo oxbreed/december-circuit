@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PlacesFallback, PlacesSection } from "../components/places-section";
+import { pageMetadata } from "../site";
 
-export const metadata: Metadata = {
-  title: "Places · dirtydecember.info",
+export const metadata = pageMetadata({
+  title: "Places",
   description: "Organiser pages already on file, by country, city, and category.",
-};
+  path: "/places",
+});
 
 export default function PlacesPage() {
   return (
