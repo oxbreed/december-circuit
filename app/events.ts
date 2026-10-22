@@ -4,6 +4,7 @@ export type CircuitEvent = {
   summary: string;
   url?: string;
   urlLabel?: string;
+  ticketsUrl?: string;
 };
 
 export const events: CircuitEvent[] = [
@@ -20,6 +21,7 @@ export const events: CircuitEvent[] = [
       "Detty December Fest. Wizkid on 18 December, DJ Tunez and Friends on 24 December, Tungba Christmas on 25 December. Other nights are still marked coming soon.",
     url: "https://dettydecfest.com/",
     urlLabel: "Organiser's page",
+    ticketsUrl: "https://tix.dot360.co/org/livespot/detty-december",
   },
   {
     region: "Lagos",

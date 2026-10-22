@@ -17,6 +17,7 @@ type Activity = {
   when?: string;
   url?: string;
   linkLabel: string;
+  ticketsUrl?: string;
 };
 
 function fold(value: string) {
@@ -67,6 +68,16 @@ function ActivityCard({ activity }: { activity: Activity }) {
           No organiser page on file
         </p>
       )}
+      {activity.ticketsUrl ? (
+        <a
+          href={activity.ticketsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex w-fit text-[11px] uppercase tracking-[0.16em] text-oxide"
+        >
+          Tickets
+        </a>
+      ) : null}
     </article>
   );
 }
@@ -133,6 +144,7 @@ export function GuideSearch() {
         when: event.when,
         url: event.url,
         linkLabel: event.urlLabel ?? "Organiser page",
+        ticketsUrl: event.ticketsUrl,
       });
     }
     return cards;

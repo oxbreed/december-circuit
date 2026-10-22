@@ -48,6 +48,19 @@ function EventCard({ event, index }: { event: CircuitEvent; index: number }) {
             </span>
           </a>
         ) : null}
+        {event.ticketsUrl ? (
+          <a
+            href={event.ticketsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center justify-between gap-3 text-sm text-brass"
+          >
+            <span className="underline decoration-gold/50 underline-offset-4">Tickets</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
+              →
+            </span>
+          </a>
+        ) : null}
       </div>
     </article>
   );
