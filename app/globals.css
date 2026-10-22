@@ -85,6 +85,15 @@ body::before {
   color: #fffaf4;
 }
 
+.chip-row {
+  scrollbar-width: none;
+}
+
+.chip-row::-webkit-scrollbar {
+  display: none;
+  height: 0;
+}
+
 .ledger-input {
   width: 100%;
   min-width: 0;

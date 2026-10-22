@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CircuitEvent } from "../events";
 import type { Place } from "../places";
 import { disclaimer } from "../brand";
@@ -32,6 +32,47 @@ function matchesText(haystack: string, needle: string) {
   const folded = fold(haystack);
   const words = fold(needle).split(/\s+/).filter(Boolean);
   return words.every((word) => folded.includes(word));
+}
+
+function fitChipRow(row: HTMLDivElement) {
+  const narrow = window.matchMedia("(max-width: 639px)").matches;
+  if (!narrow) {
+    row.style.width = "";
+    row.style.paddingRight = "";
+    return;
+  }
+
+  const buttons = [...row.querySelectorAll<HTMLButtonElement>("button")];
+  if (buttons.length === 0 || buttons.some((button) => button.offsetWidth === 0)) return;
+
+  const style = getComputedStyle(row);
+  const gap = Number.parseFloat(style.columnGap) || 0;
+  const padLeft = Number.parseFloat(style.paddingLeft) || 0;
+  const section = row.closest("section");
+  const outerLimit = section?.clientWidth ?? row.parentElement?.clientWidth ?? 0;
+  const innerLimit = outerLimit - padLeft;
+  if (innerLimit <= 0) return;
+
+  let used = 0;
+  let count = 0;
+  for (const button of buttons) {
+    const width = button.getBoundingClientRect().width;
+    const next = count === 0 ? width : used + gap + width;
+    if (count > 0 && next > innerLimit + 0.5) break;
+    used = next;
+    count += 1;
+  }
+
+  if (count === 0) {
+    row.style.width = "";
+    row.style.paddingRight = "";
+    return;
+  }
+
+  // Trailing padding would reveal the next chip, so the visible edge ends on a chip.
+  row.style.paddingRight = "0px";
+  const nextWidth = `${padLeft + used}px`;
+  if (row.style.width !== nextWidth) row.style.width = nextWidth;
 }
 
 function ActivityCard({ activity }: { activity: Activity }) {
@@ -88,6 +129,7 @@ export function GuideSearch() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [city, setCity] = useState<CityEntry | null>(null);
+  const chipRowRef = useRef<HTMLDivElement>(null);
 
   const placeRecords = places.status === "ready" ? places.data : [];
   const eventRecords = events.status === "ready" ? events.data : [];
@@ -150,6 +192,25 @@ export function GuideSearch() {
     return cards;
   }, [filtering, placeRecords, eventRecords, category, city, needle]);
 
+  useEffect(() => {
+    const row = chipRowRef.current;
+    if (!row) return;
+    const fit = () => fitChipRow(row);
+    fit();
+    const frame = window.requestAnimationFrame(fit);
+    const observer = new ResizeObserver(fit);
+    const section = row.closest("section");
+    if (section) observer.observe(section);
+    window.addEventListener("resize", fit);
+    const fontsReady = document.fonts?.ready.then(fit);
+    return () => {
+      observer.disconnect();
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", fit);
+      void fontsReady;
+    };
+  }, [categories]);
+
   function clearFilters() {
     setQuery("");
     setCategory("");
@@ -158,7 +219,7 @@ export function GuideSearch() {
 
   return (
     <section className="overflow-x-clip px-4 pb-6 pt-[4.5rem] sm:px-6 lg:px-8 lg:pt-[8.25rem]">
-      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(16rem,0.7fr)] lg:items-end">
+      <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(16rem,0.7fr)] lg:items-end lg:gap-8">
         <div className="min-w-0">
           <p className="text-[11px] uppercase tracking-[0.32em] text-lagoon">Things to do</p>
           <h1 className="mt-2 font-display text-[2.7rem] leading-[0.9] tracking-tight text-ink sm:text-6xl">
@@ -197,15 +258,16 @@ export function GuideSearch() {
             </button>
           </form>
           <div
+            ref={chipRowRef}
             role="radiogroup"
             aria-label="Category"
-            className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
+            className="chip-row -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
           >
             <button
               type="button"
               role="radio"
               aria-checked={category === ""}
-              className="chip"
+              className="chip shrink-0"
               onClick={() => setCategory("")}
             >
               All categories
@@ -216,7 +278,7 @@ export function GuideSearch() {
                 type="button"
                 role="radio"
                 aria-checked={category === name}
-                className="chip"
+                className="chip shrink-0"
                 onClick={() => setCategory(name)}
               >
                 {name}
@@ -228,7 +290,7 @@ export function GuideSearch() {
         <LandmarkFrame />
       </div>
 
-      <div id="results" className="mx-auto mt-8 max-w-6xl scroll-mt-36">
+      <div id="results" className="mx-auto mt-4 max-w-6xl scroll-mt-36 lg:mt-8">
         {places.status === "loading" || events.status === "loading" ? (
           <LoadingLines label="Loading places and events" />
         ) : null}

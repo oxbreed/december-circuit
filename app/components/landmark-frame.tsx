@@ -41,13 +41,13 @@ export function LandmarkFrame() {
             key={slide.src}
             src={slide.src}
             alt={`${slide.name}, ${slide.city}`}
-            className={`h-52 w-full object-cover ${reduceMotion ? "" : "landmark-fade"}`}
+            className={`h-36 w-full object-cover lg:h-52 ${reduceMotion ? "" : "landmark-fade"}`}
           />
         </div>
       </div>
       <figcaption
         aria-live={reduceMotion ? "off" : "polite"}
-        className="mt-3 flex items-baseline justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-muted"
+        className="mt-1.5 flex items-baseline justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-muted lg:mt-3"
       >
         <span>{slide.name}</span>
         <span className="shrink-0 text-gold">{slide.city}</span>
