@@ -107,9 +107,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               dirtydecember<span className="text-oxide">.info</span>
             </p>
             <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
-            <p className="mt-4 font-sans text-[11px] uppercase tracking-[0.18em] text-ink">
-              Oxbreed Management
-            </p>
+            <p className="mt-4 font-sans text-sm text-ink">Powered by Oxbreed Management.</p>
           </div>
           <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-muted">
             Checked 21 October 2026
