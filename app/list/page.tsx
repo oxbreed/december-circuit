@@ -1,10 +1,11 @@
 import { EventSubmission } from "../components/event-submission";
+import { ProductAd } from "../components/product-ad";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
   title: "List an event or place an ad",
   description:
-    "Email an event to be checked, or ask about a labeled placement. This site does not take payment.",
+    "Email an event or a product to be checked, or ask about a labeled placement. This site does not take payment.",
   path: "/list",
 });
 
@@ -40,6 +41,18 @@ export default function ListPage() {
         >
           Email about a placement
         </a>
+      </section>
+
+      <section id="product-ad" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
+        <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">
+          Product ad
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+          The placement is labeled, and this site does not take payment. The
+          product stays off the site until it is checked. The button opens an
+          email to partners@dirtydecember.info.
+        </p>
+        <ProductAd />
       </section>
     </main>
   );
