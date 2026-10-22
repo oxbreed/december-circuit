@@ -161,6 +161,7 @@ body::before {
 
   .news-ticker {
     max-width: 100%;
+    max-height: 3rem;
     overflow: hidden;
   }
 
@@ -264,7 +265,28 @@ body::before {
   cursor: pointer;
 }
 
+.news-ticker {
+  max-width: 100%;
+  max-height: 3rem;
+  overflow: hidden;
+}
+
+.news-ticker-window {
+  max-width: 100%;
+  overflow: hidden;
+  scrollbar-width: none;
+}
+
+.news-ticker-window::-webkit-scrollbar {
+  display: none;
+  height: 0;
+}
+
 .news-ticker-track {
+  display: flex;
+  flex-flow: row nowrap;
+  width: max-content;
+  min-width: max-content;
   animation: news-ticker linear infinite;
 }
 
@@ -298,8 +320,14 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .news-ticker-track {
     animation: none;
-    width: auto;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    width: max-content;
+    min-width: max-content;
+  }
+
+  .news-ticker-window {
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .landmark-fade {

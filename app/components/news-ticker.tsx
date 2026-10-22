@@ -17,7 +17,7 @@ function ItemLink({ item }: { item: TickerItem }) {
       href={item.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-baseline gap-3 whitespace-nowrap px-4"
+      className="inline-flex shrink-0 items-baseline gap-3 whitespace-nowrap px-4"
     >
       <span className="text-[10px] uppercase tracking-[0.18em] text-oxide">{item.source}</span>
       <span className="text-sm text-ink">{item.headline}</span>
@@ -69,24 +69,26 @@ export function NewsTicker() {
       className="news-ticker border-y border-gold/40 bg-[#efe4d0]"
       aria-label="Events on file and entertainment headlines"
     >
-      {payload === null && !failed ? (
-        <p className="px-4 py-2 text-xs uppercase tracking-[0.16em] text-brass">Loading news</p>
-      ) : null}
-      {newsMissing ? (
-        <p className="px-4 py-2 text-xs text-muted">News feeds did not return any items.</p>
-      ) : null}
-      {loop.length > 0 ? (
-        <div className="overflow-hidden">
-          <div
-            className="news-ticker-track flex w-max items-center py-2"
-            style={{ animationDuration: `${seconds}s` }}
-          >
-            {loop.map((item, index) => (
-              <ItemLink key={`${item.kind}-${item.link}-${index}`} item={item} />
-            ))}
-          </div>
+      <div className="news-ticker-window">
+        <div
+          className="news-ticker-track flex w-max flex-nowrap items-center py-2"
+          style={{ animationDuration: `${seconds}s` }}
+        >
+          {payload === null && !failed ? (
+            <span className="shrink-0 whitespace-nowrap px-4 text-xs uppercase tracking-[0.16em] text-brass">
+              Loading news
+            </span>
+          ) : null}
+          {newsMissing ? (
+            <span className="shrink-0 whitespace-nowrap px-4 text-xs text-muted">
+              News feeds did not return any items.
+            </span>
+          ) : null}
+          {loop.map((item, index) => (
+            <ItemLink key={`${item.kind}-${item.link}-${index}`} item={item} />
+          ))}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }

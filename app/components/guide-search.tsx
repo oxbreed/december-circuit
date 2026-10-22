@@ -130,6 +130,7 @@ export function GuideSearch() {
   const [category, setCategory] = useState("");
   const [city, setCity] = useState<CityEntry | null>(null);
   const chipRowRef = useRef<HTMLDivElement>(null);
+  const cityRowRef = useRef<HTMLDivElement>(null);
 
   const placeRecords = places.status === "ready" ? places.data : [];
   const eventRecords = events.status === "ready" ? events.data : [];
@@ -193,13 +194,17 @@ export function GuideSearch() {
   }, [filtering, placeRecords, eventRecords, category, city, needle]);
 
   useEffect(() => {
-    const row = chipRowRef.current;
-    if (!row) return;
-    const fit = () => fitChipRow(row);
+    const rows = [chipRowRef.current, cityRowRef.current].filter(
+      (row): row is HTMLDivElement => row !== null,
+    );
+    if (rows.length === 0) return;
+    const fit = () => {
+      for (const row of rows) fitChipRow(row);
+    };
     fit();
     const frame = window.requestAnimationFrame(fit);
     const observer = new ResizeObserver(fit);
-    const section = row.closest("section");
+    const section = rows[0].closest("section");
     if (section) observer.observe(section);
     window.addEventListener("resize", fit);
     const fontsReady = document.fonts?.ready.then(fit);
@@ -209,7 +214,7 @@ export function GuideSearch() {
       window.removeEventListener("resize", fit);
       void fontsReady;
     };
-  }, [categories]);
+  }, [categories, cities]);
 
   function clearFilters() {
     setQuery("");
@@ -290,7 +295,7 @@ export function GuideSearch() {
         <LandmarkFrame />
       </div>
 
-      <div id="results" className="mx-auto mt-4 max-w-6xl scroll-mt-36 lg:mt-8">
+      <div id="results" className="mx-auto mt-3 max-w-6xl scroll-mt-36 lg:mt-8">
         {places.status === "loading" || events.status === "loading" ? (
           <LoadingLines label="Loading places and events" />
         ) : null}
@@ -338,11 +343,11 @@ export function GuideSearch() {
         ) : null}
       </div>
 
-      <div className="mx-auto mt-10 min-w-0 max-w-6xl">
+      <div className="mx-auto mt-3 min-w-0 max-w-6xl lg:mt-10">
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Cities</p>
-            <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
+            <h2 className="mt-1 font-display text-xl leading-none tracking-tight sm:mt-3 sm:text-4xl md:text-5xl">
               Where places are on file
             </h2>
           </div>
@@ -350,14 +355,17 @@ export function GuideSearch() {
             All places →
           </a>
         </div>
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
+        <p className="mt-4 hidden max-w-2xl text-sm leading-7 text-muted sm:block">
           Each city narrows the matches to organiser pages already filed there.
         </p>
         {places.status === "ready" && cities.length === 0 ? (
           <EmptyNote>No places are on file.</EmptyNote>
         ) : null}
         {cities.length > 0 ? (
-          <div className="-mx-4 mt-5 flex gap-3 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0">
+          <div
+            ref={cityRowRef}
+            className="chip-row -mx-4 mt-2 flex gap-3 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0 lg:mt-5"
+          >
             {cities.map((entry) => {
               const selected = city?.city === entry.city && city.country === entry.country;
               return (
@@ -369,12 +377,12 @@ export function GuideSearch() {
                     setCity(selected ? null : entry);
                     document.getElementById("results")?.scrollIntoView({ block: "start" });
                   }}
-                  className={`w-40 shrink-0 border px-3 py-3 text-left ${
+                  className={`w-40 shrink-0 border px-3 py-2 text-left lg:py-3 ${
                     selected ? "border-lagoon bg-chart" : "border-ink/15 bg-chart"
                   }`}
                 >
                   <p className="text-[10px] uppercase tracking-[0.16em] text-gold">{entry.country}</p>
-                  <p className="mt-2 font-display text-2xl leading-none">{entry.city}</p>
+                  <p className="mt-1 font-display text-2xl leading-none lg:mt-2">{entry.city}</p>
                   <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-muted">
                     {entry.count} {entry.count === 1 ? "place" : "places"}
                   </p>
