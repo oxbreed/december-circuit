@@ -68,13 +68,13 @@ export function HomeBands() {
         ) : null}
         {pinRecords.length > 0 ? (
           <div
-            className="relative mt-6 h-[22rem] overflow-hidden border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.2)] md:h-[26rem]"
+            className="map-frame mt-6 h-[22rem] border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.2)] md:h-[26rem]"
             role="region"
             aria-label="OpenStreetMap of sourced pins"
           >
             <CircuitMap pins={pinRecords} activeId={activeId} onSelect={setActiveId} />
             {active ? (
-              <div className="absolute top-3 left-3 z-[500] max-w-[calc(100%-4.5rem)] border border-ink/15 bg-paper px-3 py-3 md:max-w-sm">
+              <div className="absolute top-3 left-3 z-10 max-w-[calc(100%-4.5rem)] border border-ink/15 bg-paper px-3 py-3 md:max-w-sm">
                 {active.url ? (
                   <a
                     href={active.url}

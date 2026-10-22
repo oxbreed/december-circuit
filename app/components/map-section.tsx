@@ -103,7 +103,7 @@ export function MapSection() {
           <div className="mt-4 grid items-start gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(17rem,0.8fr)]">
             <div>
               <div
-                className="relative h-[52vh] min-h-[280px] overflow-hidden border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.18)] md:h-[min(68vh,640px)]"
+                className="map-frame h-[52vh] min-h-[280px] border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.18)] md:h-[min(68vh,640px)]"
                 role="region"
                 aria-label="OpenStreetMap of sourced pins"
               >
@@ -119,7 +119,7 @@ export function MapSection() {
                   </div>
                 )}
                 {active ? (
-                  <div className="absolute top-3 left-3 z-[500] max-w-[calc(100%-4.5rem)] border border-ink bg-paper px-3 py-3 md:max-w-sm">
+                  <div className="absolute top-3 left-3 z-10 max-w-[calc(100%-4.5rem)] border border-ink bg-paper px-3 py-3 md:max-w-sm">
                     {active.url ? (
                       <a
                         href={active.url}
