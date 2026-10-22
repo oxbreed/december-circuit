@@ -40,7 +40,7 @@ export function LandmarkFrame() {
             key={slide.src}
             src={slide.src}
             alt={`${slide.name}, ${slide.city}${slide.credit ? `. ${slide.credit}` : ""}`}
-            className={`h-20 w-full object-cover lg:h-52 ${reduceMotion ? "" : "landmark-fade"}`}
+            className={`h-16 w-full object-cover lg:h-52 ${reduceMotion ? "" : "landmark-fade"}`}
           />
         </div>
       </div>
