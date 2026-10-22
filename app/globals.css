@@ -140,10 +140,27 @@ body::before {
   }
 }
 
+.landmark-fade {
+  animation: landmark-fade 900ms ease;
+}
+
+@keyframes landmark-fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .news-ticker-track {
     animation: none;
     width: auto;
     flex-wrap: wrap;
+  }
+
+  .landmark-fade {
+    animation: none;
   }
 }

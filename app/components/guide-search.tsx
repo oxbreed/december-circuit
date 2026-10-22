@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { CircuitEvent } from "../events";
 import type { Place } from "../places";
 import { disclaimer } from "../brand";
+import { LandmarkFrame } from "./landmark-frame";
 import { EmptyNote, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
 
@@ -225,17 +226,7 @@ export function GuideSearch() {
           </div>
           <p className="mt-4 max-w-xl text-[11px] leading-5 text-muted">{disclaimer}</p>
         </div>
-        <figure className="hidden lg:block">
-          <div className="bg-chart p-1.5 shadow-[8px_8px_0_0_#b8432f] ring-1 ring-ink">
-            <div className="ring-1 ring-gold">
-              <img
-                src="/hero-lagos-night.jpg"
-                alt="Illuminated bridge and city skyline at night"
-                className="h-52 w-full object-cover object-[62%_center]"
-              />
-            </div>
-          </div>
-        </figure>
+        <LandmarkFrame />
       </div>
 
       <div id="results" className="mx-auto mt-8 max-w-6xl scroll-mt-36">
