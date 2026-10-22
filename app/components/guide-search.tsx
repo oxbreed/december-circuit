@@ -54,7 +54,6 @@ function ActivityCard({ activity }: { activity: Activity }) {
       </h3>
       <p className="mt-2 text-sm text-muted">{activity.cityLine}</p>
       {activity.when ? <p className="mt-1 text-sm text-ink">{activity.when}</p> : null}
-      <p className="mt-3 text-sm text-muted">No traveller reviews on file</p>
       {activity.url ? (
         <a
           href={activity.url}
