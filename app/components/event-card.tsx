@@ -1,5 +1,7 @@
 import type { CircuitEvent } from "../events";
 import { dateFace, presentEvent } from "../event-view";
+import { eventTripId } from "../trip";
+import { SaveTripButton } from "./save-trip-button";
 
 export function DateBlock({ when }: { when: string }) {
   const face = dateFace(when);
@@ -136,8 +138,9 @@ export function EventCard({
           ) : null}
         </div>
       </div>
-      <div className="border-t border-ink/10 px-4 py-4 sm:px-5">
+      <div className="flex flex-col items-start gap-4 border-t border-ink/10 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
         <PrimaryAction event={event} />
+        <SaveTripButton kind="event" id={eventTripId(event)} />
       </div>
     </article>
   );

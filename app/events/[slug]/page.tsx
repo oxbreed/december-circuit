@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { disclaimer } from "../../brand";
 import { JsonLd } from "../../components/json-ld";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
+import { SaveTripButton } from "../../components/save-trip-button";
 import { eventSlug, presentEvent } from "../../event-view";
 import { events } from "../../events";
+import { eventTripId } from "../../trip";
 import { eventJsonLd } from "../../jsonld";
 import { pageMetadata } from "../../site";
 
@@ -64,8 +66,9 @@ export default async function EventPage({
         </div>
       </div>
       <p className="mt-8 text-base leading-8 text-ink">{event.summary}</p>
-      <div className="mt-8">
+      <div className="mt-8 flex flex-col items-start gap-4">
         <PrimaryAction event={event} />
+        <SaveTripButton kind="event" id={eventTripId(event)} />
       </div>
       <p className="mt-8 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
     </main>

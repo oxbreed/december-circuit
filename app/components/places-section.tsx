@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Place } from "../places";
+import { placeTripId } from "../trip";
+import { SaveTripButton } from "./save-trip-button";
 import { SectionIntro, sectionClass } from "./section-intro";
 import { EmptyNote, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
@@ -251,9 +253,12 @@ export function PlacesSection() {
                                   Organiser page — leaves this site
                                 </span>
                               </a>
-                              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-brass">
-                                {place.category}
-                              </span>
+                              <div className="flex flex-col items-start gap-3 sm:items-end">
+                                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-brass">
+                                  {place.category}
+                                </span>
+                                <SaveTripButton kind="place" id={placeTripId(place)} />
+                              </div>
                             </li>
                           ))}
                         </ul>

@@ -1,7 +1,9 @@
 import { EventCard } from "./event-card";
+import { SaveTripButton } from "./save-trip-button";
 import { events, type CircuitEvent } from "../events";
 import { flightSearches, type FlightSearch } from "../flights";
 import { places, type Place } from "../places";
+import { placeTripId } from "../trip";
 
 const stayCategories = ["Hotels", "Short-stay", "Practical stops", "Car rental"] as const;
 
@@ -196,6 +198,9 @@ export function StayGuide() {
                           {place.city}, {place.country}
                         </p>
                         <RecordLink href={place.url} label="Organiser page" />
+                        <div className="mt-3">
+                          <SaveTripButton kind="place" id={placeTripId(place)} />
+                        </div>
                       </article>
                     ))}
                   </div>
