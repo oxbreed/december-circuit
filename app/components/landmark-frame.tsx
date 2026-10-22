@@ -54,7 +54,7 @@ export function LandmarkFrame() {
             href={slide.creditUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-0.5 block font-sans text-[10px] leading-4 text-muted underline decoration-ink/20 underline-offset-2 hover:text-oxide"
+            className="mt-0.5 block break-words font-sans text-[10px] leading-4 text-muted underline decoration-ink/20 underline-offset-2 hover:text-oxide"
           >
             {slide.credit}
           </a>

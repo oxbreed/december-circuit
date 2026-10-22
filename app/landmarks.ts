@@ -20,6 +20,31 @@ export const landmarks: FramePhoto[] = [
     src: "/landmarks/lekki-ikoyi-link-bridge.jpg",
   },
   {
+    name: "Detty December Fest",
+    city: "Lagos",
+    src: "/landmarks/detty-december-fest-2026.jpg",
+    credit:
+      "Image on the organiser's page. https://dettydecfest.com/wizkid-opens-detty-december-fest-at-the-grand-opening-concert-day-1-of-13/",
+    creditUrl:
+      "https://dettydecfest.com/wizkid-opens-detty-december-fest-at-the-grand-opening-concert-day-1-of-13/",
+  },
+  {
+    name: "Davido, Oriade residency",
+    city: "Lagos",
+    src: "/landmarks/oriade-residency.jpg",
+    credit: "Image on the organiser's page. https://www.dmwhq.com/residency",
+    creditUrl: "https://www.dmwhq.com/residency",
+  },
+  {
+    name: "Carnival Calabar",
+    city: "Calabar",
+    src: "/landmarks/carnival-calabar-2026.jpg",
+    credit:
+      "Photo: Iwai-Dialax, CC BY 4.0, Wikimedia Commons. https://commons.wikimedia.org/wiki/File:Unveiling_Carnival_Calabar_2026-13.jpg",
+    creditUrl:
+      "https://commons.wikimedia.org/wiki/File:Unveiling_Carnival_Calabar_2026-13.jpg",
+  },
+  {
     name: "Nightlife in Agege",
     city: "Lagos",
     src: "/landmarks/agege-night-market.jpg",
