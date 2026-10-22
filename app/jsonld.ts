@@ -18,6 +18,8 @@ const monthNumbers: Record<string, string> = {
   december: "12",
 };
 
+const seasonYear = "2026";
+
 function isoDate(day: string, month: string, year: string) {
   const monthNumber = monthNumbers[month.toLowerCase()];
   if (!monthNumber) return `${day} ${month} ${year}`;
@@ -38,9 +40,15 @@ export function datesOnFile(when: string): { startDate: string; endDate?: string
   const range = when.match(/^(\d{1,2})-(\d{1,2}) ([A-Za-z]+)$/);
   if (range) {
     return {
-      startDate: `${range[1]} ${range[3]}`,
-      endDate: `${range[2]} ${range[3]}`,
+      startDate: isoDate(range[1], range[3], seasonYear),
+      endDate: isoDate(range[2], range[3], seasonYear),
     };
+  }
+
+  const day = when.match(/^(\d{1,2}) ([A-Za-z]+)$/);
+  if (day) {
+    const startDate = isoDate(day[1], day[2], seasonYear);
+    return { startDate, endDate: startDate };
   }
 
   return { startDate: when };
@@ -78,16 +86,23 @@ export function eventJsonLd(event: CircuitEvent) {
   };
   if (view.venue) location.name = view.venue;
 
+  const pageUrl = absoluteUrl(view.href);
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Event",
-    "@id": absoluteUrl(view.href),
+    "@id": pageUrl,
     name: view.name,
     startDate: dates.startDate,
+    url: pageUrl,
     location,
   };
   if (dates.endDate) data.endDate = dates.endDate;
-  const url = event.ticketsUrl ?? event.url;
-  if (url) data.url = url;
+  if (event.url) {
+    data.organizer = {
+      "@type": "Organization",
+      url: event.url,
+    };
+  }
+  if (event.ticketsUrl) data.sameAs = event.ticketsUrl;
   return data;
 }
