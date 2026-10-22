@@ -105,7 +105,13 @@ export function PrimaryAction({ event }: { event: CircuitEvent }) {
   );
 }
 
-export function EventCard({ event }: { event: CircuitEvent }) {
+export function EventCard({
+  event,
+  as: Title = "h2",
+}: {
+  event: CircuitEvent;
+  as?: "h2" | "h3" | "h4";
+}) {
   const view = presentEvent(event);
 
   return (
@@ -116,11 +122,11 @@ export function EventCard({ event }: { event: CircuitEvent }) {
           <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
             {view.category}
           </p>
-          <h2 className="mt-2 font-display text-3xl leading-none tracking-tight sm:text-4xl">
+          <Title className="mt-2 font-display text-3xl leading-none tracking-tight sm:text-4xl">
             <a href={view.href} className="hover:text-oxide">
               {view.name}
             </a>
-          </h2>
+          </Title>
           <p className="mt-3 text-sm text-ink">{view.region}</p>
           <p className="mt-1 text-sm text-muted">
             {view.venue ?? "Venue not on file"}

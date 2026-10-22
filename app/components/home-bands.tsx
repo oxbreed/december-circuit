@@ -30,7 +30,7 @@ function BandHeading({
   action: string;
 }) {
   return (
-    <div className="flex items-end justify-between gap-4">
+    <div className="flex flex-wrap items-end justify-between gap-4">
       <div>
         <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">{kicker}</p>
         <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
@@ -53,11 +53,12 @@ export function HomeBands() {
 
   return (
     <>
-      <section className="mx-auto w-full max-w-6xl px-5 py-8 md:px-8 md:py-10">
+      <section id="stay-map" className="mx-auto w-full max-w-6xl scroll-mt-36 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <BandHeading kicker="Map" title="Sourced pins" href="/map" action="Open the map →" />
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Only places with a sourced coordinate. Directions open an external map
-          from that point.
+          Pins appear only where a coordinate is already on file. The map does
+          not add a route or a fare. Directions open an external map from that
+          point.
         </p>
         {pins.status === "loading" ? <LoadingLines label="Loading the map" /> : null}
         {pins.status === "error" ? (
