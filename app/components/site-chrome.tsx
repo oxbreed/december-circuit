@@ -6,21 +6,25 @@ import { usePathname } from "next/navigation";
 import { disclaimer, nav } from "../brand";
 import { NewsTicker } from "./news-ticker";
 
-function PalmMark() {
+function PlaneMark() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className="h-4 w-4 text-lagoon"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.4"
-    >
-      <path d="M12 21V10" />
-      <path d="M12 11c-2-4-6-5-8-4 2 2 4 3 8 4Z" />
-      <path d="M12 10c2-4 6-6 8-5-2 2-4 4-8 5Z" />
-      <path d="M12 12c-3-2-5-1-7 1 2 1 4 1 7-1Z" />
-      <path d="M12 12c3-2 6-1 8 1-3 1-5 1-8-1Z" />
+    <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4">
+      <rect width="32" height="32" rx="6" fill="#f4eadc" />
+      <rect
+        x="1.5"
+        y="1.5"
+        width="29"
+        height="29"
+        rx="5"
+        fill="none"
+        stroke="#8a6232"
+        strokeWidth="2"
+      />
+      <path
+        fill="#1a1410"
+        d="M16 3.5 19.2 11.2 29 15.2 29 18.2 19.2 16.2 18.2 23.5 23.5 26.5 23.5 28.5 16 26.2 8.5 28.5 8.5 26.5 13.8 23.5 12.8 16.2 3 18.2 3 15.2 12.8 11.2Z"
+      />
+      <path fill="#b8432f" d="M8.5 26.2 13.6 23.6 16 25.4 18.4 23.6 23.5 26.2 23.5 28.2 16 26 8.5 28.2Z" />
     </svg>
   );
 }
@@ -44,7 +48,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/10 bg-paper/92 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 text-ink">
-            <PalmMark />
+            <PlaneMark />
             <span className="font-display text-[1.05rem] leading-none tracking-tight">
               dirtydecember
               <span className="text-gold">.info</span>
