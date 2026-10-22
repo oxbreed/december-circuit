@@ -1,4 +1,5 @@
 import { EventSubmission } from "../components/event-submission";
+import { PartnerOffer } from "../components/partner-offer";
 import { ProductAd } from "../components/product-ad";
 import { pageMetadata } from "../site";
 
@@ -53,6 +54,30 @@ export default function ListPage() {
           email to partners@dirtydecember.info.
         </p>
         <ProductAd />
+      </section>
+
+      <section id="transport-partnership" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
+        <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">
+          Transportation partnership
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+          The placement is labeled, and this site does not take payment. The
+          offer stays off the site until it is checked. The button opens an
+          email to partners@dirtydecember.info.
+        </p>
+        <PartnerOffer subject="Transportation partnership" button="Email about transportation" />
+      </section>
+
+      <section id="booking-partnership" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
+        <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">
+          Booking partnership
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+          The placement is labeled, and this site does not take payment. The
+          offer stays off the site until it is checked. The button opens an
+          email to partners@dirtydecember.info.
+        </p>
+        <PartnerOffer subject="Booking partnership" button="Email about booking" />
       </section>
     </main>
   );

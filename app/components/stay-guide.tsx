@@ -35,6 +35,26 @@ function groupFlights(rows: FlightSearch[]) {
   return groups;
 }
 
+type WayItem = {
+  key: string;
+  city: string;
+  country: string;
+  name: string;
+  href: string;
+  label: string;
+};
+
+function stayRank(country: string, city: string) {
+  if (country === "Nigeria" && city === "Lagos") return 0;
+  if (country === "Nigeria" && city === "Calabar") return 1;
+  if (country === "Ghana" && city === "Accra") return 2;
+  return 3;
+}
+
+function isAirport(place: Place) {
+  return place.category === "Practical stops" && /airport/i.test(place.name);
+}
+
 function groupPlaces(rows: Place[]) {
   const groups: { category: string; rows: Place[] }[] = [];
   for (const category of stayCategories) {
@@ -42,6 +62,69 @@ function groupPlaces(rows: Place[]) {
     if (matches.length > 0) groups.push({ category, rows: matches });
   }
   return groups;
+}
+
+function WayThrough({
+  id,
+  title,
+  copy,
+  items,
+}: {
+  id: string;
+  title: string;
+  copy: string;
+  items: WayItem[];
+}) {
+  const groups: { key: string; label: string; rows: WayItem[] }[] = [];
+  const ordered = [...items].sort((a, b) => {
+    const rank = stayRank(a.country, a.city) - stayRank(b.country, b.city);
+    if (rank !== 0) return rank;
+    const place = `${a.country}${a.city}`.localeCompare(`${b.country}${b.city}`);
+    if (place !== 0) return place;
+    return a.name.localeCompare(b.name);
+  });
+  for (const item of ordered) {
+    const key = `${item.country}-${item.city}`;
+    let group = groups.find((entry) => entry.key === key);
+    if (!group) {
+      group = { key, label: `${item.city}, ${item.country}`, rows: [] };
+      groups.push(group);
+    }
+    group.rows.push(item);
+  }
+
+  return (
+    <div id={id} className="scroll-mt-36 mt-14">
+      <h3 className="font-display text-3xl leading-none tracking-tight md:text-4xl">{title}</h3>
+      <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">{copy}</p>
+      {groups.length === 0 ? (
+        <p className="mt-6 text-sm leading-7 text-muted">No links are on file.</p>
+      ) : (
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          {groups.map((group) => (
+            <div key={group.key} className="min-w-0 border border-ink/15 bg-chart p-4">
+              <h4 className="font-display text-2xl leading-tight tracking-tight">{group.label}</h4>
+              <ul className="mt-2">
+                {group.rows.map((item) => (
+                  <li key={item.key} className="border-t border-ink/10 py-3">
+                    <p className="text-sm text-ink">{item.name}</p>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 function RecordLink({ href, label }: { href?: string; label: string }) {
@@ -66,6 +149,39 @@ export function StayGuide() {
   const flightGroups = groupFlights(flights);
   const stayPlaces = places.filter(helpsAStay);
   const placeGroups = groupPlaces(stayPlaces);
+  const transport: WayItem[] = stayPlaces
+    .filter((place) => place.category === "Car rental" || isAirport(place))
+    .filter((place) => place.url)
+    .map((place) => ({
+      key: `${place.country}-${place.city}-${place.name}`,
+      city: place.city,
+      country: place.country,
+      name: place.name,
+      href: place.url,
+      label: place.category === "Car rental" ? "Organiser page" : "Airport page",
+    }));
+  const bookingPlaces: WayItem[] = stayPlaces
+    .filter((place) => place.category === "Hotels" || place.category === "Short-stay")
+    .filter((place) => place.url)
+    .map((place) => ({
+      key: `${place.country}-${place.city}-${place.name}`,
+      city: place.city,
+      country: place.country,
+      name: place.name,
+      href: place.url,
+      label: "Organiser page",
+    }));
+  const bookingEvents: WayItem[] = events
+    .filter((event) => event.ticketsUrl || event.url)
+    .map((event) => ({
+      key: `${event.region}-${event.when}`,
+      city: event.region,
+      country: event.region === "Ghana" ? "Ghana" : "Nigeria",
+      name: event.summary.split(". ")[0]?.replace(/\.$/, "") ?? event.summary,
+      href: event.ticketsUrl ?? event.url ?? "",
+      label: event.ticketsUrl ? "Tickets" : (event.urlLabel ?? "Organiser page"),
+    }))
+    .filter((item) => item.href);
 
   return (
     <section id="stay" className="scroll-mt-36 border-y border-ink/10 bg-paper-deep">
@@ -77,8 +193,9 @@ export function StayGuide() {
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
           You are flying in for the season. This guide sorts the records already
           filed: confirmed events, flight searches, places that help a stay, and
-          the map. A button opens only a link stored on that record. This site
-          does not take payment.
+          the map, plus transportation and booking links already stored. A
+          button opens only a link stored on that record. This site does not
+          take payment.
         </p>
         <nav aria-label="Stay guide" className="mt-6 flex flex-wrap gap-2">
           <a href="#stay-events" className="chip">
@@ -86,6 +203,12 @@ export function StayGuide() {
           </a>
           <a href="#stay-flights" className="chip">
             Flight searches
+          </a>
+          <a href="#stay-transport" className="chip">
+            Transportation
+          </a>
+          <a href="#stay-booking" className="chip">
+            Booking
           </a>
           <a href="#stay-places" className="chip">
             Places for the stay
@@ -161,6 +284,19 @@ export function StayGuide() {
             </div>
           )}
         </div>
+
+        <WayThrough
+          id="stay-transport"
+          title="Transportation"
+          copy="Car rental and airport pages already filed for Lagos, Calabar, and Ghana. Flight searches already filed are above. A link is only the one stored on that record. This is not a fare. A city with no stored link is left off."
+          items={transport}
+        />
+        <WayThrough
+          id="stay-booking"
+          title="Booking"
+          copy="Hotel, short-stay, and ticket links already filed for Lagos, Calabar, and Ghana. This site does not take payment. A city with no stored link is left off."
+          items={[...bookingPlaces, ...bookingEvents]}
+        />
 
         <div id="stay-places" className="scroll-mt-36 mt-14">
           <div className="flex flex-wrap items-end justify-between gap-4">

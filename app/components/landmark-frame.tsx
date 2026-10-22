@@ -31,7 +31,6 @@ export function LandmarkFrame() {
   return (
     <figure
       className="min-w-0 max-w-full"
-      aria-label="Landmarks in cities on file"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -40,17 +39,26 @@ export function LandmarkFrame() {
           <img
             key={slide.src}
             src={slide.src}
-            alt={`${slide.name}, ${slide.city}`}
-            className={`h-24 w-full object-cover lg:h-52 ${reduceMotion ? "" : "landmark-fade"}`}
+            alt={`${slide.name}, ${slide.city}${slide.credit ? `. ${slide.credit}` : ""}`}
+            className={`h-20 w-full object-cover lg:h-52 ${reduceMotion ? "" : "landmark-fade"}`}
           />
         </div>
       </div>
-      <figcaption
-        aria-live={reduceMotion ? "off" : "polite"}
-        className="mt-1.5 flex items-baseline justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-muted lg:mt-3"
-      >
-        <span>{slide.name}</span>
-        <span className="shrink-0 text-gold">{slide.city}</span>
+      <figcaption aria-live={reduceMotion ? "off" : "polite"} className="mt-1.5 lg:mt-3">
+        <div className="flex items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+          <span className="min-w-0">{slide.name}</span>
+          <span className="shrink-0 text-gold">{slide.city}</span>
+        </div>
+        {slide.credit && slide.creditUrl ? (
+          <a
+            href={slide.creditUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-0.5 block font-sans text-[10px] leading-4 text-muted underline decoration-ink/20 underline-offset-2 hover:text-oxide"
+          >
+            {slide.credit}
+          </a>
+        ) : null}
       </figcaption>
     </figure>
   );
