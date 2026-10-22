@@ -70,13 +70,13 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               <span className="text-gold">.info</span>
             </span>
           </Link>
-          <nav aria-label="Pages" className="hidden items-center gap-6 lg:flex">
+          <nav aria-label="Pages" className="hidden items-center gap-4 lg:flex">
             {nav.map(([label, href]) => (
               <Link
                 key={href}
                 href={href}
                 aria-current={current(pathname, href) ? "page" : undefined}
-                className={`text-[11px] uppercase tracking-[0.22em] hover:text-oxide ${
+                className={`text-[11px] uppercase tracking-[0.16em] hover:text-oxide ${
                   current(pathname, href)
                     ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
                     : "text-ink/75"
@@ -87,7 +87,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <Link
-            href="/events"
+            href="/guide"
             className="hidden bg-oxide px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-chart lg:inline-flex"
           >
             Explore the guide
@@ -133,6 +133,14 @@ export function SiteChrome({ children }: { children: ReactNode }) {
                   List an event
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/sign-in"
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  Sign in
+                </Link>
+              </li>
             </ul>
           </div>
           <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-muted">
@@ -146,13 +154,13 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         className="fixed inset-x-0 bottom-0 z-40 max-w-full overflow-x-clip border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden"
       >
         <NewsTicker />
-        <nav aria-label="Mobile pages" className="grid grid-cols-6 px-1 py-2">
+        <nav aria-label="Mobile pages" className="grid grid-cols-7 px-1 py-2">
           {nav.map(([label, href]) => (
             <Link
               key={href}
               href={href}
               aria-current={current(pathname, href) ? "page" : undefined}
-              className={`min-w-0 px-0.5 py-1 text-center text-[9px] uppercase leading-tight tracking-[0.04em] ${
+              className={`min-w-0 px-0.5 py-1 text-center text-[8px] uppercase leading-tight tracking-[0.02em] ${
                 current(pathname, href) ? "text-oxide" : "text-ink/70"
               }`}
             >

@@ -9,12 +9,14 @@ const checked = "2026-10-21";
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     "/",
+    "/guide",
     "/events",
     "/places",
     "/flights",
     "/map",
     "/about",
     "/list",
+    "/sign-in",
     ...events.map((event) => `/events/${eventSlug(event)}`),
     ...citiesOnFile().map((city) => `/cities/${city.slug}`),
   ];

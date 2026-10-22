@@ -3,6 +3,7 @@ export const disclaimer =
 
 export const nav = [
   ["Home", "/"],
+  ["Guide", "/guide"],
   ["Events", "/events"],
   ["Places", "/places"],
   ["Flights", "/flights"],
