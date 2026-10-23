@@ -2,7 +2,10 @@
 -- The bucket row is the bucket itself. No submission rows and no sample images.
 
 alter table public.submissions
-  add column image_path text;
+  add column if not exists image_path text;
+
+alter table public.submissions
+  drop constraint if exists submissions_image_path_object;
 
 alter table public.submissions
   add constraint submissions_image_path_object
@@ -19,11 +22,13 @@ do $$
 declare
   cons name;
 begin
+  -- Postgres stores "kind in (...)" as "kind = ANY (ARRAY[...])".
   select c.conname into cons
   from pg_constraint c
   where c.conrelid = 'public.submissions'::regclass
     and c.contype = 'c'
-    and pg_get_constraintdef(c.oid) like '%kind in (%';
+    and pg_get_constraintdef(c.oid) like '%event%'
+    and pg_get_constraintdef(c.oid) not like '%public_link%';
   if cons is null then
     raise exception 'submissions kind check was not found';
   end if;
