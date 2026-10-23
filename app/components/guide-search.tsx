@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { CircuitEvent } from "../events";
 import type { Place } from "../places";
 import { disclaimer } from "../brand";
+import { presentEvent } from "../event-view";
 import { LandmarkFrame } from "./landmark-frame";
 import { EmptyNote, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
@@ -19,6 +20,8 @@ type Activity = {
   url?: string;
   linkLabel: string;
   ticketsUrl?: string;
+  pageHref?: string;
+  venue?: string | null;
 };
 
 function fold(value: string) {
@@ -80,7 +83,14 @@ function ActivityCard({ activity }: { activity: Activity }) {
     <article className="flex h-full flex-col border border-ink/15 bg-chart p-4 shadow-[4px_4px_0_0_rgba(184,67,47,0.12)]">
       <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">{activity.category}</p>
       <h3 className="mt-2 font-display text-2xl leading-tight tracking-tight">
-        {activity.url ? (
+        {activity.pageHref ? (
+          <a
+            href={activity.pageHref}
+            className="underline decoration-oxide/40 underline-offset-4"
+          >
+            {activity.name}
+          </a>
+        ) : activity.url ? (
           <a
             href={activity.url}
             target="_blank"
@@ -94,6 +104,9 @@ function ActivityCard({ activity }: { activity: Activity }) {
         )}
       </h3>
       <p className="mt-2 text-sm text-muted">{activity.cityLine}</p>
+      {activity.pageHref ? (
+        <p className="mt-1 text-sm text-muted">{activity.venue ?? "Venue not on file"}</p>
+      ) : null}
       {activity.when ? <p className="mt-1 text-sm text-ink">{activity.when}</p> : null}
       {activity.url ? (
         <a
@@ -179,15 +192,18 @@ export function GuideSearch() {
       if (city && fold(event.region) !== fold(city.city)) continue;
       const haystack = `${event.region} ${event.when} ${event.summary}`;
       if (needle && !matchesText(haystack, needle)) continue;
+      const view = presentEvent(event);
       cards.push({
         key: `event-${event.region}-${event.when}`,
-        name: event.summary,
-        cityLine: event.region,
-        category: "Event on file",
+        name: view.name,
+        cityLine: view.region,
+        category: view.category,
         when: event.when,
         url: event.url,
         linkLabel: event.urlLabel ?? "Organiser page",
         ticketsUrl: event.ticketsUrl,
+        pageHref: view.href,
+        venue: view.venue,
       });
     }
     return cards;
