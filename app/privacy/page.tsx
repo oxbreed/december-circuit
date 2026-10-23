@@ -58,7 +58,7 @@ export default function PrivacyPage() {
         </h2>
         <p>
           Sign-in collects the email address you type. Supabase sends the
-          sign-in link. When you open that link, Supabase sets a session cookie
+          sign-in link. When you open that link, Supabase sets a sign-in cookie
           in this browser so the site can tell that you are signed in. The admin
           page opens only when that signed-in email matches the admin address
           held on the server.
@@ -113,13 +113,13 @@ export default function PrivacyPage() {
         <p>
           There is no newsletter. There is no advertising cookie. There is no
           payment form. The site does not sell tickets, hold inventory, show
-          fares, or take card payments. The code does not include an analytics
+          fares, or take card payments. This site does not run an analytics
           script. A review has no rating.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Why</h2>
         <p>
-          The email and the session cookie are there so you can sign in and
+          The email and the sign-in cookie are there so you can sign in and
           write a review, and so the admin page can stay closed to everyone
           else. A submission is stored so a person can check it before anything
           from it is considered for the public records. The picture is stored so
@@ -149,14 +149,13 @@ export default function PrivacyPage() {
           How long it is kept
         </h2>
         <p>
-          The code does not delete a submission, a picture, or a review on a
-          timer. They stay until you ask for deletion or the operator removes
+          A submission, a picture, or a review is not deleted on a fixed
+          schedule. They stay until you ask for deletion or the operator removes
           them. A review is removed if the signed-in account it belongs to is
           deleted. A picture is not given a public address by the upload. My
           trip stays in this browser until you remove the item or clear the site
-          data for this browser. The sign-in cookie lasts for that session and
-          is cleared when you sign out. Mail stays in the Zoho mailbox until it
-          is deleted.
+          data for this browser. Signing out clears the sign-in cookie. Mail
+          stays in the Zoho mailbox until it is deleted.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -166,7 +165,8 @@ export default function PrivacyPage() {
           Email hello@dirtydecember.info from the address you used. Say whether
           you want a copy or deletion of the sign-in, the submission, the
           picture, or the review. The operator will use that address to find the
-          matching row.
+          matching row. If you are in the United Kingdom, you can also complain
+          to the Information Commissioner’s Office.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Children</h2>
