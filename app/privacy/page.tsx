@@ -18,8 +18,6 @@ export default function PrivacyPage() {
       </h1>
       <p className="mt-6 text-base leading-7 text-muted">{disclaimer}</p>
       <div className="mt-8 space-y-4 text-base leading-7 text-ink">
-        <p>This notice is dated 23 October 2026. It describes dirtydecember.info.</p>
-
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
           Who operates the site
         </h2>
@@ -98,7 +96,6 @@ export default function PrivacyPage() {
         <p>
           An enquiry from the footer, or from a mail button, is an email. The
           addresses are hello@dirtydecember.info and partners@dirtydecember.info.
-          The mail is Zoho Mail.
         </p>
         <p>
           The map asks your browser to load tiles from OpenStreetMap. A
@@ -111,10 +108,10 @@ export default function PrivacyPage() {
           What is not collected
         </h2>
         <p>
-          There is no newsletter. There is no advertising cookie. There is no
-          payment form. The site does not sell tickets, hold inventory, show
-          fares, or take card payments. This site does not run an analytics
-          script. A review has no rating.
+          There is no advertising cookie. This site does not run an analytics
+          script. A review has no rating. A newsletter, a blog, a fare, or a
+          payment is not offered on these pages today. If one is added, this
+          notice will be updated before it starts.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Why</h2>
@@ -138,8 +135,9 @@ export default function PrivacyPage() {
           enquiry mail. The admin page can be opened only from the admin address
           held on the server. Supabase holds the database, the private pictures,
           and the sign-in. Vercel hosts the site and receives the request that
-          loads a page. Zoho Mail holds mail sent to the two enquiry addresses.
-          OpenStreetMap receives the request for a map tile or a directions page
+          loads a page. Enquiry mail is received at hello@dirtydecember.info and
+          partners@dirtydecember.info. OpenStreetMap receives the request for a
+          map tile or a directions page
           when you use the map. A ticket page, an organiser page, a flight
           search, or a news headline is received by the site you open. This
           directory does not send your email to those sites.
@@ -154,8 +152,8 @@ export default function PrivacyPage() {
           them. A review is removed if the signed-in account it belongs to is
           deleted. A picture is not given a public address by the upload. My
           trip stays in this browser until you remove the item or clear the site
-          data for this browser. Signing out clears the sign-in cookie. Mail
-          stays in the Zoho mailbox until it is deleted.
+          data for this browser. Signing out clears the sign-in cookie. Enquiry
+          mail stays until it is deleted.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -165,8 +163,9 @@ export default function PrivacyPage() {
           Email hello@dirtydecember.info from the address you used. Say whether
           you want a copy or deletion of the sign-in, the submission, the
           picture, or the review. The operator will use that address to find the
-          matching row. If you are in the United Kingdom, you can also complain
-          to the Information Commissioner’s Office.
+          matching row. If you are in Nigeria, you can also complain to the
+          Nigeria Data Protection Commission. If you live elsewhere, you can
+          contact the data protection authority for the place where you live.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Children</h2>
@@ -181,10 +180,7 @@ export default function PrivacyPage() {
           Changes to this notice
         </h2>
         <p>
-          If this notice changes, the new text will replace this page and the
-          date at the top will change. The line “Checked 21 October 2026” in the
-          footer is the date the public records were checked. It is not the date
-          of this notice.
+          If this notice changes, the new text will replace this page.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Contact</h2>

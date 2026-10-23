@@ -167,9 +167,6 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               </li>
             </ul>
           </div>
-          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-muted">
-            Checked 21 October 2026
-          </p>
         </div>
       </footer>
       </div>

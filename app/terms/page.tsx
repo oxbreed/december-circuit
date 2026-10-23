@@ -19,8 +19,8 @@ export default function TermsPage() {
       <p className="mt-6 text-base leading-7 text-muted">{disclaimer}</p>
       <div className="mt-8 space-y-4 text-base leading-7 text-ink">
         <p>
-          This page is dated 23 October 2026. Oxbreed Management operates
-          dirtydecember.info. The footer credit is “Powered by Oxbreed
+          Oxbreed Management operates dirtydecember.info. The footer credit is
+          “Powered by Oxbreed
           Management.” and that credit links only to{" "}
           <a
             href="https://www.oxbreedmanagement.com"
@@ -90,21 +90,20 @@ export default function TermsPage() {
           Outbound links
         </h2>
         <p>
-          Booking links and flight searches are outbound links. A flight search
-          is not a fare and not a seat. Ticket links and organiser pages also
-          leave this site. The site does not sell tickets, hold inventory, show
-          fares, or take card payments. The other site’s own terms apply once
-          you leave.
+          Booking links and flight searches are outbound links. Ticket links and
+          organiser pages also leave this site. The other site’s own terms apply
+          once you leave. A fare, a payment, a newsletter, or a blog is not part
+          of these pages today. If one is added, these terms will be updated
+          before it is offered.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
           Labeled placements
         </h2>
         <p>
-          Paid placements are labeled. No sponsor is on file. The site does not
-          take payment. A placement or partnership form is a request to be
-          checked. It is not a checkout, and it does not buy a place on the
-          page.
+          Paid placements are labeled. No sponsor is on file. A placement or
+          partnership form is a request to be checked. It does not by itself buy
+          a place on the page.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">My trip</h2>
@@ -123,22 +122,20 @@ export default function TermsPage() {
         <p>
           To the extent the law allows, Oxbreed Management is not liable for a
           loss that comes from relying on a record or from a site you open from
-          here. These terms do not exclude liability that the law of England and
-          Wales does not allow to be excluded.
+          here. These terms do not exclude liability that the law of the Federal
+          Republic of Nigeria does not allow to be excluded.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Law</h2>
         <p>
-          These terms are governed by the law of England and Wales. That is the
-          practical law for this UK-operated site.
+          These terms are governed by the law of the Federal Republic of Nigeria.
+          The directory is for Nigeria and for other places in West Africa. A
+          mandatory right that applies where you live still applies.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Changes</h2>
         <p>
-          If these terms change, the new text will replace this page and the
-          date at the top will change. The line “Checked 21 October 2026” in the
-          footer is the date the public records were checked. It is not the date
-          of these terms.
+          If these terms change, the new text will replace this page.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Contact</h2>
