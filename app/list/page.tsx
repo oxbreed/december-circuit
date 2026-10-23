@@ -1,3 +1,4 @@
+import { BusinessPlacement } from "../components/business-placement";
 import { EventSubmission } from "../components/event-submission";
 import { PartnerOffer } from "../components/partner-offer";
 import { ProductAd } from "../components/product-ad";
@@ -39,13 +40,18 @@ export default function ListPage() {
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
           The placement is labeled, and this site does not take payment.
+          {connected ? " It is saved as unpublished and stays off the site until it is checked." : ""}
         </p>
-        <a
-          href="mailto:partners@dirtydecember.info?subject=Ad%20placement"
-          className="mt-3 inline-flex max-w-full bg-ink px-4 py-3 text-left text-[11px] uppercase tracking-[0.16em] text-chart"
-        >
-          Email about a placement
-        </a>
+        {connected ? (
+          <BusinessPlacement />
+        ) : (
+          <a
+            href="mailto:partners@dirtydecember.info?subject=Ad%20placement"
+            className="mt-3 inline-flex max-w-full bg-ink px-4 py-3 text-left text-[11px] uppercase tracking-[0.16em] text-chart"
+          >
+            Email about a placement
+          </a>
+        )}
       </section>
 
       <section id="product-ad" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">

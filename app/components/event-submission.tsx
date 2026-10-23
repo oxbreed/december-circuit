@@ -2,6 +2,7 @@
 
 import { useActionState, type FormEvent } from "react";
 import { saveSubmission, type SaveState } from "../submissions";
+import { OptionalPictureField } from "./optional-picture";
 
 const fields = [
   { name: "name", label: "Event name", type: "text", wide: false },
@@ -67,7 +68,7 @@ function SaveEvent() {
   const [state, action, pending] = useActionState(saveSubmission, initial);
 
   return (
-    <form action={action} className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2">
+    <form action={action} encType="multipart/form-data" className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2">
       <input type="hidden" name="kind" value="event" />
       {fields.map((field) => (
         <label key={field.name} className={`block min-w-0 ${field.wide ? "col-span-2" : ""}`}>
@@ -83,6 +84,7 @@ function SaveEvent() {
           />
         </label>
       ))}
+      <OptionalPictureField />
       <div className="col-span-2">
         <button
           type="submit"

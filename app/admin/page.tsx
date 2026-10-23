@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { directorySignIn } from "../directory-auth";
 import { providerReports } from "../providers";
-import { listPublicReviews, listUnpublishedSubmissions } from "../reviews";
+import { listPublicReviews, listUnpublishedSubmissions, signSubmissionPictures } from "../reviews";
+import { PICTURE_SHOW_MESSAGE } from "../submission-picture";
 import { pageMetadata } from "../site";
 import { getDirectoryUser } from "../supabase/session";
 
@@ -34,6 +35,7 @@ function submissionLine(row: {
   if (row.kind === "product") {
     return `${row.product_name}, ${row.business_name}`;
   }
+  if (row.kind === "placement") return row.business_name ?? "";
   return `${row.business_name}. ${row.offer}`;
 }
 
@@ -73,6 +75,7 @@ async function AdminSession() {
   }
 
   const submissions = await listUnpublishedSubmissions();
+  const pictures = submissions.reason === "ok" ? await signSubmissionPictures(submissions.rows) : new Map<string, string | null>();
   const reviews = await listPublicReviews();
   const providers = providerReports();
 
@@ -111,6 +114,17 @@ async function AdminSession() {
                   >
                     {row.public_link}
                   </a>
+                ) : null}
+                {row.image_path || row.image_unreadable ? (
+                  pictures.get(row.id) ? (
+                    <img
+                      src={pictures.get(row.id) ?? ""}
+                      alt="Submission picture"
+                      className="mt-3 max-h-48 max-w-full object-contain"
+                    />
+                  ) : (
+                    <p className="mt-2 text-sm leading-6 text-muted">{PICTURE_SHOW_MESSAGE}</p>
+                  )
                 ) : null}
               </li>
             ))}
