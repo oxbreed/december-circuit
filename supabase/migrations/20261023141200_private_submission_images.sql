@@ -79,7 +79,8 @@ alter table public.submissions
     )
   );
 
-alter table storage.objects enable row level security;
+-- storage.objects is owned by Supabase and already has row level security.
+-- Do not alter that table from the SQL editor.
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values (
