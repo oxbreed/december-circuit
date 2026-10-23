@@ -44,11 +44,12 @@ export default function PrivacyPage() {
           What you can do
         </h2>
         <p>
-          You can read the sourced records, save a trip in this browser, ask for
-          a sign-in link, send a listing or a partnership note, and write a text
-          review after you sign in. You can also email an enquiry. Booking
-          links, ticket links, organiser pages, and flight searches open other
-          sites. The map draws coordinates that are already on file.
+          You can read the sourced records, read the news page, save a trip in
+          this browser, ask for a sign-in link, send a listing or a partnership
+          note, and write a text review after you sign in. You can also email an
+          enquiry. Booking links, ticket links, organiser pages, and flight
+          searches open other sites. The map draws coordinates that are already
+          on file.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -99,9 +100,12 @@ export default function PrivacyPage() {
         </p>
         <p>
           The map asks your browser to load tiles from OpenStreetMap. A
-          directions link opens OpenStreetMap. This site’s server reads public
-          entertainment feeds and shows the headlines. Opening a headline leaves
-          this site.
+          directions link opens OpenStreetMap. This site’s server reads the
+          public entertainment feeds already used for the ticker. The news page
+          shows the headlines and the pictures those feeds supply. Opening an
+          item leaves this site. When a news item includes a picture address,
+          your browser loads that picture from the address in the feed. This
+          site does not store that picture.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -109,9 +113,9 @@ export default function PrivacyPage() {
         </h2>
         <p>
           There is no advertising cookie. This site does not run an analytics
-          script. A review has no rating. A newsletter, a blog, a fare, or a
-          payment is not offered on these pages today. If one is added, this
-          notice will be updated before it starts.
+          script. A review has no rating. A newsletter, a fare, or a payment is
+          not offered yet. If one is added, this notice will be updated before
+          it starts.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Why</h2>
@@ -123,8 +127,8 @@ export default function PrivacyPage() {
           that check can include the image you chose. A review is stored so the
           text can be shown on the site. My trip stays on the device so you can
           keep a list without an account. The map tiles are requested so the map
-          can be drawn. The headlines are read so the ticker can show them.
-          Enquiry mail is read so the operator can reply.
+          can be drawn. The headlines are read so the ticker and the news page
+          can show them. Enquiry mail is read so the operator can reply.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -139,7 +143,8 @@ export default function PrivacyPage() {
           partners@dirtydecember.info. OpenStreetMap receives the request for a
           map tile or a directions page
           when you use the map. A ticket page, an organiser page, a flight
-          search, or a news headline is received by the site you open. This
+          search, or a news headline is received by the site you open. A news
+          picture is requested from the address supplied in that feed. This
           directory does not send your email to those sites.
         </p>
 

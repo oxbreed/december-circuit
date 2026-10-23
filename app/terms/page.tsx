@@ -35,9 +35,10 @@ export default function TermsPage() {
           What you can do
         </h2>
         <p>
-          You can read the sourced records, follow an outbound link, save a trip
-          in this browser, sign in, send an unpublished listing or partnership
-          note, and write a text review after you sign in. What the site
+          You can read the sourced records, read the news page, follow an
+          outbound link, save a trip in this browser, sign in, send an
+          unpublished listing or partnership note, and write a text review after
+          you sign in. What the site
           collects, and how to ask for access or deletion, is on the{" "}
           <Link
             href="/privacy"
@@ -92,9 +93,10 @@ export default function TermsPage() {
         <p>
           Booking links and flight searches are outbound links. Ticket links and
           organiser pages also leave this site. The other site’s own terms apply
-          once you leave. A fare, a payment, a newsletter, or a blog is not part
-          of these pages today. If one is added, these terms will be updated
-          before it is offered.
+          once you leave. The news page shows headlines and pictures supplied by
+          the public feeds already used for the ticker. Opening an item leaves
+          this site. A newsletter, a fare, or a payment is not offered yet. If
+          one is added, these terms will be updated before it is offered.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">

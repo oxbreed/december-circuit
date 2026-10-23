@@ -6,6 +6,8 @@ export type TickerItem = {
   source: string;
   link: string;
   published?: string;
+  description?: string;
+  image?: string;
 };
 
 export function eventTickerItems(): TickerItem[] {

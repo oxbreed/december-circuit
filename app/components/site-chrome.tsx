@@ -151,6 +151,14 @@ export function SiteChrome({ children }: { children: ReactNode }) {
               </li>
               <li>
                 <Link
+                  href="/news"
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  News
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/privacy"
                   className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
                 >
