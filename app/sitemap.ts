@@ -15,6 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/flights",
     "/map",
     "/about",
+    "/privacy",
+    "/terms",
     "/list",
     "/sign-in",
     ...events.map((event) => `/events/${eventSlug(event)}`),

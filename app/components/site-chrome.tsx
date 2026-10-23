@@ -149,6 +149,22 @@ export function SiteChrome({ children }: { children: ReactNode }) {
                   Sign in
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  Privacy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  Terms
+                </Link>
+              </li>
             </ul>
           </div>
           <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-muted">
