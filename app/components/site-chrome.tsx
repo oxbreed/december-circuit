@@ -34,6 +34,10 @@ function current(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+const footerLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
+
+const footerKicker = "font-sans text-[11px] uppercase tracking-[0.28em] text-lagoon";
+
 export function SiteChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const barRef = useRef<HTMLDivElement>(null);
@@ -101,80 +105,56 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       <div className="mobile-scroll lg:contents">
       {children}
       <footer className="border-t border-ink/15 pb-32 lg:pb-0">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 md:flex-row md:items-end md:justify-between md:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-12 md:px-8 lg:py-16">
           <div>
             <p className="font-display text-3xl text-ink">
               dirtydecember<span className="text-oxide">.info</span>
             </p>
             <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
-            <p className="mt-4 font-sans text-sm text-ink">
-              <a
-                href="https://www.oxbreedmanagement.com"
-                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
+            <p className="mt-4 font-sans text-sm leading-6 text-ink">
+              <a href="https://www.oxbreedmanagement.com" className={footerLink}>
                 Powered by Oxbreed Management
               </a>
               .
             </p>
-            <ul className="mt-3 space-y-1 font-sans text-sm leading-6 text-ink">
-              <li>
-                <a
-                  href="mailto:hello@dirtydecember.info"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  Visitor enquiries: hello@dirtydecember.info
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:partners@dirtydecember.info"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  Partner enquiries: partners@dirtydecember.info
-                </a>
-              </li>
-              <li>
-                <Link
-                  href="/list"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  List an event
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/sign-in"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  Sign in
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/news"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  News
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  Terms
-                </Link>
-              </li>
-            </ul>
           </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10">
+            <p className="min-w-0">
+              <span className={`block ${footerKicker}`}>Visitor enquiries</span>
+              <a
+                href="mailto:hello@dirtydecember.info"
+                className={`mt-2 inline-block max-w-full font-sans text-sm leading-6 text-ink ${footerLink}`}
+              >
+                hello@dirtydecember.info
+              </a>
+            </p>
+            <p className="min-w-0">
+              <span className={`block ${footerKicker}`}>Partner enquiries</span>
+              <a
+                href="mailto:partners@dirtydecember.info"
+                className={`mt-2 inline-block max-w-full font-sans text-sm leading-6 text-ink ${footerLink}`}
+              >
+                partners@dirtydecember.info
+              </a>
+            </p>
+          </div>
+          <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6">
+            <Link href="/list" className={`text-ink ${footerLink}`}>
+              List an event
+            </Link>
+            <Link href="/news" className={`text-ink ${footerLink}`}>
+              News
+            </Link>
+            <Link href="/sign-in" className={`text-ink ${footerLink}`}>
+              Sign in
+            </Link>
+            <Link href="/privacy" className={`text-ink ${footerLink}`}>
+              Privacy
+            </Link>
+            <Link href="/terms" className={`text-ink ${footerLink}`}>
+              Terms
+            </Link>
+          </nav>
         </div>
       </footer>
       </div>
