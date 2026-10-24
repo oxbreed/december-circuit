@@ -6,7 +6,12 @@ import { citiesOnFile, cityBySlug, cityDescription } from "../../cities";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { EventCard } from "../../components/event-card";
 import { JsonLd } from "../../components/json-ld";
-import { breadcrumbJsonLd, cityPlaceJsonLd } from "../../jsonld";
+import {
+  breadcrumbJsonLd,
+  cityPlaceJsonLd,
+  cityPlacesItemListJsonLd,
+} from "../../jsonld";
+import { countriesOnFile } from "../../countries";
 import { pageMetadata } from "../../site";
 
 export function generateStaticParams() {
@@ -38,6 +43,8 @@ export default async function CityPage({
   if (!city) notFound();
   const description = cityDescription(city);
   const path = `/cities/${city.slug}`;
+  const country = countriesOnFile().find((item) => item.country === city.country);
+  const placesWithPins = cityPlacesItemListJsonLd(city);
 
   return (
     <main
@@ -45,10 +52,14 @@ export default async function CityPage({
       className="mx-auto w-full max-w-6xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-16"
     >
       <JsonLd data={cityPlaceJsonLd(city)} />
+      {placesWithPins ? <JsonLd data={placesWithPins} /> : null}
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "Cities", path: "/cities" },
+          ...(country
+            ? [{ name: country.country, path: `/countries/${country.slug}` }]
+            : []),
           { name: city.city, path },
         ])}
       />
@@ -56,6 +67,9 @@ export default async function CityPage({
         items={[
           { name: "Home", href: "/" },
           { name: "Cities", href: "/cities" },
+          ...(country
+            ? [{ name: country.country, href: `/countries/${country.slug}` }]
+            : []),
           { name: city.city },
         ]}
       />

@@ -43,12 +43,20 @@ export default function Home() {
                 Lagos, Accra, Calabar
               </h2>
             </div>
-            <Link
-              href="/cities"
-              className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-oxide"
-            >
-              All cities →
-            </Link>
+            <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
+              <Link
+                href="/detty-december"
+                className="text-[11px] uppercase tracking-[0.18em] text-oxide"
+              >
+                Detty December hub →
+              </Link>
+              <Link
+                href="/cities"
+                className="text-[11px] uppercase tracking-[0.18em] text-oxide"
+              >
+                All cities →
+              </Link>
+            </div>
           </div>
           <p className="max-w-2xl text-sm leading-7 text-muted">
             Open a city for organiser pages and any confirmed events already listed. Coverage

@@ -45,7 +45,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "Where do I check visas and entry?",
     answer:
-      "Open [[/guide#entry|Visa and entry]] in the guide. Lagos and Calabar are in Nigeria. Accra is in Ghana. The guide repeats the linked Nigeria Immigration Service and Ghana Immigration Service pages and does not take a visa application or a payment. Read those official links for the current rules.",
+      "Open [[/visa|Visa and entry]] (also in the [[/guide#entry|tourist guide]]). Lagos and Calabar are in Nigeria. Accra is in Ghana. Those pages repeat the linked Nigeria Immigration Service and Ghana Immigration Service pages and do not take a visa application or a payment. Read those official links for the current rules.",
   },
   {
     question: "How do hotels and short stays work here?",

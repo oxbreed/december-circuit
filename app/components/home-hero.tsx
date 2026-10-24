@@ -17,12 +17,20 @@ export function HomeHero() {
   return (
     <section className="overflow-x-clip px-4 pb-6 pt-[4.5rem] sm:px-6 lg:px-8 lg:pt-[8.25rem]">
       <div className="mx-auto max-w-6xl">
-        <Link
-          href="/guide#entry"
-          className="inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-        >
-          Visa and entry
-        </Link>
+        <div className="flex flex-wrap gap-x-4 gap-y-1">
+          <Link
+            href="/visa"
+            className="inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            Visa and entry
+          </Link>
+          <Link
+            href="/detty-december"
+            className="inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            Detty December hub
+          </Link>
+        </div>
         <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(16rem,0.7fr)] lg:items-end lg:gap-8">
           <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-[0.32em] text-lagoon">December 2026</p>

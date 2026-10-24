@@ -3,6 +3,7 @@ import { disclaimer } from "../brand";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
 import { citiesOnFile } from "../cities";
+import { countriesOnFile } from "../countries";
 import { breadcrumbJsonLd, citiesItemListJsonLd } from "../jsonld";
 import { pageMetadata } from "../site";
 
@@ -15,6 +16,7 @@ export const metadata = pageMetadata({
 
 export default function CitiesIndexPage() {
   const cities = citiesOnFile();
+  const countries = countriesOnFile();
   const byCountry = new Map<string, typeof cities>();
   for (const city of cities) {
     const list = byCountry.get(city.country) ?? [];
@@ -62,12 +64,29 @@ export default function CitiesIndexPage() {
         <Link href="/guide" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           Tourist guide
         </Link>
+        {" · "}
+        <Link href="/detty-december" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Detty December
+        </Link>
       </p>
 
       <div className="mt-12 grid gap-12">
-        {[...byCountry.entries()].map(([country, rows]) => (
+        {[...byCountry.entries()].map(([country, rows]) => {
+          const hub = countries.find((item) => item.country === country);
+          return (
           <section key={country}>
-            <h2 className="font-display text-3xl tracking-tight">{country}</h2>
+            <h2 className="font-display text-3xl tracking-tight">
+              {hub ? (
+                <Link
+                  href={`/countries/${hub.slug}`}
+                  className="hover:text-oxide"
+                >
+                  {country}
+                </Link>
+              ) : (
+                country
+              )}
+            </h2>
             <ul className="mt-5 divide-y divide-ink/10 border border-ink/15 bg-chart">
               {rows.map((city) => (
                 <li key={city.slug}>
@@ -92,7 +111,8 @@ export default function CitiesIndexPage() {
               ))}
             </ul>
           </section>
-        ))}
+          );
+        })}
       </div>
 
       <p className="mt-10 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>

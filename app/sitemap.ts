@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
 import { citiesOnFile } from "./cities";
+import { countriesOnFile } from "./countries";
 import { eventSlug } from "./event-view";
 import { events } from "./events";
+import { landmarks } from "./landmarks";
 import { absoluteUrl } from "./site";
 
 const checked = new Date("2026-10-24");
@@ -10,12 +12,23 @@ type Entry = {
   path: string;
   changeFrequency?: MetadataRoute.Sitemap[number]["changeFrequency"];
   priority?: number;
+  images?: string[];
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const landmarkImages = landmarks.map((item) => absoluteUrl(item.src));
+  const heroImage = absoluteUrl("/hero-lagos-night.jpg");
+
   const entries: Entry[] = [
-    { path: "/", changeFrequency: "daily", priority: 1 },
+    {
+      path: "/",
+      changeFrequency: "daily",
+      priority: 1,
+      images: [heroImage, ...landmarkImages.slice(0, 8)],
+    },
+    { path: "/detty-december", changeFrequency: "daily", priority: 0.98 },
     { path: "/guide", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/visa", changeFrequency: "monthly", priority: 0.88 },
     { path: "/events", changeFrequency: "daily", priority: 0.95 },
     { path: "/places", changeFrequency: "weekly", priority: 0.85 },
     { path: "/cities", changeFrequency: "weekly", priority: 0.85 },
@@ -29,6 +42,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
     { path: "/eula", changeFrequency: "yearly", priority: 0.2 },
     { path: "/list", changeFrequency: "monthly", priority: 0.4 },
+    ...countriesOnFile().map((country) => ({
+      path: `/countries/${country.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.86,
+    })),
     ...events.map((event) => ({
       path: `/events/${eventSlug(event)}`,
       changeFrequency: "weekly" as const,
@@ -46,5 +64,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: checked,
     changeFrequency: entry.changeFrequency,
     priority: entry.priority,
+    ...(entry.images ? { images: entry.images } : {}),
   }));
 }
