@@ -6,6 +6,8 @@ export type LagosStamp = {
   dayPeriod: string;
   weekday: string;
   date: string;
+  weekdayShort: string;
+  dateShort: string;
 };
 
 function pick(parts: Intl.DateTimeFormatPart[], type: Intl.DateTimeFormatPartTypes) {
@@ -26,6 +28,13 @@ export function lagosStamp(now: Date): LagosStamp {
     weekday: "long",
     day: "numeric",
     month: "long",
+  }).formatToParts(now);
+
+  const dayShort = new Intl.DateTimeFormat("en-GB", {
+    timeZone: ZONE,
+    weekday: "short",
+    day: "numeric",
+    month: "short",
   }).formatToParts(now);
 
   const isoParts = new Intl.DateTimeFormat("en-GB", {
@@ -52,5 +61,7 @@ export function lagosStamp(now: Date): LagosStamp {
     dayPeriod,
     weekday: pick(day, "weekday"),
     date: `${pick(day, "day")} ${pick(day, "month")}`,
+    weekdayShort: pick(dayShort, "weekday").replace(/\./g, ""),
+    dateShort: `${pick(dayShort, "day")} ${pick(dayShort, "month").replace(/\./g, "")}`,
   };
 }

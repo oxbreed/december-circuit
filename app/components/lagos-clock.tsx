@@ -32,17 +32,20 @@ function WeatherRow({ rows }: { rows: CityWeather[] }) {
   return (
     <ul
       aria-label="Current weather"
-      className="mt-2 grid grid-cols-3 gap-x-2 border-t border-ink/15 pt-2 lg:mt-0 lg:flex lg:items-center lg:gap-6 lg:self-stretch lg:border-t-0 lg:border-l lg:pl-6 lg:pt-0"
+      className="flex shrink-0 items-baseline gap-1 border-l border-ink/15 pl-1 lg:items-center lg:gap-6 lg:self-stretch lg:pl-6"
     >
       {rows.map((item) => (
-        <li key={item.city} className="min-w-0">
-          <p className="whitespace-nowrap font-sans text-[10px] font-medium uppercase leading-none tracking-[0.14em] text-muted">
+        <li
+          key={item.city}
+          className="flex shrink-0 items-baseline gap-0.5 whitespace-nowrap lg:block lg:min-w-0"
+        >
+          <p className="font-sans text-[10px] font-medium leading-none text-muted lg:uppercase lg:tracking-[0.14em]">
             {item.city}
           </p>
-          <p className="mt-1 whitespace-nowrap font-sans text-sm font-medium leading-none tabular-nums text-ink">
+          <p className="font-sans text-[11px] font-medium leading-none tabular-nums text-ink lg:mt-1 lg:text-sm">
             {item.celsius}°C
           </p>
-          <p className="mt-1 whitespace-nowrap font-sans text-[11px] leading-none text-muted">
+          <p className="mt-1 hidden font-sans text-[11px] leading-none text-muted lg:block">
             {item.condition}
           </p>
         </li>
@@ -57,29 +60,33 @@ function Readout({
   dayPeriod,
   weekday,
   date,
+  weekdayShort,
+  dateShort,
 }: {
   iso?: string;
   clock: string;
   dayPeriod: string;
   weekday: string;
   date: string;
+  weekdayShort: string;
+  dateShort: string;
 }) {
   const body = (
     <>
       <span className="min-w-0">
-        <span className="block font-sans text-[10px] font-medium uppercase leading-none tracking-[0.22em] text-lagoon">
+        <span className="hidden font-sans text-[10px] font-medium uppercase leading-none tracking-[0.22em] text-lagoon lg:block">
           Lagos
         </span>
-        <span className="mt-1 flex items-baseline gap-2">
+        <span className="flex items-baseline gap-1 lg:mt-1 lg:gap-2">
           <span
             suppressHydrationWarning
-            className="inline-block min-w-[8ch] whitespace-nowrap font-mono text-4xl font-medium leading-none tabular-nums tracking-tight text-ink lg:text-5xl"
+            className="inline-block min-w-[8ch] whitespace-nowrap font-mono text-lg font-medium leading-none tabular-nums tracking-tight text-ink lg:text-5xl"
           >
             {clock || "\u00a0"}
           </span>
           <span
             suppressHydrationWarning
-            className="inline-block min-w-[2ch] font-sans text-[11px] font-medium uppercase leading-none tracking-[0.16em] text-ink lg:text-xs"
+            className="inline-block min-w-[2ch] font-sans text-[10px] font-medium uppercase leading-none tracking-[0.08em] text-ink lg:text-xs lg:tracking-[0.16em]"
           >
             {dayPeriod || "\u00a0"}
           </span>
@@ -87,17 +94,18 @@ function Readout({
       </span>
       <span
         suppressHydrationWarning
-        className="shrink-0 text-right font-sans text-sm leading-4 text-ink lg:text-base lg:leading-5"
+        className="shrink-0 whitespace-nowrap font-sans text-[11px] leading-none text-ink lg:text-base lg:leading-5"
       >
-        <span className="block whitespace-nowrap lg:hidden">{weekday || "\u00a0"}</span>
-        <span className="block whitespace-nowrap lg:hidden">{date || "\u00a0"}</span>
-        <span className="hidden whitespace-nowrap lg:inline">
+        <span className="lg:hidden">
+          {weekdayShort && dateShort ? `${weekdayShort} ${dateShort}` : "\u00a0"}
+        </span>
+        <span className="hidden lg:inline">
           {weekday && date ? `${weekday}, ${date}` : "\u00a0"}
         </span>
       </span>
     </>
   );
-  const className = "flex min-w-0 items-end justify-between gap-3 lg:justify-start lg:gap-8";
+  const className = "flex shrink-0 items-baseline gap-1 lg:items-end lg:gap-8";
   if (!iso) return <div className={className}>{body}</div>;
   return (
     <time dateTime={iso} suppressHydrationWarning className={className}>
@@ -109,7 +117,7 @@ function Readout({
 function ClockShell({ children, weather }: { children: ReactNode; weather: CityWeather[] | null }) {
   const rows = rowsFor(weather);
   return (
-    <div className="mx-auto flex h-full w-full min-w-0 max-w-6xl flex-col justify-center px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+    <div className="mx-auto flex h-full w-full min-w-0 max-w-6xl items-center justify-between gap-1 px-2 sm:px-3 lg:gap-8 lg:px-8">
       {children}
       {rows.length > 0 ? <WeatherRow rows={rows} /> : null}
     </div>
@@ -119,7 +127,7 @@ function ClockShell({ children, weather }: { children: ReactNode; weather: CityW
 export function LagosClockFallback() {
   return (
     <ClockShell weather={null}>
-      <Readout clock="" dayPeriod="" weekday="" date="" />
+      <Readout clock="" dayPeriod="" weekday="" date="" weekdayShort="" dateShort="" />
     </ClockShell>
   );
 }
@@ -140,6 +148,8 @@ export function LagosClock({
         dayPeriod={stamp.dayPeriod}
         weekday={stamp.weekday}
         date={stamp.date}
+        weekdayShort={stamp.weekdayShort}
+        dateShort={stamp.dateShort}
       />
     </ClockShell>
   );

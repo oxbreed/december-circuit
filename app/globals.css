@@ -4,7 +4,7 @@
   color-scheme: light;
   --background: #f4eadc;
   --foreground: #1a1410;
-  --clock-strip: 8.25rem;
+  --clock-strip: 3.5rem;
 }
 
 @media (min-width: 1024px) {
@@ -179,7 +179,7 @@ body::before {
   .map-stage {
     display: flex;
     box-sizing: border-box;
-    height: calc(100svh - var(--mobile-bar, 6.75rem) - var(--clock-strip, 8.25rem));
+    height: calc(100svh - var(--mobile-bar, 6.75rem) - var(--clock-strip, 3.5rem));
     flex-direction: column;
     padding-top: 4rem;
     padding-bottom: 0.75rem;
