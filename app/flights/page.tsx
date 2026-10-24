@@ -1,4 +1,5 @@
 import { FlightsSection } from "../components/flights-section";
+import { flightSearches } from "../flights";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
@@ -10,7 +11,7 @@ export const metadata = pageMetadata({
 export default function FlightsPage() {
   return (
     <main id="top" className="pb-28 lg:pb-0">
-      <FlightsSection />
+      <FlightsSection records={flightSearches} />
     </main>
   );
 }

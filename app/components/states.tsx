@@ -2,17 +2,15 @@
 
 import type { ReactNode } from "react";
 
-export function LoadingLines({ label }: { label: string }) {
+export function LoadingLines({ label }: { label?: string } = {}) {
+  void label;
   return (
-    <div role="status" className="max-w-xl py-2">
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-brass">
-        {label}
-      </p>
-      <div className="mt-4 space-y-3" aria-hidden="true">
-        <div className="h-px w-full bg-line" />
-        <div className="h-px w-4/5 bg-line" />
-        <div className="h-px w-2/3 bg-line" />
-        <div className="h-px w-1/2 bg-line" />
+    <div role="status" aria-busy="true" className="max-w-xl py-2">
+      <div className="space-y-3" aria-hidden="true">
+        <div className="h-3 w-full animate-pulse bg-ink/10" />
+        <div className="h-3 w-4/5 animate-pulse bg-ink/10" />
+        <div className="h-3 w-2/3 animate-pulse bg-ink/10" />
+        <div className="h-3 w-1/2 animate-pulse bg-ink/10" />
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ npm run dev
 - `GET /api/pins`
 - `GET /api/news`
 
-Pages: `/`, `/events`, `/events/[slug]`, `/cities/[slug]`, `/places`, `/flights`, `/map`, `/about`. The home page and `/events` share a find bar for activity, city, and date. Those lists come from categories, cities, and event dates already on file. Each confirmed event has a stable page. A city with places or events on file has a page at `/cities/[slug]`. The full place list stays on `/places`. Flight rows stay on `/flights`. `sitemap.xml` and `robots.txt` list those pages.
+Pages: `/`, `/guide`, `/events`, `/events/[slug]`, `/cities/[slug]`, `/places`, `/flights`, `/map`, `/about`, `/news`, `/privacy`, `/terms`, `/eula`. The home hero searches by a listed date and opens `/events?date=`. Visa and entry is on `/guide#entry`. Flight rows stay on `/flights`. Washington DC, Chicago, Dallas–Fort Worth, Amsterdam, and Dubai search 16 December 2026 to 30 December 2026, one adult. Those dates are a starting search for the season, not a fare. `sitemap.xml` and `robots.txt` list the public pages.
 
 The pages load these routes. A place name opens the organiser page stored on that record. A flight row opens its search and is labelled as a search. It is not a fare or a seat.
 

@@ -1,10 +1,13 @@
 import Link from "next/link";
-import { GuideSearch } from "./components/guide-search";
+import { ConfirmedEvents } from "./components/confirmed-events";
+import { HomeFlights } from "./components/home-flights";
+import { HomeHero } from "./components/home-hero";
 import { HomeBands } from "./components/home-bands";
 import { MyTrip } from "./components/my-trip";
 import { ReviewsSection } from "./components/reviews-section";
 import { SponsorSpot } from "./components/sponsor-spot";
-import { StayGuide } from "./components/stay-guide";
+import { StaysByCity } from "./components/stay-guide";
+import { ThisWeek } from "./components/this-week";
 import { defaultDescription, pageMetadata } from "./site";
 
 export const metadata = pageMetadata({
@@ -16,9 +19,14 @@ export const metadata = pageMetadata({
 export default function Home() {
   return (
     <main id="top">
-      <GuideSearch />
-      <SponsorSpot />
-      <section className="border-b border-ink/10">
+      <HomeHero />
+      <ThisWeek />
+      <ConfirmedEvents />
+      <MyTrip />
+      <StaysByCity />
+      <HomeFlights />
+      <HomeBands />
+      <section id="news" className="border-b border-ink/10">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8">
           <div>
             <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">News</p>
@@ -38,10 +46,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
-      <MyTrip />
-      <StayGuide />
+      <SponsorSpot />
       <ReviewsSection />
-      <HomeBands />
     </main>
   );
 }

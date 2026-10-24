@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/news",
     "/privacy",
     "/terms",
+    "/eula",
     "/list",
     "/sign-in",
     ...events.map((event) => `/events/${eventSlug(event)}`),

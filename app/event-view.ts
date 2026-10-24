@@ -1,6 +1,6 @@
 import type { CircuitEvent } from "./events";
 
-export const eventCategory = "Event on file";
+export const eventCategory = "Confirmed event";
 
 export function eventSlug(event: Pick<CircuitEvent, "region" | "when">) {
   return `${event.region}-${event.when}`
@@ -112,4 +112,26 @@ export function presentEvent(event: CircuitEvent) {
     summary: event.summary,
     href: `/events/${eventSlug(event)}`,
   };
+}
+
+const planCheckDate = "23 October 2026";
+
+const openedSources = new Set([
+  "https://www.dmwhq.com/residency",
+  "https://dettydecfest.com/",
+  "https://www.stylerave.com/rhythm-unplugged-2026-headliners/",
+  "https://www.carnival.crossriverstate.gov.ng/",
+]);
+
+export function checkedOn(event: Pick<CircuitEvent, "url">) {
+  if (!event.url || !openedSources.has(event.url)) return null;
+  return `Checked ${planCheckDate}`;
+}
+
+export function eventsInRegionOrder<T extends { region: string }>(rows: T[]) {
+  const rank = (region: string) => (region === "Lagos" ? 0 : region === "Calabar" ? 1 : 2);
+  return rows
+    .map((row, index) => ({ row, index }))
+    .sort((a, b) => rank(a.row.region) - rank(b.row.region) || a.index - b.index)
+    .map((item) => item.row);
 }

@@ -10,10 +10,8 @@ import { useRecords } from "./use-records";
 const CircuitMap = dynamic(() => import("./circuit-map"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full items-center px-4">
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-brass">
-        Loading the map
-      </p>
+    <div className="h-full p-4" aria-busy="true">
+      <div className="h-full animate-pulse bg-ink/10" />
     </div>
   ),
 });
@@ -56,16 +54,16 @@ export function HomeBands() {
       <section id="stay-map" className="mx-auto w-full max-w-6xl scroll-mt-36 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <BandHeading kicker="Map" title="Sourced pins" href="/map" action="Open the map →" />
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Pins appear only where a coordinate is already on file. The map does
+          Pins appear only where a coordinate is already listed. The map does
           not add a route or a fare. Directions open an external map from that
           point.
         </p>
-        {pins.status === "loading" ? <LoadingLines label="Loading the map" /> : null}
+        {pins.status === "loading" ? <LoadingLines /> : null}
         {pins.status === "error" ? (
           <ErrorNote message="The map did not load." onRetry={pins.retry} />
         ) : null}
         {pins.status === "ready" && pinRecords.length === 0 ? (
-          <EmptyNote>No places with coordinates are on file.</EmptyNote>
+          <EmptyNote>No places with coordinates are listed.</EmptyNote>
         ) : null}
         {pinRecords.length > 0 ? (
           <div

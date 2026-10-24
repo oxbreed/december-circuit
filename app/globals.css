@@ -335,7 +335,8 @@ body::before {
     display: none;
   }
 
-  .landmark-fade {
+  .landmark-fade,
+  .animate-pulse {
     animation: none;
   }
 }

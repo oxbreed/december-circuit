@@ -5,7 +5,7 @@ import { disclaimer } from "../../brand";
 import { JsonLd } from "../../components/json-ld";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
 import { SaveTripButton } from "../../components/save-trip-button";
-import { eventSlug, presentEvent } from "../../event-view";
+import { checkedOn, eventSlug, presentEvent } from "../../event-view";
 import { events } from "../../events";
 import { eventTripId } from "../../trip";
 import { eventJsonLd } from "../../jsonld";
@@ -40,6 +40,7 @@ export default async function EventPage({
   const event = events.find((item) => eventSlug(item) === slug);
   if (!event) notFound();
   const view = presentEvent(event);
+  const checked = checkedOn(event);
 
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-20">
@@ -60,9 +61,10 @@ export default async function EventPage({
             {view.name}
           </h1>
           <p className="mt-4 text-sm text-ink">{view.region}</p>
-          <p className="mt-1 text-sm text-muted">
-            {view.venue ?? "Venue not on file"}
-          </p>
+          {view.venue ? <p className="mt-1 text-sm text-muted">{view.venue}</p> : null}
+          {checked ? (
+            <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-muted">{checked}</p>
+          ) : null}
         </div>
       </div>
       <p className="mt-8 text-base leading-8 text-ink">{event.summary}</p>

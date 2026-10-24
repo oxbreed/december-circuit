@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { sponsors } from "../sponsors";
 
 function filedSponsor() {
@@ -10,36 +9,24 @@ function filedSponsor() {
 
 export function SponsorSpot() {
   const sponsor = filedSponsor();
+  if (!sponsor) return null;
 
   return (
     <aside aria-label="Paid placement" className="border-b border-ink/10">
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="border border-dashed border-ink/30 bg-chart px-4 py-4">
-          {sponsor ? (
-            sponsor.url ? (
-              <a
-                href={sponsor.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm leading-6 text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                {sponsor.name}
-              </a>
-            ) : (
-              <p className="text-sm leading-6 text-ink">{sponsor.name}</p>
-            )
+        <div className="border border-ink/15 bg-chart px-4 py-4">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Paid placement</p>
+          {sponsor.url ? (
+            <a
+              href={sponsor.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex text-sm leading-6 text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              {sponsor.name}
+            </a>
           ) : (
-            <>
-              <p className="text-sm leading-6 text-muted">
-                Paid placement. No sponsor is on file.
-              </p>
-              <Link
-                href="/list"
-                className="mt-3 inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                List an event or place an ad
-              </Link>
-            </>
+            <p className="mt-3 text-sm leading-6 text-ink">{sponsor.name}</p>
           )}
         </div>
       </div>

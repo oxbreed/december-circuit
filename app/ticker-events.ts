@@ -14,7 +14,7 @@ export function eventTickerItems(): TickerItem[] {
   return events.map((event) => ({
     kind: "event",
     headline: `${event.when}. ${event.summary}`,
-    source: "Event on file",
+    source: "Confirmed event",
     link: event.url ?? "/events",
     published: event.when,
   }));

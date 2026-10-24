@@ -9,7 +9,7 @@ function ReviewsShell({ children }: { children: ReactNode }) {
   return (
     <section id="reviews" className="scroll-mt-36 border-b border-ink/10">
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">On file</p>
+        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Reviews</p>
         <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">Reviews</h2>
         {children}
       </div>
@@ -18,9 +18,7 @@ function ReviewsShell({ children }: { children: ReactNode }) {
 }
 
 function ReviewList({ rows }: { rows: ReviewRow[] }) {
-  if (rows.length === 0) {
-    return <p className="mt-4 max-w-2xl text-sm leading-7 text-ink">No reviews are on file.</p>;
-  }
+  if (rows.length === 0) return null;
   return (
     <ul className="mt-4 grid max-w-2xl gap-3">
       {rows.map((review) => (
@@ -43,36 +41,24 @@ function SignInForReview() {
   );
 }
 
-function ReviewsClosed() {
-  return (
-    <ReviewsShell>
-      <ReviewList rows={[]} />
-      <SignInForReview />
-    </ReviewsShell>
-  );
-}
-
 async function ConnectedReviews() {
   const listed = await listPublicReviews();
   const user = await getDirectoryUser();
+  if (listed.failed || listed.rows.length === 0) return null;
 
   return (
     <ReviewsShell>
-      {listed.failed ? (
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">Reviews could not be read.</p>
-      ) : (
-        <ReviewList rows={listed.rows} />
-      )}
+      <ReviewList rows={listed.rows} />
       {user ? <ReviewForm /> : <SignInForReview />}
     </ReviewsShell>
   );
 }
 
 export function ReviewsSection() {
-  if (!directorySignIn().connected) return <ReviewsClosed />;
+  if (!directorySignIn().connected) return null;
 
   return (
-    <Suspense fallback={<ReviewsClosed />}>
+    <Suspense fallback={null}>
       <ConnectedReviews />
     </Suspense>
   );

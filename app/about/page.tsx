@@ -23,8 +23,7 @@ export default function AboutPage() {
         </p>
         <p>
           Confirmed events for December 2026. Dates come from the organiser or a
-          named news report, checked on 21 October 2026. Cities outside Lagos
-          stay on the list.
+          named news report. Cities outside Lagos stay on the list.
         </p>
         <p>
           A place name opens that organiser page. A flight row opens a search,

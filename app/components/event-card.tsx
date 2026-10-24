@@ -1,5 +1,5 @@
 import type { CircuitEvent } from "../events";
-import { dateFace, presentEvent } from "../event-view";
+import { checkedOn, dateFace, presentEvent } from "../event-view";
 import { eventTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
 
@@ -68,11 +68,8 @@ export function PrimaryAction({ event }: { event: CircuitEvent }) {
           rel="noopener noreferrer"
           className="inline-flex bg-oxide px-4 py-3 text-[11px] uppercase tracking-[0.18em] text-chart"
         >
-          Tickets
+          Tickets — leaves this site
         </a>
-        <span className="text-xs uppercase tracking-[0.16em] text-muted">
-          Leaves this site
-        </span>
         {event.url ? (
           <a
             href={event.url}
@@ -100,11 +97,7 @@ export function PrimaryAction({ event }: { event: CircuitEvent }) {
     );
   }
 
-  return (
-    <p className="text-sm leading-7 text-muted">
-      No ticket or organiser link on file.
-    </p>
-  );
+  return <p className="text-sm leading-7 text-muted">No organiser page listed</p>;
 }
 
 export function EventCard({
@@ -115,6 +108,7 @@ export function EventCard({
   as?: "h2" | "h3" | "h4";
 }) {
   const view = presentEvent(event);
+  const checked = checkedOn(event);
 
   return (
     <article className="border border-ink/15 bg-chart shadow-[4px_4px_0_0_rgba(184,67,47,0.12)]">
@@ -130,9 +124,10 @@ export function EventCard({
             </a>
           </Title>
           <p className="mt-3 text-sm text-ink">{view.region}</p>
-          <p className="mt-1 text-sm text-muted">
-            {view.venue ?? "Venue not on file"}
-          </p>
+          {view.venue ? <p className="mt-1 text-sm text-muted">{view.venue}</p> : null}
+          {checked ? (
+            <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-muted">{checked}</p>
+          ) : null}
           {view.note ? (
             <p className="mt-3 text-sm leading-7 text-muted">{view.note}</p>
           ) : null}

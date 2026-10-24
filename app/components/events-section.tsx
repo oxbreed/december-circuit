@@ -81,7 +81,7 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
       {events.status === "loading" ? <LoadingLines label="Loading events" /> : null}
       {events.status === "error" ? (
         <ErrorNote
-          message="Events did not load. The list is still the one on this site."
+          message="The event list did not load. The list is still the one on this site."
           onRetry={events.retry}
         />
       ) : null}
@@ -129,7 +129,7 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
       <SectionIntro
         kicker="Events"
         title="On file for December 2026"
-        lede="Dates come from the organiser or a named news report, checked on 21 October 2026. A link appears only where the record has one."
+        lede="Dates come from the organiser or a named news report. A link appears only where the record has one."
       />
       {status}
       {events.status === "ready" && events.data.length > 0 ? (

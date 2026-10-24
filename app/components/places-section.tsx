@@ -107,13 +107,13 @@ export function PlacesSection() {
       <SectionIntro
         kicker="Places"
         title="Organiser pages"
-        lede="Each name opens that organiser page. Filter by the country, city, and category already on file."
+        lede="Each name opens that organiser page. Matches stay in the order they are listed. Choose a category or a city, or type a name."
       />
 
       {all.status === "loading" ? <LoadingLines label="Loading places" /> : null}
       {all.status === "error" ? (
         <ErrorNote
-          message="Places did not load. The directory is still the one on this site."
+          message="The place list did not load. The directory is still the one on this site."
           onRetry={all.retry}
         />
       ) : null}
@@ -215,10 +215,10 @@ export function PlacesSection() {
               <ErrorNote message="That filter did not load." onRetry={source.retry} />
             ) : null}
             {source.status === "ready" && visible.length === 0 ? (
-              <EmptyNote>No places are on file for this filter.</EmptyNote>
+              <EmptyNote>Nothing matches this search.</EmptyNote>
             ) : null}
             {source.status === "ready" && visible.length > 0 && shown.length === 0 ? (
-              <EmptyNote>No filed place matches {query.trim()}.</EmptyNote>
+              <EmptyNote>Nothing matches this search.</EmptyNote>
             ) : null}
             {source.status === "ready" && shown.length > 0 ? (
               <div>

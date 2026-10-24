@@ -111,3 +111,56 @@ export const flightSearches: FlightSearch[] = [
   { origin: "Paris", airport: "Aéroport international de Douala", url: "https://www.google.com/travel/flights?q=Flights%20from%20Paris%20to%20Douala" },
   { origin: "Accra", airport: "Aéroport international de Douala", url: "https://www.google.com/travel/flights?q=Flights%20from%20Accra%20to%20Douala" },
 ];
+
+export const seasonSearchAirports = [
+  "Murtala Muhammed International Airport",
+  "Accra International Airport",
+  "Margaret Ekpo International Airport",
+];
+
+export const seasonSearchNote =
+  "Washington DC, Chicago, Dallas–Fort Worth, Amsterdam, and Dubai use departure 16 December 2026 and return 30 December 2026, one adult. Those dates are a starting search for the season.";
+
+const datedOrigins = [
+  { origin: "Washington DC", code: "IAD" },
+  { origin: "Chicago", code: "ORD" },
+  { origin: "Dallas–Fort Worth", code: "DFW" },
+  { origin: "Amsterdam", code: "AMS" },
+  { origin: "Dubai", code: "DXB" },
+] as const;
+
+const destinationByAirport: Record<string, string> = {
+  "Murtala Muhammed International Airport": "Lagos",
+  "Accra International Airport": "Accra",
+  "Nnamdi Azikiwe International Airport": "Abuja",
+  "Port Harcourt International Airport": "Port Harcourt",
+  "Margaret Ekpo International Airport": "Calabar",
+  "Akanu Ibiam International Airport": "Enugu",
+  "Kaduna Airport": "Kaduna",
+  "Victor Attah International Airport": "Uyo",
+  "Ilorin International Airport": "Ilorin",
+  "Yakubu Gowon Airport": "Jos",
+  "Tamale Airport": "Tamale",
+  "Aéroport International Gnassingbé Eyadéma": "Lomé",
+  "Aéroport International Cardinal Bernardin Gantin": "Cotonou",
+  "Aéroport international Félix Houphouët-Boigny": "Abidjan",
+  "Aéroport international de Douala": "Douala",
+};
+
+const airportsOnFile: string[] = [];
+for (const flight of flightSearches) {
+  if (!airportsOnFile.includes(flight.airport)) airportsOnFile.push(flight.airport);
+}
+
+for (const airport of airportsOnFile) {
+  const destination = destinationByAirport[airport];
+  if (!destination) continue;
+  for (const dated of datedOrigins) {
+    const q = `Flights from ${dated.code} to ${destination} on 2026-12-16 through 2026-12-30 1 adult`;
+    flightSearches.push({
+      origin: dated.origin,
+      airport,
+      url: `https://www.google.com/travel/flights?q=${encodeURIComponent(q)}`,
+    });
+  }
+}

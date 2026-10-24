@@ -34,7 +34,7 @@ function resolve(item: TripItem): TripRow {
       return {
         item,
         kind: "Event",
-        name: "This saved item is not on file.",
+        name: "This saved item is no longer listed.",
         meta: "",
         links: [],
       };
@@ -55,7 +55,7 @@ function resolve(item: TripItem): TripRow {
     return {
       item,
       kind: "Place",
-        name: "This saved item is not on file.",
+        name: "This saved item is no longer listed.",
         meta: "",
         links: [],
       };
@@ -71,7 +71,7 @@ function resolve(item: TripItem): TripRow {
 
 function StoredLinks({ links }: { links: TripLink[] }) {
   if (links.length === 0) {
-    return <p className="mt-3 text-sm leading-6 text-muted">The link is not on file.</p>;
+    return <p className="mt-3 text-sm leading-6 text-muted">The link is not listed.</p>;
   }
 
   return (
@@ -100,16 +100,16 @@ export function MyTrip() {
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Saved here</p>
         <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
-          My trip
+          Plan your trip
         </h2>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Save an event or a place that is already on file. This list stays in
-          this browser. Each row shows that record’s name and the link already
+          Save an event or a place from this directory. This list stays in
+          this browser. It is still not an account. Each row shows that record’s name and the link already
           stored on it.
         </p>
         {rows.length === 0 ? (
           <p className="mt-6 border border-dashed border-ink/25 bg-paper px-4 py-4 text-sm leading-6 text-muted">
-            Nothing is saved yet. Save an event or a place that is already on file.
+            Nothing is saved yet. Save an event or a place from this directory.
           </p>
         ) : (
           <ul className="mt-6 grid gap-4">

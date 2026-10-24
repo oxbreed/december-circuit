@@ -86,7 +86,7 @@ export function Discovery({ home = false }: { home?: boolean }) {
     eventsMatched.length === 0 &&
     placesMatched.length === 0;
 
-  let emptyCopy = "Nothing on file matches.";
+  let emptyCopy = "Nothing matches this search.";
   if (browsingPlaces && date) {
     emptyCopy =
       "Dates on file belong to confirmed events. Organiser pages do not have a date.";
@@ -117,7 +117,7 @@ export function Discovery({ home = false }: { home?: boolean }) {
         <section className="mx-auto w-full max-w-6xl px-5 pt-28 md:px-8 md:pt-36">
           <SectionIntro
             kicker="Confirmed events"
-            title="Find an event on file."
+            title="Find a confirmed event."
             lede="Activity, city, and date use only the lists already stored here."
           />
           <p className="-mt-6 mb-10">
@@ -213,6 +213,7 @@ export function Discovery({ home = false }: { home?: boolean }) {
               </div>
               <p className="mt-4 text-sm leading-6 text-muted">
                 Dates are the confirmed events. Any other activity opens organiser pages in that category.
+                Matches stay in the order they are listed. Choose a category or a city, or type a name.
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <button
@@ -231,7 +232,7 @@ export function Discovery({ home = false }: { home?: boolean }) {
 
             <div id="guide-results" className="mt-8 scroll-mt-36">
               {noEventsOnFile ? (
-                <EmptyNote>No December 2026 events are on file.</EmptyNote>
+                <EmptyNote>No December 2026 events are listed.</EmptyNote>
               ) : null}
               {noMatches ? <EmptyNote>{emptyCopy}</EmptyNote> : null}
               {eventsMatched.length > 0 ? (

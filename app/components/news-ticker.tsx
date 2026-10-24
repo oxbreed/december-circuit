@@ -67,7 +67,7 @@ export function NewsTicker() {
   return (
     <div
       className="news-ticker border-y border-gold/40 bg-[#efe4d0]"
-      aria-label="Events on file and entertainment headlines"
+      aria-label="Confirmed events and entertainment headlines"
     >
       <div className="news-ticker-window">
         <div
@@ -75,9 +75,10 @@ export function NewsTicker() {
           style={{ animationDuration: `${seconds}s` }}
         >
           {payload === null && !failed ? (
-            <span className="shrink-0 whitespace-nowrap px-4 text-xs uppercase tracking-[0.16em] text-brass">
-              Loading news
-            </span>
+            <span
+              className="mx-4 inline-block h-3 w-40 shrink-0 animate-pulse bg-ink/15"
+              aria-busy="true"
+            />
           ) : null}
           {newsMissing ? (
             <span className="shrink-0 whitespace-nowrap px-4 text-xs text-muted">
