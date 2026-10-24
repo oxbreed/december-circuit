@@ -38,7 +38,13 @@ const footerLink = "underline decoration-ink/30 underline-offset-4 hover:text-ox
 
 const footerKicker = "font-sans text-[11px] uppercase tracking-[0.28em] text-lagoon";
 
-export function SiteChrome({ children }: { children: ReactNode }) {
+export function SiteChrome({
+  children,
+  clock,
+}: {
+  children: ReactNode;
+  clock: ReactNode;
+}) {
   const pathname = usePathname();
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -66,6 +72,9 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/10 bg-paper/92 backdrop-blur-md">
+        <div className="flex h-[var(--clock-strip)] items-center border-b border-brass/40 bg-paper-deep">
+          {clock}
+        </div>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 text-ink">
             <PlaneMark />
@@ -103,6 +112,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         </div>
       </header>
       <div className="mobile-scroll lg:contents">
+      <div aria-hidden="true" className="h-[var(--clock-strip)] shrink-0" />
       {children}
       <footer className="border-t border-ink/15 pb-32 lg:pb-0">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-12 md:px-8 lg:py-16">

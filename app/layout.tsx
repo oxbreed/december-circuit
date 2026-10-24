@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { JsonLd } from "./components/json-ld";
+import { LagosClockSlot } from "./components/lagos-clock-slot";
 import { SiteChrome } from "./components/site-chrome";
 import { siteJsonLd } from "./jsonld";
 import {
@@ -66,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col font-sans text-ink">
         <JsonLd data={siteJsonLd()} />
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome clock={<LagosClockSlot />}>{children}</SiteChrome>
       </body>
     </html>
   );
