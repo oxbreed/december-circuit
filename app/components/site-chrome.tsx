@@ -155,6 +155,9 @@ export function SiteChrome({
             <Link href="/news" className={`text-ink ${footerLink}`}>
               News
             </Link>
+            <Link href="/faq" className={`text-ink ${footerLink}`}>
+              FAQ
+            </Link>
             <Link href="/sign-in" className={`text-ink ${footerLink}`}>
               Sign in
             </Link>
