@@ -5,19 +5,104 @@ import { useMemo, useState } from "react";
 import type { Pin } from "../pins";
 import { directionsHref, pinId } from "./pin-id";
 import { SectionIntro, sectionClass } from "./section-intro";
-import { EmptyNote, ErrorNote, LoadingLines } from "./states";
+import { EmptyNote, ErrorNote } from "./states";
 import { useRecords } from "./use-records";
+
+function MapSkeleton() {
+  return (
+    <div className="map-skeleton h-full min-h-48 w-full" aria-busy="true">
+      <span className="sr-only">Map</span>
+    </div>
+  );
+}
+
+const mapFrameClass =
+  "map-frame h-[min(52vh,calc(100svh-16.5rem))] min-h-0 border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.18)] lg:h-[min(68vh,640px)] lg:min-h-[280px]";
 
 const CircuitMap = dynamic(() => import("./circuit-map"), {
   ssr: false,
-  loading: () => (
-    <div className="flex h-full items-center px-4">
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-brass">
-        Loading the map
-      </p>
-    </div>
-  ),
+  loading: () => <MapSkeleton />,
 });
+
+const mapStyles = `
+  .map-skeleton {
+    background:
+      radial-gradient(circle at 32% 42%, rgba(27, 104, 78, 0.16), transparent 26%),
+      radial-gradient(circle at 68% 62%, rgba(138, 98, 50, 0.2), transparent 18%),
+      #e7dfd2;
+  }
+  .leaflet-tooltip.map-pin-tip {
+    background: #fffaf4;
+    color: #1a1410;
+    border: 1px solid rgba(26, 20, 16, 0.4);
+    border-radius: 0;
+    box-shadow: none;
+    font-family: var(--font-sans), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    padding: 6px 8px;
+    max-width: 14rem;
+    white-space: normal;
+  }
+  .leaflet-tooltip.map-pin-tip.leaflet-tooltip-top:before {
+    border-top-color: rgba(26, 20, 16, 0.4);
+  }
+  @media (max-width: 1023px) {
+    #map .map-stage {
+      height: calc(100svh - var(--mobile-bar, 7.5rem) - 12px);
+      overflow: hidden;
+    }
+    #map .map-lead h2 {
+      font-size: 2rem;
+      line-height: 1.05;
+    }
+    #map .map-lead .mb-10 > p:last-child {
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    #map .map-filters .chip {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      padding: 0.5rem 0.75rem;
+    }
+    #map .map-frame {
+      scroll-margin-top: 4.5rem;
+      scroll-margin-bottom: calc(var(--mobile-bar, 7.5rem) + 12px);
+    }
+    #map .pin-list {
+      padding-bottom: 0.5rem;
+    }
+    #map .pin-list li {
+      scroll-margin-bottom: calc(var(--mobile-bar, 7.5rem) + 12px);
+    }
+    #map .pin-list a,
+    #map .pin-list p {
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    #map .pin-list a span,
+    #map .pin-list a[href*="openstreetmap"] {
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+    .leaflet-tooltip.map-pin-tip {
+      font-size: 15px;
+    }
+    .leaflet-control-zoom a {
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+      font-size: 20px;
+    }
+    .leaflet-container .leaflet-control-attribution {
+      font-size: 12px;
+      line-height: 1.3;
+      max-width: calc(100% - 8px);
+    }
+  }
+`;
 
 export function MapSection() {
   const pins = useRecords<Pin[]>("/api/pins");
@@ -54,8 +139,14 @@ export function MapSection() {
     setActiveId(null);
   }
 
+  function showPin(id: string) {
+    setActiveId(id);
+    document.querySelector("#map .map-frame")?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }
+
   return (
     <section id="map" className={sectionClass}>
+      <style>{mapStyles}</style>
       <div className="map-stage">
         <div className="map-lead">
           <SectionIntro
@@ -63,12 +154,11 @@ export function MapSection() {
             title="Sourced pins"
             lede="Only places with a sourced coordinate. Directions open an external map from that point."
           />
-          {pins.status === "loading" ? <LoadingLines label="Loading pins" /> : null}
           {pins.status === "error" ? (
             <ErrorNote message="The map did not load." onRetry={pins.retry} />
           ) : null}
           {pins.status === "ready" && records.length === 0 ? (
-            <EmptyNote>No places with coordinates are on file.</EmptyNote>
+            <EmptyNote>No places with a coordinate are listed.</EmptyNote>
           ) : null}
         </div>
         {pins.status === "ready" && records.length > 0 ? (
@@ -105,10 +195,17 @@ export function MapSection() {
             </div>
           </div>
         ) : null}
+        {pins.status === "loading" ? (
+          <div className="map-column">
+            <div className={mapFrameClass} role="region" aria-label="Map">
+              <MapSkeleton />
+            </div>
+          </div>
+        ) : null}
         {pins.status === "ready" && records.length > 0 ? (
           <div className="map-column">
             <div
-              className="map-frame h-[min(52vh,calc(100svh-16.5rem))] min-h-0 border border-ink/20 shadow-[6px_6px_0_0_rgba(138,98,50,0.18)] lg:h-[min(68vh,640px)] lg:min-h-[280px]"
+              className={mapFrameClass}
               role="region"
               aria-label="OpenStreetMap of sourced pins"
             >
@@ -116,11 +213,11 @@ export function MapSection() {
                 <CircuitMap
                   pins={visible}
                   activeId={activeId}
-                  onSelect={setActiveId}
+                  onSelect={showPin}
                 />
               ) : (
                 <div className="flex h-full items-center px-4">
-                  <p className="text-muted">No pins are on file for {city}.</p>
+                  <p className="text-base text-muted">No pins for {city}.</p>
                 </div>
               )}
               {active ? (
@@ -140,7 +237,7 @@ export function MapSection() {
                   <p className="mt-1 text-sm text-muted">
                     {active.city}, {active.country}
                   </p>
-                  <p className="mt-1 font-mono text-[11px] text-muted">
+                  <p className="mt-1 font-mono text-[13px] leading-5 text-muted">
                     {active.latitude}, {active.longitude}
                   </p>
                   <a
@@ -189,9 +286,9 @@ export function MapSection() {
                         )}
                         <button
                           type="button"
-                          onClick={() => setActiveId(id)}
+                          onClick={() => showPin(id)}
                           aria-pressed={selected}
-                          className="mt-1 block text-left font-mono text-[11px] uppercase tracking-[0.14em] text-muted"
+                          className="mt-1 block text-left font-mono text-[13px] uppercase tracking-[0.08em] text-muted"
                         >
                           {pin.city} · Show on map
                         </button>

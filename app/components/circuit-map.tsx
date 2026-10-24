@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CircleMarker,
   MapContainer,
@@ -16,6 +16,13 @@ import { pinId } from "./pin-id";
 
 const fitOptions: FitBoundsOptions = {
   padding: [28, 28],
+  maxZoom: 12,
+  animate: false,
+};
+
+const phoneFit: FitBoundsOptions = {
+  paddingTopLeft: [28, 40],
+  paddingBottomRight: [28, 52],
   maxZoom: 12,
   animate: false,
 };
@@ -60,7 +67,8 @@ function StationPins({
       if (size.x < 1 || size.y < 1) return;
       if (!handedOff.current) {
         fitting.current = true;
-        map.fitBounds(pinBounds(pins), fitOptions);
+        const phone = window.matchMedia("(max-width: 1023px)").matches;
+        map.fitBounds(pinBounds(pins), phone ? phoneFit : fitOptions);
         fitting.current = false;
       }
       container.style.visibility = "visible";
@@ -110,6 +118,7 @@ export default function CircuitMap({
   activeId: string | null;
   onSelect: (id: string) => void;
 }) {
+  const narrow = useNarrowMap();
   if (pins.length === 0) return null;
   const signature = pins
     .map((pin) => `${pin.latitude},${pin.longitude},${pin.name}`)
@@ -145,7 +154,7 @@ export default function CircuitMap({
           <CircleMarker
             key={id}
             center={[pin.latitude, pin.longitude]}
-            radius={selected ? 9 : 6}
+            radius={selected ? (narrow ? 12 : 9) : narrow ? 9 : 6}
             pathOptions={{
               color: selected ? "#1a1410" : "#1b684e",
               weight: selected ? 2 : 1.5,
@@ -154,10 +163,24 @@ export default function CircuitMap({
             }}
             eventHandlers={{ click: () => onSelect(id) }}
           >
-            <Tooltip>{pin.name}</Tooltip>
+            <Tooltip className="map-pin-tip" direction="auto" offset={[0, -6]} opacity={1}>
+              {pin.name}
+            </Tooltip>
           </CircleMarker>
         );
       })}
     </MapContainer>
   );
+}
+
+function useNarrowMap() {
+  const [narrow, setNarrow] = useState(() => window.matchMedia("(max-width: 1023px)").matches);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 1023px)");
+    const apply = () => setNarrow(query.matches);
+    apply();
+    query.addEventListener("change", apply);
+    return () => query.removeEventListener("change", apply);
+  }, []);
+  return narrow;
 }

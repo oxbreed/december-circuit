@@ -164,6 +164,9 @@ export function SiteChrome({
             <Link href="/terms" className={`text-ink ${footerLink}`}>
               Terms
             </Link>
+            <Link href="/eula" className={`text-ink ${footerLink}`}>
+              EULA
+            </Link>
           </nav>
         </div>
       </footer>
