@@ -13,7 +13,7 @@ import {
   type PoiResult,
   type PoiSource,
 } from "../poi-client";
-import { SectionIntro, sectionClass } from "./section-intro";
+import { SectionIntro, sectionClassCompact } from "./section-intro";
 import { EmptyNote, ErrorNote, LoadingLines } from "./states";
 
 const PoiMap = dynamic(() => import("./poi-map"), {
@@ -62,7 +62,7 @@ const mapFrameClass =
 
 export function ExploreFallback() {
   return (
-    <section id="explore" className={sectionClass}>
+    <section id="explore" className={sectionClassCompact}>
       <SectionIntro
         kicker="Explore"
         title="OpenStreetMap search"
@@ -160,7 +160,7 @@ export function ExploreSection() {
     state.status === "ready" && state.sources.includes("foursquare");
 
   return (
-    <section id="explore" className={sectionClass}>
+    <section id="explore" className={sectionClassCompact}>
       <style>{`
         .map-skeleton {
           background:

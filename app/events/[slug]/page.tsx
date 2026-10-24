@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { disclaimer } from "../../brand";
+import { Breadcrumbs } from "../../components/breadcrumbs";
 import { JsonLd } from "../../components/json-ld";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
 import { SaveTripButton } from "../../components/save-trip-button";
 import { checkedOn, eventSlug, presentEvent } from "../../event-view";
 import { events } from "../../events";
 import { eventTripId } from "../../trip";
-import { eventJsonLd } from "../../jsonld";
+import { breadcrumbJsonLd, eventJsonLd } from "../../jsonld";
 import { pageMetadata } from "../../site";
 
 export function generateStaticParams() {
@@ -25,8 +26,8 @@ export async function generateMetadata({
   if (!event) return { title: "Event" };
   const view = presentEvent(event);
   return pageMetadata({
-    title: view.name,
-    description: event.summary,
+    title: `${view.name} — ${view.region}`,
+    description: `${event.summary} Sourced listing on dirtydecember.info for Detty December / December ${view.region}. Tickets and organiser pages leave this site.`,
     path: view.href,
   });
 }
@@ -45,12 +46,20 @@ export default async function EventPage({
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-20">
       <JsonLd data={eventJsonLd(event)} />
-      <Link
-        href="/events"
-        className="text-[11px] uppercase tracking-[0.2em] text-muted hover:text-oxide"
-      >
-        Events
-      </Link>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Events", path: "/events" },
+          { name: view.name, path: view.href },
+        ])}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Events", href: "/events" },
+          { name: view.name },
+        ]}
+      />
       <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start">
         <DateBlock when={event.when} />
         <div className="min-w-0">
@@ -72,7 +81,20 @@ export default async function EventPage({
         <PrimaryAction event={event} />
         <SaveTripButton kind="event" id={eventTripId(event)} />
       </div>
-      <p className="mt-8 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
+      <p className="mt-8 text-sm leading-7 text-muted">
+        <Link href="/events" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          All confirmed events
+        </Link>
+        {" · "}
+        <Link href="/cities" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Cities
+        </Link>
+        {" · "}
+        <Link href="/guide" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Tourist guide
+        </Link>
+      </p>
+      <p className="mt-6 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
     </main>
   );
 }

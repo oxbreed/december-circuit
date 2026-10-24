@@ -1,6 +1,10 @@
 export const sectionClass =
   "scroll-mt-36 mx-auto w-full max-w-6xl px-5 pb-16 pt-28 md:px-8 md:pb-20 md:pt-32";
 
+/** When breadcrumbs / SEO chrome already sit above the section. */
+export const sectionClassCompact =
+  "scroll-mt-36 mx-auto w-full max-w-6xl px-5 pb-16 pt-8 md:px-8 md:pb-20";
+
 export function SectionIntro({
   kicker,
   title,

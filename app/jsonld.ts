@@ -1,7 +1,16 @@
+import { faqAnswerPlain, faqItems } from "./faq-items";
 import { presentEvent } from "./event-view";
 import type { CircuitEvent } from "./events";
+import type { CityRecord } from "./cities";
 import { places } from "./places";
-import { absoluteUrl, defaultDescription, publisherName, siteName, siteUrl } from "./site";
+import {
+  absoluteUrl,
+  defaultDescription,
+  publisherName,
+  publisherUrl,
+  siteName,
+  siteUrl,
+} from "./site";
 
 const monthNumbers: Record<string, string> = {
   january: "01",
@@ -54,18 +63,108 @@ export function datesOnFile(when: string): { startDate: string; endDate?: string
   return { startDate: when };
 }
 
+export function organizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    name: publisherName,
+    url: publisherUrl,
+    brand: {
+      "@type": "Brand",
+      name: siteName,
+      url: siteUrl,
+    },
+    email: "hello@dirtydecember.info",
+  };
+}
+
 export function siteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
     name: siteName,
     url: siteUrl,
     description: defaultDescription,
-    publisher: {
-      "@type": "Organization",
-      name: publisherName,
-      url: "https://www.oxbreedmanagement.com",
+    inLanguage: "en",
+    publisher: { "@id": `${siteUrl}/#organization` },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${siteUrl}/events?date={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
     },
+  };
+}
+
+export function faqPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": absoluteUrl("/faq"),
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faqAnswerPlain(item.answer),
+      },
+    })),
+  };
+}
+
+export function breadcrumbJsonLd(
+  items: { name: string; path: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
+    })),
+  };
+}
+
+export function cityPlaceJsonLd(city: CityRecord) {
+  const pageUrl = absoluteUrl(`/cities/${city.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@type": "TouristDestination",
+    "@id": pageUrl,
+    name: `${city.city}, ${city.country}`,
+    url: pageUrl,
+    description: `${city.city}, ${city.country} on dirtydecember.info — organiser pages and confirmed December events already on file.`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: city.city,
+      addressCountry: city.country,
+    },
+    containedInPlace: {
+      "@type": "Place",
+      name: "West Africa",
+    },
+  };
+}
+
+export function citiesItemListJsonLd(
+  cities: { city: string; country: string; slug: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Cities on dirtydecember.info",
+    itemListElement: cities.map((city, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: `${city.city}, ${city.country}`,
+      url: absoluteUrl(`/cities/${city.slug}`),
+    })),
   };
 }
 
@@ -93,9 +192,13 @@ export function eventJsonLd(event: CircuitEvent) {
     "@type": "Event",
     "@id": pageUrl,
     name: view.name,
+    description: event.summary,
     startDate: dates.startDate,
     url: pageUrl,
     location,
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    inLanguage: "en",
   };
   if (dates.endDate) data.endDate = dates.endDate;
   if (event.url && event.urlLabel !== "News report") {
@@ -104,6 +207,9 @@ export function eventJsonLd(event: CircuitEvent) {
       url: event.url,
     };
   }
-  if (event.ticketsUrl) data.sameAs = event.ticketsUrl;
+  if (event.ticketsUrl) {
+    // Outbound ticket link only — no price, fare, or availability claim on this site.
+    data.sameAs = event.ticketsUrl;
+  }
   return data;
 }

@@ -2,9 +2,9 @@ import { disclaimer } from "../brand";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
-  title: "About",
+  title: "About dirtydecember.info",
   description:
-    "What this independent directory lists, and when a record is allowed on the site.",
+    "Independent Detty December and West Africa directory by Oxbreed Management — what may be listed, outbound bookings only, and when a record is allowed on dirtydecember.info.",
   path: "/about",
 });
 

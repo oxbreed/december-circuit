@@ -3,7 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { disclaimer } from "../../brand";
 import { citiesOnFile, cityBySlug, cityDescription } from "../../cities";
+import { Breadcrumbs } from "../../components/breadcrumbs";
 import { EventCard } from "../../components/event-card";
+import { JsonLd } from "../../components/json-ld";
+import { breadcrumbJsonLd, cityPlaceJsonLd } from "../../jsonld";
 import { pageMetadata } from "../../site";
 
 export function generateStaticParams() {
@@ -19,7 +22,7 @@ export async function generateMetadata({
   const city = cityBySlug(slug);
   if (!city) return { title: "City" };
   return pageMetadata({
-    title: city.city,
+    title: `${city.city}, ${city.country}`,
     description: cityDescription(city),
     path: `/cities/${city.slug}`,
   });
@@ -34,13 +37,29 @@ export default async function CityPage({
   const city = cityBySlug(slug);
   if (!city) notFound();
   const description = cityDescription(city);
+  const path = `/cities/${city.slug}`;
 
   return (
     <main
       id="top"
       className="mx-auto w-full max-w-6xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-16"
     >
-      <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">
+      <JsonLd data={cityPlaceJsonLd(city)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Cities", path: "/cities" },
+          { name: city.city, path },
+        ])}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Cities", href: "/cities" },
+          { name: city.city },
+        ]}
+      />
+      <p className="mt-6 text-[11px] uppercase tracking-[0.28em] text-lagoon">
         {city.country}
       </p>
       <h1 className="mt-3 font-display text-5xl leading-none tracking-tight md:text-7xl">
@@ -89,12 +108,24 @@ export default async function CityPage({
       </section>
 
       <p className="mt-10 text-sm leading-7 text-muted">
+        <Link href="/cities" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          All cities
+        </Link>
+        {" · "}
         <Link href="/places" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           All organiser pages
         </Link>
         {" · "}
         <Link href="/events" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           Confirmed events
+        </Link>
+        {" · "}
+        <Link href="/guide#entry" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Visa and entry
+        </Link>
+        {" · "}
+        <Link href="/map" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Map
         </Link>
       </p>
       <p className="mt-6 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>

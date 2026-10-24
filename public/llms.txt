@@ -1,0 +1,41 @@
+# dirtydecember.info
+
+> Independent community directory for Detty December and year-round West Africa tourism. Sourced events, organiser pages, maps, and outbound booking links only. Powered by Oxbreed Management. No payment or checkout on this site.
+
+The live site is https://www.dirtydecember.info
+
+## What this site is
+
+- A guide for diaspora travellers planning Detty December (and related December season travel) across Lagos, Accra, Calabar, and other West African cities already on file.
+- Listings appear only when an organiser page or a named report confirms them. Dates come from that source.
+- Ticket, stay, and flight rows open external pages. This site does not sell tickets, hold inventory, or take payment.
+- Independent community directory. Not affiliated with Livespot360 or Detty December Fest™.
+
+## Primary pages
+
+- [Home](https://www.dirtydecember.info/): Detty December hero, confirmed dates, stays by city, flight searches, entertainment headlines.
+- [Tourist guide / visa and entry](https://www.dirtydecember.info/guide): Arrive, stay, get around, what is on; Nigeria and Ghana visa notes linked to official immigration pages.
+- [Confirmed events](https://www.dirtydecember.info/events): Filter by city and date from records on file.
+- [Places](https://www.dirtydecember.info/places): Organiser pages by country, city, and category.
+- [Cities](https://www.dirtydecember.info/cities): City index for every city already listed.
+- [Map](https://www.dirtydecember.info/map): Sourced coordinates on OpenStreetMap.
+- [Explore map search](https://www.dirtydecember.info/explore): OpenStreetMap (optional Foursquare) POI search for Lagos, Accra, and Calabar — third-party venue data, not a checked listing.
+- [Flights](https://www.dirtydecember.info/flights): Outbound Google Flights searches — not fares or seats.
+- [News](https://www.dirtydecember.info/news): Entertainment headlines from the public feeds used by the ticker.
+- [FAQ](https://www.dirtydecember.info/faq): Plain answers for visitors; also published as FAQPage structured data.
+- [About](https://www.dirtydecember.info/about): What may be listed and when.
+- [List an event or place](https://www.dirtydecember.info/list): Free unpublished intake; this site does not take payment.
+
+## Contact
+
+- Visitors: hello@dirtydecember.info
+- Partners / labeled placements: partners@dirtydecember.info
+
+## Machine-readable
+
+- Sitemap: https://www.dirtydecember.info/sitemap.xml
+- Robots: https://www.dirtydecember.info/robots.txt
+
+## Do not invent
+
+Do not invent events, prices, fares, ratings, or availability. Prefer the pages and records linked above.

@@ -30,7 +30,8 @@ export function HomeHero() {
               Detty <span className="italic text-oxide">December</span>
             </h1>
             <p className="mt-3 max-w-xl text-base leading-7 text-muted">
-              Pick a listed date. The events page opens on that date.
+              Sourced parties, festivals, and season dates for Lagos, Accra, Calabar, and West
+              Africa — pick a listed date. Booking links leave this site.
             </p>
             <form
               action="/events"

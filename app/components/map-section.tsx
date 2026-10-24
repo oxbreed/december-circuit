@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Pin } from "../pins";
 import { directionsHref, pinId } from "./pin-id";
-import { SectionIntro, sectionClass } from "./section-intro";
+import { SectionIntro, sectionClassCompact } from "./section-intro";
 import { EmptyNote, ErrorNote } from "./states";
 import { useRecords } from "./use-records";
 
@@ -127,14 +127,14 @@ export function MapSection() {
   }
 
   return (
-    <section id="map" className={sectionClass}>
+    <section id="map" className={sectionClassCompact}>
       <style>{mapStyles}</style>
       <div className="map-stage">
         <div className="map-lead">
           <SectionIntro
             kicker="Map"
             title="Sourced pins"
-            lede="Only places with a sourced coordinate. Directions open an external map from that point."
+            lede="Only places with a sourced coordinate across Lagos, Accra, Calabar, and other West Africa cities on file. Directions open an external map from that point."
           />
           <p className="mb-6 max-w-2xl text-sm leading-6 text-muted">
             Looking for more hotels, restaurants, clubs, or landmarks?{" "}

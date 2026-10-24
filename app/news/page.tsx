@@ -3,9 +3,9 @@ import { loadNews } from "../news-reader";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
-  title: "News",
+  title: "News — West Africa entertainment",
   description:
-    "Entertainment headlines and pictures supplied by the public feeds already used for the ticker.",
+    "Entertainment and culture headlines for Detty December season reading — pictures and text from the public feeds already used on the dirtydecember.info ticker.",
   path: "/news",
 });
 

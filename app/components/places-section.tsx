@@ -6,13 +6,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { Place } from "../places";
 import { placeTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
-import { SectionIntro, sectionClass } from "./section-intro";
+import { SectionIntro, sectionClassCompact } from "./section-intro";
 import { EmptyNote, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
 
 export function PlacesFallback() {
   return (
-    <section id="places" className={sectionClass}>
+    <section id="places" className={sectionClassCompact}>
       <SectionIntro
         kicker="Places"
         title="Organiser pages"
@@ -104,7 +104,7 @@ export function PlacesSection() {
       : [];
 
   return (
-    <section id="places" className={sectionClass}>
+    <section id="places" className={sectionClassCompact}>
       <SectionIntro
         kicker="Places"
         title="Organiser pages"

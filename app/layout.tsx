@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { JsonLd } from "./components/json-ld";
 import { LagosClockSlot } from "./components/lagos-clock-slot";
 import { SiteChrome } from "./components/site-chrome";
 import { SupportChatSlot } from "./components/support-chat-slot";
-import { siteJsonLd } from "./jsonld";
+import { organizationJsonLd, siteJsonLd } from "./jsonld";
 import {
   defaultDescription,
+  defaultShareImage,
   publisherName,
   siteName,
   siteUrl,
@@ -31,6 +32,12 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#f4eadc",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -49,24 +56,37 @@ export const metadata: Metadata = {
     siteName,
     type: "website",
     locale: "en",
-    images: [{ url: "/icon.png", alt: siteName }],
+    images: [
+      {
+        url: defaultShareImage.url,
+        alt: defaultShareImage.alt,
+        width: defaultShareImage.width,
+        height: defaultShareImage.height,
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: siteName,
     description: defaultDescription,
-    images: ["/icon.png"],
+    images: [defaultShareImage.url],
   },
   robots: { index: true, follow: true },
+  category: "travel",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans text-ink">
+        <JsonLd data={organizationJsonLd()} />
         <JsonLd data={siteJsonLd()} />
         <SiteChrome clock={<LagosClockSlot />}>{children}</SiteChrome>
         <SupportChatSlot />

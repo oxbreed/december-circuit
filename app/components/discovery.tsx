@@ -16,7 +16,14 @@ function uniqueSorted(values: string[]) {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b));
 }
 
-export function Discovery({ home = false }: { home?: boolean }) {
+export function Discovery({
+  home = false,
+  compactTop = false,
+}: {
+  home?: boolean;
+  /** When a page already rendered breadcrumbs / SEO chrome above. */
+  compactTop?: boolean;
+}) {
   const eventsState = useRecords<CircuitEvent[]>("/api/events");
   const placesState = useRecords<Place[]>("/api/places");
   const search = useSearchParams();
@@ -114,11 +121,15 @@ export function Discovery({ home = false }: { home?: boolean }) {
           <LandmarkFrame />
         </section>
       ) : (
-        <section className="mx-auto w-full max-w-6xl px-5 pt-28 md:px-8 md:pt-36">
+        <section
+          className={`mx-auto w-full max-w-6xl px-5 md:px-8 ${
+            compactTop ? "pt-8" : "pt-28 md:pt-36"
+          }`}
+        >
           <SectionIntro
             kicker="Confirmed events"
             title="Find a confirmed event."
-            lede="Activity, city, and date use only the lists already stored here."
+            lede="Activity, city, and date use only the lists already stored here — Detty December parties, festivals, and season dates on file."
           />
           <p className="-mt-6 mb-10">
             <a

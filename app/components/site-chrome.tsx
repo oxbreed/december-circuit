@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { disclaimer, nav } from "../brand";
+import { disclaimer, footerExtra, nav } from "../brand";
 import { NewsTicker } from "./news-ticker";
 
 function PlaneMark() {
@@ -149,18 +149,11 @@ export function SiteChrome({
             </p>
           </div>
           <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6">
-            <Link href="/list" className={`text-ink ${footerLink}`}>
-              List an event or place
-            </Link>
-            <Link href="/explore" className={`text-ink ${footerLink}`}>
-              Explore map search
-            </Link>
-            <Link href="/news" className={`text-ink ${footerLink}`}>
-              News
-            </Link>
-            <Link href="/faq" className={`text-ink ${footerLink}`}>
-              FAQ
-            </Link>
+            {footerExtra.map(([label, href]) => (
+              <Link key={href} href={href} className={`text-ink ${footerLink}`}>
+                {label}
+              </Link>
+            ))}
             <Link href="/sign-in" className={`text-ink ${footerLink}`}>
               Sign in
             </Link>

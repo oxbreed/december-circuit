@@ -10,3 +10,12 @@ export const nav = [
   ["Map", "/map"],
   ["About", "/about"],
 ] as const;
+
+/** Extra footer destinations kept out of the 7-column mobile bar. */
+export const footerExtra = [
+  ["Cities", "/cities"],
+  ["Explore", "/explore"],
+  ["News", "/news"],
+  ["FAQ", "/faq"],
+  ["List an event or place", "/list"],
+] as const;

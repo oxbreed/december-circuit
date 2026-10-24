@@ -66,11 +66,12 @@ export function cityDescription(city: CityRecord) {
   const pages = `${city.places.length} organiser ${
     city.places.length === 1 ? "page" : "pages"
   }`;
+  const hub = `${city.city}, ${city.country} — West Africa tourism directory on dirtydecember.info.`;
   if (city.events.length === 0) {
-    return `${city.city}, ${city.country}. ${pages} listed. No confirmed event is listed for this city.`;
+    return `${hub} ${pages} listed. No confirmed event is listed for this city yet.`;
   }
-  const confirmed = `${city.events.length} confirmed ${
+  const confirmed = `${city.events.length} confirmed December ${
     city.events.length === 1 ? "event" : "events"
   }`;
-  return `${city.city}, ${city.country}. ${confirmed} and ${pages} listed.`;
+  return `${hub} ${confirmed} and ${pages} listed for Detty December planning and the season.`;
 }

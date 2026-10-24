@@ -3,8 +3,9 @@ import { flightSearches } from "../flights";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
-  title: "Flights",
-  description: "Outbound Google Flights searches. Not fares or seats.",
+  title: "Flights to Lagos, Accra & more",
+  description:
+    "Outbound Google Flights searches toward Lagos, Accra, Calabar, and other listed airports for Detty December and West Africa travel. Searches only — not fares, seats, or bookings on this site.",
   path: "/flights",
 });
 

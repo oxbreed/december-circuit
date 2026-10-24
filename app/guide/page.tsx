@@ -1,16 +1,19 @@
 import Link from "next/link";
 import { EventCard } from "../components/event-card";
+import { Breadcrumbs } from "../components/breadcrumbs";
+import { JsonLd } from "../components/json-ld";
 import { citiesOnFile } from "../cities";
 import { events } from "../events";
 import { flightSearches, seasonSearchNote } from "../flights";
+import { breadcrumbJsonLd } from "../jsonld";
 import { pins, type Pin } from "../pins";
 import { places, type Place } from "../places";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
-  title: "Guide",
+  title: "Tourist guide & visa — West Africa",
   description:
-    "A tourist guide through arrive, stay, get around, and what is on, using only records already listed.",
+    "Detty December tourist guide for Lagos, Accra, and Calabar: visa and entry notes from official Nigeria and Ghana pages, arrive, stay, get around, and what is on — records already on file only.",
   path: "/guide",
 });
 
@@ -155,13 +158,26 @@ export default function GuidePage() {
 
   return (
     <main id="top" className="mx-auto w-full min-w-0 max-w-6xl px-4 pb-16 pt-20 sm:px-6 lg:px-8 lg:pt-36">
-      <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">On file</p>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Guide", path: "/guide" },
+        ])}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Guide" },
+        ]}
+      />
+      <p className="mt-6 text-[11px] uppercase tracking-[0.28em] text-lagoon">On file</p>
       <h1 className="mt-2 max-w-3xl font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
         Tourist guide
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-        Move through arrive, stay, get around, and what is on. Every line comes
-        from a record already listed. If a fact is not listed, it is left out.
+        Plan a Detty December or West Africa trip through visa and entry, arrive, stay, get
+        around, and what is on. Every line comes from a record already listed. If a fact is not
+        listed, it is left out.
       </p>
       <nav aria-label="Guide" className="mt-5 flex flex-wrap gap-2">
         <a href="#entry" className="chip">
