@@ -4,7 +4,7 @@ import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
   title: "Places",
-  description: "Organiser pages already on file, by country, city, and category.",
+  description: "Organiser pages already listed, by country, city, and category.",
   path: "/places",
 });
 

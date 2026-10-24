@@ -71,7 +71,7 @@ export async function GET(request: Request) {
       {
         results: [],
         empty: true,
-        message: "Prices are not on file.",
+        message: "Prices are not listed.",
       },
       400,
     );
@@ -162,8 +162,8 @@ export async function GET(request: Request) {
       ? {
           message:
             matched.length === 0
-              ? "No events on file match this query."
-              : "No events on file for this page.",
+              ? "No events match this query."
+              : "No events for this page.",
         }
       : {}),
   });

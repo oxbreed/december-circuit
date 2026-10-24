@@ -67,10 +67,10 @@ export function cityDescription(city: CityRecord) {
     city.places.length === 1 ? "page" : "pages"
   }`;
   if (city.events.length === 0) {
-    return `${city.city}, ${city.country}. ${pages} on file. No confirmed event is on file for this city.`;
+    return `${city.city}, ${city.country}. ${pages} listed. No confirmed event is listed for this city.`;
   }
   const confirmed = `${city.events.length} confirmed ${
     city.events.length === 1 ? "event" : "events"
   }`;
-  return `${city.city}, ${city.country}. ${confirmed} and ${pages} on file.`;
+  return `${city.city}, ${city.country}. ${confirmed} and ${pages} listed.`;
 }

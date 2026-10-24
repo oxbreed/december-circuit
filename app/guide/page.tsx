@@ -10,7 +10,7 @@ import { pageMetadata } from "../site";
 export const metadata = pageMetadata({
   title: "Guide",
   description:
-    "A tourist guide through arrive, stay, get around, and what is on, using only records already on file.",
+    "A tourist guide through arrive, stay, get around, and what is on, using only records already listed.",
   path: "/guide",
 });
 
@@ -161,7 +161,7 @@ export default function GuidePage() {
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
         Move through arrive, stay, get around, and what is on. Every line comes
-        from a record already filed. If a fact is not on file, it is left out.
+        from a record already listed. If a fact is not listed, it is left out.
       </p>
       <nav aria-label="Guide" className="mt-5 flex flex-wrap gap-2">
         <a href="#entry" className="chip">
@@ -330,7 +330,7 @@ export default function GuidePage() {
       <section id="cities" className="mt-14 scroll-mt-36 border-t border-ink/10 pt-10">
         <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">Cities</h2>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-          Each city page is a city already on file.
+          Each city page is a city already listed.
         </p>
         <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
           {cities.map((city) => (

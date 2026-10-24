@@ -27,7 +27,7 @@ export default function AboutPage() {
         </p>
         <p>
           A place name opens that organiser page. A flight row opens a search,
-          not a fare or a seat. The map uses the coordinates already on file,
+          not a fare or a seat. The map uses the coordinates already listed,
           and directions leave this site.
         </p>
       </div>

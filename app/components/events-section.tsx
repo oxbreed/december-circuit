@@ -86,7 +86,7 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
         />
       ) : null}
       {events.status === "ready" && events.data.length === 0 ? (
-        <EmptyNote>No December 2026 events are on file.</EmptyNote>
+        <EmptyNote>No December 2026 events are listed.</EmptyNote>
       ) : null}
     </>
   );
@@ -135,7 +135,7 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
       {events.status === "ready" && events.data.length > 0 ? (
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brass">
-            {events.data.length} on file
+            {events.data.length} listed
           </p>
           {regions.map((region) => (
             <div key={region} className="mt-10">

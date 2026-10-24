@@ -75,14 +75,14 @@ export default function TermsPage() {
           is stored in the private submission-images bucket. The upload does not
           place the picture on the public site. The submission status stays
           unpublished until a person checks it. Saving the form does not publish
-          the listing. A public record is a separate edit of the records on
-          file.
+          the listing. A public record is a separate edit of the published
+          records.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Reviews</h2>
         <p>
-          A review is text only, from a signed-in visitor, with no rating. No
-          reviews are on file. You are responsible for the words you submit. The
+          A review is text only, from a signed-in visitor, with no rating. The
+          reviews block stays hidden until a review is published. You are responsible for the words you submit. The
           operator may remove a review that breaks these terms, or that the law
           requires to be removed.
         </p>
@@ -103,7 +103,7 @@ export default function TermsPage() {
           Labeled placements
         </h2>
         <p>
-          Paid placements are labeled. No sponsor is on file. A placement or
+          Paid placements are labeled. No sponsor is listed, and the empty block is hidden. A placement or
           partnership form is a request to be checked. It does not by itself buy
           a place on the page.
         </p>

@@ -5,7 +5,7 @@ import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
   title: "Events",
-  description: "Confirmed December 2026 events already on file.",
+  description: "Confirmed December 2026 events.",
   path: "/events",
 });
 
@@ -15,7 +15,7 @@ export default function EventsPage() {
       <Suspense
         fallback={
           <div className="mx-auto max-w-6xl px-5 pt-28">
-            <LoadingLines label="Loading what is on file." />
+            <LoadingLines />
           </div>
         }
       >

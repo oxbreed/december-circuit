@@ -89,7 +89,7 @@ export function Discovery({ home = false }: { home?: boolean }) {
   let emptyCopy = "Nothing matches this search.";
   if (browsingPlaces && date) {
     emptyCopy =
-      "Dates on file belong to confirmed events. Organiser pages do not have a date.";
+      "Dates belong to confirmed events. Organiser pages do not have a date.";
   } else if (browsingPlaces) {
     emptyCopy = "No organiser page matches this activity and city.";
   } else if (filtersOn) {
@@ -105,7 +105,7 @@ export function Discovery({ home = false }: { home?: boolean }) {
               December 2026
             </p>
             <h1 className="mt-3 max-w-xl font-display text-5xl leading-[0.9] tracking-tight sm:text-6xl lg:text-7xl">
-              Find what is <span className="text-oxide">on file</span>.
+              Find an <span className="text-oxide">event</span>.
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-7 text-muted">
               {disclaimer}
@@ -135,7 +135,7 @@ export function Discovery({ home = false }: { home?: boolean }) {
         id="events"
         className="mx-auto w-full max-w-6xl scroll-mt-36 px-5 pb-16 md:px-8 md:pb-20"
       >
-        {loading ? <LoadingLines label="Loading what is on file." /> : null}
+        {loading ? <LoadingLines /> : null}
         {failed ? (
           <ErrorNote
             message="The guide could not be loaded."

@@ -49,7 +49,7 @@ export default function PrivacyPage() {
           note, and write a text review after you sign in. You can also email an
           enquiry. Booking links, ticket links, organiser pages, and flight
           searches open other sites. The map draws coordinates that are already
-          on file.
+          listed.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -86,12 +86,12 @@ export default function PrivacyPage() {
         <p>
           A review is text only, from a signed-in visitor, with no rating. The
           review stores that text and the id of the signed-in account. The
-          public page shows the text. No reviews are on file, and the site does
-          not add sample reviews.
+          public page shows the text. The site does not add sample reviews, and
+          the reviews block stays hidden until a review is published.
         </p>
         <p>
           My trip is saved in this browser only. It stores the kind and id of an
-          event or a place that is already on file. It is not an account, and
+          event or a place that is already listed. It is not an account, and
           that list is not sent to the server as a trip.
         </p>
         <p>
