@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cacheLife } from "next/cache";
+import { OSM_USER_AGENT } from "./overpass";
 import {
   intakeCityCountry,
   isIntakeCity,
@@ -10,8 +11,6 @@ import {
 
 export type { GeocodeCandidate };
 
-const USER_AGENT =
-  "DirtyDecember/1.0 (https://www.dirtydecember.info; hello@dirtydecember.info)";
 const NOMINATIM_SEARCH = "https://nominatim.openstreetmap.org/search";
 const MIN_GAP_MS = 1100;
 const MAX_RESULTS = 5;
@@ -86,7 +85,7 @@ async function fetchNominatim(name: string, city: IntakeCity): Promise<GeocodeCa
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
-      "User-Agent": USER_AGENT,
+      "User-Agent": OSM_USER_AGENT,
     },
     signal: AbortSignal.timeout(12_000),
     cache: "no-store",

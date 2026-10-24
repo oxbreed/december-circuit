@@ -118,7 +118,14 @@ export function PlacesSection() {
         >
           List a place
         </Link>{" "}
-        — it stays unpublished until a person checks it.
+        — it stays unpublished until a person checks it. For unreviewed map points, try{" "}
+        <Link
+          href="/explore"
+          className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+        >
+          Explore map search
+        </Link>
+        .
       </p>
 
       {all.status === "loading" ? <LoadingLines label="Loading places" /> : null}

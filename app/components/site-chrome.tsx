@@ -152,6 +152,9 @@ export function SiteChrome({
             <Link href="/list" className={`text-ink ${footerLink}`}>
               List an event or place
             </Link>
+            <Link href="/explore" className={`text-ink ${footerLink}`}>
+              Explore map search
+            </Link>
             <Link href="/news" className={`text-ink ${footerLink}`}>
               News
             </Link>

@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Pin } from "../pins";
 import { directionsHref, pinId } from "./pin-id";
@@ -154,6 +155,16 @@ export function MapSection() {
             title="Sourced pins"
             lede="Only places with a sourced coordinate. Directions open an external map from that point."
           />
+          <p className="mb-6 max-w-2xl text-sm leading-6 text-muted">
+            Looking for more hotels, restaurants, clubs, or landmarks?{" "}
+            <Link
+              href="/explore"
+              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              Explore map search
+            </Link>{" "}
+            shows OpenStreetMap points — map data, not checked listings.
+          </p>
           {pins.status === "error" ? (
             <ErrorNote message="The map did not load." onRetry={pins.retry} />
           ) : null}
