@@ -87,10 +87,11 @@ export default function PrivacyPage() {
           partners@dirtydecember.info.
         </p>
         <p>
-          A review is text only, from a signed-in visitor, with no rating. The
-          review stores that text and the id of the signed-in account. The
-          public page shows the text. The site does not add sample reviews, and
-          the reviews block stays hidden until a review is published.
+          A signed-in visitor can leave a site review, or a rating and review on
+          an event or place page. Helpful marks and questions use the same
+          account. Review photos and answers stay unpublished until a person
+          checks them. The site does not invent reviews, stars, or photos, and
+          verified directory listings never invent ratings.
         </p>
         <p>
           My trip is saved in this browser only. It stores the kind and id of an
@@ -116,9 +117,8 @@ export default function PrivacyPage() {
         </h2>
         <p>
           There is no advertising cookie. This site does not run an analytics
-          script. A review has no rating. A newsletter, a fare, or a payment is
-          not offered yet. If one is added, this notice will be updated before
-          it starts.
+          script. A newsletter, a fare, or a payment is not offered yet. If one
+          is added, this notice will be updated before it starts.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Why</h2>

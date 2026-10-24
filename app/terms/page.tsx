@@ -81,10 +81,12 @@ export default function TermsPage() {
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Reviews</h2>
         <p>
-          A review is text only, from a signed-in visitor, with no rating. The
-          reviews block stays hidden until a review is published. You are responsible for the words you submit. The
-          operator may remove a review that breaks these terms, or that the law
-          requires to be removed.
+          Signed-in visitors may leave a site review, or a rating and review on
+          an event or place page, plus helpful marks and questions. Review photos
+          and answers stay unpublished until a person checks them. The site does
+          not invent reviews, stars, or photos. You are responsible for the words
+          you submit. The operator may remove UGC that breaks these terms, or
+          that the law requires to be removed.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">

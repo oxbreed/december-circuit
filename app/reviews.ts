@@ -3,7 +3,13 @@ import { directorySignIn } from "./directory-auth";
 import { isSubmissionImagePath } from "./submission-picture";
 import { createAnonClient, createServiceClient } from "./supabase/server";
 
-export type ReviewRow = { id: string; body: string };
+export type ReviewRow = {
+  id: string;
+  body: string;
+  rating: number | null;
+  subjectKind: string | null;
+  subjectKey: string | null;
+};
 
 export async function listPublicReviews(): Promise<{ rows: ReviewRow[]; failed: boolean }> {
   if (!directorySignIn().connected) return { rows: [], failed: false };
@@ -11,15 +17,42 @@ export async function listPublicReviews(): Promise<{ rows: ReviewRow[]; failed: 
   if (!supabase) return { rows: [], failed: false };
   const { data, error } = await supabase
     .from("reviews")
-    .select("id, body")
+    .select("id, body, rating, subject_kind, subject_key")
+    .eq("status", "published")
+    .or("subject_kind.eq.site,subject_kind.is.null")
     .order("created_at", { ascending: true });
-  if (error || !data) return { rows: [], failed: true };
+  if (error || !data) {
+    // Pre-migration projects may lack status/rating columns; fall back to text-only read.
+    const legacy = await supabase.from("reviews").select("id, body").order("created_at", { ascending: true });
+    if (legacy.error || !legacy.data) return { rows: [], failed: true };
+    return {
+      rows: legacy.data.flatMap((row) => {
+        if (typeof row.id !== "string" || typeof row.body !== "string") return [];
+        const body = row.body.trim();
+        if (!body) return [];
+        return [{ id: row.id, body, rating: null, subjectKind: null, subjectKey: null }];
+      }),
+      failed: false,
+    };
+  }
   return {
     rows: data.flatMap((row) => {
       if (typeof row.id !== "string" || typeof row.body !== "string") return [];
       const body = row.body.trim();
       if (!body) return [];
-      return [{ id: row.id, body }];
+      const rating =
+        typeof row.rating === "number" && Number.isFinite(row.rating) && row.rating >= 1 && row.rating <= 5
+          ? row.rating
+          : null;
+      return [
+        {
+          id: row.id,
+          body,
+          rating,
+          subjectKind: typeof row.subject_kind === "string" ? row.subject_kind : null,
+          subjectKey: typeof row.subject_key === "string" ? row.subject_key : null,
+        },
+      ];
     }),
     failed: false,
   };

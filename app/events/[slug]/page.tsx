@@ -5,11 +5,13 @@ import { disclaimer } from "../../brand";
 import { JsonLd } from "../../components/json-ld";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
 import { SaveTripButton } from "../../components/save-trip-button";
+import { SubjectUgc } from "../../components/subject-ugc";
 import { checkedOn, eventSlug, presentEvent } from "../../event-view";
 import { events } from "../../events";
 import { eventTripId } from "../../trip";
 import { eventJsonLd } from "../../jsonld";
 import { pageMetadata } from "../../site";
+import { eventSubject } from "../../ugc-subject";
 
 export function generateStaticParams() {
   return events.map((event) => ({ slug: eventSlug(event) }));
@@ -73,6 +75,7 @@ export default async function EventPage({
         <SaveTripButton kind="event" id={eventTripId(event)} />
       </div>
       <p className="mt-8 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
+      <SubjectUgc subject={eventSubject(slug)} heading="Ratings and reviews" />
     </main>
   );
 }

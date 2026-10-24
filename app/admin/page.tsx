@@ -158,7 +158,15 @@ async function AdminSession() {
           <ul className="mt-3 grid gap-3">
             {reviews.rows.map((review) => (
               <li key={review.id} className="border border-ink/15 bg-chart px-4 py-3 text-sm leading-6 text-ink">
-                {review.body}
+                {review.rating !== null ? (
+                  <p className="text-[11px] uppercase tracking-[0.16em] text-brass">
+                    {review.rating}/5
+                    {review.subjectKind && review.subjectKey
+                      ? ` · ${review.subjectKind}/${review.subjectKey}`
+                      : ""}
+                  </p>
+                ) : null}
+                <p className={review.rating !== null ? "mt-2" : undefined}>{review.body}</p>
               </li>
             ))}
           </ul>
