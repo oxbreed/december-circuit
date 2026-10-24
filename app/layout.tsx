@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { JsonLd } from "./components/json-ld";
 import { LagosClockSlot } from "./components/lagos-clock-slot";
 import { SiteChrome } from "./components/site-chrome";
+import { SupportChatSlot } from "./components/support-chat-slot";
 import { siteJsonLd } from "./jsonld";
 import {
   defaultDescription,
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col font-sans text-ink">
         <JsonLd data={siteJsonLd()} />
         <SiteChrome clock={<LagosClockSlot />}>{children}</SiteChrome>
+        <SupportChatSlot />
       </body>
     </html>
   );

@@ -324,6 +324,32 @@ body::before {
   }
 }
 
+.support-chat {
+  bottom: calc(var(--mobile-bar, 4.75rem) + 0.65rem);
+}
+
+@media (min-width: 1024px) {
+  .support-chat {
+    bottom: 1.25rem;
+  }
+}
+
+.support-chat-panel {
+  transform-origin: bottom right;
+  animation: support-panel-in 180ms ease-out;
+}
+
+@keyframes support-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .news-ticker-track {
     animation: none;
@@ -342,7 +368,8 @@ body::before {
   }
 
   .landmark-fade,
-  .animate-pulse {
+  .animate-pulse,
+  .support-chat-panel {
     animation: none;
   }
 }
