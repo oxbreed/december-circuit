@@ -2,111 +2,72 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  CircleMarker,
-  MapContainer,
-  TileLayer,
-  Tooltip,
-  ZoomControl,
-  useMap,
-} from "react-leaflet";
-import type { FitBoundsOptions, LatLngBoundsExpression } from "leaflet";
-import "leaflet/dist/leaflet.css";
+  LngLatBounds,
+  Map as MapLibreMap,
+  NavigationControl,
+  Popup,
+  type GeoJSONSource,
+  type MapLayerMouseEvent,
+} from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import type { Feature, FeatureCollection, Point } from "geojson";
 import type { Pin } from "../pins";
+import { MAP_ATTRIBUTION, OPENFREEMAP_STYLE_URL } from "../map-style";
 import { pinId } from "./pin-id";
 
-const fitOptions: FitBoundsOptions = {
-  padding: [28, 28],
-  maxZoom: 12,
-  animate: false,
-};
+type PinProps = { id: string; name: string; selected: 0 | 1 };
+type PinFeature = Feature<Point, PinProps>;
 
-const phoneFit: FitBoundsOptions = {
-  paddingTopLeft: [28, 40],
-  paddingBottomRight: [28, 52],
-  maxZoom: 12,
-  animate: false,
-};
-
-function pinBounds(pins: Pin[]): LatLngBoundsExpression {
-  return pins.map((pin) => [pin.latitude, pin.longitude]);
+function pinsToFeatureCollection(
+  pins: Pin[],
+  activeId: string | null,
+): FeatureCollection<Point, PinProps> {
+  const ordered = [...pins].sort((a, b) => {
+    if (pinId(a) === activeId) return 1;
+    if (pinId(b) === activeId) return -1;
+    return 0;
+  });
+  return {
+    type: "FeatureCollection",
+    features: ordered.map((pin): PinFeature => {
+      const id = pinId(pin);
+      return {
+        type: "Feature",
+        id,
+        properties: {
+          id,
+          name: pin.name,
+          selected: id === activeId ? 1 : 0,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [pin.longitude, pin.latitude],
+        },
+      };
+    }),
+  };
 }
 
-function frameOf(map: ReturnType<typeof useMap>) {
-  const container = map.getContainer();
-  return container.closest(".map-frame") ?? container;
-}
-
-function StationPins({
-  pins,
-  signature,
-  active,
-}: {
-  pins: Pin[];
-  signature: string;
-  active: Pin | null;
-}) {
-  const map = useMap();
-  const handedOff = useRef(false);
-  const fitting = useRef(false);
-  const seenSignature = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (seenSignature.current !== signature) {
-      seenSignature.current = signature;
-      handedOff.current = false;
-    }
-
-    const container = map.getContainer();
-    const frame = frameOf(map);
-
-    const station = () => {
-      const box = frame.getBoundingClientRect();
-      if (box.height < 1 || box.width < 1) return;
-      map.invalidateSize({ animate: false });
-      const size = map.getSize();
-      if (size.x < 1 || size.y < 1) return;
-      if (!handedOff.current) {
-        fitting.current = true;
-        const phone = window.matchMedia("(max-width: 1023px)").matches;
-        map.fitBounds(pinBounds(pins), phone ? phoneFit : fitOptions);
-        fitting.current = false;
-      }
-      container.style.visibility = "visible";
-    };
-
-    const onDragStart = () => {
-      handedOff.current = true;
-    };
-    const onZoomStart = () => {
-      if (!fitting.current) handedOff.current = true;
-    };
-
-    map.on("dragstart", onDragStart);
-    map.on("zoomstart", onZoomStart);
-    station();
-
-    const observer = new ResizeObserver(() => {
-      station();
+function fitPins(map: MapLibreMap, pins: Pin[], narrow: boolean) {
+  if (pins.length === 0) return;
+  if (pins.length === 1) {
+    map.jumpTo({
+      center: [pins[0].longitude, pins[0].latitude],
+      zoom: 12,
     });
-    observer.observe(frame);
-    if (container !== frame) observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-      map.off("dragstart", onDragStart);
-      map.off("zoomstart", onZoomStart);
-    };
-  }, [map, pins, signature]);
-
-  useEffect(() => {
-    if (!active) return;
-    handedOff.current = true;
-    map.setView([active.latitude, active.longitude], Math.max(map.getZoom(), 14), {
-      animate: true,
-    });
-  }, [map, active]);
-
-  return null;
+    return;
+  }
+  const bounds = new LngLatBounds();
+  for (const pin of pins) {
+    bounds.extend([pin.longitude, pin.latitude]);
+  }
+  map.fitBounds(bounds, {
+    padding: narrow
+      ? { top: 40, bottom: 52, left: 28, right: 28 }
+      : { top: 28, bottom: 28, left: 28, right: 28 },
+    maxZoom: 12,
+    animate: false,
+  });
 }
 
 export default function CircuitMap({
@@ -118,63 +79,202 @@ export default function CircuitMap({
   activeId: string | null;
   onSelect: (id: string) => void;
 }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<MapLibreMap | null>(null);
+  const popupRef = useRef<Popup | null>(null);
+  const onSelectRef = useRef(onSelect);
+  const handedOff = useRef(false);
+  const fitting = useRef(false);
+  const seenSignature = useRef<string | null>(null);
   const narrow = useNarrowMap();
-  if (pins.length === 0) return null;
+  const [ready, setReady] = useState(false);
+
+  onSelectRef.current = onSelect;
+
   const signature = pins
     .map((pin) => `${pin.latitude},${pin.longitude},${pin.name}`)
     .join(";");
-  const active = pins.find((pin) => pinId(pin) === activeId) ?? null;
-  const ordered = [...pins].sort((a, b) => {
-    if (pinId(a) === activeId) return 1;
-    if (pinId(b) === activeId) return -1;
-    return 0;
-  });
+
+  useEffect(() => {
+    if (!containerRef.current || mapRef.current) return;
+    if (pins.length === 0) return;
+
+    const map = new MapLibreMap({
+      container: containerRef.current,
+      style: OPENFREEMAP_STYLE_URL,
+      attributionControl: {
+        compact: true,
+        customAttribution: MAP_ATTRIBUTION,
+      },
+      scrollZoom: false,
+      minZoom: 2,
+      maxZoom: 18,
+    });
+    map.addControl(new NavigationControl({ showCompass: false }), "top-right");
+    mapRef.current = map;
+
+    const popup = new Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 10,
+      className: "map-pin-tip",
+      maxWidth: "14rem",
+    });
+    popupRef.current = popup;
+
+    const onDragStart = () => {
+      handedOff.current = true;
+    };
+    const onZoomStart = () => {
+      if (!fitting.current) handedOff.current = true;
+    };
+    map.on("dragstart", onDragStart);
+    map.on("zoomstart", onZoomStart);
+
+    map.on("load", () => {
+      map.addSource("pins", {
+        type: "geojson",
+        data: pinsToFeatureCollection(pins, activeId),
+        promoteId: "id",
+      });
+      map.addLayer({
+        id: "pins-circle",
+        type: "circle",
+        source: "pins",
+        paint: {
+          "circle-radius": [
+            "case",
+            ["==", ["get", "selected"], 1],
+            narrow ? 12 : 9,
+            narrow ? 9 : 6,
+          ],
+          "circle-color": ["case", ["==", ["get", "selected"], 1], "#b8432f", "#8a6232"],
+          "circle-stroke-width": ["case", ["==", ["get", "selected"], 1], 2, 1.5],
+          "circle-stroke-color": [
+            "case",
+            ["==", ["get", "selected"], 1],
+            "#1a1410",
+            "#1b684e",
+          ],
+        },
+      });
+
+      map.on("mouseenter", "pins-circle", (event: MapLayerMouseEvent) => {
+        map.getCanvas().style.cursor = "pointer";
+        const feature = event.features?.[0];
+        if (!feature || feature.geometry.type !== "Point") return;
+        const name = String(feature.properties?.name ?? "");
+        const [lng, lat] = feature.geometry.coordinates as [number, number];
+        popup.setLngLat([lng, lat]).setText(name).addTo(map);
+      });
+      map.on("mouseleave", "pins-circle", () => {
+        map.getCanvas().style.cursor = "";
+        popup.remove();
+      });
+      map.on("click", "pins-circle", (event: MapLayerMouseEvent) => {
+        const feature = event.features?.[0];
+        const id = feature?.properties?.id;
+        if (typeof id === "string") onSelectRef.current(id);
+      });
+
+      fitting.current = true;
+      fitPins(map, pins, narrow);
+      fitting.current = false;
+      seenSignature.current = signature;
+      setReady(true);
+    });
+
+    return () => {
+      map.off("dragstart", onDragStart);
+      map.off("zoomstart", onZoomStart);
+      popup.remove();
+      map.remove();
+      mapRef.current = null;
+      popupRef.current = null;
+      setReady(false);
+    };
+    // Mount once; pin updates handled below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready) return;
+
+    const source = map.getSource("pins") as GeoJSONSource | undefined;
+    if (source) {
+      source.setData(pinsToFeatureCollection(pins, activeId));
+    }
+
+    if (map.getLayer("pins-circle")) {
+      map.setPaintProperty("pins-circle", "circle-radius", [
+        "case",
+        ["==", ["get", "selected"], 1],
+        narrow ? 12 : 9,
+        narrow ? 9 : 6,
+      ]);
+    }
+
+    if (seenSignature.current !== signature) {
+      seenSignature.current = signature;
+      handedOff.current = false;
+    }
+
+    const frame = containerRef.current?.closest(".map-frame") ?? containerRef.current;
+    if (!frame) return;
+
+    const station = () => {
+      const box = frame.getBoundingClientRect();
+      if (box.height < 1 || box.width < 1) return;
+      map.resize();
+      const canvas = map.getCanvas();
+      if (canvas.clientWidth < 1 || canvas.clientHeight < 1) return;
+      if (!handedOff.current) {
+        fitting.current = true;
+        fitPins(map, pins, narrow);
+        fitting.current = false;
+      }
+    };
+
+    station();
+    const observer = new ResizeObserver(() => station());
+    observer.observe(frame);
+    if (containerRef.current && containerRef.current !== frame) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
+  }, [pins, signature, activeId, narrow, ready]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready || !activeId) return;
+    const active = pins.find((pin) => pinId(pin) === activeId);
+    if (!active) return;
+    handedOff.current = true;
+    map.easeTo({
+      center: [active.longitude, active.latitude],
+      zoom: Math.max(map.getZoom(), 14),
+      duration: 450,
+    });
+  }, [activeId, pins, ready]);
+
+  if (pins.length === 0) return null;
 
   return (
-    <MapContainer
-      bounds={pinBounds(pins)}
-      boundsOptions={fitOptions}
-      minZoom={2}
-      maxZoom={18}
-      zoomControl={false}
-      scrollWheelZoom={false}
-      className="h-full w-full"
-      style={{ visibility: "hidden" }}
-    >
-      <ZoomControl position="topright" />
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <StationPins pins={pins} signature={signature} active={active} />
-      {ordered.map((pin) => {
-        const id = pinId(pin);
-        const selected = id === activeId;
-        return (
-          <CircleMarker
-            key={id}
-            center={[pin.latitude, pin.longitude]}
-            radius={selected ? (narrow ? 12 : 9) : narrow ? 9 : 6}
-            pathOptions={{
-              color: selected ? "#1a1410" : "#1b684e",
-              weight: selected ? 2 : 1.5,
-              fillColor: selected ? "#b8432f" : "#8a6232",
-              fillOpacity: 1,
-            }}
-            eventHandlers={{ click: () => onSelect(id) }}
-          >
-            <Tooltip className="map-pin-tip" direction="auto" offset={[0, -6]} opacity={1}>
-              {pin.name}
-            </Tooltip>
-          </CircleMarker>
-        );
-      })}
-    </MapContainer>
+    <div
+      ref={containerRef}
+      className="maplibre-map h-full w-full"
+      style={{ visibility: ready ? "visible" : "hidden" }}
+    />
   );
 }
 
 function useNarrowMap() {
-  const [narrow, setNarrow] = useState(() => window.matchMedia("(max-width: 1023px)").matches);
+  const [narrow, setNarrow] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 1023px)").matches
+      : false,
+  );
   useEffect(() => {
     const query = window.matchMedia("(max-width: 1023px)");
     const apply = () => setNarrow(query.matches);

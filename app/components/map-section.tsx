@@ -32,23 +32,6 @@ const mapStyles = `
       radial-gradient(circle at 68% 62%, rgba(138, 98, 50, 0.2), transparent 18%),
       #e7dfd2;
   }
-  .leaflet-tooltip.map-pin-tip {
-    background: #fffaf4;
-    color: #1a1410;
-    border: 1px solid rgba(26, 20, 16, 0.4);
-    border-radius: 0;
-    box-shadow: none;
-    font-family: var(--font-sans), sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.35;
-    padding: 6px 8px;
-    max-width: 14rem;
-    white-space: normal;
-  }
-  .leaflet-tooltip.map-pin-tip.leaflet-tooltip-top:before {
-    border-top-color: rgba(26, 20, 16, 0.4);
-  }
   @media (max-width: 1023px) {
     #map .map-stage {
       height: calc(100svh - var(--mobile-bar, 7.5rem) - 12px);
@@ -88,16 +71,14 @@ const mapStyles = `
       font-size: 13px;
       letter-spacing: 0.04em;
     }
-    .leaflet-tooltip.map-pin-tip {
+    .maplibregl-popup.map-pin-tip .maplibregl-popup-content {
       font-size: 15px;
     }
-    .leaflet-control-zoom a {
+    .maplibre-map .maplibregl-ctrl-group button {
       width: 36px;
       height: 36px;
-      line-height: 36px;
-      font-size: 20px;
     }
-    .leaflet-container .leaflet-control-attribution {
+    .maplibre-map .maplibregl-ctrl-attrib {
       font-size: 12px;
       line-height: 1.3;
       max-width: calc(100% - 8px);
