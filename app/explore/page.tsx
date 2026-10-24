@@ -5,7 +5,7 @@ import { pageMetadata } from "../site";
 export const metadata = pageMetadata({
   title: "Explore map search",
   description:
-    "Search OpenStreetMap for hotels, restaurants, clubs, and landmarks in Lagos, Accra, and Calabar. Map data — not a checked listing.",
+    "Search OpenStreetMap (optional Foursquare) for hotels, restaurants, clubs, and landmarks in Lagos, Accra, and Calabar. Map / third-party venue data — not a checked listing.",
   path: "/explore",
 });
 

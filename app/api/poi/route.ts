@@ -13,6 +13,7 @@ export async function GET(request: Request) {
       {
         error: result.message,
         source: "openstreetmap",
+        sources: ["openstreetmap"],
         results: [],
       },
       {
@@ -22,10 +23,23 @@ export async function GET(request: Request) {
     );
   }
 
+  const hasFoursquare = result.sources.includes("foursquare");
+  const notice = hasFoursquare
+    ? "Map / third-party venue data from OpenStreetMap and Foursquare — not checked directory listings."
+    : "OpenStreetMap results — map data, not a checked listing.";
+
   return NextResponse.json(
     {
-      source: "openstreetmap",
-      notice: "OpenStreetMap results — map data, not a checked listing.",
+      source: hasFoursquare ? "openstreetmap+foursquare" : "openstreetmap",
+      sources: result.sources,
+      foursquareEnabled: result.foursquareEnabled,
+      notice,
+      attribution: {
+        openstreetmap: "© OpenStreetMap contributors (ODbL)",
+        ...(hasFoursquare
+          ? { foursquare: "Venue data © Foursquare" }
+          : {}),
+      },
       city: result.city,
       kind: result.kind,
       results: result.results,

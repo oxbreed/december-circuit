@@ -11,6 +11,7 @@ import {
   type PoiCity,
   type PoiKind,
   type PoiResult,
+  type PoiSource,
 } from "../poi-client";
 import { SectionIntro, sectionClass } from "./section-intro";
 import { EmptyNote, ErrorNote, LoadingLines } from "./states";
@@ -27,7 +28,12 @@ const PoiMap = dynamic(() => import("./poi-map"), {
 type ExploreState =
   | { status: "loading" }
   | { status: "error"; message: string }
-  | { status: "ready"; results: PoiResult[] };
+  | {
+      status: "ready";
+      results: PoiResult[];
+      sources: PoiSource[];
+      foursquareEnabled: boolean;
+    };
 
 function parseCity(value: string | null): PoiCity {
   if (value && (poiCities as readonly string[]).includes(value)) {
@@ -41,6 +47,14 @@ function parseKind(value: string | null): PoiKind {
     return value as PoiKind;
   }
   return "hotels";
+}
+
+function sourceLabel(sources: PoiSource[]): string {
+  const hasOsm = sources.includes("openstreetmap");
+  const hasFsq = sources.includes("foursquare");
+  if (hasOsm && hasFsq) return "OpenStreetMap · Foursquare";
+  if (hasFsq) return "Foursquare";
+  return "OpenStreetMap";
 }
 
 const mapFrameClass =
@@ -99,16 +113,27 @@ export function ExploreSection() {
       .then(async (response) => {
         const payload = (await response.json()) as {
           results?: PoiResult[];
+          sources?: PoiSource[];
+          foursquareEnabled?: boolean;
           error?: string;
         };
         if (!response.ok) {
           throw new Error(payload.error?.trim() || "OpenStreetMap search failed.");
         }
-        return Array.isArray(payload.results) ? payload.results : [];
+        return {
+          results: Array.isArray(payload.results) ? payload.results : [],
+          sources: Array.isArray(payload.sources)
+            ? payload.sources.filter(
+                (value): value is PoiSource =>
+                  value === "openstreetmap" || value === "foursquare",
+              )
+            : (["openstreetmap"] as PoiSource[]),
+          foursquareEnabled: Boolean(payload.foursquareEnabled),
+        };
       })
-      .then((results) => {
+      .then(({ results, sources, foursquareEnabled }) => {
         if (controller.signal.aborted) return;
-        setState({ status: "ready", results });
+        setState({ status: "ready", results, sources, foursquareEnabled });
       })
       .catch((error: unknown) => {
         if (controller.signal.aborted) return;
@@ -131,6 +156,9 @@ export function ExploreSection() {
     replaceQuery({ q: draftQ });
   }
 
+  const hasFoursquareResults =
+    state.status === "ready" && state.sources.includes("foursquare");
+
   return (
     <section id="explore" className={sectionClass}>
       <style>{`
@@ -144,16 +172,18 @@ export function ExploreSection() {
       <SectionIntro
         kicker="Explore"
         title="OpenStreetMap search"
-        lede="These are OpenStreetMap points to help plan hotels, meals, nights out, and landmarks. Checked stays and events remain on Places and Events."
+        lede="These are map and third-party venue points to help plan hotels, meals, nights out, and landmarks. Checked stays and events remain on Places and Events."
       />
 
       <div className="mb-8 max-w-2xl border border-brass/40 bg-paper-deep/50 px-4 py-4">
         <p className="text-[11px] uppercase tracking-[0.2em] text-brass">
-          OpenStreetMap results
+          Map / third-party venue data
         </p>
         <p className="mt-2 text-sm leading-6 text-ink">
-          Map data — not a checked listing. Names and coordinates come from OpenStreetMap
-          contributors. This site does not invent phones, prices, ratings, or opening hours.
+          Not a checked listing. Names and coordinates come from OpenStreetMap
+          {hasFoursquareResults ? " and Foursquare" : ""}
+          . Address, website, phone, and opening hours appear only when that source
+          already has them — this site does not invent phones, prices, ratings, or hours.
         </p>
         <p className="mt-2 text-sm leading-6 text-muted">
           Know a business that should be reviewed for the directory?{" "}
@@ -241,7 +271,7 @@ export function ExploreSection() {
       ) : null}
       {state.status === "ready" && state.results.length === 0 ? (
         <EmptyNote>
-          No OpenStreetMap {poiKindFilters[kind].label.toLowerCase()} matched in {city}
+          No map {poiKindFilters[kind].label.toLowerCase()} matched in {city}
           {qParam ? ` for “${qParam}”` : ""}. Try another type, clear the name filter, or{" "}
           <Link
             href="/list#submit-place"
@@ -257,7 +287,7 @@ export function ExploreSection() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brass">
-              {state.results.length} OpenStreetMap{" "}
+              {state.results.length}{" "}
               {state.results.length === 1 ? "result" : "results"} · {city}
             </p>
             <ul className="mt-4 divide-y divide-ink/10 border border-ink/15 bg-chart/60">
@@ -278,10 +308,12 @@ export function ExploreSection() {
                       </span>
                       <span className="mt-1 block text-sm leading-6 text-muted">
                         {row.category}
-                        {row.area ? ` · ${row.area}` : ""} · {row.city}
+                        {row.area ? ` · ${row.area}` : ""}
+                        {row.address ? ` · ${row.address}` : ""} · {row.city}
                       </span>
                       <span className="mt-1 block font-mono text-[12px] text-muted">
-                        {row.latitude.toFixed(5)}, {row.longitude.toFixed(5)}
+                        {sourceLabel(row.sources)} · {row.latitude.toFixed(5)},{" "}
+                        {row.longitude.toFixed(5)}
                       </span>
                     </button>
                   </li>
@@ -291,7 +323,7 @@ export function ExploreSection() {
           </div>
 
           <div className="lg:sticky lg:top-36">
-            <div className={mapFrameClass} role="region" aria-label="Selected OpenStreetMap point">
+            <div className={mapFrameClass} role="region" aria-label="Selected venue on the map">
               {active ? (
                 <PoiMap
                   point={{
@@ -316,18 +348,38 @@ export function ExploreSection() {
                   {active.category}
                   {active.area ? ` · ${active.area}` : ""} · {active.city}
                 </p>
-                <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-brass">
-                  Map data — not a checked listing
+                {active.address ? (
+                  <p className="mt-2 text-sm leading-6 text-ink">{active.address}</p>
+                ) : null}
+                {active.openingHours ? (
+                  <p className="mt-2 text-sm leading-6 text-muted">
+                    Hours (OpenStreetMap): {active.openingHours}
+                  </p>
+                ) : null}
+                {active.phone ? (
+                  <p className="mt-2 text-sm leading-6 text-ink">
+                    <a
+                      href={`tel:${active.phone.replace(/\s+/g, "")}`}
+                      className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                    >
+                      {active.phone}
+                    </a>
+                  </p>
+                ) : null}
+                <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-brass">
+                  Map / third-party data · {sourceLabel(active.sources)}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-                  <a
-                    href={active.osmUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                  >
-                    Open on OpenStreetMap
-                  </a>
+                  {active.osmUrl ? (
+                    <a
+                      href={active.osmUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                    >
+                      Open on OpenStreetMap
+                    </a>
+                  ) : null}
                   {active.website ? (
                     <a
                       href={active.website}
@@ -345,7 +397,39 @@ export function ExploreSection() {
         </div>
       ) : null}
 
-      <p className="mt-10 max-w-2xl text-sm leading-6 text-muted">
+      {state.status === "ready" ? (
+        <p className="mt-8 max-w-2xl text-sm leading-6 text-muted">
+          Attribution: ©{" "}
+          <a
+            href="https://www.openstreetmap.org/copyright"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            OpenStreetMap
+          </a>{" "}
+          contributors (ODbL)
+          {state.sources.includes("foursquare") ? (
+            <>
+              {" "}
+              · Venue data ©{" "}
+              <a
+                href="https://foursquare.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+              >
+                Foursquare
+              </a>
+            </>
+          ) : state.foursquareEnabled ? (
+            <> · Foursquare is configured but returned no matches for this search.</>
+          ) : null}
+          .
+        </p>
+      ) : null}
+
+      <p className="mt-6 max-w-2xl text-sm leading-6 text-muted">
         Verified organiser pages stay on{" "}
         <Link href="/places" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           Places

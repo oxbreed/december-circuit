@@ -19,8 +19,9 @@ npm run dev
 - `GET /api/pins`
 - `GET /api/news`
 - `GET /api/geocode?name=&city=` (OpenStreetMap Nominatim lookup for unpublished place submissions; Lagos, Accra, or Calabar)
+- `GET /api/poi?city=&kind=&q=` (OpenStreetMap Overpass map search for hotels, restaurants, clubs, landmarks in Lagos, Accra, or Calabar; optional Foursquare enrichment when `FOURSQUARE_API_KEY` is set server-side)
 
-Pages: `/`, `/guide`, `/events`, `/events/[slug]`, `/cities/[slug]`, `/places`, `/flights`, `/map`, `/about`, `/news`, `/list`, `/faq`, `/privacy`, `/terms`, `/eula`. The home hero searches by a listed date and opens `/events?date=`. Visa and entry is on `/guide#entry`. Flight rows stay on `/flights`. Washington DC, Chicago, Dallas–Fort Worth, Amsterdam, and Dubai search 16 December 2026 to 30 December 2026, one adult. Those dates are a starting search for the season, not a fare. `sitemap.xml` and `robots.txt` list the public pages.
+Pages: `/`, `/guide`, `/events`, `/events/[slug]`, `/cities/[slug]`, `/places`, `/explore`, `/flights`, `/map`, `/about`, `/news`, `/list`, `/faq`, `/privacy`, `/terms`, `/eula`. The home hero searches by a listed date and opens `/events?date=`. Visa and entry is on `/guide#entry`. Flight rows stay on `/flights`. Washington DC, Chicago, Dallas–Fort Worth, Amsterdam, and Dubai search 16 December 2026 to 30 December 2026, one adult. Those dates are a starting search for the season, not a fare. `sitemap.xml` and `robots.txt` list the public pages. `/explore` is map / third-party venue data, not checked directory listings.
 
 The pages load these routes. A place name opens that business’s own page stored on that record. `/list` accepts an unpublished place or business for human review and does not publish to the public pins file. A flight row opens its search and is labelled as a search. It is not a fare or a seat.
 
