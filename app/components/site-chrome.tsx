@@ -72,7 +72,7 @@ export function SiteChrome({
         Skip to content
       </a>
       <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/10 bg-paper/92 backdrop-blur-md">
-        <div className="flex h-[var(--clock-strip)] min-w-0 items-stretch border-b border-brass/40 bg-paper-deep">
+        <div className="flex h-[var(--clock-strip)] min-w-0 items-start border-b border-brass/40 bg-paper-deep pt-1 lg:pt-1.5">
           {clock}
         </div>
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
