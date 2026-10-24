@@ -6,12 +6,14 @@ import { cacheLife } from "next/cache";
 export const OSM_USER_AGENT =
   "DirtyDecember/1.0 (https://www.dirtydecember.info; hello@dirtydecember.info)";
 
-/** Public mirrors; try the next on 429/5xx or timeout. */
-const OVERPASS_ENDPOINTS = [
-  "https://overpass-api.de/api/interpreter",
-  "https://lz4.overpass-api.de/api/interpreter",
-  "https://overpass.kumi.systems/api/interpreter",
-] as const;
+/** Public mirrors; try the next on 429/5xx or timeout. Self-host: set OVERPASS_URL. */
+const OVERPASS_ENDPOINTS = process.env.OVERPASS_URL?.trim()
+  ? [process.env.OVERPASS_URL.trim()]
+  : ([
+      "https://overpass-api.de/api/interpreter",
+      "https://lz4.overpass-api.de/api/interpreter",
+      "https://overpass.kumi.systems/api/interpreter",
+    ] as const);
 
 const MIN_GAP_MS = 1500;
 const FETCH_TIMEOUT_MS = 40_000;

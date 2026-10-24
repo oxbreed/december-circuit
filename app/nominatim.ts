@@ -11,7 +11,11 @@ import {
 
 export type { GeocodeCandidate };
 
-const NOMINATIM_SEARCH = "https://nominatim.openstreetmap.org/search";
+/** Self-host: set NOMINATIM_URL to the origin only (code appends /search). */
+const NOMINATIM_ORIGIN =
+  process.env.NOMINATIM_URL?.trim().replace(/\/$/, "") ||
+  "https://nominatim.openstreetmap.org";
+const NOMINATIM_SEARCH = `${NOMINATIM_ORIGIN}/search`;
 const MIN_GAP_MS = 1100;
 const MAX_RESULTS = 5;
 
