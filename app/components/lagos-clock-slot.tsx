@@ -1,24 +1,19 @@
 import { Suspense } from "react";
 import { io } from "next/cache";
+import type { CityWeather } from "../city-weather";
 import { lagosStamp } from "../lagos-time";
-import { LagosClock } from "./lagos-clock";
-
-function LagosClockFallback() {
-  return (
-    <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-      <p className="shrink-0 font-sans text-base font-medium uppercase tracking-[0.18em] text-lagoon">
-        Lagos
-      </p>
-      <p aria-hidden="true" className="font-mono text-4xl font-medium leading-none tabular-nums text-ink">
-        <span className="inline-block min-w-[11ch]">&nbsp;</span>
-      </p>
-    </div>
-  );
-}
+import { loadCityWeather } from "../weather";
+import { LagosClock, LagosClockFallback } from "./lagos-clock";
 
 async function LiveLagosClock() {
   await io();
-  return <LagosClock initial={lagosStamp(new Date())} />;
+  let weather: CityWeather[] | null = null;
+  try {
+    weather = await loadCityWeather();
+  } catch {
+    weather = null;
+  }
+  return <LagosClock initial={lagosStamp(new Date())} weather={weather} />;
 }
 
 export function LagosClockSlot() {

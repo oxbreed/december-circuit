@@ -39,10 +39,10 @@ export function lagosStamp(now: Date): LagosStamp {
     hourCycle: "h23",
   }).formatToParts(now);
 
-  const hour = pick(time, "hour");
-  const minute = pick(time, "minute");
-  const second = pick(time, "second");
-  const dayPeriod = pick(time, "dayPeriod").replace(/\./g, "").toUpperCase();
+  const hour = pick(time, "hour").trim().padStart(2, "0");
+  const minute = pick(time, "minute").trim();
+  const second = pick(time, "second").trim();
+  const dayPeriod = pick(time, "dayPeriod").replace(/\./g, "").trim().toUpperCase();
   let isoHour = pick(isoParts, "hour").trim();
   if (isoHour === "24") isoHour = "00";
 
