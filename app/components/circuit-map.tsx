@@ -12,7 +12,8 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import type { Pin } from "../pins";
-import { MAP_ATTRIBUTION, OPENFREEMAP_STYLE_URL } from "../map-style";
+import { OPENFREEMAP_STYLE_URL } from "../map-style";
+import { ensureMapLibreWorker } from "../maplibre-setup";
 import { pinId } from "./pin-id";
 
 type PinProps = { id: string; name: string; selected: 0 | 1 };
@@ -99,13 +100,11 @@ export default function CircuitMap({
     if (!containerRef.current || mapRef.current) return;
     if (pins.length === 0) return;
 
+    ensureMapLibreWorker();
     const map = new MapLibreMap({
       container: containerRef.current,
       style: OPENFREEMAP_STYLE_URL,
-      attributionControl: {
-        compact: true,
-        customAttribution: MAP_ATTRIBUTION,
-      },
+      attributionControl: { compact: true },
       scrollZoom: false,
       minZoom: 2,
       maxZoom: 18,

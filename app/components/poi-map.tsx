@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Map as MapLibreMap, Marker, NavigationControl, Popup } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { MAP_ATTRIBUTION, OPENFREEMAP_STYLE_URL } from "../map-style";
+import { OPENFREEMAP_STYLE_URL } from "../map-style";
+import { ensureMapLibreWorker } from "../maplibre-setup";
 
 export type PoiMapPoint = {
   id: string;
@@ -22,15 +23,13 @@ export default function PoiMap({ point }: { point: PoiMapPoint }) {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
+    ensureMapLibreWorker();
     const map = new MapLibreMap({
       container: containerRef.current,
       style: OPENFREEMAP_STYLE_URL,
       center: [point.longitude, point.latitude],
       zoom: 15,
-      attributionControl: {
-        compact: true,
-        customAttribution: MAP_ATTRIBUTION,
-      },
+      attributionControl: { compact: true },
       scrollZoom: false,
       minZoom: 2,
       maxZoom: 18,
