@@ -32,20 +32,20 @@ function WeatherRow({ rows }: { rows: CityWeather[] }) {
   return (
     <ul
       aria-label="Current weather"
-      className="flex shrink-0 items-baseline gap-1 border-l border-ink/15 pl-1 lg:items-center lg:gap-5 lg:self-stretch lg:pl-5"
+      className="flex shrink-0 items-baseline gap-1 border-l border-ink/15 pl-1 lg:items-center lg:gap-4 lg:self-stretch lg:pl-4"
     >
       {rows.map((item) => (
         <li
           key={item.city}
           className="flex shrink-0 items-baseline gap-0.5 whitespace-nowrap lg:block lg:min-w-0"
         >
-          <p className="font-sans text-[9px] font-medium leading-none text-muted lg:text-[10px] lg:uppercase lg:tracking-[0.14em]">
+          <p className="font-sans text-[9px] font-medium leading-none text-muted lg:text-[9px] lg:uppercase lg:tracking-[0.12em]">
             {item.city}
           </p>
-          <p className="font-sans text-[10px] font-medium leading-none tabular-nums text-ink lg:mt-0.5 lg:text-[13px]">
+          <p className="font-sans text-[10px] font-medium leading-none tabular-nums text-ink lg:mt-0.5 lg:text-xs">
             {item.celsius}°C
           </p>
-          <p className="mt-0.5 hidden font-sans text-[10px] leading-none text-muted lg:block">
+          <p className="mt-0.5 hidden font-sans text-[10px] leading-none text-muted lg:block lg:text-[10px]">
             {item.condition}
           </p>
         </li>
@@ -74,19 +74,19 @@ function Readout({
   const body = (
     <>
       <span className="min-w-0">
-        <span className="hidden font-sans text-[9px] font-medium uppercase leading-none tracking-[0.22em] text-lagoon lg:block">
+        <span className="hidden font-sans text-[9px] font-medium uppercase leading-none tracking-[0.22em] text-lagoon lg:block lg:text-[9px] lg:tracking-[0.18em]">
           Lagos
         </span>
-        <span className="flex items-baseline gap-1 lg:mt-0.5 lg:gap-1.5">
+        <span className="flex items-baseline gap-1 lg:mt-0.5 lg:gap-1">
           <span
             suppressHydrationWarning
-            className="inline-block min-w-[8ch] whitespace-nowrap font-mono text-base font-medium leading-none tabular-nums tracking-tight text-ink lg:text-4xl"
+            className="inline-block min-w-[8ch] whitespace-nowrap font-mono text-base font-medium leading-none tabular-nums tracking-tight text-ink lg:text-3xl"
           >
             {clock || "\u00a0"}
           </span>
           <span
             suppressHydrationWarning
-            className="inline-block min-w-[2ch] font-sans text-[9px] font-medium uppercase leading-none tracking-[0.08em] text-ink lg:text-[11px] lg:tracking-[0.16em]"
+            className="inline-block min-w-[2ch] font-sans text-[9px] font-medium uppercase leading-none tracking-[0.08em] text-ink lg:text-[10px] lg:tracking-[0.14em]"
           >
             {dayPeriod || "\u00a0"}
           </span>
@@ -94,7 +94,7 @@ function Readout({
       </span>
       <span
         suppressHydrationWarning
-        className="shrink-0 whitespace-nowrap font-sans text-[10px] leading-none text-ink lg:text-sm lg:leading-5"
+        className="shrink-0 whitespace-nowrap font-sans text-[10px] leading-none text-ink lg:text-xs lg:leading-4"
       >
         <span className="lg:hidden">
           {weekdayShort && dateShort ? `${weekdayShort} ${dateShort}` : "\u00a0"}
@@ -105,7 +105,7 @@ function Readout({
       </span>
     </>
   );
-  const className = "flex shrink-0 items-baseline gap-1 lg:items-end lg:gap-6";
+  const className = "flex shrink-0 items-baseline gap-1 lg:items-end lg:gap-4";
   if (!iso) return <div className={className}>{body}</div>;
   return (
     <time dateTime={iso} suppressHydrationWarning className={className}>
@@ -117,7 +117,7 @@ function Readout({
 function ClockShell({ children, weather }: { children: ReactNode; weather: CityWeather[] | null }) {
   const rows = rowsFor(weather);
   return (
-    <div className="mx-auto flex h-full w-full min-w-0 max-w-6xl items-center justify-between gap-1 px-2 sm:px-3 lg:gap-6 lg:px-6">
+    <div className="mx-auto flex h-full w-full min-w-0 max-w-6xl items-center justify-between gap-1 px-2 sm:px-3 lg:gap-4 lg:px-5">
       {children}
       {rows.length > 0 ? <WeatherRow rows={rows} /> : null}
     </div>

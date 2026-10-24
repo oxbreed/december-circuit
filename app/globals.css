@@ -9,7 +9,7 @@
 
 @media (min-width: 1024px) {
   :root {
-    --clock-strip: 5rem;
+    --clock-strip: 4rem;
   }
 }
 
