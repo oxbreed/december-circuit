@@ -75,7 +75,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "Is there a support chat?",
     answer:
-      "Yes. Visitors can chat with the support agent on every page — open Ask support. It answers from this site’s FAQ, the visa and entry guide, and the confirmed event list. It does not invent prices, fares, or bookings.",
+      "Yes. Open Ask support on any page to chat with December guide. It helps with visas, confirmed events, flights, and listing something, using what’s already on this site. It does not invent prices, fares, or bookings.",
   },
 ];
 

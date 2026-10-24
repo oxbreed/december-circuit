@@ -141,14 +141,14 @@ export async function POST(request: Request) {
   try {
     body = (await request.json()) as Body;
   } catch {
-    return json({ error: "Send a JSON body with a question." }, 400);
+    return json({ error: "Send your question again in a moment." }, 400);
   }
 
   const question = cleanQuestion(body.question);
   if (!question) {
     return json(
       {
-        error: `Ask a short question (1 to ${MAX_QUESTION} characters).`,
+        error: `Keep it short — up to ${MAX_QUESTION} characters works best.`,
       },
       400,
     );

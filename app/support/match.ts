@@ -78,14 +78,14 @@ type Candidate = { score: number; reply: string };
 function confirmedEventsReply() {
   const lines = events.map((event) => {
     const { name } = eventNameAndVenue(event.summary);
-    const source = event.urlLabel?.trim() || "Source on file";
-    return `• ${name} — ${event.region}, ${event.when}. ${event.summary} (${source}.)`;
+    const source = event.urlLabel?.trim() || "named source";
+    return `• ${name} — ${event.region}, ${event.when}. ${event.summary} (${source})`;
   });
-  return `From the site: Confirmed events on file:\n${lines.join("\n")}\nNo prices or bookings are listed here.`;
+  return `Here’s what we have for confirmed events:\n${lines.join("\n")}\nWe don’t list prices or hold bookings here — any ticket link leaves this site.`;
 }
 
 const fallback =
-  "I do not have that on file here. Check /faq, open /guide#entry for visas, or write to hello@dirtydecember.info. I only answer from what this site already publishes, and I will not invent prices, fares, events, or bookings.";
+  "I’m not sure from what’s listed. The FAQ at /faq, Visa and entry at /guide#entry, or hello@dirtydecember.info might help. I stick to what this directory already publishes — I won’t invent prices, fares, events, or bookings.";
 
 export function matchGroundedReply(question: string) {
   const queryTokens = tokens(question);
@@ -101,7 +101,9 @@ export function matchGroundedReply(question: string) {
     if (score >= 3) {
       candidates.push({
         score,
-        reply: `From the site: ${plain}`,
+        reply: plain.startsWith("Here’s") || plain.startsWith("I'm") || plain.startsWith("We ")
+          ? plain
+          : `Here’s what we have. ${plain}`,
       });
     }
   }
@@ -114,10 +116,10 @@ export function matchGroundedReply(question: string) {
       score += 4;
     }
     if (score >= 3) {
-      const source = event.urlLabel?.trim() || "Source on file";
+      const source = event.urlLabel?.trim() || "named source";
       candidates.push({
         score,
-        reply: `From the site: ${name} — ${event.region}, ${event.when}. ${event.summary} (${source}.) No price or booking is listed here.`,
+        reply: `Here’s what we have: ${name} — ${event.region}, ${event.when}. ${event.summary} (${source}). We don’t list a price or booking here.`,
       });
     }
   }
@@ -135,32 +137,32 @@ export function matchGroundedReply(question: string) {
         "ghana",
       ],
       reply:
-        "From the site: Lagos and Calabar are in Nigeria; Accra is in Ghana. Open /guide#entry for the Visa and entry section. It repeats the Nigeria Immigration Service Tourism Visa (F5A) page and the Ghana Immigration Service visa pages. This site does not take a visa application, state a visa fee, or take payment. Read those official links for the current rules.",
+        "Here’s the short version: Lagos and Calabar are in Nigeria; Accra is in Ghana. Open /guide#entry for Visa and entry — it walks through the Nigeria Immigration Service Tourism Visa (F5A) page and the Ghana Immigration Service visa pages. We don’t take visa applications, quote fees, or take payment here. The official links on that page have the current rules.",
     },
     {
       keys: ["flight", "flights", "airfare", "fare", "airline", "airport"],
       reply:
-        "From the site: Each row on Flights opens a Google Flights search. It is a search, not a fare, a seat, or a booking. No booking is held on this site. Some origin cities use a dated December search window noted on that page.",
+        "On Flights, each row opens a Google Flights search. It’s a search — not a fare, a seat, or a booking we hold. Some origin cities use a dated December window noted on that page as a starting point for the season.",
     },
     {
       keys: ["payment", "pay", "ticket", "tickets", "checkout", "booking", "buy"],
       reply:
-        "From the site: This site takes no payment and holds no bookings. A ticket link appears only when the record already has one, and that link leaves this site. A stay link and a flight search are not a purchase here either.",
+        "We don’t take payment or hold bookings on this site. If a record already has a ticket link, that link leaves dirtydecember.info. Same idea for stay links and flight searches — they’re not a purchase here.",
     },
     {
       keys: ["list", "submit", "organise", "organize", "partnership", "advertise"],
       reply:
-        "From the site: Use /list to list an event or a place. An event or a show stays unpublished until a person checks it. Visitor listing mail goes to hello@dirtydecember.info. Partnership notes go to partners@dirtydecember.info. Placements are labeled, and this site does not take payment.",
+        "You can list something at /list. Events and shows stay unpublished until someone on the team checks them. Visitor notes go to hello@dirtydecember.info; partnership notes to partners@dirtydecember.info. Placements are labeled, and we don’t take payment here.",
     },
     {
       keys: ["affiliated", "affiliation", "livespot", "official"],
       reply:
-        "From the site: This is an independent community directory. It is not affiliated with Livespot360 or Detty December Fest™. A Detty December Fest record can still appear when an organiser page or a named report confirms it.",
+        "We’re an independent community directory — not affiliated with Livespot360 or Detty December Fest™. A Detty December Fest night can still show up when an organiser page or a named report confirms it, same as any other listing.",
     },
     {
       keys: ["contact", "email", "enquire", "inquiry"],
       reply:
-        "From the site: Visitor enquiries go to hello@dirtydecember.info. Partnership and placement go to partners@dirtydecember.info. Privacy, terms, and the EULA are linked in the footer.",
+        "For visitor questions, write hello@dirtydecember.info. For partnerships and placements, use partners@dirtydecember.info. Privacy, terms, and the EULA are in the footer.",
     },
   ];
 
@@ -183,7 +185,8 @@ export function matchGroundedReply(question: string) {
   for (const intent of intents) {
     const score = keyHits(folded, query, intent.keys);
     if (score >= 3) {
-      candidates.push({ score, reply: intent.reply });
+      // Prefer clear intent replies over raw FAQ paste when both match.
+      candidates.push({ score: score + 12, reply: intent.reply });
     }
   }
 

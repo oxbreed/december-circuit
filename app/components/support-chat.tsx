@@ -7,12 +7,14 @@ type Message = {
   text: string;
 };
 
+const guideName = "December guide";
+
 const greeting =
-  "Hi — I’m the dirtydecember support agent. Ask about visas, confirmed events, flights, or listing something. I only answer from this site — no invented prices or bookings.";
+  "Hi — I’m here to help you plan. Ask me about visas, confirmed events, flights, or how to list something. I’ll stick to what’s on dirtydecember.info.";
 
 const suggestions = [
-  "Where do I check visas and entry?",
-  "What confirmed events are listed?",
+  "Visas and entry for Nigeria or Ghana?",
+  "What confirmed events are on?",
   "How do I list an event?",
   "How do flight searches work?",
 ] as const;
@@ -80,7 +82,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
       if (!response.ok || !data.reply) {
         setError(
           data.error ||
-            "No answer came back. Try again, or write to hello@dirtydecember.info.",
+            "That didn’t come through. Try again in a moment, or write hello@dirtydecember.info.",
         );
         return;
       }
@@ -91,7 +93,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
       ]);
     } catch {
       setError(
-        "The support service could not be reached. Try again, or write to hello@dirtydecember.info.",
+        "I couldn’t reach support just now. Try again in a moment, or write hello@dirtydecember.info.",
       );
     } finally {
       setPending(false);
@@ -118,8 +120,8 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
                   Ask support
                 </p>
                 <p className="mt-1 text-sm leading-5 text-muted">
-                  Chat agent for this site’s FAQ, visa guide, and confirmed events.
-                  {liveModel ? null : " Answers come from the site pages."}
+                  Chat with {guideName} about visas, events, flights, and listing.
+                  {liveModel ? null : " Happy to help from what’s listed."}
                 </p>
               </div>
               <button
@@ -152,7 +154,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
                     }
                   >
                     <span className="mb-1 block text-[10px] uppercase tracking-[0.18em] text-muted">
-                      {message.role === "user" ? "You" : "Support"}
+                      {message.role === "user" ? "You" : guideName}
                     </span>
                     <p className="whitespace-pre-wrap">{message.text}</p>
                   </div>
@@ -175,9 +177,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
               ) : null}
 
               {pending ? (
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted">
-                  Looking it up…
-                </p>
+                <p className="text-sm leading-5 text-muted">One moment…</p>
               ) : null}
               {error ? <p className="text-sm text-oxide">{error}</p> : null}
             </div>
@@ -197,7 +197,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
                 onChange={(event) => setQuestion(event.target.value)}
                 maxLength={500}
                 disabled={pending}
-                placeholder="Ask the support agent…"
+                placeholder="Type a question…"
                 className="ledger-input resize-none text-sm leading-5"
                 onKeyDown={(event) => {
                   if (event.key === "Enter" && !event.shiftKey) {
@@ -208,7 +208,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
               />
               <div className="mt-2 flex items-center justify-between gap-2">
                 <p className="text-[10px] uppercase tracking-[0.16em] text-muted">
-                  {liveModel ? "Live model · site content" : "Site answers"}
+                  Happy to help
                 </p>
                 <button
                   type="submit"
