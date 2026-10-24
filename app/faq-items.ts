@@ -75,6 +75,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "Is there a support chat?",
     answer:
-      "Yes. Open Support from the small button on any page. It answers from this site’s FAQ, the visa and entry guide, and the confirmed event list. It does not invent prices, fares, or bookings. If live AI is not connected, the panel still opens with links to the FAQ, Visa and entry, and List an event.",
+      "Yes. Visitors can chat with the support agent on every page — open Ask support. It answers from this site’s FAQ, the visa and entry guide, and the confirmed event list. It does not invent prices, fares, or bookings.",
   },
 ];
+

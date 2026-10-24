@@ -2,13 +2,21 @@ import {
   supportGrounding,
   supportSystemPrompt,
 } from "../../support/grounding";
+import { matchGroundedReply } from "../../support/match";
 
 const MAX_QUESTION = 500;
 const MAX_REPLY_TOKENS = 350;
 const TEMPERATURE = 0.2;
+const MAX_HISTORY = 6;
+
+type Turn = {
+  role: "user" | "assistant";
+  text: string;
+};
 
 type Body = {
   question?: unknown;
+  history?: unknown;
 };
 
 function readKey(name: "OPENAI_API_KEY" | "ANTHROPIC_API_KEY") {
@@ -27,7 +35,32 @@ function cleanQuestion(value: unknown) {
   return text;
 }
 
-async function askOpenAI(apiKey: string, question: string) {
+function cleanHistory(value: unknown): Turn[] {
+  if (!Array.isArray(value)) return [];
+  const turns: Turn[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const role = (item as { role?: unknown }).role;
+    const text = cleanQuestion((item as { text?: unknown }).text);
+    if ((role !== "user" && role !== "assistant") || !text) continue;
+    turns.push({ role, text });
+  }
+  return turns.slice(-MAX_HISTORY);
+}
+
+async function askOpenAI(apiKey: string, question: string, history: Turn[]) {
+  const messages = [
+    {
+      role: "system" as const,
+      content: `${supportSystemPrompt}${supportGrounding()}`,
+    },
+    ...history.map((turn) => ({
+      role: turn.role === "assistant" ? ("assistant" as const) : ("user" as const),
+      content: turn.text,
+    })),
+    { role: "user" as const, content: question },
+  ];
+
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -38,19 +71,11 @@ async function askOpenAI(apiKey: string, question: string) {
       model: "gpt-4o-mini",
       temperature: TEMPERATURE,
       max_tokens: MAX_REPLY_TOKENS,
-      messages: [
-        {
-          role: "system",
-          content: `${supportSystemPrompt}${supportGrounding()}`,
-        },
-        { role: "user", content: question },
-      ],
+      messages,
     }),
   });
 
-  if (!response.ok) {
-    return null;
-  }
+  if (!response.ok) return null;
 
   const data = (await response.json()) as {
     choices?: { message?: { content?: string } }[];
@@ -59,7 +84,29 @@ async function askOpenAI(apiKey: string, question: string) {
   return text && text.length > 0 ? text : null;
 }
 
-async function askAnthropic(apiKey: string, question: string) {
+async function askAnthropic(apiKey: string, question: string, history: Turn[]) {
+  const messages = [
+    ...history.map((turn) => ({
+      role: turn.role === "assistant" ? ("assistant" as const) : ("user" as const),
+      content: turn.text,
+    })),
+    { role: "user" as const, content: question },
+  ];
+
+  // Anthropic requires alternating roles starting with user.
+  const normalized: { role: "user" | "assistant"; content: string }[] = [];
+  for (const message of messages) {
+    const last = normalized[normalized.length - 1];
+    if (last && last.role === message.role) {
+      last.content = `${last.content}\n\n${message.content}`;
+    } else {
+      normalized.push({ ...message });
+    }
+  }
+  if (normalized[0]?.role !== "user") {
+    normalized.unshift({ role: "user", content: question });
+  }
+
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -72,13 +119,11 @@ async function askAnthropic(apiKey: string, question: string) {
       max_tokens: MAX_REPLY_TOKENS,
       temperature: TEMPERATURE,
       system: `${supportSystemPrompt}${supportGrounding()}`,
-      messages: [{ role: "user", content: question }],
+      messages: normalized,
     }),
   });
 
-  if (!response.ok) {
-    return null;
-  }
+  if (!response.ok) return null;
 
   const data = (await response.json()) as {
     content?: { type?: string; text?: string }[];
@@ -92,20 +137,6 @@ async function askAnthropic(apiKey: string, question: string) {
 }
 
 export async function POST(request: Request) {
-  const openaiKey = readKey("OPENAI_API_KEY");
-  const anthropicKey = readKey("ANTHROPIC_API_KEY");
-
-  if (!openaiKey && !anthropicKey) {
-    return json(
-      {
-        configured: false,
-        reply:
-          "Live AI answers are not connected on this deploy. Use the FAQ, Visa and entry, or List an event links instead.",
-      },
-      503,
-    );
-  }
-
   let body: Body;
   try {
     body = (await request.json()) as Body;
@@ -123,20 +154,25 @@ export async function POST(request: Request) {
     );
   }
 
-  const reply = openaiKey
-    ? await askOpenAI(openaiKey, question)
-    : await askAnthropic(anthropicKey!, question);
+  const history = cleanHistory(body.history);
+  const openaiKey = readKey("OPENAI_API_KEY");
+  const anthropicKey = readKey("ANTHROPIC_API_KEY");
 
-  if (!reply) {
-    return json(
-      {
-        configured: true,
-        error:
-          "The support service did not return an answer. Try again, or write to hello@dirtydecember.info.",
-      },
-      502,
-    );
+  if (openaiKey || anthropicKey) {
+    const reply = openaiKey
+      ? await askOpenAI(openaiKey, question, history)
+      : await askAnthropic(anthropicKey!, question, history);
+
+    if (reply) {
+      return json({ mode: "live", reply });
+    }
+
+    // Fall through to site matching if the model call fails.
   }
 
-  return json({ configured: true, reply });
+  const matched = matchGroundedReply(question);
+  return json({
+    mode: "site",
+    reply: matched.reply,
+  });
 }

@@ -6,6 +6,6 @@ function hasKey(name: "OPENAI_API_KEY" | "ANTHROPIC_API_KEY") {
 }
 
 export function SupportChatSlot() {
-  const configured = hasKey("OPENAI_API_KEY") || hasKey("ANTHROPIC_API_KEY");
-  return <SupportChat configured={configured} />;
+  const liveModel = hasKey("OPENAI_API_KEY") || hasKey("ANTHROPIC_API_KEY");
+  return <SupportChat liveModel={liveModel} />;
 }

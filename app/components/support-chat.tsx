@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
 type Message = {
@@ -8,21 +7,25 @@ type Message = {
   text: string;
 };
 
-const quickLinks = [
-  { href: "/faq", label: "FAQ" },
-  { href: "/guide#entry", label: "Visa and entry" },
-  { href: "/list", label: "List an event" },
+const greeting =
+  "Hi — I’m the dirtydecember support agent. Ask about visas, confirmed events, flights, or listing something. I only answer from this site — no invented prices or bookings.";
+
+const suggestions = [
+  "Where do I check visas and entry?",
+  "What confirmed events are listed?",
+  "How do I list an event?",
+  "How do flight searches work?",
 ] as const;
 
-const offlineCopy =
-  "Live AI answers are not connected on this deploy. The links below cover the same ground as the FAQ and the guide.";
-
-export function SupportChat({ configured }: { configured: boolean }) {
+export function SupportChat({ liveModel }: { liveModel: boolean }) {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    { role: "assistant", text: greeting },
+  ]);
+  const [chipsVisible, setChipsVisible] = useState(true);
   const panelId = useId();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -48,27 +51,30 @@ export function SupportChat({ configured }: { configured: boolean }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    if (!configured || pending) return;
-    const text = question.replace(/\s+/g, " ").trim();
-    if (!text) return;
+  async function ask(text: string) {
+    const trimmed = text.replace(/\s+/g, " ").trim();
+    if (!trimmed || pending) return;
 
     setQuestion("");
     setError(null);
-    setMessages((current) => [...current, { role: "user", text }]);
+    setChipsVisible(false);
+
+    const prior = messages;
+    setMessages([...prior, { role: "user", text: trimmed }]);
     setPending(true);
+
+    const history = prior.slice(-6);
 
     try {
       const response = await fetch("/api/support", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: text }),
+        body: JSON.stringify({ question: trimmed, history }),
       });
       const data = (await response.json()) as {
         reply?: string;
         error?: string;
-        configured?: boolean;
+        mode?: string;
       };
 
       if (!response.ok || !data.reply) {
@@ -92,22 +98,28 @@ export function SupportChat({ configured }: { configured: boolean }) {
     }
   }
 
+  function onSubmit(event: FormEvent) {
+    event.preventDefault();
+    void ask(question);
+  }
+
   return (
     <div className="support-chat pointer-events-none fixed inset-x-0 z-50 flex justify-end px-3 lg:inset-x-auto lg:right-5 lg:px-0">
       <div className="pointer-events-auto flex w-full max-w-[22rem] flex-col items-end gap-2">
         {open ? (
           <section
             id={panelId}
-            aria-label="Support chat"
-            className="support-chat-panel flex max-h-[min(28rem,calc(100svh-var(--clock-strip)-var(--mobile-bar,0px)-5.5rem))] w-full flex-col border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.12)] lg:max-h-[min(32rem,calc(100svh-6rem))]"
+            aria-label="Ask support chat"
+            className="support-chat-panel flex max-h-[min(30rem,calc(100svh-var(--clock-strip)-var(--mobile-bar,0px)-5.5rem))] w-full flex-col border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.12)] lg:max-h-[min(34rem,calc(100svh-6rem))]"
           >
             <header className="flex items-start justify-between gap-3 border-b border-ink/10 px-4 py-3">
               <div>
                 <p className="text-[11px] uppercase tracking-[0.22em] text-brass">
-                  Support
+                  Ask support
                 </p>
                 <p className="mt-1 text-sm leading-5 text-muted">
-                  Answers from this site’s FAQ, visa guide, and confirmed events.
+                  Chat agent for this site’s FAQ, visa guide, and confirmed events.
+                  {liveModel ? null : " Answers come from the site pages."}
                 </p>
               </div>
               <button
@@ -121,47 +133,47 @@ export function SupportChat({ configured }: { configured: boolean }) {
 
             <div
               ref={listRef}
-              className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 text-sm leading-6 text-ink"
+              className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3 py-3 text-sm leading-6 text-ink"
             >
-              {!configured ? (
-                <div className="space-y-3">
-                  <p>{offlineCopy}</p>
-                  <ul className="flex flex-col gap-2">
-                    {quickLinks.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="inline-flex border border-brass/45 px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
-                          onClick={() => setOpen(false)}
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : messages.length === 0 ? (
-                <p className="text-muted">
-                  Ask about visas, confirmed events, or how this directory works.
-                  It will not invent prices or bookings.
-                </p>
-              ) : (
-                messages.map((message, index) => (
-                  <p
-                    key={`${message.role}-${index}`}
+              {messages.map((message, index) => (
+                <div
+                  key={`${message.role}-${index}`}
+                  className={
+                    message.role === "user"
+                      ? "ml-8 flex justify-end"
+                      : "mr-8 flex justify-start"
+                  }
+                >
+                  <div
                     className={
                       message.role === "user"
-                        ? "border-l-2 border-oxide/70 pl-3 text-ink"
-                        : "border-l-2 border-lagoon/70 pl-3 text-ink"
+                        ? "max-w-full border border-oxide/35 bg-paper px-3 py-2"
+                        : "max-w-full border border-lagoon/35 bg-paper-deep/60 px-3 py-2"
                     }
                   >
                     <span className="mb-1 block text-[10px] uppercase tracking-[0.18em] text-muted">
                       {message.role === "user" ? "You" : "Support"}
                     </span>
-                    {message.text}
-                  </p>
-                ))
-              )}
+                    <p className="whitespace-pre-wrap">{message.text}</p>
+                  </div>
+                </div>
+              ))}
+
+              {chipsVisible && !pending ? (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      type="button"
+                      className="border border-brass/45 bg-paper px-2.5 py-1.5 text-left text-[11px] uppercase tracking-[0.12em] text-ink hover:border-oxide hover:text-oxide"
+                      onClick={() => void ask(suggestion)}
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+
               {pending ? (
                 <p className="text-[11px] uppercase tracking-[0.18em] text-muted">
                   Looking it up…
@@ -170,39 +182,43 @@ export function SupportChat({ configured }: { configured: boolean }) {
               {error ? <p className="text-sm text-oxide">{error}</p> : null}
             </div>
 
-            {configured ? (
-              <form
-                onSubmit={onSubmit}
-                className="border-t border-ink/10 px-3 py-3"
-              >
-                <label className="sr-only" htmlFor={`${panelId}-ask`}>
-                  Your question
-                </label>
-                <textarea
-                  id={`${panelId}-ask`}
-                  ref={inputRef}
-                  rows={2}
-                  value={question}
-                  onChange={(event) => setQuestion(event.target.value)}
-                  maxLength={500}
-                  disabled={pending}
-                  placeholder="Ask a short question"
-                  className="ledger-input resize-none text-sm leading-5"
-                />
-                <div className="mt-2 flex items-center justify-between gap-2">
-                  <p className="text-[10px] uppercase tracking-[0.16em] text-muted">
-                    Site content only
-                  </p>
-                  <button
-                    type="submit"
-                    disabled={pending || question.trim().length === 0}
-                    className="bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-chart disabled:opacity-40"
-                  >
-                    Send
-                  </button>
-                </div>
-              </form>
-            ) : null}
+            <form
+              onSubmit={onSubmit}
+              className="border-t border-ink/10 px-3 py-3"
+            >
+              <label className="sr-only" htmlFor={`${panelId}-ask`}>
+                Your question
+              </label>
+              <textarea
+                id={`${panelId}-ask`}
+                ref={inputRef}
+                rows={2}
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+                maxLength={500}
+                disabled={pending}
+                placeholder="Ask the support agent…"
+                className="ledger-input resize-none text-sm leading-5"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    void ask(question);
+                  }
+                }}
+              />
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted">
+                  {liveModel ? "Live model · site content" : "Site answers"}
+                </p>
+                <button
+                  type="submit"
+                  disabled={pending || question.trim().length === 0}
+                  className="bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-chart disabled:opacity-40"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
           </section>
         ) : null}
 
@@ -213,7 +229,7 @@ export function SupportChat({ configured }: { configured: boolean }) {
           className="border border-ink/15 bg-paper px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-ink shadow-[0_8px_24px_rgba(26,20,16,0.1)] hover:border-oxide hover:text-oxide"
           onClick={() => setOpen((value) => !value)}
         >
-          {open ? "Close support" : "Support"}
+          {open ? "Close chat" : "Ask support"}
         </button>
       </div>
     </div>
