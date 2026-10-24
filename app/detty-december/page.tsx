@@ -73,6 +73,9 @@ export default function DettyDecemberPage() {
         <Link href="/faq" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           FAQ
         </Link>
+        <Link href="/west-africa" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          West Africa year-round
+        </Link>
       </nav>
 
       <section className="mt-12">

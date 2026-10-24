@@ -62,6 +62,13 @@ export function cityBySlug(slug: string) {
   return citiesOnFile().find((city) => city.slug === slug) ?? null;
 }
 
+export function cityRecordFor(city: string, country: string) {
+  return (
+    citiesOnFile().find((item) => item.city === city && item.country === country) ??
+    null
+  );
+}
+
 export function cityDescription(city: CityRecord) {
   const pages = `${city.places.length} organiser ${
     city.places.length === 1 ? "page" : "pages"

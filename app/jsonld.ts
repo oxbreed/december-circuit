@@ -8,6 +8,10 @@ import type { Pin } from "./pins";
 import type { Place } from "./places";
 import { places } from "./places";
 import {
+  placeDescription,
+  type PlaceRecord,
+} from "./place-catalog";
+import {
   absoluteUrl,
   defaultDescription,
   publisherName,
@@ -277,6 +281,75 @@ export function eventsItemListJsonLd(
         url: absoluteUrl(view.href),
       };
     }),
+  };
+}
+
+export function listedPlaceJsonLd(place: PlaceRecord) {
+  const pageUrl = absoluteUrl(`/place/${place.slug}`);
+  const pin = pinForName(place.city, place.name);
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "@id": pageUrl,
+    name: place.name,
+    url: pageUrl,
+    description: placeDescription(place),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: place.city,
+      addressCountry: place.country,
+    },
+    sameAs: place.url,
+  };
+  if (pin) data.geo = geoFromPin(pin);
+  return data;
+}
+
+export function categoryPlacesItemListJsonLd(
+  category: string,
+  categoryPath: string,
+  listed: PlaceRecord[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${category} on dirtydecember.info`,
+    url: absoluteUrl(categoryPath),
+    mainEntity: {
+      "@type": "ItemList",
+      name: category,
+      numberOfItems: listed.length,
+      itemListElement: listed.map((place, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: place.name,
+        url: absoluteUrl(`/place/${place.slug}`),
+      })),
+    },
+  };
+}
+
+export function webPageJsonLd({
+  path,
+  name,
+  description,
+}: {
+  path: string;
+  name: string;
+  description: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": absoluteUrl(path),
+    url: absoluteUrl(path),
+    name,
+    description,
+    isPartOf: { "@id": `${siteUrl}/#website` },
+    about: {
+      "@type": "Place",
+      name: "West Africa",
+    },
   };
 }
 

@@ -5,7 +5,7 @@ import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
 import { PlacesFallback, PlacesSection } from "../components/places-section";
 import { breadcrumbJsonLd } from "../jsonld";
-import { places } from "../places";
+import { categoriesOnFile, placesOnFile } from "../place-catalog";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
@@ -17,7 +17,8 @@ export const metadata = pageMetadata({
 
 export default function PlacesPage() {
   const cities = citiesOnFile().slice(0, 24);
-  const crawlPlaces = places.slice(0, 80);
+  const crawlPlaces = placesOnFile().slice(0, 80);
+  const categories = categoriesOnFile();
 
   return (
     <main id="top" className="pb-28 lg:pb-0">
@@ -34,47 +35,69 @@ export default function PlacesPage() {
             { name: "Places" },
           ]}
         />
-        <nav aria-label="Cities with organiser pages" className="mt-6 pb-2">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">
-            Browse by city
-          </p>
-          <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-2 text-sm leading-6 text-ink">
-            {cities.map((city) => (
-              <li key={city.slug}>
+        <nav aria-label="Browse places" className="mt-6 space-y-4 pb-2">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">
+              Browse by category
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-2 text-sm leading-6 text-ink">
+              {categories.map((item) => (
+                <li key={item.slug}>
+                  <Link
+                    href={`/categories/${item.slug}`}
+                    className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                  >
+                    {item.category}
+                  </Link>
+                </li>
+              ))}
+              <li>
                 <Link
-                  href={`/cities/${city.slug}`}
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                  href="/west-africa"
+                  className="text-oxide underline decoration-oxide/40 underline-offset-4"
                 >
-                  {city.city}
+                  West Africa hub →
                 </Link>
               </li>
-            ))}
-            <li>
-              <Link
-                href="/cities"
-                className="text-oxide underline decoration-oxide/40 underline-offset-4"
-              >
-                All cities →
-              </Link>
-            </li>
-          </ul>
+            </ul>
+          </div>
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">
+              Browse by city
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-2 text-sm leading-6 text-ink">
+              {cities.map((city) => (
+                <li key={city.slug}>
+                  <Link
+                    href={`/cities/${city.slug}`}
+                    className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                  >
+                    {city.city}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/cities"
+                  className="text-oxide underline decoration-oxide/40 underline-offset-4"
+                >
+                  All cities →
+                </Link>
+              </li>
+            </ul>
+          </div>
         </nav>
         <section aria-label="Organiser pages on file" className="mt-6 pb-4">
           <h2 className="sr-only">Organiser pages on file</h2>
           <ul className="columns-1 gap-x-8 text-sm leading-6 text-ink sm:columns-2 lg:columns-3">
             {crawlPlaces.map((place) => (
-              <li
-                key={`${place.country}-${place.city}-${place.category}-${place.name}`}
-                className="break-inside-avoid py-0.5"
-              >
-                <a
-                  href={place.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              <li key={place.slug} className="break-inside-avoid py-0.5">
+                <Link
+                  href={`/place/${place.slug}`}
                   className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
                 >
                   {place.name}
-                </a>
+                </Link>
                 <span className="text-muted">
                   {" "}
                   — {place.city}, {place.country}

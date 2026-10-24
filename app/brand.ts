@@ -14,6 +14,7 @@ export const nav = [
 /** Extra footer destinations kept out of the 7-column mobile bar. */
 export const footerExtra = [
   ["Detty December", "/detty-december"],
+  ["West Africa", "/west-africa"],
   ["Cities", "/cities"],
   ["Visa", "/visa"],
   ["Explore", "/explore"],

@@ -30,13 +30,33 @@ export function pageMetadata({
   description,
   path,
   type = "website",
+  image,
 }: {
   title: string;
   description: string;
   path: string;
   type?: "website" | "article";
+  image?: {
+    url: string;
+    alt: string;
+    width?: number;
+    height?: number;
+  };
 }): Metadata {
   const fullTitle = documentTitle(title);
+  const share = image
+    ? {
+        url: image.url,
+        alt: image.alt,
+        width: image.width ?? 1200,
+        height: image.height ?? 630,
+      }
+    : {
+        url: defaultShareImage.url,
+        alt: defaultShareImage.alt,
+        width: defaultShareImage.width,
+        height: defaultShareImage.height,
+      };
   return {
     title: path === "/" ? { absolute: fullTitle } : title,
     description,
@@ -48,20 +68,13 @@ export function pageMetadata({
       siteName,
       type,
       locale: "en",
-      images: [
-        {
-          url: defaultShareImage.url,
-          alt: defaultShareImage.alt,
-          width: defaultShareImage.width,
-          height: defaultShareImage.height,
-        },
-      ],
+      images: [share],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description,
-      images: [defaultShareImage.url],
+      images: [share.url],
     },
   };
 }

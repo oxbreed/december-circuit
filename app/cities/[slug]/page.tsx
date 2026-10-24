@@ -12,6 +12,8 @@ import {
   cityPlacesItemListJsonLd,
 } from "../../jsonld";
 import { countriesOnFile } from "../../countries";
+import { placeRecordFor } from "../../place-catalog";
+import { shareImageForCity } from "../../share-images";
 import { pageMetadata } from "../../site";
 
 export function generateStaticParams() {
@@ -30,6 +32,7 @@ export async function generateMetadata({
     title: `${city.city}, ${city.country}`,
     description: cityDescription(city),
     path: `/cities/${city.slug}`,
+    image: shareImageForCity(city.city),
   });
 }
 
@@ -95,7 +98,10 @@ export default async function CityPage({
       <section className="mt-12">
         <h2 className="font-display text-3xl tracking-tight">Organiser pages</h2>
         <ul className="mt-5 divide-y divide-ink/10 border border-ink/15 bg-chart">
-          {city.places.map((place) => (
+          {city.places.map((place) => {
+            const record = placeRecordFor(place);
+            const href = record ? `/place/${record.slug}` : null;
+            return (
             <li
               key={`${place.category}-${place.name}`}
               className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:px-5"
@@ -104,20 +110,40 @@ export default async function CityPage({
                 <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
                   {place.category}
                 </p>
-                <p className="mt-1 font-display text-2xl leading-none break-words">
-                  {place.name}
-                </p>
+                {href ? (
+                  <Link
+                    href={href}
+                    className="mt-1 block font-display text-2xl leading-none break-words hover:text-oxide"
+                  >
+                    {place.name}
+                  </Link>
+                ) : (
+                  <p className="mt-1 font-display text-2xl leading-none break-words">
+                    {place.name}
+                  </p>
+                )}
               </div>
-              <a
-                href={place.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0 text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                Organiser page — leaves this site
-              </a>
+              <div className="flex shrink-0 flex-col items-start gap-1 text-sm sm:items-end">
+                {href ? (
+                  <Link
+                    href={href}
+                    className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                  >
+                    On this site
+                  </Link>
+                ) : null}
+                <a
+                  href={place.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted underline decoration-ink/20 underline-offset-4 hover:text-oxide"
+                >
+                  Organiser page — leaves this site
+                </a>
+              </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </section>
 

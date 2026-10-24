@@ -206,6 +206,10 @@ export default function GuidePage() {
           <Link href="/visa" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
             Visa and entry
           </Link>
+          {" · "}
+          <Link href="/west-africa" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+            West Africa year-round
+          </Link>
         </p>
       </section>
 

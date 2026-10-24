@@ -7,6 +7,7 @@ The live site is https://www.dirtydecember.info
 ## What this site is
 
 - A guide for diaspora travellers planning Detty December (and related December season travel) across Lagos, Accra, Calabar, and other West African cities already on file.
+- Year-round tourism pages list organiser pages (hotels, restaurants, clubs, practical stops, and more) already on file — not invented reviews, prices, or ratings.
 - Listings appear only when an organiser page or a named report confirms them. Dates come from that source.
 - Ticket, stay, and flight rows open external pages. This site does not sell tickets, hold inventory, or take payment.
 - Independent community directory. Not affiliated with Livespot360 or Detty December Fest™.
@@ -15,10 +16,13 @@ The live site is https://www.dirtydecember.info
 
 - [Home](https://www.dirtydecember.info/): Detty December hero, confirmed dates, stays by city, flight searches, entertainment headlines.
 - [Detty December hub](https://www.dirtydecember.info/detty-december): Season landing — confirmed events, Lagos / Accra / Calabar, links to visa, guide, map, flights.
+- [West Africa hub](https://www.dirtydecember.info/west-africa): Year-round tourism directory — countries, categories, city entry points.
 - [Tourist guide](https://www.dirtydecember.info/guide): Arrive, stay, get around, what is on; includes visa and entry.
 - [Visa and entry](https://www.dirtydecember.info/visa): Nigeria and Ghana notes repeating linked official immigration pages — no application or payment here.
 - [Confirmed events](https://www.dirtydecember.info/events): Filter by city and date from records on file.
 - [Places](https://www.dirtydecember.info/places): Organiser pages by country, city, and category.
+- [Place pages](https://www.dirtydecember.info/place/kempinski-hotel-gold-coast-city-accra-accra): One page per listed organiser (example Accra hotel); outbound organiser link; Place JSON-LD with geo when a sourced pin matches.
+- [Categories](https://www.dirtydecember.info/categories/hotels): Category hubs (hotels, restaurants, clubs, bars, short-stay, event centres, practical stops, car rental, catering).
 - [Cities](https://www.dirtydecember.info/cities): City index for every city already listed.
 - [Countries](https://www.dirtydecember.info/countries/nigeria): Country hubs (e.g. Nigeria, Ghana) listing cities and confirmed events on file.
 - [Map](https://www.dirtydecember.info/map): Sourced coordinates on OpenStreetMap.

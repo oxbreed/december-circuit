@@ -1,14 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { landmarks } from "../landmarks";
 
 const INTERVAL_MS = 8000;
 
-export function LandmarkFrame() {
+const imgClass = "h-16 w-full object-cover lg:h-52";
+
+/**
+ * `firstSlide` should be server-rendered markup (e.g. the first landmark <img>)
+ * so LCP is in the initial HTML before this carousel hydrates.
+ */
+export function LandmarkFrame({ firstSlide }: { firstSlide?: ReactNode }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -19,14 +30,15 @@ export function LandmarkFrame() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion || paused || landmarks.length < 2) return;
+    if (!hydrated || reduceMotion || paused || landmarks.length < 2) return;
     const timer = window.setInterval(() => {
       setIndex((current) => (current + 1) % landmarks.length);
     }, INTERVAL_MS);
     return () => window.clearInterval(timer);
-  }, [paused, reduceMotion]);
+  }, [hydrated, paused, reduceMotion]);
 
   const slide = landmarks[index];
+  const useServerFirst = Boolean(firstSlide) && (!hydrated || index === 0);
 
   return (
     <figure
@@ -36,16 +48,20 @@ export function LandmarkFrame() {
     >
       <div className="bg-chart p-1.5 shadow-[8px_8px_0_0_#b8432f] ring-1 ring-ink">
         <div className="ring-1 ring-gold">
-          <img
-            key={slide.src}
-            src={slide.src}
-            alt={`${slide.name}, ${slide.city}${slide.credit ? `. ${slide.credit}` : ""}`}
-            width={960}
-            height={540}
-            decoding="async"
-            fetchPriority={index === 0 ? "high" : "low"}
-            className={`h-16 w-full object-cover lg:h-52 ${reduceMotion ? "" : "landmark-fade"}`}
-          />
+          {useServerFirst ? (
+            firstSlide
+          ) : (
+            <img
+              key={slide.src}
+              src={slide.src}
+              alt={`${slide.name}, ${slide.city}${slide.credit ? `. ${slide.credit}` : ""}`}
+              width={960}
+              height={540}
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "low"}
+              className={`${imgClass} ${reduceMotion ? "" : "landmark-fade"}`}
+            />
+          )}
         </div>
       </div>
       <figcaption aria-live={reduceMotion ? "off" : "polite"} className="mt-1.5 lg:mt-3">

@@ -51,6 +51,12 @@ export default function Home() {
                 Detty December hub →
               </Link>
               <Link
+                href="/west-africa"
+                className="text-[11px] uppercase tracking-[0.18em] text-oxide"
+              >
+                West Africa year-round →
+              </Link>
+              <Link
                 href="/cities"
                 className="text-[11px] uppercase tracking-[0.18em] text-oxide"
               >

@@ -10,6 +10,7 @@ import { checkedOn, eventSlug, presentEvent } from "../../event-view";
 import { events } from "../../events";
 import { eventTripId } from "../../trip";
 import { breadcrumbJsonLd, eventJsonLd } from "../../jsonld";
+import { shareImageForEvent } from "../../share-images";
 import { pageMetadata } from "../../site";
 
 export function generateStaticParams() {
@@ -29,6 +30,7 @@ export async function generateMetadata({
     title: `${view.name} — ${view.region}`,
     description: `${event.summary} Sourced listing on dirtydecember.info for Detty December / December ${view.region}. Tickets and organiser pages leave this site.`,
     path: view.href,
+    image: shareImageForEvent(event),
   });
 }
 

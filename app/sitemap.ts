@@ -4,6 +4,7 @@ import { countriesOnFile } from "./countries";
 import { eventSlug } from "./event-view";
 import { events } from "./events";
 import { landmarks } from "./landmarks";
+import { categoriesOnFile, placesOnFile } from "./place-catalog";
 import { absoluteUrl } from "./site";
 
 const checked = new Date("2026-10-24");
@@ -27,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [heroImage, ...landmarkImages.slice(0, 8)],
     },
     { path: "/detty-december", changeFrequency: "daily", priority: 0.98 },
+    { path: "/west-africa", changeFrequency: "weekly", priority: 0.96 },
     { path: "/guide", changeFrequency: "weekly", priority: 0.9 },
     { path: "/visa", changeFrequency: "monthly", priority: 0.88 },
     { path: "/events", changeFrequency: "daily", priority: 0.95 },
@@ -47,6 +49,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.86,
     })),
+    ...categoriesOnFile().map((cat) => ({
+      path: `/categories/${cat.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.82,
+    })),
     ...events.map((event) => ({
       path: `/events/${eventSlug(event)}`,
       changeFrequency: "weekly" as const,
@@ -56,6 +63,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       path: `/cities/${city.slug}`,
       changeFrequency: "weekly" as const,
       priority: 0.8,
+    })),
+    ...placesOnFile().map((place) => ({
+      path: `/place/${place.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
     })),
   ];
 

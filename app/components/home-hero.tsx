@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { disclaimer } from "../brand";
 import { events } from "../events";
+import { landmarks } from "../landmarks";
 import { LandmarkFrame } from "./landmark-frame";
 
 function listedDates() {
@@ -13,6 +14,7 @@ function listedDates() {
 
 export function HomeHero() {
   const dates = listedDates();
+  const first = landmarks[0];
 
   return (
     <section className="overflow-x-clip px-4 pb-6 pt-[4.5rem] sm:px-6 lg:px-8 lg:pt-[8.25rem]">
@@ -29,6 +31,12 @@ export function HomeHero() {
             className="inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
           >
             Detty December hub
+          </Link>
+          <Link
+            href="/west-africa"
+            className="inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            West Africa year-round
           </Link>
         </div>
         <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(16rem,0.7fr)] lg:items-end lg:gap-8">
@@ -71,7 +79,21 @@ export function HomeHero() {
             </form>
             <p className="mt-4 max-w-xl text-[11px] leading-5 text-muted">{disclaimer}</p>
           </div>
-          <LandmarkFrame />
+          {first ? (
+            <LandmarkFrame
+              firstSlide={
+                <img
+                  src={first.src}
+                  alt={`${first.name}, ${first.city}${first.credit ? `. ${first.credit}` : ""}`}
+                  width={960}
+                  height={540}
+                  decoding="async"
+                  fetchPriority="high"
+                  className="h-16 w-full object-cover lg:h-52"
+                />
+              }
+            />
+          ) : null}
         </div>
       </div>
     </section>
