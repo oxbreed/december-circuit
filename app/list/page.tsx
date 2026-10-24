@@ -1,14 +1,15 @@
 import { BusinessPlacement } from "../components/business-placement";
 import { EventSubmission } from "../components/event-submission";
 import { PartnerOffer } from "../components/partner-offer";
+import { PlaceSubmission } from "../components/place-submission";
 import { ProductAd } from "../components/product-ad";
 import { directorySignIn } from "../directory-auth";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
-  title: "List an event or place an ad",
+  title: "List an event or place",
   description:
-    "Email an event or a product to be checked, or ask about a labeled placement. This site does not take payment.",
+    "Submit an event, a place, or a business to be checked, or ask about a labeled placement. This site does not take payment.",
   path: "/list",
 });
 
@@ -19,7 +20,7 @@ export default function ListPage() {
     <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-12 pt-16 sm:px-6 md:px-8 md:pt-32 lg:pb-16">
       <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">On this site</p>
       <h1 className="mt-2 max-w-3xl font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
-        List an event or place an ad
+        List an event or place
       </h1>
 
       <section id="submit-event" className="mt-4 scroll-mt-36">
@@ -32,6 +33,21 @@ export default function ListPage() {
             : "The event stays off the public list until it is checked. The button opens an email to hello@dirtydecember.info."}
         </p>
         <EventSubmission connected={connected} />
+      </section>
+
+      <section id="submit-place" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
+        <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">
+          List a place or business
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+          Free intake for a place or business already open to visitors. Name the city (Lagos, Accra,
+          or Calabar), pick a category, and add the website. You can optionally find it on the map
+          and attach OpenStreetMap coordinates.
+          {connected
+            ? " It is saved as unpublished and stays off the public places list and map until a person checks it."
+            : " It stays off the public places list and map until a person checks it. The button opens an email to hello@dirtydecember.info."}
+        </p>
+        <PlaceSubmission connected={connected} />
       </section>
 
       <section id="place-ad" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">

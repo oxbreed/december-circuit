@@ -42,7 +42,9 @@ export function StaysByCity() {
           </Link>
         </div>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Hotels and short-stay by city, with Lagos first. Museums, ports, and regional stops stay on the places list. This site does not take payment.
+          Hotels and short-stay by city, with Lagos first. Each name opens that hotel or short-stay’s
+          own page — booking happens there, not here. Museums, ports, and regional stops stay on the
+          places list. This site does not take payment.
         </p>
         {groups.length === 0 ? (
           <p className="mt-6 text-sm leading-7 text-muted">No stay places are listed.</p>
@@ -68,7 +70,7 @@ export function StaysByCity() {
                           rel="noopener noreferrer"
                           className="mt-4 inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
                         >
-                          Organiser page — leaves this site
+                          Open their page — leaves this site
                         </a>
                       ) : (
                         <p className="mt-4 text-sm leading-6 text-muted">The link is not listed.</p>

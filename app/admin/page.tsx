@@ -27,6 +27,10 @@ function submissionLine(row: {
   product_name: string | null;
   business_name: string | null;
   offer: string | null;
+  category: string | null;
+  note: string | null;
+  latitude: number | null;
+  longitude: number | null;
   public_link: string | null;
 }) {
   if (row.kind === "event") {
@@ -36,6 +40,18 @@ function submissionLine(row: {
     return `${row.product_name}, ${row.business_name}`;
   }
   if (row.kind === "placement") return row.business_name ?? "";
+  if (row.kind === "place" || row.kind === "business") {
+    const parts = [
+      row.business_name,
+      row.city,
+      row.category,
+      row.note,
+      row.latitude !== null && row.longitude !== null
+        ? `${row.latitude.toFixed(5)}, ${row.longitude.toFixed(5)}`
+        : null,
+    ].filter(Boolean);
+    return parts.join(" · ");
+  }
   return `${row.business_name}. ${row.offer}`;
 }
 

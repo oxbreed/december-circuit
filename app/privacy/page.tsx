@@ -66,10 +66,12 @@ export default function PrivacyPage() {
           A listing or partnership form, when the directory is connected, stores
           an unpublished submission. The submission holds your email, the fields
           on that form, and a public link that uses http or https. An event form
-          also holds the event name, city, dates, and venue. A product form also
-          holds the product name and the business name. A business placement also
-          holds the business name. A transportation or booking offer also holds
-          the business name and what they offer.
+          also holds the event name, city, dates, and venue. A place or business
+          form also holds the name, city, category, optional note, and any
+          OpenStreetMap coordinates you chose from Find on the map. A product
+          form also holds the product name and the business name. A business
+          placement also holds the business name. A transportation or booking
+          offer also holds the business name and what they offer.
         </p>
         <p>
           The event form, the business placement, and the product form can
@@ -80,8 +82,9 @@ export default function PrivacyPage() {
         </p>
         <p>
           If the directory is not connected, those buttons open an email instead
-          of saving a row. Event mail goes to hello@dirtydecember.info. Placement
-          and partnership mail goes to partners@dirtydecember.info.
+          of saving a row. Event, place, and business mail goes to
+          hello@dirtydecember.info. Placement and partnership mail goes to
+          partners@dirtydecember.info.
         </p>
         <p>
           A review is text only, from a signed-in visitor, with no rating. The
@@ -139,13 +142,14 @@ export default function PrivacyPage() {
           enquiry mail. The admin page can be opened only from the admin address
           held on the server. Supabase holds the database, the private pictures,
           and the sign-in. Vercel hosts the site and receives the request that
-          loads a page. Enquiry mail is received at hello@dirtydecember.info and
+          loads a page.           Enquiry mail is received at hello@dirtydecember.info and
           partners@dirtydecember.info. OpenStreetMap receives the request for a
-          map tile or a directions page
-          when you use the map. A ticket page, an organiser page, a flight
-          search, or a news headline is received by the site you open. A news
-          picture is requested from the address supplied in that feed. This
-          directory does not send your email to those sites.
+          map tile or a directions page when you use the map, and Nominatim
+          receives the place name and city when you use Find on the map on the
+          listing form. A ticket page, an organiser page, a flight search, or a
+          news headline is received by the site you open. A news picture is
+          requested from the address supplied in that feed. This directory does
+          not send your email to those sites.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">

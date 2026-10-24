@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Place } from "../places";
 import { placeTripId } from "../trip";
@@ -15,7 +16,7 @@ export function PlacesFallback() {
       <SectionIntro
         kicker="Places"
         title="Organiser pages"
-        lede="Each name opens that organiser page. Cities outside Lagos stay on the list."
+        lede="Tap a name to open that business’s own page in a new tab. Cities outside Lagos stay on the list."
       />
       <LoadingLines label="Loading places" />
     </section>
@@ -107,8 +108,18 @@ export function PlacesSection() {
       <SectionIntro
         kicker="Places"
         title="Organiser pages"
-        lede="Each name opens that organiser page. Matches stay in the order they are listed. Choose a category or a city, or type a name."
+        lede="Tap a name to open that business’s own page in a new tab. Matches stay in the order they are listed. Choose a category or a city, or type a name."
       />
+      <p className="mb-6 max-w-2xl text-sm leading-6 text-muted">
+        Missing a stay or venue?{" "}
+        <Link
+          href="/list#submit-place"
+          className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+        >
+          List a place
+        </Link>{" "}
+        — it stays unpublished until a person checks it.
+      </p>
 
       {all.status === "loading" ? <LoadingLines label="Loading places" /> : null}
       {all.status === "error" ? (
@@ -245,12 +256,12 @@ export function PlacesSection() {
                                 href={place.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label={`${place.name}, organiser page`}
+                                aria-label={`${place.name}, opens their own page`}
                                 className="text-lg leading-7 text-ink underline decoration-oxide/50 decoration-1 underline-offset-4"
                               >
                                 {place.name}
                                 <span className="mt-1 block text-[11px] font-sans uppercase tracking-[0.14em] text-oxide no-underline">
-                                  Organiser page — leaves this site
+                                  Opens their page — leaves this site
                                 </span>
                               </a>
                               <div className="flex flex-col items-start gap-3 sm:items-end">

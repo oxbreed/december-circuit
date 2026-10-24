@@ -65,7 +65,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "How do I list an event or a place?",
     answer:
-      "Use [[/list|List an event]]. An event or a show stays unpublished until a person checks it. Visitor listing mail goes to [[mailto:hello@dirtydecember.info|hello@dirtydecember.info]]. Labeled placements, product ads, and partnership notes go to [[mailto:partners@dirtydecember.info|partners@dirtydecember.info]]. Those placements are labeled, and this site does not take payment.",
+      "Use [[/list|List an event or place]]. An event, a show, a place, or a business stays unpublished until a person checks it. You can optionally match a place on the map; that only attaches coordinates to the unpublished submission. Visitor listing mail goes to [[mailto:hello@dirtydecember.info|hello@dirtydecember.info]]. Labeled placements, product ads, and partnership notes go to [[mailto:partners@dirtydecember.info|partners@dirtydecember.info]]. Those placements are labeled, and this site does not take payment.",
   },
   {
     question: "Who do I contact?",

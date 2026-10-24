@@ -4,7 +4,8 @@ import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
   title: "Places",
-  description: "Organiser pages already listed, by country, city, and category.",
+  description:
+    "Open a listed business’s own page by country, city, and category. Add a missing place from List a place for review.",
   path: "/places",
 });
 

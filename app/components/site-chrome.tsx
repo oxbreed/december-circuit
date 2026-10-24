@@ -150,7 +150,7 @@ export function SiteChrome({
           </div>
           <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6">
             <Link href="/list" className={`text-ink ${footerLink}`}>
-              List an event
+              List an event or place
             </Link>
             <Link href="/news" className={`text-ink ${footerLink}`}>
               News

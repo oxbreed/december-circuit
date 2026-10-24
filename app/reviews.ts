@@ -36,6 +36,10 @@ export type SubmissionRow = {
   product_name: string | null;
   business_name: string | null;
   offer: string | null;
+  category: string | null;
+  note: string | null;
+  latitude: number | null;
+  longitude: number | null;
   public_link: string | null;
   image_path: string | null;
   image_unreadable: boolean;
@@ -51,7 +55,7 @@ export async function listUnpublishedSubmissions(): Promise<{
   const { data, error } = await supabase
     .from("submissions")
     .select(
-      "id, kind, sender_email, event_name, city, dates, venue, product_name, business_name, offer, public_link, image_path",
+      "id, kind, sender_email, event_name, city, dates, venue, product_name, business_name, offer, category, note, latitude, longitude, public_link, image_path",
     )
     .eq("status", "unpublished")
     .order("created_at", { ascending: true });
@@ -75,6 +79,10 @@ export async function listUnpublishedSubmissions(): Promise<{
           product_name: textOrNull(row.product_name),
           business_name: textOrNull(row.business_name),
           offer: textOrNull(row.offer),
+          category: textOrNull(row.category),
+          note: textOrNull(row.note),
+          latitude: numberOrNull(row.latitude),
+          longitude: numberOrNull(row.longitude),
           public_link: textOrNull(row.public_link),
           image_path: readable ? rawPath : null,
           image_unreadable: rawPath !== "" && !readable,
@@ -87,6 +95,10 @@ export async function listUnpublishedSubmissions(): Promise<{
 
 function textOrNull(value: unknown) {
   return typeof value === "string" ? value : null;
+}
+
+function numberOrNull(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
 /** Signed URLs for the admin page. Call this only after the admin email check. */
