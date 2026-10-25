@@ -9,6 +9,8 @@ npm install
 npm run dev
 ```
 
+`npm install` syncs MapLibre’s worker into `public/maplibre-gl-worker.mjs` so maps load a same-origin worker (a CDN worker URL fails under Next with “Worker failed to load”).
+
 ## Event ingest (Tier-1)
 
 Every 3 days, refresh confirmed events from the allowlisted organiser / official / named sources in `app/event-feeds.ts`:

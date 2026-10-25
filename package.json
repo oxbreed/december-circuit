@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "node scripts/sync-maplibre-worker.mjs",
     "ingest:events": "npx --yes tsx scripts/ingest-events.ts"
   },
   "dependencies": {
