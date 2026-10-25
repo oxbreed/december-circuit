@@ -11,16 +11,17 @@ DirtyDecember monitors visits and performance with **Vercel Web Analytics**, **V
 | `POST /api/analytics/pageview` | Best-effort first-party insert: path, referrer, short UA, **country only** from `x-vercel-ip-country` / `cf-ipcountry`. No IP stored. Quiet no-op if Supabase service role or table is missing. |
 | `POST /api/analytics/web-vital` | Best-effort LCP / INP / CLS samples from the `web-vitals` library. Quiet no-op if table/key missing. |
 | Client beacons in `SiteAnalytics` | Page views + Web Vitals on App Router navigations. Skips `/admin`, `/api/*`, `/auth/*`. |
-| `/admin` → **Analytics** | Simple on-page dashboard (Plausible-style): big number tiles, 30-day bar chart, top pages / countries / sources, LCP/INP/CLS p75 tiles. Short status lines when empty/error. “Open in Vercel” secondary. |
+| `/admin` → **Analytics** | MonsterInsights-style Overview Report card: date range (7 / 30 days), Sessions / Pageviews tabs, blue area-line chart with markers + grid, top pages / countries / sources. Web Vitals p75 tiles below. Empty states covered. “Open in Vercel” secondary. |
 | Optional `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Loads gtag only when set. **Off by default.** |
 
 ## What Ox sees on `/admin` (signed in)
 
-1. **Tiles** — 24 hours, 7 days, 30 days, Pages, Countries.
-2. **Chart** — Views over 30 days.
-3. **Lists** — Top pages, countries, sources.
-4. **Web Vitals** — LCP / INP / CLS p75 for 7 days.
-5. Secondary: Open in Vercel.
+1. **Overview Report** card — Last 7 / 30 days selector; **Sessions** and **Pageviews** tabs with totals; large blue area-line chart (fill + circular markers + axes).
+2. **Lists** under the chart — Top pages, countries, sources for the selected range.
+3. **Web Vitals** — LCP / INP / CLS p75 for 7 days.
+4. Secondary: Open in Vercel.
+
+Sessions are approximated from distinct country + user-agent per day (no cookie). Pageviews are raw first-party rows.
 
 ## Migrations (apply on hosted Supabase)
 
