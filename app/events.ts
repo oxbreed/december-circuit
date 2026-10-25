@@ -60,7 +60,7 @@ export const events: CircuitEvent[] = [
     region: "Calabar",
     when: "26-30 December",
     summary:
-      "Carnival Calabar. Theme: Rethinking Our Collective Destiny. Cultural Carnival on the 26th, Junior Carnival on the 27th, Parade of the Bands on the 28th, Bikers Carnival on the 29th, street party on the 30th.",
+      "Carnival Calabar. Theme: Rethinking Our Collective Destiny. Cultural Carnival and Night of Kings & Queens on the 26th, Junior Carnival on the 27th, Parade of the Bands on the 28th, Bikers Carnival on the 29th, Nyoro Ekpe on the 30th.",
     url: "https://www.carnival.crossriverstate.gov.ng/",
     urlLabel: "Official page",
   },
@@ -69,5 +69,7 @@ export const events: CircuitEvent[] = [
     when: "1 December 2026 to 3 January 2027",
     summary:
       "December in Ghana, under the Ghana Tourism Authority and the Black Star Experience. These season dates are official. Headliners are still unannounced.",
+    url: "https://www.myjoyonline.com/gta-unveils-december-in-gh-2026-calendar-with-150-events/",
+    urlLabel: "News report",
   },
 ];

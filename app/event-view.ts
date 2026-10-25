@@ -114,13 +114,15 @@ export function presentEvent(event: CircuitEvent) {
   };
 }
 
-const planCheckDate = "23 October 2026";
+const planCheckDate = "25 October 2026";
 
 const openedSources = new Set([
   "https://www.dmwhq.com/residency",
   "https://dettydecfest.com/",
+  "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
   "https://www.stylerave.com/rhythm-unplugged-2026-headliners/",
   "https://www.carnival.crossriverstate.gov.ng/",
+  "https://www.myjoyonline.com/gta-unveils-december-in-gh-2026-calendar-with-150-events/",
 ]);
 
 export function checkedOn(event: Pick<CircuitEvent, "url">) {
