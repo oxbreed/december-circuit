@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
+import { WpProbeSection, WpProbeSectionFallback } from "../components/wp-probe-section";
 import { directorySignIn } from "../directory-auth";
 import { providerReports } from "../providers";
 import { listPublicReviews, listUnpublishedSubmissions, signSubmissionPictures } from "../reviews";
@@ -74,7 +75,11 @@ function AccessRefused({ detail }: { detail: string }) {
   );
 }
 
-async function AdminSession() {
+async function AdminSession({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const auth = directorySignIn();
   const user = await getDirectoryUser();
   const allowed = Boolean(user && auth.adminEmail && user.email === auth.adminEmail);
@@ -105,6 +110,10 @@ async function AdminSession() {
         Signed in as {user?.email}. The public event list is the file on this site. A submission is
         not added to it.
       </p>
+
+      <Suspense fallback={<WpProbeSectionFallback />}>
+        <WpProbeSection searchParams={searchParams} />
+      </Suspense>
 
       <section className="mt-8">
         <h2 className="font-display text-3xl leading-none tracking-tight">Unpublished submissions</h2>
@@ -179,12 +188,18 @@ async function AdminSession() {
   );
 }
 
-export default function AdminPage() {
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   if (!directorySignIn().connected) {
     return (
       <AccessRefused detail="Nobody is signed in. The directory sign-in is not connected yet, so the records stay closed." />
     );
   }
+
+  const params = await searchParams;
 
   return (
     <Suspense
@@ -192,7 +207,7 @@ export default function AdminPage() {
         <AccessRefused detail="Nobody is signed in. This page opens only for the admin address held on the server." />
       }
     >
-      <AdminSession />
+      <AdminSession searchParams={params} />
     </Suspense>
   );
 }
