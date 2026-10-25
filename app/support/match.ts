@@ -145,9 +145,21 @@ export function matchGroundedReply(question: string) {
         "On Flights, each row opens a Google Flights search. It’s a search — not a fare, a seat, or a booking we hold. Some origin cities use a dated December window noted on that page as a starting point for the season.",
     },
     {
-      keys: ["bolt", "indrive", "ride", "rides", "taxi", "uber", "get around", "transport"],
+      keys: [
+        "bolt",
+        "indrive",
+        "yango",
+        "gozem",
+        "heetch",
+        "ride",
+        "rides",
+        "taxi",
+        "uber",
+        "get around",
+        "transport",
+      ],
       reply:
-        "For getting around Lagos, Accra, and the region, Flights and /guide#around link out to third-party ride apps Bolt and inDrive (Nigeria and Ghana pages). Those links leave this site — we don’t book rides, quote fares, or show ETAs. Car rental and airport organiser pages already on file stay in that same guide section.",
+        "Flights and /guide#around group third-party ride apps by country for cities on this directory: Bolt and inDrive in Nigeria; Bolt, inDrive, Uber, and Yango in Ghana; Yango and Heetch in Côte d’Ivoire; Yango and Gozem in Cameroon; Gozem in Benin and Togo. Links leave this site — we don’t book rides, quote fares, or show ETAs. Burkina Faso and Niger have no verified ride-app link yet. Car rental and airport organiser pages stay in that same guide section.",
     },
     {
       keys: ["payment", "pay", "ticket", "tickets", "checkout", "booking", "buy"],

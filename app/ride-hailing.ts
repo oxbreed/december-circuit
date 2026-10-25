@@ -1,36 +1,180 @@
 /**
  * Official marketing / regional entry points for third-party ride apps
- * used around Lagos, Accra, and the wider region. Outbound only —
- * no booking, fares, or ETAs on this site.
+ * across DirtyDecember countries. Outbound only — no booking, fares, or ETAs.
+ * Include an app only when an official page confirms that market.
  */
-export type RideHailLink = {
+export type RideHailApp = {
   name: string;
-  region: string;
+  label: string;
   url: string;
+  /** Official page used to confirm this market. */
+  source: string;
 };
 
-export const rideHailLinks: RideHailLink[] = [
+export type RideHailMarket = {
+  country: string;
+  /** DirtyDecember cities on file where the linked apps list service. */
+  citiesOnFile: string[];
+  apps: RideHailApp[];
+};
+
+export const rideHailMarkets: RideHailMarket[] = [
   {
-    name: "Bolt",
-    region: "Nigeria rides",
-    url: "https://bolt.eu/en-ng/rides/",
+    country: "Nigeria",
+    citiesOnFile: [
+      "Lagos",
+      "Abuja",
+      "Port Harcourt",
+      "Calabar",
+      "Enugu",
+      "Ibadan",
+      "Kaduna",
+      "Kano",
+      "Benin City",
+      "Warri",
+      "Owerri",
+      "Uyo",
+      "Abeokuta",
+      "Akure",
+      "Asaba",
+      "Awka",
+      "Bauchi",
+      "Abakaliki",
+      "Ado Ekiti",
+      "Ilorin",
+      "Jos",
+      "Lafia",
+      "Lokoja",
+      "Makurdi",
+      "Onitsha",
+      "Oshogbo",
+      "Umuahia",
+      "Yenagoa",
+      "Zaria",
+    ],
+    apps: [
+      {
+        name: "Bolt",
+        label: "Nigeria rides",
+        url: "https://bolt.eu/en-ng/rides/",
+        source: "https://bolt.eu/en-ng/rides/ · cities https://bolt.eu/en-ng/cities/",
+      },
+      {
+        name: "inDrive",
+        label: "Nigeria",
+        url: "https://indrive.com/en-ng",
+        source: "https://indrive.com/en-ng",
+      },
+    ],
   },
   {
-    name: "Bolt",
-    region: "Accra",
-    url: "https://bolt.eu/en/cities/accra/",
+    country: "Ghana",
+    citiesOnFile: [
+      "Accra",
+      "Kumasi",
+      "Cape Coast",
+      "Ho",
+      "Takoradi",
+      "Tamale",
+    ],
+    apps: [
+      {
+        name: "Bolt",
+        label: "Ghana cities",
+        url: "https://bolt.eu/en-gh/cities/",
+        source: "https://bolt.eu/en-gh/cities/",
+      },
+      {
+        name: "inDrive",
+        label: "Ghana",
+        url: "https://indrive.com/en-gh",
+        source: "https://indrive.com/en-gh",
+      },
+      {
+        name: "Uber",
+        label: "Ghana cities",
+        url: "https://www.uber.com/global/en/r/ghana/cities/",
+        source: "https://www.uber.com/global/en/r/ghana/cities/",
+      },
+      {
+        name: "Yango",
+        label: "Ghana (Accra, Kumasi)",
+        url: "https://yango.com/en_gh/",
+        source: "https://yango.com/en_gh/ · company cities https://yango.com/en_gh/company/",
+      },
+    ],
   },
   {
-    name: "inDrive",
-    region: "Nigeria",
-    url: "https://indrive.com/en-ng",
+    country: "Côte d’Ivoire",
+    citiesOnFile: ["Abidjan", "Yamoussoukro"],
+    apps: [
+      {
+        name: "Yango",
+        label: "Côte d’Ivoire",
+        url: "https://yango.com/en_ci/",
+        source: "https://yango.com/en_ci/ · rider cities https://yango.com/en_ci/rider/",
+      },
+      {
+        name: "Heetch",
+        label: "Côte d’Ivoire (Abidjan)",
+        url: "https://www.heetch.com/en/pays/cote-divoire",
+        source: "https://www.heetch.com/en/pays/cote-divoire",
+      },
+    ],
   },
   {
-    name: "inDrive",
-    region: "Ghana",
-    url: "https://indrive.com/en-gh",
+    country: "Cameroon",
+    citiesOnFile: ["Douala", "Yaoundé"],
+    apps: [
+      {
+        name: "Yango",
+        label: "Cameroon",
+        url: "https://yango.com/en_cm/",
+        source: "https://yango.com/en_cm/ · company cities https://yango.com/en_gh/company/",
+      },
+      {
+        name: "Gozem",
+        label: "Cameroon",
+        url: "https://website.gozem.co/corporate-cm/en/homepage-en/",
+        source: "https://website.gozem.co/corporate-cm/en/homepage-en/ · https://gozem.co/en/",
+      },
+    ],
+  },
+  {
+    country: "Benin",
+    citiesOnFile: ["Cotonou"],
+    apps: [
+      {
+        name: "Gozem",
+        label: "Benin",
+        url: "https://website.gozem.co/corporate-bj/en/homepage-en/",
+        source: "https://website.gozem.co/corporate-bj/en/homepage-en/ · https://gozem.co/en/",
+      },
+    ],
+  },
+  {
+    country: "Togo",
+    citiesOnFile: ["Lomé"],
+    apps: [
+      {
+        name: "Gozem",
+        label: "Togo",
+        url: "https://website.gozem.co/corporate-tg/en/homepage-en/",
+        source: "https://website.gozem.co/corporate-tg/en/homepage-en/ · https://gozem.co/en/",
+      },
+    ],
   },
 ];
 
+/** Flat outbound links for footer and simple lists. */
+export const rideHailLinks = rideHailMarkets.flatMap((market) =>
+  market.apps.map((app) => ({
+    name: app.name,
+    region: `${market.country} · ${app.label}`,
+    url: app.url,
+    country: market.country,
+  })),
+);
+
 export const rideHailNote =
-  "Bolt and inDrive are third-party ride apps. Each link opens their site or app entry — not a booking, fare, or ETA on this directory.";
+  "Third-party ride apps by country for cities already on this directory. Each link opens that app’s official site — not a booking, fare, or ETA here. Burkina Faso and Niger stay without a ride-app link until an official page confirms one. Uber is not linked for Nigeria after its 2026 exit.";

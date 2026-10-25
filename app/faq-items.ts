@@ -45,7 +45,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "How do I get around once I land?",
     answer:
-      "The Flights page and the [[/guide#around|Get around]] guide section link to third-party ride apps Bolt and inDrive for Nigeria and Ghana (Lagos, Accra, and other cities those apps serve). Each link leaves this site. This directory does not book rides, quote fares, or show ETAs. Car rental and airport organiser pages already on file stay in that same guide section.",
+      "[[/flights#get-around|Flights]] and [[/guide#around|Get around]] group third-party ride apps by country for cities already on this directory: Bolt and inDrive in Nigeria; Bolt, inDrive, Uber, and Yango in Ghana; Yango and Heetch in Côte d’Ivoire; Yango and Gozem in Cameroon; Gozem in Benin and Togo. Each link leaves this site. No booking, fares, or ETAs here. Burkina Faso and Niger stay without a ride-app link until an official page confirms one. Car rental and airport organiser pages already on file stay in the same guide section.",
   },
   {
     question: "Where do I check visas and entry?",

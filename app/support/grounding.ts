@@ -42,7 +42,7 @@ About and privacy (one-liners)
 ${disclaimer}
 This site is an independent directory. A listing appears only when an organiser page or a named report confirms it.
 This site takes no payment and holds no bookings. A ticket link leaves this site. A flight row opens a search, not a fare or a seat.
-Bolt and inDrive appear as outbound third-party ride-app links for Nigeria and Ghana. This site does not book rides or quote fares or ETAs.
+Outbound third-party ride apps are grouped by country for cities on file: Bolt and inDrive (Nigeria); Bolt, inDrive, Uber, and Yango (Ghana); Yango and Heetch (Côte d’Ivoire); Yango and Gozem (Cameroon); Gozem (Benin, Togo). Uber is not linked for Nigeria after its 2026 exit. Burkina Faso and Niger have no verified ride-app link yet. This site does not book rides or quote fares or ETAs.
 A newsletter, a fare, or a payment is not offered yet.
 Oxbreed Management operates dirtydecember.info. Visitor enquiries: hello@dirtydecember.info.
 `.trim();

@@ -4,7 +4,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { disclaimer, footerExtra, nav } from "../brand";
-import { rideHailLinks } from "../ride-hailing";
+import { rideHailMarkets } from "../ride-hailing";
 import { NewsTicker } from "./news-ticker";
 
 function PlaneMark() {
@@ -152,24 +152,39 @@ export function SiteChrome({
           <div>
             <p className={footerKicker}>Get around</p>
             <p className="mt-2 max-w-xl font-sans text-sm leading-6 text-muted">
-              Third-party ride apps — outbound only, not a booking on this site.
+              Third-party ride apps by country — outbound only, not a booking on
+              this site. Full city notes on{" "}
+              <Link href="/guide#around" className={footerLink}>
+                Guide · Get around
+              </Link>
+              {" · "}
+              <Link href="/flights#get-around" className={footerLink}>
+                Flights
+              </Link>
+              .
             </p>
-            <nav
-              aria-label="Ride apps"
-              className="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6"
-            >
-              {rideHailLinks.map((link) => (
-                <a
-                  key={link.url}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-ink ${footerLink}`}
-                >
-                  {link.name} ({link.region})
-                </a>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {rideHailMarkets.map((market) => (
+                <p key={market.country} className="min-w-0 font-sans text-sm leading-6">
+                  <span className="block text-[11px] uppercase tracking-[0.22em] text-lagoon">
+                    {market.country}
+                  </span>
+                  <span className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+                    {market.apps.map((app) => (
+                      <a
+                        key={app.url}
+                        href={app.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`text-ink ${footerLink}`}
+                      >
+                        {app.name}
+                      </a>
+                    ))}
+                  </span>
+                </p>
               ))}
-            </nav>
+            </div>
           </div>
           <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6">
             {footerExtra.map(([label, href]) => (
