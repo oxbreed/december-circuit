@@ -78,7 +78,7 @@ function AccessRefused({ detail }: { detail: string }) {
 async function AdminSession({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const auth = directorySignIn();
   const user = await getDirectoryUser();
@@ -95,6 +95,7 @@ async function AdminSession({
     );
   }
 
+  const params = await searchParams;
   const submissions = await listUnpublishedSubmissions();
   const pictures = submissions.reason === "ok" ? await signSubmissionPictures(submissions.rows) : new Map<string, string | null>();
   const reviews = await listPublicReviews();
@@ -112,7 +113,7 @@ async function AdminSession({
       </p>
 
       <Suspense fallback={<WpProbeSectionFallback />}>
-        <WpProbeSection searchParams={searchParams} />
+        <WpProbeSection searchParams={params} />
       </Suspense>
 
       <section className="mt-8">
@@ -199,15 +200,15 @@ export default async function AdminPage({
     );
   }
 
-  const params = await searchParams;
-
+  // Await searchParams inside AdminSession (under Suspense). Awaiting here breaks
+  // production builds when cacheComponents is on.
   return (
     <Suspense
       fallback={
         <AccessRefused detail="Nobody is signed in. This page opens only for the admin address held on the server." />
       }
     >
-      <AdminSession searchParams={params} />
+      <AdminSession searchParams={searchParams} />
     </Suspense>
   );
 }

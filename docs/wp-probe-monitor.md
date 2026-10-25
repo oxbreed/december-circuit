@@ -67,6 +67,8 @@ Vercel may already return **403** with `x-vercel-mitigated: deny` for many `.php
 
 ## Build note (`cacheComponents`)
 
+`/admin` must await `searchParams` **inside** the session `Suspense` child. Awaiting it in the page body fails `next build` on Vercel once Supabase env vars are present (`uncached or runtime data during prerendering`).
+
 Do **not** set `export const runtime = "nodejs"` on the ingest/export routes. Next.js 16 with `cacheComponents: true` fails the production build with that segment config. Node is already the default for these handlers.
 
 ## Admin submissions + service role grants
