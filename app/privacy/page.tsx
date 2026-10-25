@@ -110,15 +110,28 @@ export default function PrivacyPage() {
           your browser loads that picture from the address in the feed. This
           site does not store that picture.
         </p>
+        <p>
+          Site monitoring uses Vercel Web Analytics and Vercel Speed Insights.
+          Those tools measure page views, rough location by country, devices,
+          and Core Web Vitals. Vercel states that Web Analytics stores
+          anonymised data and does not use advertising cookies for that
+          product. A separate first-party page-view record may also store the
+          path you opened, an optional referrer, a short browser user-agent
+          string, and a two-letter country code taken from the hosting edge
+          (for example <code>x-vercel-ip-country</code>). That first-party
+          record does not store your IP address and does not set an advertising
+          cookie. Google Analytics runs only if the operator has set a
+          measurement id in the server environment; it is off by default.
+        </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
           What is not collected
         </h2>
         <p>
-          There is no advertising cookie. This site does not run an analytics
-          script. A review has no rating. A newsletter, a fare, or a payment is
-          not offered yet. If one is added, this notice will be updated before
-          it starts.
+          There is no advertising cookie from this directory’s own code. A
+          review has no rating. A newsletter, a fare, or a payment is not
+          offered yet. If one is added, this notice will be updated before it
+          starts. First-party visit rows do not store your IP address.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Why</h2>
@@ -131,7 +144,10 @@ export default function PrivacyPage() {
           text can be shown on the site. My trip stays on the device so you can
           keep a list without an account. The map tiles are requested so the map
           can be drawn. The headlines are read so the ticker and the news page
-          can show them. Enquiry mail is read so the operator can reply.
+          can show them. Enquiry mail is read so the operator can reply. Visit
+          and performance data are collected so Oxbreed Management can see
+          whether the site loads well, which pages are used, and roughly which
+          countries readers come from.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -141,15 +157,17 @@ export default function PrivacyPage() {
           Oxbreed Management receives the submissions, pictures, reviews, and
           enquiry mail. The admin page can be opened only from the admin address
           held on the server. Supabase holds the database, the private pictures,
-          and the sign-in. Vercel hosts the site and receives the request that
-          loads a page.           Enquiry mail is received at hello@dirtydecember.info and
+          the sign-in, and any first-party page-view rows. Vercel hosts the site,
+          receives the request that loads a page, and processes Web Analytics
+          and Speed Insights. Enquiry mail is received at hello@dirtydecember.info and
           partners@dirtydecember.info. OpenStreetMap receives the request for a
           map tile or a directions page when you use the map, and Nominatim
           receives the place name and city when you use Find on the map on the
           listing form. A ticket page, an organiser page, a flight search, or a
           news headline is received by the site you open. A news picture is
           requested from the address supplied in that feed. This directory does
-          not send your email to those sites.
+          not send your email to those sites. If Google Analytics is enabled,
+          Google receives the measurement events for that product.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -162,7 +180,9 @@ export default function PrivacyPage() {
           deleted. A picture is not given a public address by the upload. My
           trip stays in this browser until you remove the item or clear the site
           data for this browser. Signing out clears the sign-in cookie. Enquiry
-          mail stays until it is deleted.
+          mail stays until it is deleted. First-party page-view rows are removed
+          after about ninety days. Vercel Analytics and Speed Insights follow
+          Vercel’s retention for those products.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">

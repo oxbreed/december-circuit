@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { JsonLd } from "./components/json-ld";
 import { LagosClockSlot } from "./components/lagos-clock-slot";
+import { SiteAnalytics } from "./components/site-analytics";
 import { SiteChrome } from "./components/site-chrome";
 import { SupportChatSlot } from "./components/support-chat-slot";
 import { organizationJsonLd, siteJsonLd } from "./jsonld";
@@ -13,6 +14,11 @@ import {
   siteUrl,
 } from "./site";
 import "./globals.css";
+
+function gaMeasurementId() {
+  const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
+  return id && id.length > 0 ? id : null;
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -90,6 +96,7 @@ export default function RootLayout({
         <JsonLd data={siteJsonLd()} />
         <SiteChrome clock={<LagosClockSlot />}>{children}</SiteChrome>
         <SupportChatSlot />
+        <SiteAnalytics gaMeasurementId={gaMeasurementId()} />
       </body>
     </html>
   );

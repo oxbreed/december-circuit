@@ -23,6 +23,8 @@ npm run dev
 
 Pages: `/`, `/guide`, `/events`, `/events/[slug]`, `/cities/[slug]`, `/places`, `/explore`, `/flights`, `/map`, `/about`, `/news`, `/list`, `/faq`, `/privacy`, `/terms`, `/eula`. The home hero searches by a listed date and opens `/events?date=`. Visa and entry is on `/guide#entry`. Flight rows stay on `/flights`. Washington DC, Chicago, Dallas–Fort Worth, Amsterdam, and Dubai search 16 December 2026 to 30 December 2026, one adult. Those dates are a starting search for the season, not a fare. `sitemap.xml` and `robots.txt` list the public pages. `/explore` is map / third-party venue data, not checked directory listings.
 
+Site analytics: Vercel Web Analytics + Speed Insights in the root layout; optional first-party path/country page views for `/admin`. Operator notes: `docs/site-analytics.md`.
+
 The pages load these routes. A place name opens that business’s own page stored on that record. `/list` accepts an unpublished place or business for human review and does not publish to the public pins file. A flight row opens its search and is labelled as a search. It is not a fare or a seat.
 
 ## Build

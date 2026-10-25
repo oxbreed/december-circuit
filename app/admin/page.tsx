@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
+import {
+  SiteAnalyticsSection,
+  SiteAnalyticsSectionFallback,
+} from "../components/site-analytics-section";
 import { WpProbeSection, WpProbeSectionFallback } from "../components/wp-probe-section";
 import { directorySignIn } from "../directory-auth";
 import { providerReports } from "../providers";
@@ -111,6 +115,10 @@ async function AdminSession({
         Signed in as {user?.email}. The public event list is the file on this site. A submission is
         not added to it.
       </p>
+
+      <Suspense fallback={<SiteAnalyticsSectionFallback />}>
+        <SiteAnalyticsSection />
+      </Suspense>
 
       <Suspense fallback={<WpProbeSectionFallback />}>
         <WpProbeSection searchParams={params} />
