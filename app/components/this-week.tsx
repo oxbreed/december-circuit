@@ -37,7 +37,7 @@ function WeekList({ window }: { window: WeekWindow }) {
           {rows.map((event) => {
             const view = presentEvent(event);
             return (
-              <li key={`${event.region}-${event.when}`} className="border-t border-ink/10 py-3">
+              <li key={`${event.region}-${event.when}-${event.summary}`} className="border-t border-ink/10 py-3">
                 <a href={view.href} className="font-display text-2xl leading-tight tracking-tight hover:text-oxide">
                   {view.name}
                 </a>

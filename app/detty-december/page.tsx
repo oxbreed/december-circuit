@@ -85,7 +85,7 @@ export default function DettyDecemberPage() {
         </p>
         <div className="mt-5 grid gap-4">
           {confirmed.map((event) => (
-            <EventCard key={`${event.region}-${event.when}`} event={event} />
+            <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} />
           ))}
         </div>
       </section>

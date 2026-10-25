@@ -1,14 +1,27 @@
-import type { CircuitEvent } from "./events";
+import { events, type CircuitEvent } from "./events";
 
 export const eventCategory = "Confirmed event";
 
-export function eventSlug(event: Pick<CircuitEvent, "region" | "when">) {
-  return `${event.region}-${event.when}`
+function slugToken(value: string) {
+  return value
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+/** region+when when unique; append a short title token when same-day nights share a date. */
+export function eventSlug(
+  event: Pick<CircuitEvent, "region" | "when" | "summary">,
+) {
+  const base = slugToken(`${event.region}-${event.when}`);
+  const sameWhen = events.filter(
+    (row) => row.region === event.region && row.when === event.when,
+  ).length;
+  if (sameWhen <= 1) return base;
+  const title = slugToken(eventNameAndVenue(event.summary).name).slice(0, 48);
+  return title ? `${base}-${title}` : base;
 }
 
 const atThe = " at the ";
@@ -101,8 +114,9 @@ export function eventNote(summary: string, name: string, venue: string | null) {
 
 export function presentEvent(event: CircuitEvent) {
   const { name, venue } = eventNameAndVenue(event.summary);
+  const slug = eventSlug(event);
   return {
-    slug: eventSlug(event),
+    slug,
     name,
     venue,
     note: eventNote(event.summary, name, venue),
@@ -110,7 +124,7 @@ export function presentEvent(event: CircuitEvent) {
     region: event.region,
     when: event.when,
     summary: event.summary,
-    href: `/events/${eventSlug(event)}`,
+    href: `/events/${slug}`,
   };
 }
 
@@ -122,6 +136,7 @@ const openedSources = new Set([
   "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
   "https://www.stylerave.com/rhythm-unplugged-2026-headliners/",
   "https://www.carnival.crossriverstate.gov.ng/",
+  "https://www.carnival.crossriverstate.gov.ng/schedule",
   "https://www.myjoyonline.com/gta-unveils-december-in-gh-2026-calendar-with-150-events/",
 ]);
 

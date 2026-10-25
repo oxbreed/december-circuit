@@ -10,7 +10,7 @@ import {
   eventFeedSources,
   type EventFeedSource,
 } from "./event-feeds";
-import { type IngestEvent } from "./event-ingest-merge";
+import { eventKey, type IngestEvent } from "./event-ingest-merge";
 
 export type { IngestEvent } from "./event-ingest-merge";
 export { eventKey, mergeSeedWithIngest } from "./event-ingest-merge";
@@ -530,27 +530,30 @@ async function extractCarnival(source: EventFeedSource): Promise<ExtractResult> 
   }
 
   const scheduleUrl = `${origin}/schedule`;
+  let schedulePublished = 0;
   for (const item of items) {
     if (!item.title || !item.date) continue;
     if (peak?.peakTitles.has(item.title)) continue;
-    held.push({
-      sourceId: source.id,
-      url: scheduleUrl,
-      urlLabel: source.label,
-      region: "Calabar",
-      when: carnivalDateToWhen(item.date),
-      summary: item.title,
-      holdReason:
-        "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night.",
-    });
+    // Complete sourced fields from the official schedule JS — publish each night.
+    published.push(
+      publish(source, {
+        region: "Calabar",
+        when: carnivalDateToWhen(item.date),
+        summary: item.title,
+        url: scheduleUrl,
+      }),
+    );
+    schedulePublished += 1;
   }
 
   return {
     published,
     held,
     detail: peak
-      ? `Peak rollup published; ${held.length} schedule rows held`
-      : "peak incomplete",
+      ? `Peak rollup + ${schedulePublished} schedule rows published`
+      : schedulePublished > 0
+        ? `${schedulePublished} schedule rows published; peak incomplete`
+        : "peak incomplete",
   };
 }
 
@@ -635,7 +638,7 @@ function sourceRank(sourceId: string | undefined) {
 function mergePublished(rows: IngestEvent[]): IngestEvent[] {
   const map = new Map<string, IngestEvent>();
   for (const row of rows) {
-    const key = `${row.region}\n${row.when}`;
+    const key = eventKey(row);
     const existing = map.get(key);
     if (!existing) {
       map.set(key, { ...row });

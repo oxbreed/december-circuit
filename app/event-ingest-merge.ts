@@ -10,52 +10,79 @@ export type IngestEvent = {
   sourceId?: string;
 };
 
-export function eventKey(event: Pick<IngestEvent, "region" | "when">) {
+/** Stable identity — includes summary so same-day Carnival nights stay distinct. */
+export function eventKey(
+  event: Pick<IngestEvent, "region" | "when" | "summary">,
+) {
+  return `${event.region}\n${event.when}\n${event.summary}`;
+}
+
+export function regionWhenKey(event: Pick<IngestEvent, "region" | "when">) {
   return `${event.region}\n${event.when}`;
+}
+
+function overlayIngest(existing: IngestEvent, row: IngestEvent): IngestEvent {
+  const next: IngestEvent = {
+    ...existing,
+    summary: row.summary,
+    url: row.url ?? existing.url,
+    urlLabel: row.urlLabel ?? existing.urlLabel,
+    sourceId: row.sourceId ?? existing.sourceId,
+  };
+  if (row.ticketsUrl) next.ticketsUrl = row.ticketsUrl;
+  else if (existing.ticketsUrl) next.ticketsUrl = existing.ticketsUrl;
+  return next;
 }
 
 /**
  * Merge curated seed events with the latest ingest snapshot.
- * Ingest updates matching region+when when the snapshot has a complete row.
- * Seed rows with no ingest match stay as-is (never deleted by a failed fetch).
- * Brand-new ingest keys are appended only when published by ingest.
+ * Exact region+when+summary matches update in place. When ingest refreshes a
+ * single seed night (same region+when + sourceId) and that slot is still the
+ * only out-row for that pair, update the seed. Never collapse multiple ingest
+ * rows that share a day (Carnival schedule). Brand-new ingest keys append.
  */
 export function mergeSeedWithIngest<T extends IngestEvent>(
   seed: T[],
   ingested: IngestEvent[],
 ): T[] {
-  const byKey = new Map<string, IngestEvent>();
-  for (const row of seed) byKey.set(eventKey(row), { ...row });
+  const out: IngestEvent[] = seed.map((row) => ({ ...row }));
+  // Seed region+when+sourceId pairs that are unique in the seed list.
+  const uniqueSeedSlot = new Map<string, number>();
+  seed.forEach((row, index) => {
+    if (!row.sourceId) return;
+    const slot = `${regionWhenKey(row)}\n${row.sourceId}`;
+    if (uniqueSeedSlot.has(slot)) uniqueSeedSlot.set(slot, -1);
+    else uniqueSeedSlot.set(slot, index);
+  });
+
   for (const row of ingested) {
-    const key = eventKey(row);
-    const existing = byKey.get(key);
-    if (!existing) {
-      byKey.set(key, { ...row });
+    const exact = out.findIndex((item) => eventKey(item) === eventKey(row));
+    if (exact !== -1) {
+      out[exact] = overlayIngest(out[exact], row);
       continue;
     }
-    const next: IngestEvent = {
-      ...existing,
-      summary: row.summary,
-      url: row.url ?? existing.url,
-      urlLabel: row.urlLabel ?? existing.urlLabel,
-      sourceId: row.sourceId ?? existing.sourceId,
-    };
-    if (row.ticketsUrl) next.ticketsUrl = row.ticketsUrl;
-    else if (existing.ticketsUrl) next.ticketsUrl = existing.ticketsUrl;
-    byKey.set(key, next);
+
+    if (row.sourceId) {
+      const slot = `${regionWhenKey(row)}\n${row.sourceId}`;
+      const seedIndex = uniqueSeedSlot.get(slot);
+      if (seedIndex !== undefined && seedIndex >= 0) {
+        // Still the original seed identity (summary may already have been refreshed).
+        const currentKey = eventKey(out[seedIndex]);
+        const stillSeedSlot =
+          out.filter(
+            (item) =>
+              regionWhenKey(item) === regionWhenKey(row) &&
+              item.sourceId === row.sourceId,
+          ).length === 1;
+        if (stillSeedSlot && out[seedIndex] && eventKey(out[seedIndex]) === currentKey) {
+          out[seedIndex] = overlayIngest(out[seedIndex], row);
+          continue;
+        }
+      }
+    }
+
+    out.push({ ...row });
   }
-  const seen = new Set<string>();
-  const out: T[] = [];
-  for (const row of seed) {
-    const key = eventKey(row);
-    out.push(byKey.get(key)! as T);
-    seen.add(key);
-  }
-  for (const row of ingested) {
-    const key = eventKey(row);
-    if (seen.has(key)) continue;
-    out.push(byKey.get(key)! as T);
-    seen.add(key);
-  }
-  return out;
+
+  return out as T[];
 }

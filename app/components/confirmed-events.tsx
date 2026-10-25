@@ -28,7 +28,7 @@ export function ConfirmedEvents() {
         ) : (
           <div className="mt-6 grid gap-4">
             {confirmed.map((event) => (
-              <EventCard key={`${event.region}-${event.when}`} event={event} as="h3" />
+              <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} as="h3" />
             ))}
           </div>
         )}

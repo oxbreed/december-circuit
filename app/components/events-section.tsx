@@ -113,7 +113,7 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
         {events.status === "ready" && events.data.length > 0 ? (
           <div className="-mx-5 mt-2 flex gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0">
             {events.data.map((event, index) => (
-              <div key={`${event.region}-${event.when}`} className="w-[19rem] shrink-0">
+              <div key={`${event.region}-${event.when}-${event.summary}`} className="w-[19rem] shrink-0">
                 <EventCard event={event} index={index} />
               </div>
             ))}
@@ -145,7 +145,7 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
                   .filter((event) => event.region === region)
                   .map((event) => (
                     <EventCard
-                      key={`${event.region}-${event.when}`}
+                      key={`${event.region}-${event.when}-${event.summary}`}
                       event={event}
                       index={events.data.indexOf(event)}
                     />

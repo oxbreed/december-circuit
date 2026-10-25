@@ -29,6 +29,8 @@ Writes:
 
 `app/events.ts` merges **seed** + **published.json**. A failed fetch never deletes a seed row. Home, `/events`, city pages, and `GET /api/events` all read that merged list. Explore links to the same Events directory. Status: `GET /api/events/ingest`.
 
+Merge identity is `region` + `when` + `summary` so same-day Carnival schedule nights stay separate on the public list.
+
 ## Sources wired
 
 | Id | URL | Auto vs held |
@@ -39,7 +41,7 @@ Writes:
 | `rhythm-unplugged-stylerave` | Style Rave Rhythm Unplugged 2026 | **Auto** when 21 Dec + Eko + Lil Baby + Kehlani are all stated. |
 | `flytime-house-rb-essence` | Essence Brandy / House of R&B | **Auto** only when the article fetches and states House of R&B + Brandy + 20 Dec. HTTP 403 → **held**; seed row kept. Not a source for Fest/Circle. |
 | `flytime-fest-home` | https://www.flytimefest.com/ | **Probe / held.** Homepage does not name 2026 nights. Flytime Fest + Circle stay seed-only until DD-2 has a solid organiser page. |
-| `carnival-calabar` | https://www.carnival.crossriverstate.gov.ng/ (+ schedule JS chunk) | **Auto** peak rollup 26–30 Dec when Cultural / Junior / Parade / Bikers / Nyoro (and theme when present) are on the official schedule. **All other schedule rows held** for review (light editorial — no auto-flood). |
+| `carnival-calabar` | https://www.carnival.crossriverstate.gov.ng/ (+ schedule JS chunk) | **Auto** peak rollup 26–30 Dec when Cultural / Junior / Parade / Bikers / Nyoro (and theme when present) are on the official schedule. **Individual schedule rows with date + title also auto-publish** (sourced from the official schedule JS). |
 | `december-in-ghana-myjoy` | MyJoyOnline GTA calendar | **Auto** season dates 1 Dec 2026 – 3 Jan 2027 when stated. |
 | `december-in-ghana-official` | https://decemberingh.com/ | **Probe / held** until the official page states 2026 dates. |
 | `ghana-tourism-black-star` | https://ghana.travel/black-star-experience | **Probe / held** (often HTTP 403; dates not published from this URL alone). |
@@ -50,10 +52,11 @@ Provider APIs (Ticketmaster, Merpi/Syticks, JamBase, GetYourGuide) stay disconne
 
 **Auto-publish** — required fields present in the source: region, `when`, summary facts only as stated, source URL + label, optional `ticketsUrl` when the collection page opens. Each published row gets `sourceId`.
 
-**Held** — fetch failures; probe-only pages; Flytime Fest / Circle without an organiser page that names that night; individual Carnival Calabar schedule line-items beyond the peak rollup; any extractor miss.
+**Held** — fetch failures; probe-only pages; Flytime Fest / Circle without an organiser page that names that night; any extractor miss. Incomplete rows stay held — never invent dates, headliners, or booking URLs.
 
-## First-slice run (25 Oct 2026)
+## Latest snapshot (25 Oct 2026)
 
-- Published from ingest: Oriade, Detty Fest (+ tickets URL), Rhythm Unplugged, Carnival peak rollup, December in Ghana (MyJoyOnline).
-- Held: Essence House of R&B refresh (HTTP 403), flytimefest.com probe, decemberingh.com / ghana.travel probes, Flytime Fest + Circle (DD-2), ~56 Carnival schedule rows for review.
+- **Published (ingest):** 61 — Oriade, Detty Fest (+ tickets URL), Rhythm Unplugged, Carnival peak rollup + **56 Carnival schedule nights**, December in Ghana (MyJoyOnline).
+- **Held:** 6 — Essence House of R&B refresh (HTTP 403), flytimefest.com probe, decemberingh.com / ghana.travel probes, Flytime Fest + Circle (DD-2; seed rows kept).
+- **Public merge (`GET /api/events`):** 64 = 8 seed + 56 new Carnival schedule rows (peak already on seed).
 - Seed keeps House of R&B, Flytime Fest, and Flytime Circle on the public list until a stronger source replaces them — ingest does not invent replacements.

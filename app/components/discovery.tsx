@@ -255,7 +255,7 @@ export function Discovery({
                   <div className="mt-4 grid gap-4">
                     {eventsMatched.map((event) => (
                       <EventCard
-                        key={`${event.region}-${event.when}`}
+                        key={`${event.region}-${event.when}-${event.summary}`}
                         event={event}
                       />
                     ))}

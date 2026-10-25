@@ -79,7 +79,7 @@ export default async function CountryPage({
           <h2 className="font-display text-3xl tracking-tight">Confirmed events</h2>
           <div className="mt-5 grid gap-4">
             {country.events.map((event) => (
-              <EventCard key={`${event.region}-${event.when}`} event={event} />
+              <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} />
             ))}
           </div>
         </section>
