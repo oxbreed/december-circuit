@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef } from "react";
+import { onCLS, onINP, onLCP, type Metric } from "web-vitals";
 
 function shouldSkipPath(path: string) {
   if (!path) return true;
@@ -11,6 +12,26 @@ function shouldSkipPath(path: string) {
   if (path.startsWith("/api/")) return true;
   if (path.startsWith("/auth/")) return true;
   return false;
+}
+
+function sendJson(url: string, body: string) {
+  try {
+    if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
+      const blob = new Blob([body], { type: "application/json" });
+      if (navigator.sendBeacon(url, blob)) return;
+    }
+  } catch {
+    // Fall through to fetch.
+  }
+
+  void fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+    keepalive: true,
+  }).catch(() => {
+    // Best-effort; never block navigation.
+  });
 }
 
 function PageviewBeacon() {
@@ -34,25 +55,35 @@ function PageviewBeacon() {
           : null,
     });
 
-    try {
-      if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
-        const blob = new Blob([body], { type: "application/json" });
-        navigator.sendBeacon("/api/analytics/pageview", blob);
-        return;
-      }
-    } catch {
-      // Fall through to fetch.
-    }
-
-    void fetch("/api/analytics/pageview", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body,
-      keepalive: true,
-    }).catch(() => {
-      // Best-effort; never block navigation.
-    });
+    sendJson("/api/analytics/pageview", body);
   }, [pathname, searchParams]);
+
+  return null;
+}
+
+function WebVitalsBeacon() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!pathname || shouldSkipPath(pathname)) return;
+
+    const report = (metric: Metric) => {
+      const path = pathname.length > 512 ? pathname.slice(0, 512) : pathname;
+      sendJson(
+        "/api/analytics/web-vital",
+        JSON.stringify({
+          path,
+          metric: metric.name,
+          value: metric.value,
+          rating: metric.rating,
+        }),
+      );
+    };
+
+    onLCP(report);
+    onINP(report);
+    onCLS(report);
+  }, [pathname]);
 
   return null;
 }
@@ -92,6 +123,7 @@ export function SiteAnalytics({
       <SpeedInsights />
       <Suspense fallback={null}>
         <PageviewBeacon />
+        <WebVitalsBeacon />
       </Suspense>
       {gaMeasurementId ? <GoogleAnalytics measurementId={gaMeasurementId} /> : null}
     </>

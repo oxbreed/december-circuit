@@ -118,10 +118,13 @@ export default function PrivacyPage() {
           product. A separate first-party page-view record may also store the
           path you opened, an optional referrer, a short browser user-agent
           string, and a two-letter country code taken from the hosting edge
-          (for example <code>x-vercel-ip-country</code>). That first-party
-          record does not store your IP address and does not set an advertising
-          cookie. Google Analytics runs only if the operator has set a
-          measurement id in the server environment; it is off by default.
+          (for example <code>x-vercel-ip-country</code>). The browser may also
+          send Core Web Vitals samples (LCP, INP, CLS) with the path and an
+          optional country code so the signed-in admin page can show performance
+          numbers. Those first-party records do not store your IP address and
+          do not set an advertising cookie. Google Analytics runs only if the
+          operator has set a measurement id in the server environment; it is
+          off by default.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -180,9 +183,9 @@ export default function PrivacyPage() {
           deleted. A picture is not given a public address by the upload. My
           trip stays in this browser until you remove the item or clear the site
           data for this browser. Signing out clears the sign-in cookie. Enquiry
-          mail stays until it is deleted. First-party page-view rows are removed
-          after about ninety days. Vercel Analytics and Speed Insights follow
-          Vercel’s retention for those products.
+          mail stays until it is deleted. First-party page-view and Web Vitals
+          rows are removed after about ninety days. Vercel Analytics and Speed
+          Insights follow Vercel’s retention for those products.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
