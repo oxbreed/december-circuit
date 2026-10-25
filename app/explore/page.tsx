@@ -39,7 +39,15 @@ export default function ExplorePage() {
           <Link href="/map" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
             Map
           </Link>{" "}
-          for sourced pins.
+          for sourced pins. Confirmed shows from Tier-1 ingest stay on{" "}
+          <Link href="/events" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+            Events
+          </Link>{" "}
+          and home — same directory as{" "}
+          <Link href="/api/events" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+            /api/events
+          </Link>
+          .
         </p>
       </div>
       <Suspense fallback={<ExploreFallback />}>

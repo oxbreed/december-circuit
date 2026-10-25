@@ -9,9 +9,20 @@ npm install
 npm run dev
 ```
 
+## Event ingest (Tier-1)
+
+Every 3 days, refresh confirmed events from the allowlisted organiser / official / named sources in `app/event-feeds.ts`:
+
+```bash
+npm run ingest:events
+```
+
+Writes `data/event-ingest/published.json` (merged into `app/events.ts` for home, `/events`, and `GET /api/events`) and `held.json` (incomplete or ambiguous items — not published). Never invents dates, prices, or booking URLs. Status: `GET /api/events/ingest`. Operator notes live with the project docs as `event-feed-ingest.md`.
+
 ## Read APIs
 
 - `GET /api/events`
+- `GET /api/events/ingest`
 - `GET /api/places`
 - `GET /api/places?category=Hotels`
 - `GET /api/places?country=Nigeria&city=Lagos`

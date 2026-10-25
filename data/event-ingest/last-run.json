@@ -1,0 +1,681 @@
+{
+  "checkedAt": "2026-10-25T21:57:25.655Z",
+  "cadenceDays": 3,
+  "published": [
+    {
+      "region": "Lagos",
+      "when": "17-19 December",
+      "summary": "Davido, Oriade residency, three nights at the National Theatre.",
+      "url": "https://www.dmwhq.com/residency",
+      "urlLabel": "Organiser's page",
+      "sourceId": "oriade-residency"
+    },
+    {
+      "region": "Lagos",
+      "when": "18-30 December",
+      "summary": "Detty December Fest. Wizkid on 18 December, DJ Tunez and Friends on 24 December, Tungba Christmas on 25 December.",
+      "url": "https://dettydecfest.com/",
+      "urlLabel": "Organiser's page",
+      "sourceId": "detty-december-fest",
+      "ticketsUrl": "https://tix.dot360.co/org/livespot/detty-december"
+    },
+    {
+      "region": "Lagos",
+      "when": "21 December",
+      "summary": "Coca-Cola Rhythm Unplugged, Lil Baby and Kehlani, Eko Convention Centre.",
+      "url": "https://www.stylerave.com/rhythm-unplugged-2026-headliners/",
+      "urlLabel": "News report",
+      "sourceId": "rhythm-unplugged-stylerave"
+    },
+    {
+      "region": "Calabar",
+      "when": "26-30 December",
+      "summary": "Carnival Calabar. Theme: Rethinking Our Collective Destiny. Cultural Carnival and Night of Kings & Queens on the 26th, Junior Carnival on the 27th, Parade of the Bands on the 28th, Bikers Carnival on the 29th, Nyoro Ekpe on the 30th.",
+      "url": "https://www.carnival.crossriverstate.gov.ng/",
+      "urlLabel": "Official page",
+      "sourceId": "carnival-calabar"
+    },
+    {
+      "region": "Ghana",
+      "when": "1 December 2026 to 3 January 2027",
+      "summary": "December in Ghana, under the Ghana Tourism Authority and the Black Star Experience. These season dates are official.",
+      "url": "https://www.myjoyonline.com/gta-unveils-december-in-gh-2026-calendar-with-150-events/",
+      "urlLabel": "News report",
+      "sourceId": "december-in-ghana-myjoy"
+    }
+  ],
+  "held": [
+    {
+      "sourceId": "flytime-house-rb-essence",
+      "url": "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+      "urlLabel": "News report",
+      "region": "Lagos",
+      "holdReason": "Source returned HTTP 403."
+    },
+    {
+      "sourceId": "flytime-fest-home",
+      "url": "https://www.flytimefest.com/",
+      "urlLabel": "Organiser's page",
+      "region": "Lagos",
+      "holdReason": "flytimefest.com homepage does not name 2026 House of R&B, Fest, or Circle dates. Held — do not invent nights from news about a different show."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "30 November",
+      "summary": "Christmas Tree Lighting",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "1 December",
+      "summary": "City Walk Against AIDS",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "1 December",
+      "summary": "Opening of Calabar Festival Village",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "1 December",
+      "summary": "Opening of Arts Exhibition",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "2 December 2026 to 1 January 2027",
+      "summary": "Arts Exhibition (Season Long)",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "2 December",
+      "summary": "Local Government Village Opening",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "2 December 2026 to 1 January 2027",
+      "summary": "Festival Village Musical Performances",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "3 December",
+      "summary": "LGA Senatorial District Exhibition – North",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "3 December",
+      "summary": "Humanity Without Borders Partner Round Table",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "4 December",
+      "summary": "Cross River Agri-Cultural Ensemble and Festival (CRAEAFEST)",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "4 December",
+      "summary": "Calabar Lafta Fiesta 1.0",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "5 December",
+      "summary": "Calabar Festival Alumni Walkathon",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "5 December",
+      "summary": "Calabar Festival Rave",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "6 December",
+      "summary": "Carnival Calabar Dry Run – Adult",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "6 December",
+      "summary": "Voices of Paradise 1.0",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "7 December",
+      "summary": "Calabar Festival Novelty Football Tournament – Kickoff",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "8 December",
+      "summary": "LGA Senatorial District Exhibition – Central",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "8 December",
+      "summary": "Calabar Festival Novelty Football Tournament",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "9 December",
+      "summary": "Female Novelty Football Match",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "9 December",
+      "summary": "Governor's Cup Final",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "9 December",
+      "summary": "Calabar Got Talent",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "10 December",
+      "summary": "Calabar Theatre (Kiddies Music Festival)",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "10 December",
+      "summary": "Thelma Event (Her Haven)",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "11 December",
+      "summary": "Calabar Festival Novelty Football Tournament",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "11 December",
+      "summary": "Calabar Festival Christmas Concert and Pool Party",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "12 December",
+      "summary": "Calabar Festival Rave II",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "12 December",
+      "summary": "Qua Ejagham Festival",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "13 December",
+      "summary": "Junior Carnival Dry Run",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "13 December",
+      "summary": "Voices of Paradise 2.0",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "14 December",
+      "summary": "Calabar Lafta Fiesta 2.0",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "15 December",
+      "summary": "Happy Hour",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "15 December",
+      "summary": "Camp Opening of Queen of Humanity",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "16 December",
+      "summary": "LGA Senatorial Exhibition – South",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "16 December",
+      "summary": "Cross River Movie Award / Paradise Music and Festival Award",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "17 December",
+      "summary": "Mary Slessor Golf Tournament",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "17 December",
+      "summary": "Naija Most Wanted",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "18 December",
+      "summary": "Boat Regatta – Mbuba Ubom",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "18 December",
+      "summary": "Fun Fest",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "19-20 December",
+      "summary": "Nigeria Strongest Man/Woman Competition",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "19 December",
+      "summary": "Utomo Obong",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "20 December",
+      "summary": "Voices of Paradise 3.0",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "21 December",
+      "summary": "Calabar Festival Alumni Walk-a-thon",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "22 December",
+      "summary": "Calabar Festival of Grills",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "22 December",
+      "summary": "Calabar Old-Skool Cocktails and Costumed Concert",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "23 December",
+      "summary": "Calabar Humanity Charity Tour",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "23 December",
+      "summary": "Mbono Ndito Ishie",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "23 December",
+      "summary": "African Fashion Fiesta",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "24 December",
+      "summary": "Festival of Nine Lessons and Carols",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "25 December",
+      "summary": "Calabar Kiddie's Hero Xmas Party",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "25 December",
+      "summary": "Calabar Festival Christmas Concert",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "26 December",
+      "summary": "Queen of Humanity",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "28 December",
+      "summary": "Feather Concert",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "29 December",
+      "summary": "Insomnia Night",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "31 December",
+      "summary": "Fireworks and Declaration of a New Year",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "1 January",
+      "summary": "Thanksgiving Service",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/schedule",
+      "urlLabel": "Official page",
+      "region": "Calabar",
+      "when": "1 January",
+      "summary": "Tinkoriko",
+      "holdReason": "Individual Carnival schedule row — held for review; directory publishes the peak rollup only until editorial chooses a night."
+    },
+    {
+      "sourceId": "december-in-ghana-official",
+      "url": "https://decemberingh.com/",
+      "urlLabel": "Organiser's page",
+      "region": "Ghana",
+      "holdReason": "decemberingh.com does not state the 2026 season dates. Season dates stay on the named MyJoyOnline report until an official page states them."
+    },
+    {
+      "sourceId": "ghana-tourism-black-star",
+      "url": "https://ghana.travel/black-star-experience",
+      "urlLabel": "Official page",
+      "region": "Ghana",
+      "holdReason": "Source returned HTTP 403."
+    },
+    {
+      "sourceId": "flytime-fest-home",
+      "url": "https://www.flytimefest.com/",
+      "urlLabel": "Organiser's page",
+      "region": "Lagos",
+      "when": "22-24 December",
+      "summary": "Flytime Fest",
+      "holdReason": "No organiser page opened that names Flytime Fest 22–24 December 2026. Essence Brandy article is not this event’s source. Seed row kept until a solid source exists (DD-2)."
+    },
+    {
+      "sourceId": "flytime-fest-home",
+      "url": "https://www.flytimefest.com/",
+      "urlLabel": "Organiser's page",
+      "region": "Lagos",
+      "when": "25 December",
+      "summary": "Flytime Circle",
+      "holdReason": "No organiser page opened that names Flytime Circle 25 December 2026. Essence Brandy article is not this event’s source. Seed row kept until a solid source exists (DD-2)."
+    }
+  ],
+  "sources": [
+    {
+      "id": "oriade-residency",
+      "url": "https://www.dmwhq.com/residency",
+      "ok": true,
+      "detail": "Oriade residency confirmed",
+      "published": 1,
+      "held": 0
+    },
+    {
+      "id": "detty-december-fest",
+      "url": "https://dettydecfest.com/",
+      "ok": true,
+      "detail": "Detty December Fest window confirmed",
+      "published": 1,
+      "held": 0
+    },
+    {
+      "id": "detty-december-tickets",
+      "url": "https://tix.dot360.co/org/livespot/detty-december",
+      "ok": true,
+      "detail": "Ticket collection opens; prices not stored",
+      "published": 1,
+      "held": 0
+    },
+    {
+      "id": "rhythm-unplugged-stylerave",
+      "url": "https://www.stylerave.com/rhythm-unplugged-2026-headliners/",
+      "ok": true,
+      "detail": "Rhythm Unplugged confirmed",
+      "published": 1,
+      "held": 0
+    },
+    {
+      "id": "flytime-house-rb-essence",
+      "url": "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+      "ok": false,
+      "detail": "HTTP 403",
+      "published": 0,
+      "held": 1
+    },
+    {
+      "id": "flytime-fest-home",
+      "url": "https://www.flytimefest.com/",
+      "ok": true,
+      "detail": "probe held — no auto-publish",
+      "published": 0,
+      "held": 1
+    },
+    {
+      "id": "carnival-calabar",
+      "url": "https://www.carnival.crossriverstate.gov.ng/",
+      "ok": true,
+      "detail": "Peak rollup published; 56 schedule rows held",
+      "published": 1,
+      "held": 56
+    },
+    {
+      "id": "december-in-ghana-myjoy",
+      "url": "https://www.myjoyonline.com/gta-unveils-december-in-gh-2026-calendar-with-150-events/",
+      "ok": true,
+      "detail": "Ghana season dates confirmed",
+      "published": 1,
+      "held": 0
+    },
+    {
+      "id": "december-in-ghana-official",
+      "url": "https://decemberingh.com/",
+      "ok": true,
+      "detail": "probe held — no auto-publish",
+      "published": 0,
+      "held": 1
+    },
+    {
+      "id": "ghana-tourism-black-star",
+      "url": "https://ghana.travel/black-star-experience",
+      "ok": false,
+      "detail": "HTTP 403",
+      "published": 0,
+      "held": 1
+    }
+  ]
+}
