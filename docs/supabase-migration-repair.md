@@ -1,12 +1,18 @@
 # Supabase migration repair (Ox Mac)
 
 **Repo:** [oxbreed/december-circuit](https://github.com/oxbreed/december-circuit)  
-**Symptom:** `supabase db push` fails with `ERROR: relation "submissions" already exists` while applying `20261022104500_unpublished_submissions_and_reviews.sql`.  
-**Cause:** Remote Postgres already has the schema (tables/columns/buckets), but `supabase_migrations.schema_migrations` is missing those version rows. Push tries to re-run SQL that is already live.
+**Symptoms (seen in order on the Mac):**
+
+1. `ERROR: relation "submissions" already exists` while applying `20261022104500_unpublished_submissions_and_reviews.sql` — remote schema exists, history missing those versions.
+2. After repairing the first three as `applied` on `cursor/admin-probe-ui`:  
+   `Remote migration versions not found in local migrations directory.`  
+   CLI suggests `supabase migration repair --status reverted 20261024201200` and/or `supabase db pull`.
+
+**Cause of (2):** Remote history has `20261024201200` (UGC) but `cursor/admin-probe-ui` does **not** ship that migration file. An earlier push failed on `submissions` before UGC SQL could run, so UGC **objects are likely absent** and the remote history row is stale (or from a mistaken `repair --status applied`). Prefer verifying objects, then **revert** the history row — do **not** `db pull` into a dump that overwrites intentional branch layout, and do **not** drop tables.
 
 **Do not** destroy remote data. Do **not** run `supabase db reset`, drop tables, or wipe the project. `migration repair` only edits the history table; it does not run or undo SQL.
 
-Product note: UGC (`cursor/supabase-ugc`) is still **pended** for product work. Your pending list can still include the UGC migration file if that branch (or a cherry-pick) is checked out. Treat **apply UGC** vs **admin probe / wp_probes only** as an explicit choice below.
+Product note: UGC (`cursor/supabase-ugc`) is still **pended** for product work. Treat **apply UGC** vs **admin probe / wp_probes only** as an explicit choice below.
 
 ---
 
@@ -108,7 +114,8 @@ Interpretation for Ox’s error:
 - `submissions` / `reviews` present → mark `20261022104500` **applied** (do not re-run).
 - `image_path` + `submission-images` bucket → mark `20261023141200` **applied**.
 - `category` / `note` / lat / lon → mark `20261024101000` **applied**.
-- UGC tables/columns **absent** → do **not** repair `20261024201200`; either push it (Path A) or keep it off the branch (Path B).
+- UGC tables/columns **absent** → do **not** mark `20261024201200` applied. If remote history already lists it, **revert** that version (Path B § ghost UGC). If history does not list it and you stay on admin-probe-ui, leave it alone.
+- UGC tables/columns **present** but file missing on current branch → copy the file from `cursor/supabase-ugc` so local matches remote, then push only what is still pending (usually `wp_probes`).
 - `wp_probes` **absent** and file missing locally → bring file from `cursor/admin-probe-ui`, then push (do not repair).
 
 ---
@@ -182,21 +189,37 @@ Or merge/rebase onto `cursor/admin-probe-ui` after UGC, then push once if both f
 
 ### Path B — Admin probe / `wp_probes` only (recommended while UGC is pended)
 
-Avoid applying `20261024201200`. Work from a tree that **does not** contain the UGC migration file (`main` or `cursor/admin-probe-ui`).
+Avoid applying `20261024201200` SQL. Work from `cursor/admin-probe-ui` (has `wp_probes`, no UGC file).
+
+#### B1 — First three already repaired; dry-run complains about remote-only `20261024201200`
+
+This is the current Mac state after:
+
+```text
+Remote migration versions not found in local migrations directory.
+supabase migration repair --status reverted 20261024201200
+# (CLI may also suggest db pull — skip pull for Path B)
+```
+
+**Step 1 — check objects (SQL editor), no deletes:**
+
+```sql
+select to_regclass('public.helpful_votes') as helpful_votes,
+       to_regclass('public.ugc_questions') as ugc_questions;
+
+select column_name
+from information_schema.columns
+where table_schema = 'public' and table_name = 'reviews'
+  and column_name = 'subject_kind';
+```
+
+**Step 2a — UGC objects absent (likely):** ghost history only. Revert the version, then push `wp_probes`:
 
 ```bash
 cd ~/Documents/december-circuit
-git fetch origin
-git checkout cursor/admin-probe-ui
-# has: unpublished + private images + place business + wp_probes
-# does NOT have: ugc_ratings_votes_photos_qa
+# already on cursor/admin-probe-ui
 
-# If you already ran repair on this machine for the first three, skip re-repair.
-# If not, and step 1 confirmed those objects exist:
-supabase migration repair --status applied \
-  20261022104500 \
-  20261023141200 \
-  20261024101000
+supabase migration repair --status reverted 20261024201200
 
 supabase migration list
 supabase db push --dry-run
@@ -205,17 +228,37 @@ supabase db push --dry-run
 supabase db push
 ```
 
-If you were on `cursor/supabase-ugc` (so push listed UGC) and only want probes: **check out `cursor/admin-probe-ui` or `main` + copy the wp_probes file** instead of pushing UGC. Do not `repair --status applied` the UGC version unless step 1 proves UGC schema is already there.
-
-Copy-only onto `main` (if you prefer not to switch the whole branch):
+**Step 2b — UGC objects present:** keep history; bring the missing file onto this branch so local matches remote, then push only `wp_probes` (do **not** revert; do **not** drop UGC tables):
 
 ```bash
-git checkout main
-git checkout cursor/admin-probe-ui -- supabase/migrations/20261025060000_wp_probes.sql
+cd ~/Documents/december-circuit
+git fetch origin
+git checkout cursor/supabase-ugc -- supabase/migrations/20261024201200_ugc_ratings_votes_photos_qa.sql
+# optional: commit that file on a working branch so list/push stay clean
+
+supabase migration list
+supabase db push --dry-run
+# expect: 20261025060000_wp_probes.sql only (UGC already in remote history)
+
+supabase db push
+```
+
+Do **not** run `supabase db pull` for this Path B fix: pull writes a new remote-schema migration and is the wrong tool when you only need history ↔ files aligned for one known version.
+
+#### B2 — Fresh Path B (first three not yet repaired)
+
+```bash
+cd ~/Documents/december-circuit
+git fetch origin
+git checkout cursor/admin-probe-ui
+
 supabase migration repair --status applied \
   20261022104500 \
   20261023141200 \
   20261024101000
+
+# If migration list / dry-run then flags remote-only 20261024201200 → follow B1
+supabase migration list
 supabase db push --dry-run
 supabase db push
 ```
@@ -270,27 +313,54 @@ supabase db push
 
 ---
 
-## Exact commands Ox should run next (Path B — probes only)
+## Exact commands Ox should run next (Path B — current Mac)
 
-Assuming Mac repo at `~/Documents/december-circuit`, linked project, and step 1 shows submissions + image_path + place columns already present, UGC and wp_probes absent:
+First three already `applied`. On `cursor/admin-probe-ui`. Dry-run / push fail because remote history has `20261024201200` without a local file. UGC SQL almost certainly never ran.
+
+**1. SQL editor (no deletes):**
+
+```sql
+select to_regclass('public.helpful_votes') as helpful_votes,
+       to_regclass('public.ugc_questions') as ugc_questions;
+
+select column_name
+from information_schema.columns
+where table_schema = 'public' and table_name = 'reviews'
+  and column_name = 'subject_kind';
+```
+
+**2a. If those are null / empty (expected) — revert ghost UGC history, push probes:**
+
+```bash
+cd ~/Documents/december-circuit
+# stay on cursor/admin-probe-ui
+
+supabase migration repair --status reverted 20261024201200
+
+supabase migration list
+supabase db push --dry-run
+# expect only: 20261025060000_wp_probes.sql
+
+supabase db push
+```
+
+**2b. If UGC objects exist — keep history, add the file, then push probes:**
 
 ```bash
 cd ~/Documents/december-circuit
 git fetch origin
-git checkout cursor/admin-probe-ui
-
-supabase migration list
-supabase migration repair --status applied \
-  20261022104500 \
-  20261023141200 \
-  20261024101000
+git checkout cursor/supabase-ugc -- supabase/migrations/20261024201200_ugc_ratings_votes_photos_qa.sql
 
 supabase migration list
 supabase db push --dry-run
+# expect only: 20261025060000_wp_probes.sql
+
 supabase db push
 ```
 
-If product wants UGC now instead, use **Path A** (checkout `cursor/supabase-ugc`, same repair of the first three, `db push` for UGC, then add `20261025060000_wp_probes.sql` from `cursor/admin-probe-ui` and push again).
+Skip `supabase db pull` for this fix. Do not drop tables or `db reset`.
+
+If product wants UGC SQL applied for real instead, use **Path A** after clearing the ghost (2a), or stay on a branch that has the UGC file and `db push` that version when objects are still absent.
 
 ---
 
