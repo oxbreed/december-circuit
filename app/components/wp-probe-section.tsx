@@ -30,7 +30,18 @@ export async function WpProbeSection({
   };
 
   const settingsResult = await getWpProbeSettings();
-  if (settingsResult.reason === "forbidden") return null;
+  if (settingsResult.reason === "forbidden") {
+    // Rendered only under the /admin email gate; still show the heading so the
+    // section cannot disappear if the nested session read fails.
+    return (
+      <section className="mt-8">
+        <h2 className="font-display text-3xl leading-none tracking-tight">WP probes</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">
+          Probe storage opens only for the admin address held on the server.
+        </p>
+      </section>
+    );
+  }
 
   if (settingsResult.reason === "no-key") {
     return (

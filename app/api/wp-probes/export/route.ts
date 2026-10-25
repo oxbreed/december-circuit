@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { exportWpProbesCsv, type WpProbeFilters } from "../../../wp-probes";
 
-export const runtime = "nodejs";
-
 function one(value: string | string[] | undefined) {
   if (Array.isArray(value)) return value[0];
   return value;

@@ -65,6 +65,14 @@ Vercel → **Logs** → filter `wp_probe`. Local: `npm run dev` and hit a probe 
 
 Vercel may already return **403** with `x-vercel-mitigated: deny` for many `.php` and `wp-*` probes before the app runs. Those hits never reach `proxy.ts`. The proxy covers probes that reach the Next deployment (local, preview, or when edge rules change).
 
+## Build note (`cacheComponents`)
+
+Do **not** set `export const runtime = "nodejs"` on the ingest/export routes. Next.js 16 with `cacheComponents: true` fails the production build with that segment config. Node is already the default for these handlers.
+
+## Admin submissions + service role grants
+
+`/admin` unpublished submissions use `SUPABASE_SERVICE_ROLE_KEY` (server-only). Migration `20261025114500_admin_service_role_select.sql` grants `service_role` SELECT on `submissions` / `reviews` and DML on the probe tables. Apply with `supabase db push` (or the SQL editor) if `/admin` still shows “Submissions could not be read.” after the place/UGC/wp_probes migrations — `BYPASSRLS` does not replace table `GRANT`s, and early migrations revoked `PUBLIC` without an explicit `service_role` grant.
+
 ## UGC
 
-`cursor/supabase-ugc` stays pended / unmerged. This migration is separate and does not depend on UGC tables.
+UGC product UI stays pended on `cursor/supabase-ugc`. The UGC migration file `20261024201200_ugc_ratings_votes_photos_qa.sql` is kept on `main` when that version is already in remote history so `supabase migration list` stays aligned. Probe work does not depend on UGC tables.

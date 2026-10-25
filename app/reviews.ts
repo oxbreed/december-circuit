@@ -45,6 +45,55 @@ export type SubmissionRow = {
   image_unreadable: boolean;
 };
 
+const SUBMISSION_SELECT_FULL =
+  "id, kind, sender_email, event_name, city, dates, venue, product_name, business_name, offer, category, note, latitude, longitude, public_link, image_path";
+const SUBMISSION_SELECT_WITH_IMAGE =
+  "id, kind, sender_email, event_name, city, dates, venue, product_name, business_name, offer, public_link, image_path";
+const SUBMISSION_SELECT_BASE =
+  "id, kind, sender_email, event_name, city, dates, venue, product_name, business_name, offer, public_link";
+
+function isMissingColumnError(error: { code?: string; message?: string } | null) {
+  if (!error) return false;
+  if (error.code === "PGRST204") return true;
+  const message = (error.message ?? "").toLowerCase();
+  return (
+    message.includes("schema cache") ||
+    message.includes("could not find") ||
+    (message.includes("column") && message.includes("does not exist"))
+  );
+}
+
+function mapSubmissionRows(data: Record<string, unknown>[]): SubmissionRow[] {
+  return data.flatMap((row) => {
+    if (typeof row.id !== "string" || typeof row.kind !== "string" || typeof row.sender_email !== "string") {
+      return [];
+    }
+    const rawPath = typeof row.image_path === "string" ? row.image_path.trim() : "";
+    const readable = rawPath !== "" && isSubmissionImagePath(rawPath);
+    return [
+      {
+        id: row.id,
+        kind: row.kind,
+        sender_email: row.sender_email,
+        event_name: textOrNull(row.event_name),
+        city: textOrNull(row.city),
+        dates: textOrNull(row.dates),
+        venue: textOrNull(row.venue),
+        product_name: textOrNull(row.product_name),
+        business_name: textOrNull(row.business_name),
+        offer: textOrNull(row.offer),
+        category: textOrNull(row.category),
+        note: textOrNull(row.note),
+        latitude: numberOrNull(row.latitude),
+        longitude: numberOrNull(row.longitude),
+        public_link: textOrNull(row.public_link),
+        image_path: readable ? rawPath : null,
+        image_unreadable: rawPath !== "" && !readable,
+      },
+    ];
+  });
+}
+
 export async function listUnpublishedSubmissions(): Promise<{
   rows: SubmissionRow[];
   reason: "ok" | "no-key" | "error";
@@ -52,45 +101,33 @@ export async function listUnpublishedSubmissions(): Promise<{
   if (!directorySignIn().connected) return { rows: [], reason: "no-key" };
   const supabase = createServiceClient();
   if (!supabase) return { rows: [], reason: "no-key" };
-  const { data, error } = await supabase
-    .from("submissions")
-    .select(
-      "id, kind, sender_email, event_name, city, dates, venue, product_name, business_name, offer, category, note, latitude, longitude, public_link, image_path",
-    )
-    .eq("status", "unpublished")
-    .order("created_at", { ascending: true });
-  if (error || !data) return { rows: [], reason: "error" };
-  return {
-    rows: data.flatMap((row) => {
-      if (typeof row.id !== "string" || typeof row.kind !== "string" || typeof row.sender_email !== "string") {
-        return [];
-      }
-      const rawPath = typeof row.image_path === "string" ? row.image_path.trim() : "";
-      const readable = rawPath !== "" && isSubmissionImagePath(rawPath);
-      return [
-        {
-          id: row.id,
-          kind: row.kind,
-          sender_email: row.sender_email,
-          event_name: textOrNull(row.event_name),
-          city: textOrNull(row.city),
-          dates: textOrNull(row.dates),
-          venue: textOrNull(row.venue),
-          product_name: textOrNull(row.product_name),
-          business_name: textOrNull(row.business_name),
-          offer: textOrNull(row.offer),
-          category: textOrNull(row.category),
-          note: textOrNull(row.note),
-          latitude: numberOrNull(row.latitude),
-          longitude: numberOrNull(row.longitude),
-          public_link: textOrNull(row.public_link),
-          image_path: readable ? rawPath : null,
-          image_unreadable: rawPath !== "" && !readable,
-        },
-      ];
-    }),
-    reason: "ok" as const,
-  };
+
+  const selects = [SUBMISSION_SELECT_FULL, SUBMISSION_SELECT_WITH_IMAGE, SUBMISSION_SELECT_BASE];
+  let lastError: { code?: string; message?: string } | null = null;
+
+  for (const columns of selects) {
+    const { data, error } = await supabase
+      .from("submissions")
+      .select(columns)
+      .eq("status", "unpublished")
+      .order("created_at", { ascending: true });
+
+    if (!error && data) {
+      return {
+        rows: mapSubmissionRows(data as unknown as Record<string, unknown>[]),
+        reason: "ok",
+      };
+    }
+
+    lastError = error;
+    if (!isMissingColumnError(error)) break;
+  }
+
+  console.error("listUnpublishedSubmissions failed", {
+    code: lastError?.code,
+    message: lastError?.message,
+  });
+  return { rows: [], reason: "error" };
 }
 
 function textOrNull(value: unknown) {

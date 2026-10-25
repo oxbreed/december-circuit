@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-export const runtime = "nodejs";
-
 function present(value: string | undefined) {
   const trimmed = value?.trim();
   return trimmed ? trimmed : null;
