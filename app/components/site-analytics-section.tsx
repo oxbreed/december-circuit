@@ -68,7 +68,7 @@ export async function SiteAnalyticsSection() {
     vitals.reason === "ok" && vitals.summary && vitals.summary.sampleSize > 0;
 
   return (
-    <section className="mt-8">
+    <section className="mt-8" data-admin-analytics="overview-report">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <h2 className="font-display text-3xl leading-none tracking-tight">Analytics</h2>
         <a
@@ -84,7 +84,7 @@ export async function SiteAnalyticsSection() {
       {visits.reason === "forbidden" ? (
         <AnalyticsOverviewEmpty message="Admin only." />
       ) : visits.reason === "no-key" ? (
-        <AnalyticsOverviewEmpty message="Server key not set." />
+        <AnalyticsOverviewEmpty message="Server key not set. Apply Supabase service role to load live visits." />
       ) : visits.reason === "error" ? (
         <AnalyticsOverviewEmpty message="Could not read visits. Apply page_views migration." />
       ) : !visitsReady ? (
