@@ -202,8 +202,8 @@ export function ExploreSection() {
           . Address, website, phone, and opening hours appear only when that source
           already has them — this site does not invent phones, prices, ratings, or hours.
           Optional Google Places results (when configured) cover lodging, restaurants,
-          shopping, and car hire types with attribution, and open on Google Maps — there
-          is no on-site booking or payment, and no Google or Airbnb scrape.
+          shopping, car hire, and nightlife types with attribution, and open on Google
+          Maps — there is no on-site booking or payment, and no Google or Airbnb scrape.
         </p>
         <p className="mt-2 text-sm leading-6 text-muted">
           Know a business that should be reviewed for the directory?{" "}

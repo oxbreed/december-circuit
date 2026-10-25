@@ -69,7 +69,14 @@ export const exploreCategoryHubs: ExploreCategoryHub[] = [
     slug: "clubs",
     exploreKind: "clubs",
     blurb:
-      "Sourced club organiser pages on file, plus OpenStreetMap nightclub and bar search in Explore.",
+      "Sourced club organiser pages on file, plus OpenStreetMap nightclub, bar, and pub search for Lagos, Accra, and Calabar (optional Google / Foursquare when configured). Map / third-party data — not checked directory rows.",
+  },
+  {
+    category: "Bars",
+    slug: "bars",
+    exploreKind: "clubs",
+    blurb:
+      "Sourced bar organiser pages on file. Map nightlife search (bars, pubs, clubs) for Lagos, Accra, and Calabar lives on Explore — same OSM / optional Google path as Clubs.",
   },
   {
     category: "Landmarks",

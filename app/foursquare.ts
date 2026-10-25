@@ -27,7 +27,7 @@ const KIND_CATEGORY_IDS: Partial<Record<PoiKind, string>> = {
   shops: "4bf58dd8d48988d1fd941735,4bf58dd8d48988d1f6941735", // Shopping Mall, Department Store
   car_rental: "4bf58dd8d48988d1ef941735", // Rental Car Location
   car_shops: "4eb1c1623b7b52c0e1adc2ec,4bf58dd8d48988d124941735", // Auto Dealership, Automotive Shop
-  clubs: "4bf58dd8d48988d11f941735,4bf58dd8d48988d116941735", // Night Clubs, Bar
+  clubs: "4bf58dd8d48988d11f941735,4bf58dd8d48988d116941735,4bf58dd8d48988d11b941735", // Night Clubs, Bar, Pub
   landmarks: "4bf58dd8d48988d181941735,4bf58dd8d48988d12d941735", // Museum, Monument / Landmark
 };
 

@@ -101,7 +101,13 @@ export const poiKindFilters: Record<
   },
   clubs: {
     label: kindLabels.clubs.label,
-    filters: ['["amenity"="nightclub"]', '["amenity"="bar"]'],
+    filters: [
+      '["amenity"="nightclub"]',
+      '["amenity"="bar"]',
+      '["amenity"="pub"]',
+      '["amenity"="biergarten"]',
+      '["leisure"="dance"]',
+    ],
     categoryFallback: "Club or bar",
   },
   landmarks: {
@@ -165,6 +171,9 @@ function categoryFromTags(tags: Record<string, string>, kind: PoiKind): string {
   if (kind === "clubs") {
     if (amenity === "nightclub") return "Nightclub";
     if (amenity === "bar") return "Bar";
+    if (amenity === "pub") return "Pub";
+    if (amenity === "biergarten") return "Beer garden";
+    if (tags.leisure === "dance") return "Dance hall";
   }
   if (kind === "landmarks") {
     if (tourism === "museum") return "Museum";

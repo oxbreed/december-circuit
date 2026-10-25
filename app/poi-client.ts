@@ -59,7 +59,7 @@ export const poiKindFilters: Record<PoiKind, { label: string }> = {
 
 /**
  * Explore kinds that may call Google Places when GOOGLE_PLACES_API_KEY is set.
- * Clubs and landmarks stay Overpass (± Foursquare) only.
+ * Landmarks stay Overpass (± Foursquare) only.
  */
 export const googlePlacesKinds = [
   "hotels",
@@ -68,6 +68,7 @@ export const googlePlacesKinds = [
   "shops",
   "car_rental",
   "car_shops",
+  "clubs",
 ] as const satisfies readonly PoiKind[];
 
 export type GooglePlacesKind = (typeof googlePlacesKinds)[number];

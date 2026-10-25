@@ -96,6 +96,12 @@ const KIND_CONFIG: Record<GooglePlacesKind, GoogleKindConfig> = {
     textHint: "car dealer repair",
     categoryFallback: "Car shop",
   },
+  clubs: {
+    includedTypes: ["night_club", "bar"],
+    textIncludedType: "night_club",
+    textHint: "nightclub bar nightlife",
+    categoryFallback: "Club or bar",
+  },
 };
 
 /** Field mask kept minimal — no reviews, photos, or price levels. */
@@ -195,6 +201,8 @@ function categoryFromPlace(
     if (types.includes("car_rental")) return "Car rental";
     if (types.includes("car_dealer")) return "Car dealer";
     if (types.includes("car_repair")) return "Car repair";
+    if (types.includes("night_club")) return "Night club";
+    if (types.includes("bar")) return "Bar";
   }
   return KIND_CONFIG[kind].categoryFallback;
 }
