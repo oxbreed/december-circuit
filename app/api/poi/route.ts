@@ -24,21 +24,31 @@ export async function GET(request: Request) {
   }
 
   const hasFoursquare = result.sources.includes("foursquare");
-  const notice = hasFoursquare
-    ? "Map / third-party venue data from OpenStreetMap and Foursquare — not checked directory listings."
-    : "OpenStreetMap results — map data, not a checked listing.";
+  const hasGoogle = result.sources.includes("google");
+  const thirdPartyBits = [
+    hasFoursquare ? "Foursquare" : null,
+    hasGoogle ? "Google" : null,
+  ].filter(Boolean);
+  const notice =
+    thirdPartyBits.length > 0
+      ? `Map / third-party venue data from OpenStreetMap and ${thirdPartyBits.join(" and ")} — not checked directory listings.`
+      : "OpenStreetMap results — map data, not a checked listing.";
+
+  const sourceParts = ["openstreetmap"];
+  if (hasFoursquare) sourceParts.push("foursquare");
+  if (hasGoogle) sourceParts.push("google");
 
   return NextResponse.json(
     {
-      source: hasFoursquare ? "openstreetmap+foursquare" : "openstreetmap",
+      source: sourceParts.join("+"),
       sources: result.sources,
       foursquareEnabled: result.foursquareEnabled,
+      googlePlacesEnabled: result.googlePlacesEnabled,
       notice,
       attribution: {
         openstreetmap: "© OpenStreetMap contributors (ODbL)",
-        ...(hasFoursquare
-          ? { foursquare: "Venue data © Foursquare" }
-          : {}),
+        ...(hasFoursquare ? { foursquare: "Venue data © Foursquare" } : {}),
+        ...(hasGoogle ? { google: "Hotel data © Google" } : {}),
       },
       city: result.city,
       kind: result.kind,

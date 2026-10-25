@@ -33,7 +33,12 @@ type ExploreState =
       results: PoiResult[];
       sources: PoiSource[];
       foursquareEnabled: boolean;
+      googlePlacesEnabled: boolean;
     };
+
+function isPoiSource(value: unknown): value is PoiSource {
+  return value === "openstreetmap" || value === "foursquare" || value === "google";
+}
 
 function parseCity(value: string | null): PoiCity {
   if (value && (poiCities as readonly string[]).includes(value)) {
@@ -50,11 +55,11 @@ function parseKind(value: string | null): PoiKind {
 }
 
 function sourceLabel(sources: PoiSource[]): string {
-  const hasOsm = sources.includes("openstreetmap");
-  const hasFsq = sources.includes("foursquare");
-  if (hasOsm && hasFsq) return "OpenStreetMap · Foursquare";
-  if (hasFsq) return "Foursquare";
-  return "OpenStreetMap";
+  const parts: string[] = [];
+  if (sources.includes("openstreetmap")) parts.push("OpenStreetMap");
+  if (sources.includes("foursquare")) parts.push("Foursquare");
+  if (sources.includes("google")) parts.push("Google");
+  return parts.length ? parts.join(" · ") : "OpenStreetMap";
 }
 
 const mapFrameClass =
@@ -115,6 +120,7 @@ export function ExploreSection() {
           results?: PoiResult[];
           sources?: PoiSource[];
           foursquareEnabled?: boolean;
+          googlePlacesEnabled?: boolean;
           error?: string;
         };
         if (!response.ok) {
@@ -123,17 +129,21 @@ export function ExploreSection() {
         return {
           results: Array.isArray(payload.results) ? payload.results : [],
           sources: Array.isArray(payload.sources)
-            ? payload.sources.filter(
-                (value): value is PoiSource =>
-                  value === "openstreetmap" || value === "foursquare",
-              )
+            ? payload.sources.filter(isPoiSource)
             : (["openstreetmap"] as PoiSource[]),
           foursquareEnabled: Boolean(payload.foursquareEnabled),
+          googlePlacesEnabled: Boolean(payload.googlePlacesEnabled),
         };
       })
-      .then(({ results, sources, foursquareEnabled }) => {
+      .then(({ results, sources, foursquareEnabled, googlePlacesEnabled }) => {
         if (controller.signal.aborted) return;
-        setState({ status: "ready", results, sources, foursquareEnabled });
+        setState({
+          status: "ready",
+          results,
+          sources,
+          foursquareEnabled,
+          googlePlacesEnabled,
+        });
       })
       .catch((error: unknown) => {
         if (controller.signal.aborted) return;
@@ -158,6 +168,12 @@ export function ExploreSection() {
 
   const hasFoursquareResults =
     state.status === "ready" && state.sources.includes("foursquare");
+  const hasGoogleResults =
+    state.status === "ready" && state.sources.includes("google");
+  const thirdPartyNames = [
+    hasFoursquareResults ? "Foursquare" : null,
+    hasGoogleResults ? "Google" : null,
+  ].filter(Boolean);
 
   return (
     <section id="explore" className={sectionClassCompact}>
@@ -181,9 +197,11 @@ export function ExploreSection() {
         </p>
         <p className="mt-2 text-sm leading-6 text-ink">
           Not a checked listing. Names and coordinates come from OpenStreetMap
-          {hasFoursquareResults ? " and Foursquare" : ""}
+          {thirdPartyNames.length > 0 ? ` and ${thirdPartyNames.join(" and ")}` : ""}
           . Address, website, phone, and opening hours appear only when that source
           already has them — this site does not invent phones, prices, ratings, or hours.
+          Optional Google lodging results (when configured) are for hotels only and
+          open on Google Maps — there is no on-site booking or payment.
         </p>
         <p className="mt-2 text-sm leading-6 text-muted">
           Know a business that should be reviewed for the directory?{" "}
@@ -380,6 +398,16 @@ export function ExploreSection() {
                       Open on OpenStreetMap
                     </a>
                   ) : null}
+                  {active.googleMapsUrl ? (
+                    <a
+                      href={active.googleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                    >
+                      Open on Google Maps
+                    </a>
+                  ) : null}
                   {active.website ? (
                     <a
                       href={active.website}
@@ -424,6 +452,22 @@ export function ExploreSection() {
             </>
           ) : state.foursquareEnabled ? (
             <> · Foursquare is configured but returned no matches for this search.</>
+          ) : null}
+          {state.sources.includes("google") ? (
+            <>
+              {" "}
+              · Hotel data{" "}
+              <a
+                href="https://developers.google.com/maps/documentation/places/web-service/policies"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+              >
+                powered by Google
+              </a>
+            </>
+          ) : state.googlePlacesEnabled && kind === "hotels" ? (
+            <> · Google Places is configured but returned no hotel matches for this search.</>
           ) : null}
           .
         </p>

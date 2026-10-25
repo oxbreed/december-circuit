@@ -8,6 +8,11 @@ import {
   type FoursquarePlace,
 } from "./foursquare";
 import {
+  isGooglePlacesConfigured,
+  searchGoogleHotels,
+  type GooglePlace,
+} from "./google-places";
+import {
   poiCities,
   poiKindFilters as kindLabels,
   poiKinds,
@@ -180,6 +185,7 @@ function toResult(row: OverpassPoi, city: PoiCity, kind: PoiKind): PoiResult | n
     longitude: row.longitude,
     website: websiteFromTags(row.tags),
     osmUrl: row.osmUrl,
+    googleMapsUrl: null,
     sources: ["openstreetmap"],
   };
 }
@@ -226,19 +232,20 @@ function namesLikelyMatch(a: string, b: string): boolean {
   return hit >= Math.min(2, rightTokens.length);
 }
 
+function withSource(sources: PoiSource[], source: PoiSource): PoiSource[] {
+  return sources.includes(source) ? sources : [...sources, source];
+}
+
 function mergeFoursquareIntoOsm(
   osm: PoiResult,
   fsq: FoursquarePlace,
 ): PoiResult {
-  const sources: PoiSource[] = osm.sources.includes("foursquare")
-    ? osm.sources
-    : [...osm.sources, "foursquare"];
   return {
     ...osm,
     address: osm.address || fsq.address,
     phone: osm.phone || fsq.phone,
     website: osm.website || fsq.website,
-    sources,
+    sources: withSource(osm.sources, "foursquare"),
   };
 }
 
@@ -261,8 +268,64 @@ function foursquareToResult(
     longitude: place.longitude,
     website: place.website,
     osmUrl: null,
+    googleMapsUrl: null,
     sources: ["foursquare"],
   };
+}
+
+function mergeGoogleIntoRow(row: PoiResult, place: GooglePlace): PoiResult {
+  return {
+    ...row,
+    address: row.address || place.address,
+    phone: row.phone || place.phone,
+    website: row.website || place.website,
+    googleMapsUrl: row.googleMapsUrl || place.googleMapsUrl,
+    sources: withSource(row.sources, "google"),
+  };
+}
+
+function googleToResult(place: GooglePlace, city: PoiCity): PoiResult {
+  return {
+    id: place.id,
+    name: place.name,
+    category: place.category,
+    kind: "hotels",
+    city,
+    area: null,
+    address: place.address,
+    phone: place.phone,
+    openingHours: null,
+    latitude: place.latitude,
+    longitude: place.longitude,
+    website: place.website,
+    osmUrl: null,
+    googleMapsUrl: place.googleMapsUrl,
+    sources: ["google"],
+  };
+}
+
+function matchNearbyPlace<T extends { id: string; name: string; latitude: number; longitude: number }>(
+  row: PoiResult,
+  places: T[],
+  used: Set<string>,
+): T | null {
+  let best: T | null = null;
+  let bestDist = MATCH_METERS;
+  for (const place of places) {
+    if (used.has(place.id)) continue;
+    if (!namesLikelyMatch(row.name, place.name)) continue;
+    const dist = haversineMeters(
+      row.latitude,
+      row.longitude,
+      place.latitude,
+      place.longitude,
+    );
+    if (dist <= bestDist) {
+      best = place;
+      bestDist = dist;
+    }
+  }
+  return best;
 }
 
 function mergeWithFoursquare(
@@ -276,22 +339,7 @@ function mergeWithFoursquare(
 
   const usedFsq = new Set<string>();
   const merged = osmResults.map((row) => {
-    let best: FoursquarePlace | null = null;
-    let bestDist = MATCH_METERS;
-    for (const place of fsqPlaces) {
-      if (usedFsq.has(place.id)) continue;
-      if (!namesLikelyMatch(row.name, place.name)) continue;
-      const dist = haversineMeters(
-        row.latitude,
-        row.longitude,
-        place.latitude,
-        place.longitude,
-      );
-      if (dist <= bestDist) {
-        best = place;
-        bestDist = dist;
-      }
-    }
+    const best = matchNearbyPlace(row, fsqPlaces, usedFsq);
     if (!best) return row;
     usedFsq.add(best.id);
     return mergeFoursquareIntoOsm(row, best);
@@ -310,6 +358,36 @@ function mergeWithFoursquare(
   return [...merged, ...extras].slice(0, MAX_RESULTS);
 }
 
+/** Hotels only — merge Google lodging into existing rows, then append unmatched Google hits. */
+function mergeWithGoogleHotels(
+  results: PoiResult[],
+  googlePlaces: GooglePlace[],
+  city: PoiCity,
+  needle: string,
+): PoiResult[] {
+  if (googlePlaces.length === 0) return results.slice(0, MAX_RESULTS);
+
+  const used = new Set<string>();
+  const merged = results.map((row) => {
+    const best = matchNearbyPlace(row, googlePlaces, used);
+    if (!best) return row;
+    used.add(best.id);
+    return mergeGoogleIntoRow(row, best);
+  });
+
+  const extras: PoiResult[] = [];
+  for (const place of googlePlaces) {
+    if (used.has(place.id)) continue;
+    if (needle) {
+      const hay = `${place.name} ${place.category} ${place.address ?? ""}`.toLowerCase();
+      if (!hay.includes(needle)) continue;
+    }
+    extras.push(googleToResult(place, city));
+  }
+
+  return [...merged, ...extras].slice(0, MAX_RESULTS);
+}
+
 export type PoiSearchOk = {
   status: "ok";
   results: PoiResult[];
@@ -317,6 +395,7 @@ export type PoiSearchOk = {
   kind: PoiKind;
   sources: PoiSource[];
   foursquareEnabled: boolean;
+  googlePlacesEnabled: boolean;
 };
 
 export async function searchPois(
@@ -339,6 +418,7 @@ export async function searchPois(
   }
 
   const foursquareEnabled = isFoursquareConfigured();
+  const googlePlacesEnabled = isGooglePlacesConfigured();
 
   try {
     const bounds = poiCityBounds[city];
@@ -362,10 +442,18 @@ export async function searchPois(
       const fsq = await searchFoursquareNearby(city, kind, needle);
       results = mergeWithFoursquare(mapped, fsq, city, kind, needle);
     }
+    // Google Places is hotels/lodging only — never for restaurants, clubs, or landmarks.
+    if (kind === "hotels" && googlePlacesEnabled) {
+      const google = await searchGoogleHotels(city, needle);
+      results = mergeWithGoogleHotels(results, google, city, needle);
+    }
 
     const sources: PoiSource[] = ["openstreetmap"];
     if (results.some((row) => row.sources.includes("foursquare"))) {
       sources.push("foursquare");
+    }
+    if (results.some((row) => row.sources.includes("google"))) {
+      sources.push("google");
     }
 
     return {
@@ -375,6 +463,7 @@ export async function searchPois(
       kind,
       sources,
       foursquareEnabled,
+      googlePlacesEnabled,
     };
   } catch {
     return {

@@ -19,7 +19,7 @@ npm run dev
 - `GET /api/pins`
 - `GET /api/news`
 - `GET /api/geocode?name=&city=` (OpenStreetMap Nominatim lookup for unpublished place submissions; Lagos, Accra, or Calabar)
-- `GET /api/poi?city=&kind=&q=` (OpenStreetMap Overpass map search for hotels, restaurants, clubs, landmarks in Lagos, Accra, or Calabar; optional Foursquare enrichment when `FOURSQUARE_API_KEY` is set server-side)
+- `GET /api/poi?city=&kind=&q=` (OpenStreetMap Overpass map search for hotels, restaurants, clubs, landmarks in Lagos, Accra, or Calabar; optional Foursquare when `FOURSQUARE_API_KEY` is set; optional Google lodging for hotels when `GOOGLE_PLACES_API_KEY` or `GOOGLE_MAPS_API_KEY` is set server-side)
 
 Pages: `/`, `/guide`, `/events`, `/events/[slug]`, `/cities/[slug]`, `/places`, `/explore`, `/flights`, `/map`, `/about`, `/news`, `/list`, `/faq`, `/privacy`, `/terms`, `/eula`. The home hero searches by a listed date and opens `/events?date=`. Visa and entry is on `/guide#entry`. Flight rows stay on `/flights`. Washington DC, Chicago, Dallas–Fort Worth, Amsterdam, and Dubai search 16 December 2026 to 30 December 2026, one adult. Those dates are a starting search for the season, not a fare. `sitemap.xml` and `robots.txt` list the public pages. `/explore` is map / third-party venue data, not checked directory listings.
 

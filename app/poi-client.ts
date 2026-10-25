@@ -8,7 +8,7 @@ export type PoiCity = IntakeCity;
 export const poiKinds = ["hotels", "restaurants", "clubs", "landmarks"] as const;
 export type PoiKind = (typeof poiKinds)[number];
 
-export type PoiSource = "openstreetmap" | "foursquare";
+export type PoiSource = "openstreetmap" | "foursquare" | "google";
 
 export type PoiResult = {
   id: string;
@@ -27,6 +27,8 @@ export type PoiResult = {
   longitude: number;
   website: string | null;
   osmUrl: string | null;
+  /** Google Maps place URL when returned by Places API — outbound only, never invented. */
+  googleMapsUrl: string | null;
   sources: PoiSource[];
 };
 
