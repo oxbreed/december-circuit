@@ -11,16 +11,18 @@ DirtyDecember monitors visits and performance with **Vercel Web Analytics**, **V
 | `POST /api/analytics/pageview` | Best-effort first-party insert: path, referrer, short UA, **country only** from `x-vercel-ip-country` / `cf-ipcountry`. No IP stored. Quiet no-op if Supabase service role or table is missing. |
 | `POST /api/analytics/web-vital` | Best-effort LCP / INP / CLS samples from the `web-vitals` library. Quiet no-op if table/key missing. |
 | Client beacons in `SiteAnalytics` | Page views + Web Vitals on App Router navigations. Skips `/admin`, `/api/*`, `/auth/*`. |
-| `/admin` → **Analytics** | MonsterInsights-style **Overview Report** white card (not five KPI tiles): header + Last 7/30 dropdown, Sessions (person) / Pageviews (eye) tabs with totals and blue active underline, blue area-line chart (fill, white markers, horizontal grid, angled dates), top pages/countries/sources. Empty still shows the same card chrome. Web Vitals below. “Open in Vercel” secondary. |
+| `/admin` → **Dashboard / Insights** | MonsterInsights-style **Overview Report** white card (not five KPI tiles): header + Last 7/30 dropdown, Sessions (person) / Pageviews (eye) tabs with totals and blue active underline, blue area-line chart (fill, white markers, horizontal grid, angled dates), top pages/countries/sources. Empty still shows the same card chrome. Web Vitals below. “Open in Vercel” secondary. |
 | `/preview/analytics-overview` | Fixture preview for visual QA (noindex). |
 | Optional `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Loads gtag only when set. **Off by default.** |
 
 ## What Ox sees on `/admin` (signed in)
 
+Default section is **Dashboard / Insights** (also `/admin?section=dashboard`):
+
 1. **Overview Report** card matching MonsterInsights layout — date range; Sessions / Pageviews tabs with icons + totals; large blue area-line chart.
 2. **Lists** under the chart — Top pages, countries, sources for the selected range.
 3. **Web Vitals** — LCP / INP / CLS p75 for 7 days (separate from the MI card).
-4. Secondary: Open in Vercel.
+4. Secondary: Open in Vercel. Analytics env toggles are listed under **Settings**.
 
 Sessions ≈ distinct country + user-agent per day (no cookie). Pageviews = raw first-party rows.
 

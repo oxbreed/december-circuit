@@ -9,7 +9,7 @@ DirtyDecember runs on **Next.js (Vercel)**, not WordPress. Scanners still hit `/
 | Root `proxy.ts` | Matches WP probe paths, logs JSON to stdout, best-effort POST to ingest, returns **404**. |
 | `POST /api/wp-probes/ingest` | Service-role insert behind `WP_PROBE_INGEST_SECRET`. Never called from the browser. |
 | `GET /api/wp-probes/export` | CSV for the signed-in admin only. |
-| `/admin` → **WP probes** | Recent hits, filters, summary, enable/disable storage, retention, purge, export. |
+| `/admin?section=probes` | Recent hits, filters, summary, export. Storage / retention / purge live under **Settings**. |
 | Migration `20261025060000_wp_probes.sql` | `wp_probes` + `wp_probe_settings` tables; RLS on; no anon/authenticated grants. |
 | `app/robots.ts` | Disallows unused WP paths. Real routes such as `/admin` are unchanged. |
 
@@ -33,14 +33,13 @@ Redeploy after env changes.
 ## Admin usage
 
 1. Sign in at `/sign-in` with the `ADMIN_EMAIL` address.
-2. Open `/admin` → **WP probes**.
-3. **Filters:** path substring, IP exact, from/to date → Filter. Clear filters returns to `/admin`.
-4. **Summary:** count in view, last 24h, distinct IPs, top paths.
-5. **Controls:**
+2. Open `/admin?section=probes` (Ox Management → **Probes**).
+3. **Filters:** path substring, IP exact, from/to date → Filter. Clear filters returns to `/admin?section=probes`.
+4. **Summary:** count in view, last 24h, distinct IPs, top paths. Export CSV — current filters, admin session required.
+5. **Controls** (under `/admin?section=settings`):
    - Enable / Disable storage — stops or resumes inserts. Stdout `wp_probe` lines still appear either way.
    - Retention (days) — blank keeps rows until purged; saving a number deletes older rows immediately and on each successful ingest.
    - Purge older than retention / Clear all probes.
-   - Export CSV — current filters, admin session required.
 
 Empty, loading, and error states are covered on the section (including “apply the migration” when the table is missing).
 

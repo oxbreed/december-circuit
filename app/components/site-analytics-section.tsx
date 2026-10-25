@@ -68,9 +68,9 @@ export async function SiteAnalyticsSection() {
     vitals.reason === "ok" && vitals.summary && vitals.summary.sampleSize > 0;
 
   return (
-    <section className="mt-8" data-admin-analytics="overview-report">
+    <section className="min-w-0" data-admin-analytics="overview-report">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 className="font-display text-3xl leading-none tracking-tight">Analytics</h2>
+        <h2 className="font-display text-3xl leading-none tracking-tight">Dashboard / Insights</h2>
         <a
           href="https://vercel.com/dashboard"
           className="text-sm text-muted underline decoration-ink/25 underline-offset-4 hover:text-oxide"
@@ -108,8 +108,8 @@ export async function SiteAnalyticsSection() {
 
 export function SiteAnalyticsSectionFallback() {
   return (
-    <section className="mt-8">
-      <h2 className="font-display text-3xl leading-none tracking-tight">Analytics</h2>
+    <section className="min-w-0">
+      <h2 className="font-display text-3xl leading-none tracking-tight">Dashboard / Insights</h2>
       <p className="mt-3 text-sm text-muted">Loading…</p>
     </section>
   );

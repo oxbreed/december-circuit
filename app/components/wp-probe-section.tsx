@@ -1,4 +1,3 @@
-import { WpProbeControls } from "./wp-probe-controls";
 import {
   getWpProbeSettings,
   listWpProbes,
@@ -34,8 +33,8 @@ export async function WpProbeSection({
     // Rendered only under the /admin email gate; still show the heading so the
     // section cannot disappear if the nested session read fails.
     return (
-      <section className="mt-8">
-        <h2 className="font-display text-3xl leading-none tracking-tight">WP probes</h2>
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Probes</h2>
         <p className="mt-3 text-sm leading-7 text-muted">
           Probe storage opens only for the admin address held on the server.
         </p>
@@ -45,8 +44,8 @@ export async function WpProbeSection({
 
   if (settingsResult.reason === "no-key") {
     return (
-      <section className="mt-8">
-        <h2 className="font-display text-3xl leading-none tracking-tight">WP probes</h2>
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Probes</h2>
         <p className="mt-3 text-sm leading-7 text-muted">
           Probe storage is not listed because the server key is not set.
         </p>
@@ -56,11 +55,11 @@ export async function WpProbeSection({
 
   if (settingsResult.reason === "error") {
     return (
-      <section className="mt-8">
-        <h2 className="font-display text-3xl leading-none tracking-tight">WP probes</h2>
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Probes</h2>
         <p className="mt-3 text-sm leading-7 text-muted">
           Probe settings could not be read. Apply the `wp_probes` migration if it is not on the
-          project yet.
+          project yet. Storage controls live under Settings once the table is present.
         </p>
       </section>
     );
@@ -81,19 +80,15 @@ export async function WpProbeSection({
   const settings = settingsResult.settings!;
 
   return (
-    <section className="mt-8">
-      <h2 className="font-display text-3xl leading-none tracking-tight">WP probes</h2>
+    <section className="min-w-0">
+      <h2 className="font-display text-3xl leading-none tracking-tight">Probes</h2>
       <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
         Scanner hits on WordPress-shaped paths. This is not a WordPress install — storage is for Ox
-        Management only.
+        Management only. Enable storage and retention under Settings.
       </p>
 
-      <WpProbeControls
-        loggingEnabled={settings.logging_enabled}
-        retentionDays={settings.retention_days}
-      />
-
       <form method="get" className="mt-6 grid gap-3 sm:grid-cols-2">
+        <input type="hidden" name="section" value="probes" />
         <label className="block min-w-0">
           <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-muted">Path</span>
           <input
@@ -138,7 +133,7 @@ export async function WpProbeSection({
             Filter
           </button>
           <a
-            href="/admin"
+            href="/admin?section=probes"
             className="inline-flex border border-ink/20 bg-chart px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-ink"
           >
             Clear filters
@@ -212,8 +207,8 @@ export async function WpProbeSection({
 
 export function WpProbeSectionFallback() {
   return (
-    <section className="mt-8">
-      <h2 className="font-display text-3xl leading-none tracking-tight">WP probes</h2>
+    <section className="min-w-0">
+      <h2 className="font-display text-3xl leading-none tracking-tight">Probes</h2>
       <p className="mt-3 text-sm leading-7 text-muted">Loading probes…</p>
     </section>
   );
