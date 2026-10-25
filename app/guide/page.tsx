@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { EventCard } from "../components/event-card";
 import { Breadcrumbs } from "../components/breadcrumbs";
+import { GetAroundRidesInline } from "../components/get-around-rides";
 import { JsonLd } from "../components/json-ld";
 import { VisaSections } from "../components/visa-sections";
 import { citiesOnFile } from "../cities";
@@ -254,9 +255,12 @@ export default function GuidePage() {
       <section id="around" className="mt-14 scroll-mt-36 border-t border-ink/10 pt-10">
         <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">Get around</h2>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-          Car rental and airport pages already filed, then the map pins. A pin
-          with no organiser page stays on the map.
+          Third-party ride apps for Lagos, Accra, and the region, then car
+          rental and airport pages already filed, then the map pins. A pin with
+          no organiser page stays on the map. This site does not book rides or
+          quote fares.
         </p>
+        <GetAroundRidesInline />
         <PlaceList rows={transportPlaces} />
         <div className="mt-10">
           <div className="flex flex-wrap items-end justify-between gap-3">

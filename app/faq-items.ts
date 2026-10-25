@@ -43,6 +43,11 @@ export const faqItems: FaqItem[] = [
       "Each row on Flights opens a Google Flights search. It is a search, not a fare, a seat, or a booking. No booking is held on this site. Some origin cities use a dated December search window noted on that page; those dates are a starting search for the season.",
   },
   {
+    question: "How do I get around once I land?",
+    answer:
+      "The Flights page and the [[/guide#around|Get around]] guide section link to third-party ride apps Bolt and inDrive for Nigeria and Ghana (Lagos, Accra, and other cities those apps serve). Each link leaves this site. This directory does not book rides, quote fares, or show ETAs. Car rental and airport organiser pages already on file stay in that same guide section.",
+  },
+  {
     question: "Where do I check visas and entry?",
     answer:
       "Open [[/visa|Visa and entry]] (also in the [[/guide#entry|tourist guide]]). Lagos and Calabar are in Nigeria. Accra is in Ghana. Those pages repeat the linked Nigeria Immigration Service and Ghana Immigration Service pages and do not take a visa application or a payment. Read those official links for the current rules.",

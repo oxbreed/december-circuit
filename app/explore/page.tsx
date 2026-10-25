@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { ExploreFallback, ExploreSection } from "../components/explore-section";
+import { GetAroundRidesInline } from "../components/get-around-rides";
 import { JsonLd } from "../components/json-ld";
 import { breadcrumbJsonLd } from "../jsonld";
 import { pageMetadata } from "../site";
@@ -50,6 +51,7 @@ export default function ExplorePage() {
           </Link>
           .
         </p>
+        <GetAroundRidesInline />
       </div>
       <Suspense fallback={<ExploreFallback />}>
         <ExploreSection />

@@ -145,6 +145,11 @@ export function matchGroundedReply(question: string) {
         "On Flights, each row opens a Google Flights search. It’s a search — not a fare, a seat, or a booking we hold. Some origin cities use a dated December window noted on that page as a starting point for the season.",
     },
     {
+      keys: ["bolt", "indrive", "ride", "rides", "taxi", "uber", "get around", "transport"],
+      reply:
+        "For getting around Lagos, Accra, and the region, Flights and /guide#around link out to third-party ride apps Bolt and inDrive (Nigeria and Ghana pages). Those links leave this site — we don’t book rides, quote fares, or show ETAs. Car rental and airport organiser pages already on file stay in that same guide section.",
+    },
+    {
       keys: ["payment", "pay", "ticket", "tickets", "checkout", "booking", "buy"],
       reply:
         "We don’t take payment or hold bookings on this site. If a record already has a ticket link, that link leaves dirtydecember.info. Same idea for stay links and flight searches — they’re not a purchase here.",

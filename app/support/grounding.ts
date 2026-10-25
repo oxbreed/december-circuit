@@ -42,6 +42,7 @@ About and privacy (one-liners)
 ${disclaimer}
 This site is an independent directory. A listing appears only when an organiser page or a named report confirms it.
 This site takes no payment and holds no bookings. A ticket link leaves this site. A flight row opens a search, not a fare or a seat.
+Bolt and inDrive appear as outbound third-party ride-app links for Nigeria and Ghana. This site does not book rides or quote fares or ETAs.
 A newsletter, a fare, or a payment is not offered yet.
 Oxbreed Management operates dirtydecember.info. Visitor enquiries: hello@dirtydecember.info.
 `.trim();

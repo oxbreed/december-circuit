@@ -4,6 +4,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { disclaimer, footerExtra, nav } from "../brand";
+import { rideHailLinks } from "../ride-hailing";
 import { NewsTicker } from "./news-ticker";
 
 function PlaneMark() {
@@ -147,6 +148,28 @@ export function SiteChrome({
                 partners@dirtydecember.info
               </a>
             </p>
+          </div>
+          <div>
+            <p className={footerKicker}>Get around</p>
+            <p className="mt-2 max-w-xl font-sans text-sm leading-6 text-muted">
+              Third-party ride apps — outbound only, not a booking on this site.
+            </p>
+            <nav
+              aria-label="Ride apps"
+              className="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6"
+            >
+              {rideHailLinks.map((link) => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-ink ${footerLink}`}
+                >
+                  {link.name} ({link.region})
+                </a>
+              ))}
+            </nav>
           </div>
           <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6">
             {footerExtra.map(([label, href]) => (
