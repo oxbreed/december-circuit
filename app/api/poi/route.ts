@@ -48,7 +48,7 @@ export async function GET(request: Request) {
       attribution: {
         openstreetmap: "© OpenStreetMap contributors (ODbL)",
         ...(hasFoursquare ? { foursquare: "Venue data © Foursquare" } : {}),
-        ...(hasGoogle ? { google: "Hotel data © Google" } : {}),
+        ...(hasGoogle ? { google: "Place data © Google" } : {}),
       },
       city: result.city,
       kind: result.kind,

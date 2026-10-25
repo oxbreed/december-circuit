@@ -137,7 +137,7 @@ export function MapSection() {
             lede="Only places with a sourced coordinate across Lagos, Accra, Calabar, and other West Africa cities on file. Directions open an external map from that point."
           />
           <p className="mb-6 max-w-2xl text-sm leading-6 text-muted">
-            Looking for more hotels, restaurants, clubs, or landmarks?{" "}
+            Looking for more hotels, restaurants, shops, car hire, clubs, or landmarks?{" "}
             <Link
               href="/explore"
               className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"

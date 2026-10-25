@@ -4,10 +4,11 @@ import { countriesOnFile } from "./countries";
 import { eventSlug } from "./event-view";
 import { events } from "./events";
 import { landmarks } from "./landmarks";
-import { categoriesOnFile, placesOnFile } from "./place-catalog";
+import { categoryIndex } from "./explore-categories";
+import { placesOnFile } from "./place-catalog";
 import { absoluteUrl } from "./site";
 
-const checked = new Date("2026-10-24");
+const checked = new Date("2026-10-25");
 
 type Entry = {
   path: string;
@@ -49,7 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.86,
     })),
-    ...categoriesOnFile().map((cat) => ({
+    ...categoryIndex().map((cat) => ({
       path: `/categories/${cat.slug}`,
       changeFrequency: "weekly" as const,
       priority: 0.82,

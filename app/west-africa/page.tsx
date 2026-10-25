@@ -3,7 +3,7 @@ import { disclaimer } from "../brand";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
 import { countriesOnFile } from "../countries";
-import { categoriesOnFile } from "../place-catalog";
+import { categoryIndex } from "../explore-categories";
 import {
   breadcrumbJsonLd,
   citiesItemListJsonLd,
@@ -23,7 +23,7 @@ export const metadata = pageMetadata({
 
 export default function WestAfricaPage() {
   const countries = countriesOnFile();
-  const categories = categoriesOnFile();
+  const categories = categoryIndex();
   const cities = citiesOnFile().slice(0, 18);
 
   return (
@@ -107,7 +107,8 @@ export default function WestAfricaPage() {
       <section className="mt-14">
         <h2 className="font-display text-3xl tracking-tight">Browse by category</h2>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-          Organiser pages already listed — not reviews or prices.
+          Organiser pages already listed, plus Explore map hubs for shopping, car shops, and
+          landmarks — not reviews or prices.
         </p>
         <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm leading-6">
           {categories.map((item) => (
@@ -118,7 +119,10 @@ export default function WestAfricaPage() {
               >
                 {item.category}
               </Link>
-              <span className="text-muted"> ({item.count})</span>
+              <span className="text-muted">
+                {" "}
+                ({item.count > 0 ? item.count : item.exploreKind ? "Explore" : 0})
+              </span>
             </li>
           ))}
         </ul>

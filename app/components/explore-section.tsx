@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
+  isGooglePlacesKind,
   poiCities,
   poiKindFilters,
   poiKinds,
@@ -188,7 +189,7 @@ export function ExploreSection() {
       <SectionIntro
         kicker="Explore"
         title="OpenStreetMap search"
-        lede="These are map and third-party venue points to help plan hotels, meals, nights out, and landmarks. Checked stays and events remain on Places and Events."
+        lede="These are map and third-party venue points to help plan hotels, short stays, meals, shopping, car hire, nights out, and landmarks. Checked stays and events remain on Places and Events."
       />
 
       <div className="mb-8 max-w-2xl border border-brass/40 bg-paper-deep/50 px-4 py-4">
@@ -200,8 +201,9 @@ export function ExploreSection() {
           {thirdPartyNames.length > 0 ? ` and ${thirdPartyNames.join(" and ")}` : ""}
           . Address, website, phone, and opening hours appear only when that source
           already has them — this site does not invent phones, prices, ratings, or hours.
-          Optional Google lodging results (when configured) are for hotels only and
-          open on Google Maps — there is no on-site booking or payment.
+          Optional Google Places results (when configured) cover lodging, restaurants,
+          shopping, and car hire types with attribution, and open on Google Maps — there
+          is no on-site booking or payment, and no Google or Airbnb scrape.
         </p>
         <p className="mt-2 text-sm leading-6 text-muted">
           Know a business that should be reviewed for the directory?{" "}
@@ -456,7 +458,7 @@ export function ExploreSection() {
           {state.sources.includes("google") ? (
             <>
               {" "}
-              · Hotel data{" "}
+              · Place data{" "}
               <a
                 href="https://developers.google.com/maps/documentation/places/web-service/policies"
                 target="_blank"
@@ -466,8 +468,12 @@ export function ExploreSection() {
                 powered by Google
               </a>
             </>
-          ) : state.googlePlacesEnabled && kind === "hotels" ? (
-            <> · Google Places is configured but returned no hotel matches for this search.</>
+          ) : state.googlePlacesEnabled && isGooglePlacesKind(kind) ? (
+            <>
+              {" "}
+              · Google Places is configured but returned no matches for this{" "}
+              {poiKindFilters[kind].label.toLowerCase()} search.
+            </>
           ) : null}
           .
         </p>

@@ -9,7 +9,7 @@ import { pageMetadata } from "../site";
 export const metadata = pageMetadata({
   title: "Explore map search — Lagos, Accra, Calabar",
   description:
-    "Search OpenStreetMap (optional Foursquare) for hotels, restaurants, clubs, and landmarks in Lagos, Accra, and Calabar. Third-party venue data for vacation planning — not a checked DirtyDecember listing.",
+    "Search OpenStreetMap for hotels, restaurants, short stays, shopping, car rental, car shops, clubs, and landmarks in Lagos, Accra, and Calabar. Optional Foursquare or Google Places when configured. Third-party venue data — not a checked DirtyDecember listing.",
   path: "/explore",
 });
 
@@ -30,8 +30,9 @@ export default function ExplorePage() {
           ]}
         />
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Map search for parties, stays, and landmarks around Detty December hubs. Results are
-          OpenStreetMap or Foursquare data — not the checked organiser list. Prefer{" "}
+          Map search for stays, meals, shopping, car hire, nightlife, and landmarks around Detty
+          December hubs. Results are OpenStreetMap (optional Foursquare or Google) — not the
+          checked organiser list. Prefer{" "}
           <Link href="/places" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
             Places
           </Link>{" "}

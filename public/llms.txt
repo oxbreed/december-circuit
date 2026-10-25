@@ -22,11 +22,11 @@ The live site is https://www.dirtydecember.info
 - [Confirmed events](https://www.dirtydecember.info/events): Filter by city and date from records on file.
 - [Places](https://www.dirtydecember.info/places): Organiser pages by country, city, and category.
 - [Place pages](https://www.dirtydecember.info/place/kempinski-hotel-gold-coast-city-accra-accra): One page per listed organiser (example Accra hotel); outbound organiser link; Place JSON-LD with geo when a sourced pin matches.
-- [Categories](https://www.dirtydecember.info/categories/hotels): Category hubs (hotels, restaurants, clubs, bars, short-stay, event centres, practical stops, car rental, catering).
+- [Categories](https://www.dirtydecember.info/categories/hotels): Category hubs (hotels, restaurants, clubs, bars, short-stay, shopping, event centres, practical stops, car rental, car shops, catering, landmarks).
 - [Cities](https://www.dirtydecember.info/cities): City index for every city already listed.
 - [Countries](https://www.dirtydecember.info/countries/nigeria): Country hubs (e.g. Nigeria, Ghana) listing cities and confirmed events on file.
 - [Map](https://www.dirtydecember.info/map): Sourced coordinates on OpenStreetMap.
-- [Explore map search](https://www.dirtydecember.info/explore): OpenStreetMap (optional Foursquare) POI search for Lagos, Accra, and Calabar — third-party venue data, not a checked listing.
+- [Explore map search](https://www.dirtydecember.info/explore): OpenStreetMap POI search (optional Foursquare / Google Places) for hotels, restaurants, short stays, shopping, car rental, car shops, clubs, and landmarks in Lagos, Accra, and Calabar — third-party venue data, not a checked listing.
 - [Flights](https://www.dirtydecember.info/flights): Outbound Google Flights searches — not fares or seats.
 - [News](https://www.dirtydecember.info/news): Entertainment headlines from the public feeds used by the ticker.
 - [FAQ](https://www.dirtydecember.info/faq): Plain answers for visitors; also published as FAQPage structured data.

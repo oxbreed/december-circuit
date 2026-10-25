@@ -16,17 +16,28 @@ const MAX_RESULTS = 30;
 /** Soft cap: one Place Search per city/kind/q (cached). Avoid fan-out detail calls. */
 const MIN_GAP_MS = 400;
 
-/** Classic Foursquare category IDs used to scope Place Search. */
-const KIND_CATEGORY_IDS: Record<PoiKind, string> = {
+/**
+ * Classic Foursquare category IDs used to scope Place Search.
+ * Kinds without a reliable ID set are omitted — Overpass (± Google) covers them.
+ */
+const KIND_CATEGORY_IDS: Partial<Record<PoiKind, string>> = {
   hotels: "4bf58dd8d48988d1fa931735,4bf58dd8d48988d1ee931735", // Hotel, Hostel
   restaurants: "4d4b7105d754a06374d81259", // Food / Restaurants
+  short_stays: "4bf58dd8d48988d1f8931735,4d954b06a243a5684965b473", // B&B, Residential Building
+  shops: "4bf58dd8d48988d1fd941735,4bf58dd8d48988d1f6941735", // Shopping Mall, Department Store
+  car_rental: "4bf58dd8d48988d1ef941735", // Rental Car Location
+  car_shops: "4eb1c1623b7b52c0e1adc2ec,4bf58dd8d48988d124941735", // Auto Dealership, Automotive Shop
   clubs: "4bf58dd8d48988d11f941735,4bf58dd8d48988d116941735", // Night Clubs, Bar
   landmarks: "4bf58dd8d48988d181941735,4bf58dd8d48988d12d941735", // Museum, Monument / Landmark
 };
 
-const KIND_QUERY: Record<PoiKind, string> = {
+const KIND_QUERY: Partial<Record<PoiKind, string>> = {
   hotels: "hotel",
   restaurants: "restaurant",
+  short_stays: "apartment",
+  shops: "shopping",
+  car_rental: "car rental",
+  car_shops: "car dealer",
   clubs: "nightlife",
   landmarks: "museum",
 };
@@ -136,6 +147,10 @@ function categoryFromPlace(row: Record<string, unknown>, kind: PoiKind): string 
   }
   if (kind === "hotels") return "Hotel";
   if (kind === "restaurants") return "Restaurant";
+  if (kind === "short_stays") return "Short stay";
+  if (kind === "shops") return "Shop";
+  if (kind === "car_rental") return "Car rental";
+  if (kind === "car_shops") return "Car shop";
   if (kind === "clubs") return "Nightlife";
   return "Landmark";
 }
@@ -177,6 +192,8 @@ async function fetchPlaceSearch(
 ): Promise<FoursquarePlace[]> {
   const key = foursquareApiKey();
   if (!key) return [];
+  const categoryIds = KIND_CATEGORY_IDS[kind];
+  if (!categoryIds) return [];
 
   await waitForSlot();
   const centre = foursquareCityCentres[city];
@@ -184,11 +201,11 @@ async function fetchPlaceSearch(
     ll: `${centre.latitude},${centre.longitude}`,
     radius: String(centre.radiusMeters),
     limit: String(MAX_RESULTS),
-    fsq_category_ids: KIND_CATEGORY_IDS[kind],
+    fsq_category_ids: categoryIds,
     // Pro fields only — omit rating, price, hours, photos, tips (Premium).
     fields: "fsq_place_id,name,categories,location,latitude,longitude,tel,website",
   });
-  const query = q.trim() || KIND_QUERY[kind];
+  const query = q.trim() || KIND_QUERY[kind] || "";
   if (query) params.set("query", query);
 
   const response = await fetch(`${PLACES_BASE}/places/search?${params.toString()}`, {

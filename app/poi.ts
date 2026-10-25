@@ -9,10 +9,11 @@ import {
 } from "./foursquare";
 import {
   isGooglePlacesConfigured,
-  searchGoogleHotels,
+  searchGooglePlaces,
   type GooglePlace,
 } from "./google-places";
 import {
+  isGooglePlacesKind,
   poiCities,
   poiKindFilters as kindLabels,
   poiKinds,
@@ -67,8 +68,36 @@ export const poiKindFilters: Record<
   },
   restaurants: {
     label: kindLabels.restaurants.label,
-    filters: ['["amenity"="restaurant"]'],
+    filters: ['["amenity"="restaurant"]', '["amenity"="cafe"]'],
     categoryFallback: "Restaurant",
+  },
+  /** Short-term lodging apartments when tagged — not invented Airbnb inventory. */
+  short_stays: {
+    label: kindLabels.short_stays.label,
+    filters: ['["tourism"="apartment"]', '["tourism"="chalet"]'],
+    categoryFallback: "Short stay",
+  },
+  shops: {
+    label: kindLabels.shops.label,
+    filters: [
+      '["shop"="mall"]',
+      '["shop"="department_store"]',
+      '["shop"="supermarket"]',
+      '["shop"="clothes"]',
+      '["shop"="gift"]',
+      '["amenity"="marketplace"]',
+    ],
+    categoryFallback: "Shop",
+  },
+  car_rental: {
+    label: kindLabels.car_rental.label,
+    filters: ['["amenity"="car_rental"]'],
+    categoryFallback: "Car rental",
+  },
+  car_shops: {
+    label: kindLabels.car_shops.label,
+    filters: ['["shop"="car"]', '["shop"="car_repair"]', '["shop"="tyres"]'],
+    categoryFallback: "Car shop",
   },
   clubs: {
     label: kindLabels.clubs.label,
@@ -90,7 +119,7 @@ export const poiKindFilters: Record<
 const MAX_RESULTS = 30;
 /** Fetch a little headroom so name filters still have candidates after drop. */
 const OVERPASS_FETCH_CAP = 40;
-/** Match OSM ↔ Foursquare when names align and points are within this distance. */
+/** Match OSM ↔ Foursquare / Google when names align and points are within this distance. */
 const MATCH_METERS = 200;
 
 export function isPoiCity(value: string): value is PoiCity {
@@ -105,12 +134,34 @@ function categoryFromTags(tags: Record<string, string>, kind: PoiKind): string {
   const tourism = tags.tourism;
   const amenity = tags.amenity;
   const historic = tags.historic;
+  const shop = tags.shop;
   if (kind === "hotels") {
     if (tourism === "guest_house") return "Guest house";
     if (tourism === "hostel") return "Hostel";
     if (tourism === "hotel") return "Hotel";
   }
-  if (kind === "restaurants" && amenity === "restaurant") return "Restaurant";
+  if (kind === "restaurants") {
+    if (amenity === "cafe") return "Cafe";
+    if (amenity === "restaurant") return "Restaurant";
+  }
+  if (kind === "short_stays") {
+    if (tourism === "chalet") return "Chalet";
+    if (tourism === "apartment") return "Apartment";
+  }
+  if (kind === "shops") {
+    if (shop === "mall") return "Mall";
+    if (shop === "department_store") return "Department store";
+    if (shop === "supermarket") return "Supermarket";
+    if (shop === "clothes") return "Clothes shop";
+    if (shop === "gift") return "Gift shop";
+    if (amenity === "marketplace") return "Marketplace";
+  }
+  if (kind === "car_rental" && amenity === "car_rental") return "Car rental";
+  if (kind === "car_shops") {
+    if (shop === "car") return "Car dealer";
+    if (shop === "car_repair") return "Car repair";
+    if (shop === "tyres") return "Tyre shop";
+  }
   if (kind === "clubs") {
     if (amenity === "nightclub") return "Nightclub";
     if (amenity === "bar") return "Bar";
@@ -284,12 +335,16 @@ function mergeGoogleIntoRow(row: PoiResult, place: GooglePlace): PoiResult {
   };
 }
 
-function googleToResult(place: GooglePlace, city: PoiCity): PoiResult {
+function googleToResult(
+  place: GooglePlace,
+  city: PoiCity,
+  kind: PoiKind,
+): PoiResult {
   return {
     id: place.id,
     name: place.name,
     category: place.category,
-    kind: "hotels",
+    kind,
     city,
     area: null,
     address: place.address,
@@ -304,11 +359,9 @@ function googleToResult(place: GooglePlace, city: PoiCity): PoiResult {
   };
 }
 
-function matchNearbyPlace<T extends { id: string; name: string; latitude: number; longitude: number }>(
-  row: PoiResult,
-  places: T[],
-  used: Set<string>,
-): T | null {
+function matchNearbyPlace<
+  T extends { id: string; name: string; latitude: number; longitude: number },
+>(row: PoiResult, places: T[], used: Set<string>): T | null {
   let best: T | null = null;
   let bestDist = MATCH_METERS;
   for (const place of places) {
@@ -358,11 +411,12 @@ function mergeWithFoursquare(
   return [...merged, ...extras].slice(0, MAX_RESULTS);
 }
 
-/** Hotels only — merge Google lodging into existing rows, then append unmatched Google hits. */
-function mergeWithGoogleHotels(
+/** Merge Google Places into existing rows, then append unmatched Google hits. */
+function mergeWithGoogle(
   results: PoiResult[],
   googlePlaces: GooglePlace[],
   city: PoiCity,
+  kind: PoiKind,
   needle: string,
 ): PoiResult[] {
   if (googlePlaces.length === 0) return results.slice(0, MAX_RESULTS);
@@ -382,7 +436,7 @@ function mergeWithGoogleHotels(
       const hay = `${place.name} ${place.category} ${place.address ?? ""}`.toLowerCase();
       if (!hay.includes(needle)) continue;
     }
-    extras.push(googleToResult(place, city));
+    extras.push(googleToResult(place, city, kind));
   }
 
   return [...merged, ...extras].slice(0, MAX_RESULTS);
@@ -398,6 +452,9 @@ export type PoiSearchOk = {
   googlePlacesEnabled: boolean;
 };
 
+const KIND_CHOICE_MESSAGE =
+  "Choose hotels, restaurants, short stays, shopping, car rental, car shops, clubs, or landmarks.";
+
 export async function searchPois(
   city: string,
   kind: string,
@@ -409,7 +466,7 @@ export async function searchPois(
   if (!isPoiKind(kind)) {
     return {
       status: "error",
-      message: "Choose hotels, restaurants, clubs, or landmarks.",
+      message: KIND_CHOICE_MESSAGE,
     };
   }
   const needle = q.trim().toLowerCase();
@@ -442,10 +499,10 @@ export async function searchPois(
       const fsq = await searchFoursquareNearby(city, kind, needle);
       results = mergeWithFoursquare(mapped, fsq, city, kind, needle);
     }
-    // Google Places is hotels/lodging only — never for restaurants, clubs, or landmarks.
-    if (kind === "hotels" && googlePlacesEnabled) {
-      const google = await searchGoogleHotels(city, needle);
-      results = mergeWithGoogleHotels(results, google, city, needle);
+    // Google Places only for configured kinds — never invents venues; attribution required in UI.
+    if (isGooglePlacesKind(kind) && googlePlacesEnabled) {
+      const google = await searchGooglePlaces(city, kind, needle);
+      results = mergeWithGoogle(results, google, city, kind, needle);
     }
 
     const sources: PoiSource[] = ["openstreetmap"];

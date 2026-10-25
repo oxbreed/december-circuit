@@ -1,14 +1,22 @@
 /**
- * Optional Google Places API (New) — hotels / lodging only (server-only).
+ * Optional Google Places API (New) — server-only Explore enrichment.
  * When GOOGLE_PLACES_API_KEY (or GOOGLE_MAPS_API_KEY) is empty, callers skip this
  * module and Explore stays on Overpass (+ optional Foursquare).
- * Short “use cache” only — no durable dump into pins.ts.
+ * Short “use cache” only — no durable dump into pins.ts / places.ts.
+ * Never scrape Google Maps HTML or Airbnb.
  */
 
 import "server-only";
 
 import { cacheLife } from "next/cache";
-import type { PoiCity } from "./poi-client";
+import {
+  isGooglePlacesKind,
+  type GooglePlacesKind,
+  type PoiCity,
+  type PoiKind,
+} from "./poi-client";
+
+export { googlePlacesKinds, isGooglePlacesKind, type GooglePlacesKind } from "./poi-client";
 
 const PLACES_BASE = "https://places.googleapis.com/v1";
 const FETCH_TIMEOUT_MS = 12_000;
@@ -37,6 +45,56 @@ const CITY_CENTRES: Record<
     longitude: 8.34,
     radiusMeters: 10_000,
     near: "Calabar, Nigeria",
+  },
+};
+
+type GoogleKindConfig = {
+  /** Nearby Search includedTypes (Table A). */
+  includedTypes: string[];
+  /** Text Search includedType (single) when a name filter is set. */
+  textIncludedType: string;
+  /** Words appended to textQuery for bias — not invented venue names. */
+  textHint: string;
+  categoryFallback: string;
+};
+
+const KIND_CONFIG: Record<GooglePlacesKind, GoogleKindConfig> = {
+  hotels: {
+    includedTypes: ["lodging"],
+    textIncludedType: "lodging",
+    textHint: "hotel lodging",
+    categoryFallback: "Hotel",
+  },
+  restaurants: {
+    includedTypes: ["restaurant"],
+    textIncludedType: "restaurant",
+    textHint: "restaurant",
+    categoryFallback: "Restaurant",
+  },
+  /** Extended-stay only — not an Airbnb / short-let scrape. OSM tourism=apartment stays primary. */
+  short_stays: {
+    includedTypes: ["extended_stay_hotel"],
+    textIncludedType: "extended_stay_hotel",
+    textHint: "extended stay apartment hotel",
+    categoryFallback: "Short stay",
+  },
+  shops: {
+    includedTypes: ["shopping_mall", "department_store", "supermarket"],
+    textIncludedType: "shopping_mall",
+    textHint: "shopping mall store",
+    categoryFallback: "Shop",
+  },
+  car_rental: {
+    includedTypes: ["car_rental"],
+    textIncludedType: "car_rental",
+    textHint: "car rental",
+    categoryFallback: "Car rental",
+  },
+  car_shops: {
+    includedTypes: ["car_dealer", "car_repair"],
+    textIncludedType: "car_dealer",
+    textHint: "car dealer repair",
+    categoryFallback: "Car shop",
   },
 };
 
@@ -116,7 +174,10 @@ function normalizeWebsite(raw: string | null): string | null {
   return null;
 }
 
-function categoryFromPlace(row: Record<string, unknown>): string {
+function categoryFromPlace(
+  row: Record<string, unknown>,
+  kind: GooglePlacesKind,
+): string {
   const primary = asRecord(row.primaryTypeDisplayName);
   const primaryText = primary ? asString(primary.text) : null;
   if (primaryText) return primaryText;
@@ -125,12 +186,24 @@ function categoryFromPlace(row: Record<string, unknown>): string {
     if (types.includes("hotel")) return "Hotel";
     if (types.includes("hostel")) return "Hostel";
     if (types.includes("guest_house")) return "Guest house";
+    if (types.includes("extended_stay_hotel")) return "Extended stay";
     if (types.includes("lodging")) return "Lodging";
+    if (types.includes("restaurant")) return "Restaurant";
+    if (types.includes("shopping_mall")) return "Shopping mall";
+    if (types.includes("department_store")) return "Department store";
+    if (types.includes("supermarket")) return "Supermarket";
+    if (types.includes("car_rental")) return "Car rental";
+    if (types.includes("car_dealer")) return "Car dealer";
+    if (types.includes("car_repair")) return "Car repair";
   }
-  return "Hotel";
+  return KIND_CONFIG[kind].categoryFallback;
 }
 
-function readPlaces(payload: unknown, limit: number): GooglePlace[] {
+function readPlaces(
+  payload: unknown,
+  kind: GooglePlacesKind,
+  limit: number,
+): GooglePlace[] {
   const root = asRecord(payload);
   if (!root) return [];
   const places = root.places;
@@ -151,7 +224,7 @@ function readPlaces(payload: unknown, limit: number): GooglePlace[] {
     out.push({
       id: `google/${placeId}`,
       name,
-      category: categoryFromPlace(row),
+      category: categoryFromPlace(row, kind),
       address: asString(row.formattedAddress),
       phone: asString(row.nationalPhoneNumber),
       website: normalizeWebsite(asString(row.websiteUri)),
@@ -167,6 +240,7 @@ function readPlaces(payload: unknown, limit: number): GooglePlace[] {
 async function postPlaces(
   path: string,
   body: Record<string, unknown>,
+  kind: GooglePlacesKind,
 ): Promise<GooglePlace[]> {
   const key = googlePlacesApiKey();
   if (!key) return [];
@@ -193,11 +267,16 @@ async function postPlaces(
   if (!response.ok) {
     throw new Error(`google places ${response.status}`);
   }
-  return readPlaces(await response.json(), MAX_RESULTS);
+  return readPlaces(await response.json(), kind, MAX_RESULTS);
 }
 
-async function fetchHotelSearch(city: PoiCity, q: string): Promise<GooglePlace[]> {
+async function fetchKindSearch(
+  city: PoiCity,
+  kind: GooglePlacesKind,
+  q: string,
+): Promise<GooglePlace[]> {
   const centre = CITY_CENTRES[city];
+  const config = KIND_CONFIG[kind];
   const circle = {
     center: {
       latitude: centre.latitude,
@@ -208,42 +287,64 @@ async function fetchHotelSearch(city: PoiCity, q: string): Promise<GooglePlace[]
   const query = q.trim();
 
   if (query) {
-    return postPlaces("/places:searchText", {
-      textQuery: `${query} hotel lodging ${centre.near}`,
-      includedType: "lodging",
-      maxResultCount: MAX_RESULTS,
-      locationBias: { circle },
-      languageCode: "en",
-    });
+    return postPlaces(
+      "/places:searchText",
+      {
+        textQuery: `${query} ${config.textHint} ${centre.near}`,
+        includedType: config.textIncludedType,
+        maxResultCount: MAX_RESULTS,
+        locationBias: { circle },
+        languageCode: "en",
+      },
+      kind,
+    );
   }
 
-  return postPlaces("/places:searchNearby", {
-    includedTypes: ["lodging"],
-    maxResultCount: MAX_RESULTS,
-    locationRestriction: { circle },
-    languageCode: "en",
-  });
+  return postPlaces(
+    "/places:searchNearby",
+    {
+      includedTypes: config.includedTypes,
+      maxResultCount: MAX_RESULTS,
+      locationRestriction: { circle },
+      languageCode: "en",
+    },
+    kind,
+  );
 }
 
-/** ~45 minute server cache keyed by city / query — same pattern as Foursquare. */
-async function cachedHotelSearch(city: PoiCity, q: string): Promise<GooglePlace[]> {
+/** ~45 minute server cache keyed by city / kind / query — same pattern as Foursquare. */
+async function cachedKindSearch(
+  city: PoiCity,
+  kind: GooglePlacesKind,
+  q: string,
+): Promise<GooglePlace[]> {
   "use cache";
   cacheLife({ stale: 2700, revalidate: 2700, expire: 2700 });
-  return fetchHotelSearch(city, q);
+  return fetchKindSearch(city, kind, q);
 }
 
 /**
- * Nearby / text search for Explore hotels. Returns [] when the key is missing
- * or the call fails so Overpass (+ Foursquare) remain the primary path.
+ * Nearby / text search for supported Explore kinds. Returns [] when the key is
+ * missing, the kind is out of scope, or the call fails so Overpass remains primary.
  */
+export async function searchGooglePlaces(
+  city: PoiCity,
+  kind: PoiKind,
+  q = "",
+): Promise<GooglePlace[]> {
+  if (!isGooglePlacesConfigured()) return [];
+  if (!isGooglePlacesKind(kind)) return [];
+  try {
+    return await cachedKindSearch(city, kind, q.trim().toLowerCase());
+  } catch {
+    return [];
+  }
+}
+
+/** @deprecated Prefer searchGooglePlaces(city, "hotels", q). Kept for call-site clarity. */
 export async function searchGoogleHotels(
   city: PoiCity,
   q = "",
 ): Promise<GooglePlace[]> {
-  if (!isGooglePlacesConfigured()) return [];
-  try {
-    return await cachedHotelSearch(city, q.trim().toLowerCase());
-  } catch {
-    return [];
-  }
+  return searchGooglePlaces(city, "hotels", q);
 }
