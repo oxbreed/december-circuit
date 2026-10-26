@@ -11,7 +11,30 @@ type Payload = {
   newsAvailable: boolean;
 };
 
+function isInternal(link: string) {
+  return link.startsWith("/");
+}
+
+/** Real crawlable copy — one set of next-8 events (+ news when available). */
 function ItemLink({ item }: { item: TickerItem }) {
+  const body = (
+    <>
+      <span className="text-[10px] uppercase tracking-[0.18em] text-oxide">{item.source}</span>
+      <span className="text-sm text-ink">{item.headline}</span>
+      {item.published ? (
+        <time className="text-xs text-muted">{item.published}</time>
+      ) : null}
+    </>
+  );
+
+  if (isInternal(item.link)) {
+    return (
+      <a href={item.link} className="inline-flex shrink-0 items-baseline gap-3 whitespace-nowrap px-4">
+        {body}
+      </a>
+    );
+  }
+
   return (
     <a
       href={item.link}
@@ -19,12 +42,21 @@ function ItemLink({ item }: { item: TickerItem }) {
       rel="noopener noreferrer"
       className="inline-flex shrink-0 items-baseline gap-3 whitespace-nowrap px-4"
     >
+      {body}
+    </a>
+  );
+}
+
+/** Visual loop clone only — not for crawlers (aria-hidden, no real links). */
+function ItemClone({ item }: { item: TickerItem }) {
+  return (
+    <span className="inline-flex shrink-0 items-baseline gap-3 whitespace-nowrap px-4">
       <span className="text-[10px] uppercase tracking-[0.18em] text-oxide">{item.source}</span>
       <span className="text-sm text-ink">{item.headline}</span>
       {item.published ? (
-        <time className="text-xs text-muted">{item.published}</time>
+        <span className="text-xs text-muted">{item.published}</span>
       ) : null}
-    </a>
+    </span>
   );
 }
 
@@ -60,9 +92,9 @@ export function NewsTicker() {
   const events = payload?.events ?? eventTickerItems();
   const news = payload?.news ?? [];
   const newsMissing = failed || (payload !== null && !payload.newsAvailable);
+  // One real copy: entertainment headlines (when available) + next 8 events.
   const items = [...news, ...events];
-  const loop = items.length > 0 ? [...items, ...items] : [];
-  const seconds = Math.max(48, loop.length * 7);
+  const seconds = Math.max(48, Math.max(items.length, 1) * 2 * 7);
 
   return (
     <div
@@ -93,9 +125,9 @@ export function NewsTicker() {
             </div>
           ) : null}
           {items.length > 0 ? (
-            <div className="news-ticker-duplicate flex shrink-0 items-center" aria-hidden="true" inert>
+            <div className="news-ticker-duplicate flex shrink-0 items-center" aria-hidden="true">
               {items.map((item, index) => (
-                <ItemLink key={`${item.kind}-${item.link}-${index}-copy`} item={item} />
+                <ItemClone key={`${item.kind}-${item.link}-${index}-copy`} item={item} />
               ))}
             </div>
           ) : null}

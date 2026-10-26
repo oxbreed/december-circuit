@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { citiesOnFile } from "./cities";
+import { citiesOnFile, cityIsThin } from "./cities";
 import { countriesOnFile } from "./countries";
 import { eventSlug } from "./event-view";
 import { events } from "./events";
@@ -60,11 +60,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.9,
     })),
-    ...citiesOnFile().map((city) => ({
-      path: `/cities/${city.slug}`,
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    })),
+    // Thin cities (fewer than 3 verified records) stay noindex and out of the sitemap.
+    ...citiesOnFile()
+      .filter((city) => !cityIsThin(city))
+      .map((city) => ({
+        path: `/cities/${city.slug}`,
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      })),
     ...placesOnFile().map((place) => ({
       path: `/place/${place.slug}`,
       changeFrequency: "weekly" as const,

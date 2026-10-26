@@ -1,3 +1,4 @@
+import { whenSlugWithYear } from "./event-dates";
 import { eventKind } from "./event-kind";
 import { events, type CircuitEvent } from "./events";
 
@@ -12,8 +13,11 @@ function slugToken(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-/** region+when when unique; append a short title token when same-day nights share a date. */
-export function eventSlug(
+/**
+ * Pre-2026 ranking pass: region+when, title truncated to 48 chars when same-day
+ * collisions. Kept only so slug_history can 301 old URLs → eventSlug().
+ */
+export function legacyEventSlug(
   event: Pick<CircuitEvent, "region" | "when" | "summary">,
 ) {
   const base = slugToken(`${event.region}-${event.when}`);
@@ -23,6 +27,43 @@ export function eventSlug(
   if (sameWhen <= 1) return base;
   const title = slugToken(eventNameAndVenue(event.summary).name).slice(0, 48);
   return title ? `${base}-${title}` : base;
+}
+
+/**
+ * Stable year-based untruncated slug: region + when (with year) + full title.
+ * Never invents events — only routes existing sourced rows.
+ */
+export function eventSlug(
+  event: Pick<CircuitEvent, "region" | "when" | "summary">,
+) {
+  const region = slugToken(event.region);
+  const whenPart = whenSlugWithYear(event.when);
+  const title = slugToken(eventNameAndVenue(event.summary).name);
+  const base = `${region}-${whenPart}`;
+  return title ? `${base}-${title}` : base;
+}
+
+/** Resolve a public slug to a sourced event (current or legacy). */
+export function eventBySlug(slug: string) {
+  const current = events.find((item) => eventSlug(item) === slug);
+  if (current) return { event: current, canonical: true as const };
+  const legacy = events.find((item) => legacyEventSlug(item) === slug);
+  if (legacy) return { event: legacy, canonical: false as const };
+  return null;
+}
+
+/** Old → new pairs for redirects / next.config (only when they differ). */
+export function slugHistory(): { from: string; to: string }[] {
+  const pairs: { from: string; to: string }[] = [];
+  const seen = new Set<string>();
+  for (const event of events) {
+    const from = legacyEventSlug(event);
+    const to = eventSlug(event);
+    if (from === to || seen.has(from)) continue;
+    seen.add(from);
+    pairs.push({ from, to });
+  }
+  return pairs;
 }
 
 const atThe = " at the ";

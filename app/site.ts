@@ -31,6 +31,7 @@ export function pageMetadata({
   path,
   type = "website",
   image,
+  robots,
 }: {
   title: string;
   description: string;
@@ -42,6 +43,8 @@ export function pageMetadata({
     width?: number;
     height?: number;
   };
+  /** When set (e.g. thin city pages), controls indexing without removing the page. */
+  robots?: Metadata["robots"];
 }): Metadata {
   const fullTitle = documentTitle(title);
   const share = image
@@ -61,6 +64,7 @@ export function pageMetadata({
     title: path === "/" ? { absolute: fullTitle } : title,
     description,
     alternates: { canonical: path },
+    ...(robots ? { robots } : {}),
     openGraph: {
       title: fullTitle,
       description,

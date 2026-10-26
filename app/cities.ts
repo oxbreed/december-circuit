@@ -69,6 +69,21 @@ export function cityRecordFor(city: string, country: string) {
   );
 }
 
+/**
+ * Verified records on a city page = confirmed events + organiser place rows
+ * already on file for that city. Used for thin-page noindex.
+ */
+export function cityVerifiedCount(city: CityRecord) {
+  return city.events.length + city.places.length;
+}
+
+/** Fewer than three verified records → noindex (page stays human-usable). */
+export const CITY_INDEX_MIN_VERIFIED = 3;
+
+export function cityIsThin(city: CityRecord) {
+  return cityVerifiedCount(city) < CITY_INDEX_MIN_VERIFIED;
+}
+
 export function cityDescription(city: CityRecord) {
   const pages = `${city.places.length} organiser ${
     city.places.length === 1 ? "page" : "pages"

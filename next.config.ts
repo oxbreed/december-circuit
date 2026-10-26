@@ -1,4 +1,11 @@
 import type { NextConfig } from "next";
+import { slugHistory } from "./app/slug-history";
+
+const eventSlugRedirects = slugHistory().map(({ from, to }) => ({
+  source: `/events/${from}`,
+  destination: `/events/${to}`,
+  permanent: true,
+}));
 
 const nextConfig: NextConfig = {
   devIndicators: false,
@@ -16,6 +23,9 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
+  },
+  async redirects() {
+    return eventSlugRedirects;
   },
 };
 

@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { disclaimer } from "../../brand";
-import { citiesOnFile, cityBySlug, cityDescription } from "../../cities";
+import {
+  CITY_INDEX_MIN_VERIFIED,
+  citiesOnFile,
+  cityBySlug,
+  cityDescription,
+  cityIsThin,
+  cityVerifiedCount,
+} from "../../cities";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { EventCard } from "../../components/event-card";
 import { JsonLd } from "../../components/json-ld";
@@ -28,11 +35,16 @@ export async function generateMetadata({
   const { slug } = await params;
   const city = cityBySlug(slug);
   if (!city) return { title: "City" };
+  const thin = cityIsThin(city);
   return pageMetadata({
     title: `${city.city}, ${city.country}`,
     description: cityDescription(city),
     path: `/cities/${city.slug}`,
     image: shareImageForCity(city.city),
+    // Thin city rule: events + organiser places < 3 → noindex, follow.
+    ...(thin
+      ? { robots: { index: false, follow: true, googleBot: { index: false, follow: true } } }
+      : {}),
   });
 }
 
@@ -48,14 +60,16 @@ export default async function CityPage({
   const path = `/cities/${city.slug}`;
   const country = countriesOnFile().find((item) => item.country === city.country);
   const placesWithPins = cityPlacesItemListJsonLd(city);
+  const thin = cityIsThin(city);
+  const verified = cityVerifiedCount(city);
 
   return (
     <main
       id="top"
       className="mx-auto w-full max-w-6xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-16"
     >
-      <JsonLd data={cityPlaceJsonLd(city)} />
-      {placesWithPins ? <JsonLd data={placesWithPins} /> : null}
+      {!thin ? <JsonLd data={cityPlaceJsonLd(city)} /> : null}
+      {!thin && placesWithPins ? <JsonLd data={placesWithPins} /> : null}
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
@@ -83,6 +97,14 @@ export default async function CityPage({
         {city.city}
       </h1>
       <p className="mt-5 max-w-2xl text-base leading-7 text-muted">{description}</p>
+      {thin ? (
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
+          This city page lists {verified} verified{" "}
+          {verified === 1 ? "record" : "records"} on file (confirmed events plus
+          organiser pages). Pages with fewer than {CITY_INDEX_MIN_VERIFIED} are
+          kept for browsing but are not offered for search indexing.
+        </p>
+      ) : null}
 
       {city.events.length > 0 ? (
         <section className="mt-12">

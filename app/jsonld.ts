@@ -19,6 +19,7 @@ import {
   siteName,
   siteUrl,
 } from "./site";
+import { shareImageForEvent } from "./share-images";
 
 import { datesOnFile } from "./event-dates";
 
@@ -306,6 +307,16 @@ export function webPageJsonLd({
   };
 }
 
+function organizerName(event: CircuitEvent) {
+  if (event.urlLabel && event.urlLabel !== "News report") return event.urlLabel;
+  if (!event.url) return "Listed source";
+  try {
+    return new URL(event.url).hostname.replace(/^www\./, "");
+  } catch {
+    return "Listed source";
+  }
+}
+
 export function eventJsonLd(event: CircuitEvent) {
   const view = presentEvent(event);
   const dates = datesOnFile(event.when);
@@ -314,8 +325,11 @@ export function eventJsonLd(event: CircuitEvent) {
   if (cityRow) {
     address.addressLocality = cityRow.city;
     address.addressCountry = cityRow.country;
+  } else if (event.region === "Ghana") {
+    // Season hub row — country only; no invented Accra venue.
+    address.addressCountry = "Ghana";
   } else {
-    address.addressCountry = event.region;
+    address.addressLocality = event.region;
   }
 
   const location: Record<string, unknown> = {
@@ -323,6 +337,7 @@ export function eventJsonLd(event: CircuitEvent) {
     address,
   };
   if (view.venue) location.name = view.venue;
+  else location.name = event.region;
 
   const pin = pinForName(event.region, view.venue);
   if (pin) {
@@ -331,6 +346,7 @@ export function eventJsonLd(event: CircuitEvent) {
   }
 
   const pageUrl = absoluteUrl(view.href);
+  const share = shareImageForEvent(event);
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Event",
@@ -339,15 +355,17 @@ export function eventJsonLd(event: CircuitEvent) {
     description: event.summary,
     startDate: dates.startDate,
     url: pageUrl,
+    image: [absoluteUrl(share.url)],
     location,
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
     inLanguage: "en",
   };
   if (dates.endDate) data.endDate = dates.endDate;
-  if (event.url && event.urlLabel !== "News report") {
+  if (event.url) {
     data.organizer = {
       "@type": "Organization",
+      name: organizerName(event),
       url: event.url,
     };
   }
