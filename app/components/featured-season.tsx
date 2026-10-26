@@ -1,34 +1,13 @@
 import Link from "next/link";
-import { events, type CircuitEvent } from "../events";
+import { majorEvents } from "../event-major";
+import type { CircuitEvent } from "../events";
 import { presentEvent } from "../event-view";
 import { eventTripId } from "../trip";
 import { DateBlock } from "./event-card";
 import { SaveTripButton } from "./save-trip-button";
 
-/**
- * Major season headlines only — resolved from existing sourced rows by sourceId
- * (and when needed, the season-span Carnival row). Never invents events.
- */
-const featuredKeys: ReadonlyArray<{ sourceId: string; when?: string }> = [
-  { sourceId: "oriade-residency" },
-  { sourceId: "detty-december-fest" },
-  { sourceId: "flytime-fest-home", when: "22-24 December" },
-  { sourceId: "rhythm-unplugged-stylerave" },
-  { sourceId: "carnival-calabar", when: "26-30 December" },
-  { sourceId: "december-in-ghana-myjoy" },
-];
-
 function featuredEvents(): CircuitEvent[] {
-  const rows: CircuitEvent[] = [];
-  for (const key of featuredKeys) {
-    const match = events.find(
-      (event) =>
-        event.sourceId === key.sourceId &&
-        (key.when === undefined || event.when === key.when),
-    );
-    if (match) rows.push(match);
-  }
-  return rows.slice(0, 6);
+  return majorEvents().slice(0, 6);
 }
 
 function FeaturedCard({ event }: { event: CircuitEvent }) {

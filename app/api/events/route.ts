@@ -1,6 +1,7 @@
+import { eventDateSpan } from "../../event-dates";
+import { eventKind } from "../../event-kind";
 import { events, type CircuitEvent } from "../../events";
 import { eventCategory } from "../../event-view";
-import { datesOnFile } from "../../jsonld";
 
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 50;
@@ -15,6 +16,16 @@ function fold(value: string) {
 function read(params: URLSearchParams, name: string) {
   const value = params.get(name)?.trim() ?? "";
   return value.length > 0 ? value : null;
+}
+
+/** One city, comma list, or repeated `city` params. */
+function readCities(params: URLSearchParams) {
+  const values = params
+    .getAll("city")
+    .flatMap((value) => value.split(","))
+    .map((value) => value.trim())
+    .filter(Boolean);
+  return values.length > 0 ? values : null;
 }
 
 function isoDate(value: string) {
@@ -37,10 +48,7 @@ function positiveInt(value: string) {
 }
 
 function storedRange(event: CircuitEvent) {
-  const dates = datesOnFile(event.when);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dates.startDate)) return null;
-  const end = dates.endDate && /^\d{4}-\d{2}-\d{2}$/.test(dates.endDate) ? dates.endDate : dates.startDate;
-  return { start: dates.startDate, end };
+  return eventDateSpan(event.when);
 }
 
 function json(body: unknown, status = 200) {
@@ -49,14 +57,14 @@ function json(body: unknown, status = 200) {
 
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
-  const city = read(params, "city");
+  const cities = readCities(params);
   const category = read(params, "category");
   const startText = read(params, "start");
   const endText = read(params, "end");
   const pageText = read(params, "page");
   const limitText = read(params, "limit");
   const asked =
-    city !== null ||
+    cities !== null ||
     category !== null ||
     startText !== null ||
     endText !== null ||
@@ -137,8 +145,19 @@ export async function GET(request: Request) {
   }
 
   const matched = events.filter((event) => {
-    if (city && fold(event.region) !== fold(city)) return false;
-    if (category && fold(category) !== fold(eventCategory)) return false;
+    if (
+      cities &&
+      !cities.some((city) => fold(event.region) === fold(city))
+    ) {
+      return false;
+    }
+    if (category) {
+      const kind = eventKind(event);
+      const ok =
+        (kind && fold(kind) === fold(category)) ||
+        fold(category) === fold(eventCategory);
+      if (!ok) return false;
+    }
     if (start || end) {
       const range = storedRange(event);
       if (!range) return false;

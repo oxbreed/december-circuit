@@ -93,3 +93,59 @@ export function rangesOverlap(
 ) {
   return start <= windowEnd && end >= windowStart;
 }
+
+/** Monday of the Africa/Lagos week that contains `day`. */
+export function weekStartMonday(day: Ymd): Ymd {
+  const sundayBased = weekdayIndex(day);
+  const sinceMonday = sundayBased === 0 ? 6 : sundayBased - 1;
+  return addDays(day, -sinceMonday);
+}
+
+export function weekWindowForDay(day: Ymd): WeekWindow {
+  const monday = weekStartMonday(day);
+  const sunday = addDays(monday, 6);
+  return {
+    label: formatSpan(monday, sunday),
+    start: toIso(monday),
+    end: toIso(sunday),
+    title: formatSpan(monday, sunday),
+  };
+}
+
+/**
+ * Dates after “next week” through 31 December of the given season year
+ * (Detty December planning window). Africa/Lagos calendar only.
+ */
+export function laterInDecember(
+  now: Date,
+  seasonYear = 2026,
+): { label: string; start: string; end: string; title: string } {
+  const { nextWeek } = weekWindows(now);
+  const start = toIso(addDays(parseIso(nextWeek.end), 1));
+  const end = `${seasonYear}-12-31`;
+  return {
+    label: "Later in December",
+    start,
+    end,
+    title: `Later in December, after ${nextWeek.end}`,
+  };
+}
+
+function parseIso(iso: string): Ymd {
+  const [y, m, d] = iso.split("-").map(Number);
+  return { y, m, d };
+}
+
+export function parseIsoYmd(iso: string): Ymd | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+  const [y, m, d] = iso.split("-").map(Number);
+  const probe = new Date(Date.UTC(y, m - 1, d));
+  if (
+    probe.getUTCFullYear() !== y ||
+    probe.getUTCMonth() !== m - 1 ||
+    probe.getUTCDate() !== d
+  ) {
+    return null;
+  }
+  return { y, m, d };
+}

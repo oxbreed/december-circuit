@@ -1,3 +1,4 @@
+import { eventKind } from "./event-kind";
 import { events, type CircuitEvent } from "./events";
 
 export const eventCategory = "Confirmed event";
@@ -120,7 +121,7 @@ export function presentEvent(event: CircuitEvent) {
     name,
     venue,
     note: eventNote(event.summary, name, venue),
-    category: eventCategory,
+    category: eventKind(event) ?? eventCategory,
     region: event.region,
     when: event.when,
     summary: event.summary,

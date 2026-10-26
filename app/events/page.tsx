@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { Breadcrumbs } from "../components/breadcrumbs";
-import { Discovery } from "../components/discovery";
+import { EventsDirectory } from "../components/events-directory";
 import { LoadingLines } from "../components/states";
 import { eventSlug, presentEvent } from "../event-view";
 import { events } from "../events";
@@ -42,19 +42,16 @@ export default function EventsPage() {
       {/* Crawlable index — always in HTML for search and answer engines */}
       <section
         aria-label="Confirmed events on file"
-        className="mx-auto w-full max-w-6xl px-5 pb-6 md:px-8"
+        className="mx-auto w-full max-w-6xl px-5 pb-2 md:px-8"
       >
         <h2 className="sr-only">Confirmed events on file</h2>
-        <ol className="mt-4 space-y-2 border border-ink/15 bg-chart px-4 py-4 text-sm leading-6 text-ink">
+        <ol className="sr-only">
           {listed.map(({ event, view, href }) => (
             <li key={href}>
-              <Link
-                href={href}
-                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
+              <Link href={href}>
                 {view.name}
               </Link>
-              <span className="text-muted">
+              <span>
                 {" "}
                 — {event.when}, {view.region}
                 {view.venue ? `, ${view.venue}` : ""}
@@ -62,22 +59,16 @@ export default function EventsPage() {
             </li>
           ))}
         </ol>
-        <p className="mt-3 text-sm leading-6 text-muted">
-          <Link href="/cities" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
-            Cities
-          </Link>
+        <p className="sr-only">
+          <Link href="/cities">Cities</Link>
           {" · "}
-          <Link href="/guide" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
-            Tourist guide
-          </Link>
+          <Link href="/guide">Tourist guide</Link>
           {" · "}
-          <Link href="/faq" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
-            FAQ
-          </Link>
+          <Link href="/faq">FAQ</Link>
           {" · "}
-          <Link href="/map" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
-            Map
-          </Link>
+          <Link href="/map">Map</Link>
+          {" · "}
+          <Link href="/list">List an event</Link>
         </p>
       </section>
 
@@ -88,7 +79,7 @@ export default function EventsPage() {
           </div>
         }
       >
-        <Discovery compactTop />
+        <EventsDirectory />
       </Suspense>
     </main>
   );
