@@ -1,0 +1,91 @@
+{
+  "year": 2026,
+  "slug": "flytime-fest-2026",
+  "path": "/events/flytime-fest-2026",
+  "title": "Flytime Fest 2026 lineup tracker",
+  "region": "Lagos",
+  "venueOnFile": "Eko Convention Centre",
+  "organiserUrl": "https://www.flytimefest.com/",
+  "organiserLabel": "Organiser's page",
+  "lineupStatus": "incomplete",
+  "statusPlain": "The Flytime Fest and Flytime Circle headliner lineups for 2026 are still unannounced. Only Flytime House of R&B has a named artist on file (Brandy), from a named news report. The organiser homepage (flytimefest.com) does not yet name 2026 Fest or Circle nights.",
+  "nights": [
+    {
+      "id": "house-of-rb",
+      "when": "20 December",
+      "name": "Flytime House of R&B",
+      "venue": "Eko Convention Centre",
+      "lineupIncomplete": false,
+      "artists": [
+        {
+          "name": "Brandy",
+          "sourceUrl": "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+          "sourceLabel": "News report (Essence)",
+          "sourceId": "flytime-house-rb-essence"
+        }
+      ],
+      "summaryOnFile": "Flytime House of R&B, Brandy, Eko Convention Centre.",
+      "directorySourceId": "flytime-house-rb-essence",
+      "notes": [
+        "Named artist and date come from the Essence report already on file as sourceId flytime-house-rb-essence.",
+        "Ingest last marked that Essence URL held on HTTP 403 (25 October 2026); the seed row stays until a solid refresh."
+      ]
+    },
+    {
+      "id": "flytime-fest",
+      "when": "22-24 December",
+      "name": "Flytime Fest",
+      "venue": "Eko Convention Centre",
+      "lineupIncomplete": true,
+      "artists": [],
+      "summaryOnFile": "Flytime Fest, Eko Convention Centre. Headliners for 2026 are still unannounced.",
+      "directorySourceId": "flytime-fest-home",
+      "notes": [
+        "No confirmed headliners on file. Do not invent artists.",
+        "Organiser homepage probe (flytimefest.com) does not name 2026 Fest dates; ingest keeps this seed row held until an organiser page states the night (DD-2).",
+        "The Essence Brandy article is not a source for this Fest night."
+      ]
+    },
+    {
+      "id": "flytime-circle",
+      "when": "25 December",
+      "name": "Flytime Circle",
+      "venue": "Eko Convention Centre",
+      "lineupIncomplete": true,
+      "artists": [],
+      "summaryOnFile": "Flytime Circle, Eko Convention Centre. The lineup is still unannounced.",
+      "directorySourceId": "flytime-fest-home",
+      "notes": [
+        "No confirmed headliners on file. Do not invent artists.",
+        "Organiser homepage probe does not name Flytime Circle 25 December 2026; seed row held until a solid organiser page exists (DD-2).",
+        "The Essence Brandy article is not a source for Circle."
+      ]
+    }
+  ],
+  "changelog": [
+    {
+      "at": "2026-10-26",
+      "summary": "Opened the permanent 2026 lineup tracker. Status: incomplete. Confirmed artist on file: Brandy (House of R&B, 20 December) via Essence. Fest (22–24 December) and Circle (25 December) remain unannounced; organiser homepage still does not name those 2026 nights.",
+      "sources": [
+        "https://www.flytimefest.com/",
+        "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+        "data/event-ingest/held.json (checkedAt 2026-10-25)"
+      ]
+    },
+    {
+      "at": "2026-10-25",
+      "summary": "Event ingest recheck: flytimefest.com probe held (homepage does not name 2026 House of R&B, Fest, or Circle dates). Essence House of R&B refresh held on HTTP 403. Seed rows kept.",
+      "sources": [
+        "data/event-ingest/held.json",
+        "docs/event-feed-ingest.md"
+      ]
+    }
+  ],
+  "howToUpdateWithinHours": [
+    "Edit data/season-guides/flytime-fest-2026.json only — do not invent artists, prices, or dates.",
+    "When an organiser page or named Tier-1 report confirms a headliner: add { name, sourceUrl, sourceLabel, sourceId } under the matching night.artists, set lineupIncomplete false when that night is fully named, and prepend a changelog entry with ISO date at and the source URL.",
+    "If Fest or Circle dates change on an organiser page, update when and summaryOnFile to match that page, then run npm run ingest:events and refresh the matching seed/published rows.",
+    "Keep lineupStatus incomplete until every night on this tracker has at least one sourced artist (or an organiser statement that the night is cancelled).",
+    "Deploy by committing to main (Vercel). Changelog at the top of the page is the public audit trail."
+  ]
+}

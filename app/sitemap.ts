@@ -6,9 +6,10 @@ import { events } from "./events";
 import { landmarks } from "./landmarks";
 import { categoryIndex } from "./explore-categories";
 import { placesOnFile } from "./place-catalog";
+import { seasonGuideIndex, visaCheck } from "./season-guides";
 import { absoluteUrl } from "./site";
 
-const checked = new Date("2026-10-25");
+const checked = new Date("2026-10-26");
 
 type Entry = {
   path: string;
@@ -31,7 +32,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/detty-december", changeFrequency: "daily", priority: 0.98 },
     { path: "/west-africa", changeFrequency: "weekly", priority: 0.96 },
     { path: "/guide", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/guides", changeFrequency: "weekly", priority: 0.92 },
     { path: "/visa", changeFrequency: "monthly", priority: 0.88 },
+    ...visaCheck().nationalityPages.map((page) => ({
+      path: page.path,
+      changeFrequency: "monthly" as const,
+      priority: 0.87,
+    })),
+    ...seasonGuideIndex.map((guide) => ({
+      path: guide.path,
+      changeFrequency: "daily" as const,
+      priority: 0.93,
+    })),
     { path: "/events", changeFrequency: "daily", priority: 0.95 },
     { path: "/places", changeFrequency: "weekly", priority: 0.85 },
     { path: "/cities", changeFrequency: "weekly", priority: 0.85 },

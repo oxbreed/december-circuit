@@ -50,7 +50,12 @@ export const faqItems: FaqItem[] = [
   {
     question: "Where do I check visas and entry?",
     answer:
-      "Open [[/visa|Visa and entry]] (also in the [[/guide#entry|tourist guide]]). Lagos and Calabar are in Nigeria. Accra is in Ghana. Those pages repeat the linked Nigeria Immigration Service and Ghana Immigration Service pages and do not take a visa application or a payment. Read those official links for the current rules.",
+      "Open [[/visa|Visa and entry]] (also in the [[/guide#entry|tourist guide]]). Lagos and Calabar are in Nigeria. Accra is in Ghana. Those pages repeat the linked Nigeria Immigration Service and Ghana Immigration Service pages, show a check date, and do not take a visa application or a payment. US, UK, and Canada travellers can open [[/visa/us|US]], [[/visa/uk|UK]], or [[/visa/canada|Canada]]. Read those official links for the current rules.",
+  },
+  {
+    question: "Where are the 2026 season guides?",
+    answer:
+      "Open [[/guides|Season guides 2026]] for the permanent year URLs: [[/events/flytime-fest-2026|Flytime Fest lineup tracker]], [[/guides/carnival-calabar-2026|Carnival Calabar programme]], [[/guides/lagos-december-2026|Lagos December]], and [[/guides/accra-ghana-2026|Accra and Ghana]]. They use only records and official pages already on file.",
   },
   {
     question: "How do hotels and short stays work here?",

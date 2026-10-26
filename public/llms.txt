@@ -18,7 +18,12 @@ The live site is https://www.dirtydecember.info
 - [Detty December hub](https://www.dirtydecember.info/detty-december): Season landing — confirmed events, Lagos / Accra / Calabar, links to visa, guide, map, flights.
 - [West Africa hub](https://www.dirtydecember.info/west-africa): Year-round tourism directory — countries, categories, city entry points.
 - [Tourist guide](https://www.dirtydecember.info/guide): Arrive, stay, get around, what is on; includes visa and entry.
-- [Visa and entry](https://www.dirtydecember.info/visa): Nigeria and Ghana notes repeating linked official immigration pages — no application or payment here.
+- [Season guides 2026](https://www.dirtydecember.info/guides): Permanent year URLs — Flytime Fest lineup tracker, Carnival Calabar programme, Lagos December, Accra/Ghana (GTA). Keep 2026 live when 2027 rolls.
+- [Flytime Fest 2026 lineup](https://www.dirtydecember.info/events/flytime-fest-2026): Sourced artists + dated changelog; incomplete nights stated plainly.
+- [Carnival Calabar 2026](https://www.dirtydecember.info/guides/carnival-calabar-2026): Official programme on file only.
+- [Lagos December 2026](https://www.dirtydecember.info/guides/lagos-december-2026): Events, arrival searches, ride apps on file.
+- [Accra and Ghana 2026](https://www.dirtydecember.info/guides/accra-ghana-2026): GTA programme, visitghana.com / ghana.travel, NewsGhana outbound.
+- [Visa and entry](https://www.dirtydecember.info/visa): Nigeria and Ghana notes repeating linked official immigration pages — check dates shown; US / UK / Canada pages at /visa/us, /visa/uk, /visa/canada — no application or payment here.
 - [Confirmed events](https://www.dirtydecember.info/events): Filter by city and date from records on file.
 - [Places](https://www.dirtydecember.info/places): Organiser pages by country, city, and category.
 - [Place pages](https://www.dirtydecember.info/place/kempinski-hotel-gold-coast-city-accra-accra): One page per listed organiser (example Accra hotel); outbound organiser link; Place JSON-LD with geo when a sourced pin matches.

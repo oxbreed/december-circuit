@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-10-26",
+  "checkedAtLabel": "26 October 2026",
+  "note": "Requirements below repeat the linked Nigeria Immigration Service and Ghana Immigration Service pages only. This site does not take a visa application or payment. Nationality pages for US, UK, and Canada travellers reuse the same official text with this check date.",
+  "destinations": [
+    {
+      "id": "nigeria-tourism-f5a",
+      "country": "Nigeria",
+      "title": "Tourism Visa (F5A)",
+      "officialUrl": "https://immigration.gov.ng/info-center/tourism-visa-f5a/",
+      "officialLabel": "Nigeria Immigration Service, Tourism Visa (F5A)",
+      "httpStatusWhenChecked": 200,
+      "purpose": "A single-entry type of visa granted to persons who wish to visit Nigeria for the purpose of tourism.",
+      "eligibility": "Citizens of all countries except ECOWAS member states and other countries which Nigeria has entered into visa abolition or waiver agreements.",
+      "requirements": [
+        "Valid passport, not less than 6 months validity.",
+        "Passport size photo.",
+        "Evidence of a return ticket.",
+        "Evidence of hotel reservations or a host address in Nigeria.",
+        "Evidence of sufficient funds, a 180 days bank statement.",
+        "Minors below 18 years, accompanied by an adult, provide a birth certificate and a parental consent letter."
+      ],
+      "validity": "90 days from issuance; not extendable; stay of 30 days; single entry within that validity; no employment; tourism only.",
+      "steps": "Gather documentation, apply online by e-Visa or embassy, upload the requirements and pay visa fees, and obtain the visa."
+    },
+    {
+      "id": "ghana-permits-visas",
+      "country": "Ghana",
+      "title": "Permits and visas",
+      "officialUrl": "https://gis.gov.gh/permits-and-visas/",
+      "officialLabel": "Ghana Immigration Service, permits and visas",
+      "secondaryUrl": "https://gis.gov.gh/visas/",
+      "secondaryLabel": "Ghana Immigration Service, visas",
+      "httpStatusWhenChecked": 200,
+      "purpose": "A visa is an authorisation to travel and present oneself for entry into Ghana; a visa is not a guarantee of entry.",
+      "eligibility": "A person other than a citizen of Ghana entering Ghana must be in possession of a valid passport or other travel document and a valid visa where necessary. Some countries in West Africa, ECOWAS member states, and some other countries in Africa are exempted from obtaining a visa before entering Ghana. ECOWAS states, including Nigeria, are listed as visa not required for all types of passports. Nationals from African Union member states who are not ECOWAS nationals may obtain a visa on arrival after payment of the required fees. Holders of diplomatic or service passports of selected countries, persons in direct airside transit, and holders of official passports of some specialised agencies are exempt from obtaining a visa.",
+      "requirements": [
+        "The applicant should be legally resident in the country where Ghana’s mission is sited.",
+        "Passport photographs taken not more than three months before submission.",
+        "A copy of a return ticket or a print-out of the travel itinerary.",
+        "An international certificate of vaccination for yellow fever.",
+        "A passport with validity of at least six months."
+      ],
+      "alsoNeeds": [
+        "A business visa also needs a letter from the applicant’s organisation and a supporting letter from business associates in Ghana.",
+        "A study visa also needs a letter from the institution abroad and a letter of acceptance from the institution in Ghana.",
+        "An employment visa also needs an employment contract and proof of a grant of employment quota."
+      ]
+    }
+  ],
+  "nationalityPages": [
+    {
+      "slug": "us",
+      "path": "/visa/us",
+      "travellerLabel": "United States",
+      "passportNote": "United States travellers are not nationals of an ECOWAS member state. Whether any separate Nigeria visa abolition or waiver agreement applies is stated only on the Nigeria Immigration Service page linked here — read that page for your passport. For Ghana, read the Ghana Immigration Service pages for whether a visa is required for a United States passport."
+    },
+    {
+      "slug": "uk",
+      "path": "/visa/uk",
+      "travellerLabel": "United Kingdom",
+      "passportNote": "United Kingdom travellers are not nationals of an ECOWAS member state. Whether any separate Nigeria visa abolition or waiver agreement applies is stated only on the Nigeria Immigration Service page linked here — read that page for your passport. For Ghana, read the Ghana Immigration Service pages for whether a visa is required for a United Kingdom passport."
+    },
+    {
+      "slug": "canada",
+      "path": "/visa/canada",
+      "travellerLabel": "Canada",
+      "passportNote": "Canadian travellers are not nationals of an ECOWAS member state. Whether any separate Nigeria visa abolition or waiver agreement applies is stated only on the Nigeria Immigration Service page linked here — read that page for your passport. For Ghana, read the Ghana Immigration Service pages for whether a visa is required for a Canadian passport."
+    }
+  ]
+}

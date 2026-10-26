@@ -15,6 +15,7 @@ export const nav = [
 export const footerExtra = [
   ["Detty December", "/detty-december"],
   ["West Africa", "/west-africa"],
+  ["Season guides", "/guides"],
   ["Cities", "/cities"],
   ["Visa", "/visa"],
   ["Explore", "/explore"],

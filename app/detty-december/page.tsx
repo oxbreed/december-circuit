@@ -64,6 +64,21 @@ export default function DettyDecemberPage() {
         <Link href={allEventsHref} className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           All confirmed events
         </Link>
+        <Link href="/guides" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Season guides 2026
+        </Link>
+        <Link href="/events/flytime-fest-2026" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Flytime lineup
+        </Link>
+        <Link href="/guides/carnival-calabar-2026" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Carnival Calabar
+        </Link>
+        <Link href="/guides/lagos-december-2026" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Lagos guide
+        </Link>
+        <Link href="/guides/accra-ghana-2026" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Accra / Ghana
+        </Link>
         <Link href="/visa" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           Visa and entry
         </Link>
