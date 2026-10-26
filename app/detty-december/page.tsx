@@ -4,6 +4,7 @@ import { citiesOnFile } from "../cities";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { EventCard } from "../components/event-card";
 import { JsonLd } from "../components/json-ld";
+import { majorEvents } from "../event-major";
 import { events } from "../events";
 import { eventsInRegionOrder } from "../event-view";
 import {
@@ -21,8 +22,13 @@ export const metadata = pageMetadata({
 
 const hubCities = ["lagos", "accra", "calabar"] as const;
 
+/** Season regions already used as /events city filter chips. */
+const allEventsHref =
+  "/events?city=Lagos&city=Calabar&city=Ghana";
+
 export default function DettyDecemberPage() {
   const confirmed = eventsInRegionOrder(events);
+  const featured = majorEvents().slice(0, 8);
   const cities = citiesOnFile();
   const spotlight = hubCities
     .map((slug) => cities.find((city) => city.slug === slug))
@@ -55,7 +61,7 @@ export default function DettyDecemberPage() {
         outbound ticket or flight links. {disclaimer}
       </p>
       <nav aria-label="Season hub" className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-sm leading-6">
-        <Link href="/events" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+        <Link href={allEventsHref} className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           All confirmed events
         </Link>
         <Link href="/visa" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
@@ -79,15 +85,45 @@ export default function DettyDecemberPage() {
       </nav>
 
       <section className="mt-12">
-        <h2 className="font-display text-3xl tracking-tight">Confirmed events on file</h2>
+        <h2 className="font-display text-3xl tracking-tight">Major events this season</h2>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-          Dates and summaries come from organiser pages or named reports. Tickets leave this site.
+          Headlines already confirmed on organiser pages or named reports — the same major
+          selection as the home page. Save any card to My trip; tickets and organiser pages leave
+          this site.
         </p>
-        <div className="mt-5 grid gap-4">
-          {confirmed.map((event) => (
-            <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} />
-          ))}
-        </div>
+        {featured.length === 0 ? (
+          <p className="mt-6 text-sm leading-7 text-muted">
+            No major confirmed events are listed yet.{" "}
+            <Link
+              href={allEventsHref}
+              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              View all events
+            </Link>
+          </p>
+        ) : (
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            {featured.map((event) => (
+              <EventCard
+                key={`${event.region}-${event.when}-${event.summary}`}
+                event={event}
+                as="h3"
+              />
+            ))}
+          </div>
+        )}
+        <p className="mt-6 text-sm leading-7">
+          <Link
+            href={allEventsHref}
+            className="font-medium underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            View all events
+          </Link>
+          <span className="text-muted">
+            {" "}
+            — filters open on Lagos, Calabar, and Ghana for the full confirmed list.
+          </span>
+        </p>
       </section>
 
       <section className="mt-14">
