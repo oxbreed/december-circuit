@@ -164,6 +164,7 @@ export async function loadNews(): Promise<NewsPayload> {
   }
   return {
     news,
+    // Season-floor next 8 — no wall-clock Date() inside the cache boundary.
     events: eventTickerItems(),
     newsAvailable: news.length > 0,
   };

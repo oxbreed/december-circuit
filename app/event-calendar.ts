@@ -61,7 +61,8 @@ export function calendarLinksFor(event: CircuitEvent): CalendarLinks | null {
   if (location) google.searchParams.set("location", location);
   google.searchParams.set("ctz", "Africa/Lagos");
 
-  const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  // Stable stamp from sourced start date — avoids prerender `new Date()` (Next cacheComponents).
+  const stamp = `${yyyymmdd(span.start)}T000000Z`;
   const uid = `${view.slug}@dirtydecember.info`;
   const ics = [
     "BEGIN:VCALENDAR",

@@ -1,7 +1,6 @@
-import { eventDateSpan } from "./event-dates";
+import { eventDateSpan, seasonYear } from "./event-dates";
 import { events, type CircuitEvent } from "./events";
 import { presentEvent } from "./event-view";
-import { lagosYmd, toIso } from "./week";
 
 export type TickerItem = {
   kind: "event" | "news";
@@ -20,18 +19,21 @@ function startIso(event: CircuitEvent) {
 }
 
 /**
- * Next eight confirmed events by sourced start date (Africa/Lagos “today”
- * and later). Falls back to the soonest eight on file when the season has
- * not started yet or every night is in the past.
+ * Next eight confirmed events by sourced start date.
+ * Uses an optional `asOf` ISO day (YYYY-MM-DD). When omitted, floors at the
+ * season’s first listed night so prerender never calls `new Date()`.
  */
-export function nextEventsForTicker(limit = TICKER_EVENT_COUNT): CircuitEvent[] {
-  const today = toIso(lagosYmd(new Date()));
+export function nextEventsForTicker(
+  limit = TICKER_EVENT_COUNT,
+  asOf?: string,
+): CircuitEvent[] {
   const dated = events
     .map((event) => ({ event, start: startIso(event) }))
     .filter((row): row is { event: CircuitEvent; start: string } => Boolean(row.start))
     .sort((a, b) => a.start.localeCompare(b.start) || a.event.summary.localeCompare(b.event.summary));
 
-  const upcoming = dated.filter((row) => row.start >= today);
+  const floor = asOf && /^\d{4}-\d{2}-\d{2}$/.test(asOf) ? asOf : `${seasonYear}-11-01`;
+  const upcoming = dated.filter((row) => row.start >= floor);
   const pool = upcoming.length > 0 ? upcoming : dated;
   return pool.slice(0, limit).map((row) => row.event);
 }
