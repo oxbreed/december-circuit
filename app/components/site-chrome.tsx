@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { disclaimer, footerExtra, nav } from "../brand";
 import { rideHailMarkets } from "../ride-hailing";
+import { HeaderSearch } from "./header-search";
 import { NewsTicker } from "./news-ticker";
 
 function PlaneMark() {
@@ -76,36 +77,39 @@ export function SiteChrome({
         <div className="flex h-[var(--clock-strip)] min-w-0 items-start border-b border-brass/40 bg-paper-deep pt-1 lg:pt-1.5">
           {clock}
         </div>
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 text-ink">
+        <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex shrink-0 items-center gap-2 text-ink">
             <PlaneMark />
             <span className="font-display text-[1.05rem] leading-none tracking-tight">
               dirtydecember
               <span className="text-gold">.info</span>
             </span>
           </Link>
-          <nav aria-label="Pages" className="hidden items-center gap-4 lg:flex">
-            {nav.map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                aria-current={current(pathname, href) ? "page" : undefined}
-                className={`text-[11px] uppercase tracking-[0.16em] hover:text-oxide ${
-                  current(pathname, href)
-                    ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
-                    : "text-ink/75"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <Link
-            href="/guide"
-            className="hidden bg-oxide px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-chart lg:inline-flex"
-          >
-            Explore the guide
-          </Link>
+          <div className="flex min-w-0 flex-1 items-center justify-end gap-3 lg:justify-between lg:gap-4">
+            <HeaderSearch />
+            <nav aria-label="Pages" className="hidden items-center gap-3 lg:flex xl:gap-4">
+              {nav.map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={current(pathname, href) ? "page" : undefined}
+                  className={`text-[11px] uppercase tracking-[0.14em] hover:text-oxide xl:tracking-[0.16em] ${
+                    current(pathname, href)
+                      ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
+                      : "text-ink/75"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+            <Link
+              href="/guide"
+              className="hidden shrink-0 bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-chart xl:inline-flex"
+            >
+              Explore the guide
+            </Link>
+          </div>
         </div>
         <div className="hidden h-0.5 bg-oxide lg:block" />
         <div className="hidden lg:block">
