@@ -206,6 +206,7 @@ export function MapSection() {
                   pins={visible}
                   activeId={activeId}
                   onSelect={showPin}
+                  listHref="/places"
                 />
               ) : (
                 <div className="flex h-full items-center px-4">

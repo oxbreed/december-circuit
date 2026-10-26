@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-`npm install` syncs MapLibre’s worker into `public/maplibre-gl-worker.mjs` so maps load a same-origin worker (a CDN worker URL fails under Next with “Worker failed to load”).
+`npm install` syncs MapLibre’s worker into `public/maplibre-gl-worker.mjs` so maps load a same-origin worker (a CDN worker URL fails under Next with “Worker failed to load”). If MapLibre still fails to init or paint, the map frame shows a static OSM preview (from sourced coordinates only) and a **View as list** link to Places, Events, or Explore — never a blank “couldn’t load” shell. Append `?mapFallback=1` locally to force that UI.
 
 ## Event ingest (Tier-1)
 

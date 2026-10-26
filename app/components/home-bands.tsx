@@ -71,7 +71,12 @@ export function HomeBands() {
             role="region"
             aria-label="OpenStreetMap of sourced pins"
           >
-            <CircuitMap pins={pinRecords} activeId={activeId} onSelect={setActiveId} />
+            <CircuitMap
+              pins={pinRecords}
+              activeId={activeId}
+              onSelect={setActiveId}
+              listHref="/places"
+            />
             {active ? (
               <div className="absolute top-3 left-3 z-10 max-w-[calc(100%-4.5rem)] border border-ink/15 bg-paper px-3 py-3 md:max-w-sm">
                 {active.url ? (

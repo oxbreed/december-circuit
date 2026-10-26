@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LngLatBounds,
   Map as MapLibreMap,
@@ -15,6 +15,14 @@ import type { Pin } from "../pins";
 import { OPENFREEMAP_STYLE_URL } from "../map-style";
 import { ensureMapLibreWorker } from "../maplibre-setup";
 import { pinId } from "./pin-id";
+import {
+  MapErrorBoundary,
+  MapFallback,
+  centerFromPoints,
+  forceMapFallbackFromQuery,
+  useMapReadyTimeout,
+  type MapListHref,
+} from "./map-fallback";
 
 type PinProps = { id: string; name: string; selected: 0 | 1 };
 type PinFeature = Feature<Point, PinProps>;
@@ -71,14 +79,16 @@ function fitPins(map: MapLibreMap, pins: Pin[], narrow: boolean) {
   });
 }
 
-export default function CircuitMap({
+function CircuitMapInner({
   pins,
   activeId,
   onSelect,
+  listHref,
 }: {
   pins: Pin[];
   activeId: string | null;
   onSelect: (id: string) => void;
+  listHref: MapListHref;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -89,6 +99,7 @@ export default function CircuitMap({
   const seenSignature = useRef<string | null>(null);
   const narrow = useNarrowMap();
   const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(() => forceMapFallbackFromQuery());
 
   onSelectRef.current = onSelect;
 
@@ -96,19 +107,34 @@ export default function CircuitMap({
     .map((pin) => `${pin.latitude},${pin.longitude},${pin.name}`)
     .join(";");
 
+  const markFailed = useCallback(() => {
+    setFailed(true);
+  }, []);
+
+  useMapReadyTimeout(ready || failed, markFailed);
+
   useEffect(() => {
+    if (failed) return;
     if (!containerRef.current || mapRef.current) return;
     if (pins.length === 0) return;
 
-    ensureMapLibreWorker();
-    const map = new MapLibreMap({
-      container: containerRef.current,
-      style: OPENFREEMAP_STYLE_URL,
-      attributionControl: { compact: true },
-      scrollZoom: false,
-      minZoom: 2,
-      maxZoom: 18,
-    });
+    let map: MapLibreMap;
+    try {
+      ensureMapLibreWorker();
+      map = new MapLibreMap({
+        container: containerRef.current,
+        style: OPENFREEMAP_STYLE_URL,
+        attributionControl: { compact: true },
+        scrollZoom: false,
+        minZoom: 2,
+        maxZoom: 18,
+      });
+    } catch (error) {
+      console.error("MapLibre circuit map init failed", error);
+      markFailed();
+      return;
+    }
+
     map.addControl(new NavigationControl({ showCompass: false }), "top-right");
     mapRef.current = map;
 
@@ -127,8 +153,13 @@ export default function CircuitMap({
     const onZoomStart = () => {
       if (!fitting.current) handedOff.current = true;
     };
+    const onMapError = () => {
+      console.error("MapLibre circuit map error");
+      markFailed();
+    };
     map.on("dragstart", onDragStart);
     map.on("zoomstart", onZoomStart);
+    map.on("error", onMapError);
 
     map.on("load", () => {
       map.addSource("pins", {
@@ -186,6 +217,7 @@ export default function CircuitMap({
     return () => {
       map.off("dragstart", onDragStart);
       map.off("zoomstart", onZoomStart);
+      map.off("error", onMapError);
       popup.remove();
       map.remove();
       mapRef.current = null;
@@ -194,11 +226,11 @@ export default function CircuitMap({
     };
     // Mount once; pin updates handled below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [failed]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !ready) return;
+    if (!map || !ready || failed) return;
 
     const source = map.getSource("pins") as GeoJSONSource | undefined;
     if (source) {
@@ -242,11 +274,11 @@ export default function CircuitMap({
       observer.observe(containerRef.current);
     }
     return () => observer.disconnect();
-  }, [pins, signature, activeId, narrow, ready]);
+  }, [pins, signature, activeId, narrow, ready, failed]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !ready || !activeId) return;
+    if (!map || !ready || failed || !activeId) return;
     const active = pins.find((pin) => pinId(pin) === activeId);
     if (!active) return;
     handedOff.current = true;
@@ -255,16 +287,54 @@ export default function CircuitMap({
       zoom: Math.max(map.getZoom(), 14),
       duration: 450,
     });
-  }, [activeId, pins, ready]);
+  }, [activeId, pins, ready, failed]);
 
   if (pins.length === 0) return null;
 
+  const center = centerFromPoints(pins);
+
+  if (failed) {
+    return <MapFallback listHref={listHref} center={center} />;
+  }
+
   return (
-    <div
-      ref={containerRef}
-      className="maplibre-map h-full w-full"
-      style={{ visibility: ready ? "visible" : "hidden" }}
-    />
+    <>
+      {!ready ? (
+        <div className="map-skeleton absolute inset-0 h-full w-full" aria-busy="true">
+          <span className="sr-only">Map</span>
+        </div>
+      ) : null}
+      <div
+        ref={containerRef}
+        className="maplibre-map h-full w-full"
+        style={{ visibility: ready ? "visible" : "hidden" }}
+      />
+    </>
+  );
+}
+
+export default function CircuitMap({
+  pins,
+  activeId,
+  onSelect,
+  /** Circuit / event surfaces → /events; place pin maps may pass /places. */
+  listHref = "/events",
+}: {
+  pins: Pin[];
+  activeId: string | null;
+  onSelect: (id: string) => void;
+  listHref?: MapListHref;
+}) {
+  const center = centerFromPoints(pins);
+  return (
+    <MapErrorBoundary listHref={listHref} center={center}>
+      <CircuitMapInner
+        pins={pins}
+        activeId={activeId}
+        onSelect={onSelect}
+        listHref={listHref}
+      />
+    </MapErrorBoundary>
   );
 }
 

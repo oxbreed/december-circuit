@@ -352,6 +352,7 @@ export function ExploreSection() {
                     latitude: active.latitude,
                     longitude: active.longitude,
                   }}
+                  listHref="/places"
                 />
               ) : (
                 <div className="flex h-full items-center justify-center px-4">
