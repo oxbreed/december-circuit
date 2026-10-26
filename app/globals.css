@@ -96,7 +96,33 @@ body::before {
   animation: events-directory-in 0.35s ease-out;
 }
 
+.places-directory-results {
+  animation: places-directory-in 0.35s ease-out;
+}
+
+.places-city-chip {
+  padding: 0.55rem 0.9rem;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+
+.places-city-chip--hub {
+  border-color: rgba(27, 104, 78, 0.55);
+  background: rgba(27, 104, 78, 0.06);
+}
+
 @keyframes events-directory-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes places-directory-in {
   from {
     opacity: 0;
     transform: translateY(6px);
