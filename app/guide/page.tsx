@@ -2,6 +2,7 @@ import Link from "next/link";
 import { EventCard } from "../components/event-card";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { GetAroundRidesInline } from "../components/get-around-rides";
+import { GuideTabs } from "../components/guide-tabs";
 import { JsonLd } from "../components/json-ld";
 import { VisaSections } from "../components/visa-sections";
 import { citiesOnFile } from "../cities";
@@ -181,23 +182,7 @@ export default function GuidePage() {
         around, and what is on. Every line comes from a record already listed. If a fact is not
         listed, it is left out.
       </p>
-      <nav aria-label="Guide" className="mt-5 flex flex-wrap gap-2">
-        <a href="#entry" className="chip">
-          Visa and entry
-        </a>
-        <a href="#arrive" className="chip">
-          Arrive
-        </a>
-        <a href="#stay" className="chip">
-          Stay
-        </a>
-        <a href="#around" className="chip">
-          Get around
-        </a>
-        <a href="#on" className="chip">
-          What is on
-        </a>
-      </nav>
+      <GuideTabs />
 
       <section id="entry" className="mt-10 scroll-mt-36">
         <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">Visa and entry</h2>

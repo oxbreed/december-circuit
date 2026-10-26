@@ -86,7 +86,8 @@ body::before {
   color: #b8432f;
 }
 
-.chip[aria-checked="true"] {
+.chip[aria-checked="true"],
+.chip[aria-current="location"] {
   background: #1b684e;
   border-color: #1b684e;
   color: #fffaf4;
