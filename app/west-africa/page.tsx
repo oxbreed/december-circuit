@@ -2,7 +2,7 @@ import Link from "next/link";
 import { disclaimer } from "../brand";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
-import { countriesOnFile } from "../countries";
+import { countriesOnFile, placesCountryHref } from "../countries";
 import { categoryIndex } from "../explore-categories";
 import {
   breadcrumbJsonLd,
@@ -20,6 +20,16 @@ export const metadata = pageMetadata({
   path: "/west-africa",
   image: shareImageForCity("Lagos"),
 });
+
+function countryCountLine(placeCount: number, eventCount: number) {
+  const places = `${placeCount} ${placeCount === 1 ? "place" : "places"}`;
+  if (eventCount === 0) {
+    return `${places} on file · no confirmed events yet`;
+  }
+  return `${places} · ${eventCount} confirmed ${
+    eventCount === 1 ? "event" : "events"
+  }`;
+}
 
 export default function WestAfricaPage() {
   const countries = countriesOnFile();
@@ -77,28 +87,59 @@ export default function WestAfricaPage() {
         <Link href="/cities" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           All cities
         </Link>
+        <Link href="/places" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Places
+        </Link>
       </nav>
+
+      <section className="mt-12 border border-ink/15 bg-chart px-5 py-6 md:px-6">
+        <h2 className="font-display text-2xl tracking-tight md:text-3xl">
+          Year-round directory
+        </h2>
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+          This hub is not only for the December season. It lists sourced cities and organiser
+          pages across West Africa for travel any time of year. Detty December pages and confirmed
+          event counts appear when those records are already on file — nothing is invented for
+          the calendar.
+        </p>
+      </section>
 
       <section className="mt-12">
         <h2 className="font-display text-3xl tracking-tight">Countries on file</h2>
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+          Open a country landing for its cities, or browse that country&apos;s organiser pages in
+          Places. Counts are from records already listed — places and confirmed events only.
+        </p>
         <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {countries.map((country) => (
-            <li key={country.slug}>
+            <li key={country.slug} className="border border-ink/15 bg-chart">
               <Link
                 href={`/countries/${country.slug}`}
-                className="block border border-ink/15 bg-chart px-4 py-5 hover:border-oxide/40"
+                className="block px-4 pt-5 pb-3 hover:bg-paper"
               >
-                <p className="font-display text-2xl leading-none tracking-tight">{country.country}</p>
+                <p className="font-display text-2xl leading-none tracking-tight">
+                  {country.country}
+                </p>
                 <p className="mt-3 text-sm text-muted">
-                  {country.cities.length}{" "}
-                  {country.cities.length === 1 ? "city" : "cities"}
-                  {country.events.length > 0
-                    ? ` · ${country.events.length} confirmed ${
-                        country.events.length === 1 ? "event" : "events"
-                      }`
-                    : null}
+                  {countryCountLine(country.placeCount, country.events.length)}
+                </p>
+                <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-oxide">
+                  Country landing →
                 </p>
               </Link>
+              <p className="border-t border-ink/10 px-4 py-3 text-sm text-muted">
+                <Link
+                  href={placesCountryHref(country.country)}
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  Places in {country.country}
+                </Link>
+                <span className="text-muted/60">
+                  {" "}
+                  · {country.cities.length}{" "}
+                  {country.cities.length === 1 ? "city" : "cities"}
+                </span>
+              </p>
             </li>
           ))}
         </ul>

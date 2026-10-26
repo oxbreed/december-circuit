@@ -9,6 +9,7 @@ import {
   countriesOnFile,
   countryBySlug,
   countryDescription,
+  placesCountryHref,
 } from "../../countries";
 import {
   breadcrumbJsonLd,
@@ -73,6 +74,18 @@ export default async function CountryPage({
         {country.country}
       </h1>
       <p className="mt-5 max-w-2xl text-base leading-7 text-muted">{description}</p>
+      <p className="mt-4 text-sm leading-7 text-muted">
+        <Link
+          href={placesCountryHref(country.country)}
+          className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+        >
+          Browse places in {country.country}
+        </Link>
+        {" · "}
+        <Link href="/west-africa" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          West Africa hub
+        </Link>
+      </p>
 
       {country.events.length > 0 ? (
         <section className="mt-12">

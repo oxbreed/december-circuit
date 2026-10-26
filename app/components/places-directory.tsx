@@ -131,6 +131,7 @@ export function PlacesDirectory() {
   const [nameQuery, setNameQuery] = useState("");
 
   const city = search.get("city")?.trim() ?? "";
+  const country = search.get("country")?.trim() ?? "";
   const categories = parseCategories(search);
   const shortcutOn = activeShortcut(city, categories);
 
@@ -141,12 +142,20 @@ export function PlacesDirectory() {
     [records],
   );
 
+  const countryOptions = useMemo(
+    () => uniqueSorted(records.map((place) => place.country)),
+    [records],
+  );
+
   const cityOptions = useMemo(() => {
-    const all = uniqueSorted(records.map((place) => place.city));
+    const scoped = country
+      ? records.filter((place) => place.country.toLowerCase() === country.toLowerCase())
+      : records;
+    const all = uniqueSorted(scoped.map((place) => place.city));
     const hubs = HUB_CITIES.filter((name) => all.includes(name));
     const rest = all.filter((name) => !hubs.includes(name as (typeof HUB_CITIES)[number]));
     return [...hubs, ...rest];
-  }, [records]);
+  }, [records, country]);
 
   function replaceParams(mutate: (next: URLSearchParams) => void) {
     const next = new URLSearchParams(search.toString());
@@ -159,6 +168,16 @@ export function PlacesDirectory() {
     replaceParams((next) => {
       if (value) next.set("city", value);
       else next.delete("city");
+    });
+    setVisibleCount(PAGE_SIZE);
+  }
+
+  function setCountry(value: string) {
+    replaceParams((next) => {
+      if (value) next.set("country", value);
+      else next.delete("country");
+      // City may not belong to the new country — drop it.
+      next.delete("city");
     });
     setVisibleCount(PAGE_SIZE);
   }
@@ -176,6 +195,7 @@ export function PlacesDirectory() {
     if (!shortcut) return;
     replaceParams((next) => {
       next.delete("city");
+      next.delete("country");
       next.delete("category");
       if (shortcut.city) next.set("city", shortcut.city);
       for (const name of shortcut.categories ?? []) {
@@ -188,17 +208,20 @@ export function PlacesDirectory() {
   function clearFilters() {
     replaceParams((next) => {
       next.delete("city");
+      next.delete("country");
       next.delete("category");
     });
     setNameQuery("");
     setVisibleCount(PAGE_SIZE);
   }
 
-  const filtersOn = Boolean(city) || categories.length > 0 || nameQuery.trim().length > 0;
+  const filtersOn =
+    Boolean(city) || Boolean(country) || categories.length > 0 || nameQuery.trim().length > 0;
 
   const matched = useMemo(() => {
     const needle = nameQuery.trim().toLowerCase();
     return records.filter((place) => {
+      if (country && place.country.toLowerCase() !== country.toLowerCase()) return false;
       if (city && place.city.toLowerCase() !== city.toLowerCase()) return false;
       if (categories.length > 0 && !categories.includes(place.category)) return false;
       if (
@@ -211,14 +234,14 @@ export function PlacesDirectory() {
       }
       return true;
     });
-  }, [records, city, categories, nameQuery]);
+  }, [records, country, city, categories, nameQuery]);
 
   const pageRows = matched.slice(0, visibleCount);
   const hasMore = matched.length > visibleCount;
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [city, categories.join("|")]);
+  }, [country, city, categories.join("|")]);
 
   return (
     <div>
@@ -283,10 +306,44 @@ export function PlacesDirectory() {
 
         <div>
           <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">
+            Browse by country
+          </p>
+          <div
+            role="radiogroup"
+            aria-label="Country"
+            className="chip-row -mx-5 mt-3 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
+          >
+            <button
+              type="button"
+              role="radio"
+              aria-checked={country === ""}
+              className="chip"
+              onClick={() => setCountry("")}
+            >
+              All countries
+            </button>
+            {countryOptions.map((name) => (
+              <button
+                key={name}
+                type="button"
+                role="radio"
+                aria-checked={country.toLowerCase() === name.toLowerCase()}
+                className="chip"
+                onClick={() => setCountry(name)}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">
             Browse by city
           </p>
           <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
-            Start with a Detty December hub, or pick any city already on file.
+            Start with a Detty December hub, or pick any city already on file
+            {country ? ` in ${country}` : ""}.
           </p>
           <div
             role="radiogroup"
