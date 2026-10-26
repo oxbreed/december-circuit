@@ -20,10 +20,9 @@ import { DateBlock, EventCard } from "./event-card";
 import { presentEvent } from "../event-view";
 import { eventTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
-import { EmptyNote, ErrorNote, LoadingLines } from "./states";
+import { LoadMoreBar, useListPageSize } from "./load-more";
+import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
-
-const PAGE_SIZE = 12;
 
 type ViewMode = "week" | "city" | "list";
 type RangeChip = "this-week" | "next-week" | "later" | "";
@@ -136,7 +135,8 @@ export function EventsDirectory() {
   const router = useRouter();
   const pathname = usePathname();
   const [now] = useState(() => new Date());
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const pageSize = useListPageSize(6, 12);
+  const [visibleCount, setVisibleCount] = useState(pageSize);
 
   const citiesSelected = parseCities(search);
   const range = parseRange(search.get("range"));
@@ -175,7 +175,7 @@ export function EventsDirectory() {
         next.append("city", value);
       }
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   function setRange(value: RangeChip) {
@@ -183,7 +183,7 @@ export function EventsDirectory() {
       if (value) next.set("range", value);
       else next.delete("range");
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   function setCategory(value: EventKind | "") {
@@ -191,7 +191,7 @@ export function EventsDirectory() {
       if (value) next.set("category", value);
       else next.delete("category");
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   function setView(value: ViewMode) {
@@ -207,7 +207,7 @@ export function EventsDirectory() {
       next.delete("range");
       next.delete("category");
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   const filtersOn = citiesSelected.length > 0 || range !== "" || category !== "";
@@ -260,8 +260,8 @@ export function EventsDirectory() {
   const hasMore = smaller.length > visibleCount;
 
   useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [citiesSelected.join("|"), range, category]);
+    setVisibleCount(pageSize);
+  }, [citiesSelected.join("|"), range, category, pageSize]);
 
   const weekGroups = useMemo(() => {
     const groups = new Map<string, { window: WeekWindow; events: CircuitEvent[] }>();
@@ -457,11 +457,11 @@ export function EventsDirectory() {
         {eventsState.status === "ready" ? (
           <div className="events-directory-results">
             {matched.length === 0 ? (
-              <EmptyNote>
+              <EmptyList href="/list" cta="List an event">
                 {filtersOn
-                  ? "No confirmed event matches these filters."
-                  : "No December 2026 events are listed."}
-              </EmptyNote>
+                  ? "No confirmed event matches these filters. Try clearing city, date, or category."
+                  : "No December 2026 events are listed yet."}
+              </EmptyList>
             ) : (
               <>
                 {majors.length > 0 ? (
@@ -537,24 +537,17 @@ export function EventsDirectory() {
                       </div>
                     ) : null}
 
-                    <div className="mt-8 flex flex-wrap items-center gap-4">
-                      <p className="text-sm text-muted">
-                        Showing {Math.min(visibleCount, smaller.length)} of{" "}
-                        {smaller.length}
-                        {majors.length > 0
-                          ? ` · ${majors.length} major${majors.length === 1 ? "" : "s"} above`
-                          : ""}
-                      </p>
-                      {hasMore ? (
-                        <button
-                          type="button"
-                          className="bg-ink px-4 py-3 text-[11px] uppercase tracking-[0.18em] text-chart"
-                          onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
-                        >
-                          Load more
-                        </button>
-                      ) : null}
-                    </div>
+                    <LoadMoreBar
+                      shown={visibleCount}
+                      total={smaller.length}
+                      hasMore={hasMore}
+                      noun={
+                        majors.length > 0
+                          ? `· ${majors.length} major${majors.length === 1 ? "" : "s"} above`
+                          : "on file"
+                      }
+                      onMore={() => setVisibleCount((count) => count + pageSize)}
+                    />
                   </div>
                 ) : majors.length > 0 ? (
                   <p className="text-sm leading-7 text-muted">

@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import type { Pin } from "../pins";
 import { directionsHref, pinId } from "./pin-id";
 import { SectionIntro, sectionClassCompact } from "./section-intro";
-import { EmptyNote, ErrorNote } from "./states";
+import { EmptyList, ErrorNote } from "./states";
 import { useRecords } from "./use-records";
 
 function MapSkeleton() {
@@ -150,7 +150,9 @@ export function MapSection() {
             <ErrorNote message="The map did not load." onRetry={pins.retry} />
           ) : null}
           {pins.status === "ready" && records.length === 0 ? (
-            <EmptyNote>No places with a coordinate are listed.</EmptyNote>
+            <EmptyList href="/list#submit-place" cta="List a place">
+              No places with a coordinate are listed.
+            </EmptyList>
           ) : null}
         </div>
         {pins.status === "ready" && records.length > 0 ? (

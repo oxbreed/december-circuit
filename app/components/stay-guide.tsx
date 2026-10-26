@@ -47,7 +47,16 @@ export function StaysByCity() {
           places list. This site does not take payment.
         </p>
         {groups.length === 0 ? (
-          <p className="mt-6 text-sm leading-7 text-muted">No stay places are listed.</p>
+          <p className="mt-6 text-sm leading-7 text-muted">
+            No stay places are listed.{" "}
+            <a
+              href="/list#submit-place"
+              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              List a place
+            </a>{" "}
+            for review.
+          </p>
         ) : (
           <div className="mt-6 grid gap-8">
             {groups.map((group) => (

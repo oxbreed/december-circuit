@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import type { Pin } from "../pins";
 import { directionsHref, pinId } from "./pin-id";
-import { EmptyNote, ErrorNote, LoadingLines } from "./states";
+import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
 
 const CircuitMap = dynamic(() => import("./circuit-map"), {
@@ -63,7 +63,9 @@ export function HomeBands() {
           <ErrorNote message="The map did not load." onRetry={pins.retry} />
         ) : null}
         {pins.status === "ready" && pinRecords.length === 0 ? (
-          <EmptyNote>No places with coordinates are listed.</EmptyNote>
+          <EmptyList href="/list#submit-place" cta="List a place">
+            No places with coordinates are listed.
+          </EmptyList>
         ) : null}
         {pinRecords.length > 0 ? (
           <div

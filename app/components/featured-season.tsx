@@ -50,9 +50,18 @@ export function FeaturedSeason() {
           browser — tickets and organiser pages stay outbound.
         </p>
         {featured.length === 0 ? (
-          <p className="mt-6 text-sm leading-7 text-muted">
-            No featured events are listed yet.
-          </p>
+          <div className="mt-6">
+            <p className="text-sm leading-7 text-muted">
+              No featured events are listed yet.{" "}
+              <a
+                href="/list"
+                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+              >
+                List an event
+              </a>{" "}
+              for review.
+            </p>
+          </div>
         ) : (
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {featured.map((event) => (

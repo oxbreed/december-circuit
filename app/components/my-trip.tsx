@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { presentEvent } from "../event-view";
 import { events, type CircuitEvent } from "../events";
 import { places } from "../places";
 import { eventTripId, placeTripId } from "../trip";
+import { EmptyList } from "./states";
+import { LoadMoreList } from "./load-more";
 import { removeTrip, useTripItems, type TripItem } from "./trip-storage";
 
 type TripLink = {
@@ -108,44 +111,63 @@ export function MyTrip() {
           stored on it.
         </p>
         {rows.length === 0 ? (
-          <p className="mt-6 border border-dashed border-ink/25 bg-paper px-4 py-4 text-sm leading-6 text-muted">
-            Nothing is saved yet. Save an event or a place from this directory.
-          </p>
-        ) : (
-          <ul className="mt-6 grid gap-4">
-            {rows.map((row) => (
-              <li
-                key={`${row.item.kind}-${row.item.id}`}
-                className="flex flex-col gap-4 border border-ink/15 bg-paper p-4 sm:flex-row sm:items-start sm:justify-between"
+          <div className="mt-6">
+            <EmptyList href="/events" cta="Browse confirmed events">
+              Nothing is saved yet. Save an event or a place from this directory —
+              My Trip appears in the header once you have at least one item.
+            </EmptyList>
+            <p className="mt-3 text-sm leading-6 text-muted">
+              Or{" "}
+              <Link
+                href="/list"
+                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
               >
-                <div className="min-w-0">
-                  <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
-                    {row.kind}
-                  </p>
-                  {row.href ? (
-                    <h3 className="mt-2 font-display text-3xl leading-none tracking-tight sm:text-4xl">
-                      <a href={row.href} className="hover:text-oxide">
-                        {row.name}
-                      </a>
-                    </h3>
-                  ) : (
-                    <h3 className="mt-2 font-display text-3xl leading-none tracking-tight sm:text-4xl">
-                      {row.name}
-                    </h3>
-                  )}
-                  {row.meta ? <p className="mt-2 text-sm text-ink">{row.meta}</p> : null}
-                  <StoredLinks links={row.links} />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => removeTrip(row.item)}
-                  className="inline-flex shrink-0 self-start border border-ink/25 bg-chart px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
+                list an event or place
+              </Link>{" "}
+              for review.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-6">
+            <LoadMoreList items={rows} mobileSize={6} desktopSize={12} noun="saved">
+              {(visible) => (
+                <ul className="grid gap-4">
+                  {visible.map((row) => (
+                    <li
+                      key={`${row.item.kind}-${row.item.id}`}
+                      className="flex flex-col gap-4 border border-ink/15 bg-paper p-4 sm:flex-row sm:items-start sm:justify-between"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
+                          {row.kind}
+                        </p>
+                        {row.href ? (
+                          <h3 className="mt-2 font-display text-3xl leading-none tracking-tight sm:text-4xl">
+                            <a href={row.href} className="hover:text-oxide">
+                              {row.name}
+                            </a>
+                          </h3>
+                        ) : (
+                          <h3 className="mt-2 font-display text-3xl leading-none tracking-tight sm:text-4xl">
+                            {row.name}
+                          </h3>
+                        )}
+                        {row.meta ? <p className="mt-2 text-sm text-ink">{row.meta}</p> : null}
+                        <StoredLinks links={row.links} />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeTrip(row.item)}
+                        className="inline-flex shrink-0 self-start border border-ink/25 bg-chart px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </LoadMoreList>
+          </div>
         )}
       </div>
     </section>

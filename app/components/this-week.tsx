@@ -31,7 +31,16 @@ function WeekList({ window }: { window: WeekWindow }) {
     <div>
       <h3 className="font-display text-2xl leading-tight tracking-tight">{window.title}</h3>
       {rows.length === 0 ? (
-        <p className="mt-3 text-sm leading-7 text-muted">Nothing listed.</p>
+        <p className="mt-3 text-sm leading-7 text-muted">
+          Nothing listed.{" "}
+          <a
+            href="/list"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            List an event
+          </a>
+          .
+        </p>
       ) : (
         <ul className="mt-3">
           {rows.map((event) => {
@@ -60,7 +69,14 @@ async function WeekBody() {
   if (!any) {
     return (
       <p className="mt-6 max-w-2xl text-sm leading-7 text-ink">
-        Nothing listed falls in this week or next.
+        Nothing listed falls in this week or next.{" "}
+        <a
+          href="/list"
+          className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+        >
+          List an event
+        </a>{" "}
+        for review.
       </p>
     );
   }

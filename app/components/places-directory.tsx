@@ -6,10 +6,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Place } from "../places";
 import { placeTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
-import { EmptyNote, ErrorNote, LoadingLines } from "./states";
+import { LoadMoreBar, useListPageSize } from "./load-more";
+import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
-
-const PAGE_SIZE = 12;
 
 /** Hub cities shown first in the city browse row. */
 const HUB_CITIES = ["Lagos", "Accra", "Calabar", "Abuja", "Kumasi"] as const;
@@ -127,7 +126,8 @@ export function PlacesDirectory() {
   const search = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const pageSize = useListPageSize(6, 12);
+  const [visibleCount, setVisibleCount] = useState(pageSize);
   const [nameQuery, setNameQuery] = useState("");
 
   const city = search.get("city")?.trim() ?? "";
@@ -169,7 +169,7 @@ export function PlacesDirectory() {
       if (value) next.set("city", value);
       else next.delete("city");
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   function setCountry(value: string) {
@@ -179,7 +179,7 @@ export function PlacesDirectory() {
       // City may not belong to the new country — drop it.
       next.delete("city");
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   function setCategory(value: string) {
@@ -187,7 +187,7 @@ export function PlacesDirectory() {
       next.delete("category");
       if (value) next.append("category", value);
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   function applyShortcut(id: ShortcutId) {
@@ -202,7 +202,7 @@ export function PlacesDirectory() {
         next.append("category", name);
       }
     });
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   function clearFilters() {
@@ -212,7 +212,7 @@ export function PlacesDirectory() {
       next.delete("category");
     });
     setNameQuery("");
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(pageSize);
   }
 
   const filtersOn =
@@ -240,8 +240,8 @@ export function PlacesDirectory() {
   const hasMore = matched.length > visibleCount;
 
   useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [country, city, categories.join("|")]);
+    setVisibleCount(pageSize);
+  }, [country, city, categories.join("|"), pageSize]);
 
   return (
     <div>
@@ -438,7 +438,7 @@ export function PlacesDirectory() {
               value={nameQuery}
               onChange={(event) => {
                 setNameQuery(event.target.value);
-                setVisibleCount(PAGE_SIZE);
+                setVisibleCount(pageSize);
               }}
               placeholder="Narrow by name"
               className="ledger-input mt-2"
@@ -474,16 +474,9 @@ export function PlacesDirectory() {
         {placesState.status === "ready" ? (
           <div>
             {matched.length === 0 ? (
-              <EmptyNote>
-                Nothing matches this browse. Clear filters or{" "}
-                <Link
-                  href="/list#submit-place"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  list a place
-                </Link>{" "}
-                for review.
-              </EmptyNote>
+              <EmptyList href="/list#submit-place" cta="List a place">
+                Nothing matches this browse. Clear filters or try another city or category.
+              </EmptyList>
             ) : (
               <>
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brass">
@@ -494,20 +487,12 @@ export function PlacesDirectory() {
                     <PlaceCard key={placeKey(place)} place={place} />
                   ))}
                 </div>
-                <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <p className="text-sm text-muted">
-                    Showing {Math.min(visibleCount, matched.length)} of {matched.length}
-                  </p>
-                  {hasMore ? (
-                    <button
-                      type="button"
-                      className="bg-ink px-4 py-3 text-[11px] uppercase tracking-[0.18em] text-chart"
-                      onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
-                    >
-                      Load more
-                    </button>
-                  ) : null}
-                </div>
+                <LoadMoreBar
+                  shown={visibleCount}
+                  total={matched.length}
+                  hasMore={hasMore}
+                  onMore={() => setVisibleCount((count) => count + pageSize)}
+                />
               </>
             )}
           </div>

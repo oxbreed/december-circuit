@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { disclaimer, footerExtra, nav } from "../brand";
 import { rideHailMarkets } from "../ride-hailing";
 import { HeaderSearch } from "./header-search";
+import { HeaderTripLink } from "./header-trip-link";
 import { NewsTicker } from "./news-ticker";
 
 function PlaneMark() {
@@ -87,28 +88,32 @@ export function SiteChrome({
           </Link>
           <div className="flex min-w-0 flex-1 items-center justify-end gap-3 lg:justify-between lg:gap-4">
             <HeaderSearch />
-            <nav aria-label="Pages" className="hidden items-center gap-3 lg:flex xl:gap-4">
-              {nav.map(([label, href]) => (
-                <Link
-                  key={href}
-                  href={href}
-                  aria-current={current(pathname, href) ? "page" : undefined}
-                  className={`text-[11px] uppercase tracking-[0.14em] hover:text-oxide xl:tracking-[0.16em] ${
-                    current(pathname, href)
-                      ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
-                      : "text-ink/75"
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            <Link
-              href="/guide"
-              className="hidden shrink-0 bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-chart xl:inline-flex"
-            >
-              Explore the guide
-            </Link>
+            <div className="flex shrink-0 items-center gap-3">
+              <HeaderTripLink compact className="lg:hidden shrink-0 text-[11px] uppercase tracking-[0.14em] text-oxide" />
+              <nav aria-label="Pages" className="hidden items-center gap-3 lg:flex xl:gap-4">
+                {nav.map(([label, href]) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    aria-current={current(pathname, href) ? "page" : undefined}
+                    className={`text-[11px] uppercase tracking-[0.14em] hover:text-oxide xl:tracking-[0.16em] ${
+                      current(pathname, href)
+                        ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
+                        : "text-ink/75"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+                <HeaderTripLink />
+              </nav>
+              <Link
+                href="/guide"
+                className="hidden shrink-0 bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-chart xl:inline-flex"
+              >
+                Explore the guide
+              </Link>
+            </div>
           </div>
         </div>
         <div className="hidden h-0.5 bg-oxide lg:block" />

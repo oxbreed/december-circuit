@@ -26,7 +26,19 @@ export function groupFlights(flights: FlightSearch[]) {
 export function FlightBoard({ flights }: { flights: FlightSearch[] }) {
   const groups = groupFlights(flights);
   if (groups.length === 0) {
-    return <EmptyNote>No flight searches are listed.</EmptyNote>;
+    return (
+      <EmptyNote>
+        No flight searches are listed. Flight rows open an outbound search only —
+        this site does not invent fares.{" "}
+        <a
+          href="/list"
+          className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+        >
+          List an event or place
+        </a>{" "}
+        if you have something to add to the directory.
+      </EmptyNote>
+    );
   }
 
   return (

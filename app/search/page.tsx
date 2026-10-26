@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
-import { EmptyNote } from "../components/states";
+import { SearchResults } from "../components/search-results";
 import { breadcrumbJsonLd } from "../jsonld";
-import { kindLabel, searchDirectory } from "../search";
+import { searchDirectory } from "../search";
 import { pageMetadata } from "../site";
 
 type Props = {
@@ -30,12 +29,6 @@ export async function generateMetadata({ searchParams }: Props) {
     description: `Results on dirtydecember.info for “${q}” — confirmed events, places, and guide pages already on file.`,
     path: `/search?q=${encodeURIComponent(q)}`,
   });
-}
-
-function kindTone(kind: "event" | "place" | "guide") {
-  if (kind === "event") return "text-oxide";
-  if (kind === "place") return "text-lagoon";
-  return "text-brass";
 }
 
 export default async function SearchPage({ searchParams }: Props) {
@@ -98,41 +91,7 @@ export default async function SearchPage({ searchParams }: Props) {
       </form>
 
       <section className="mt-10" aria-live="polite">
-        {!q ? (
-          <EmptyNote>Type a query to search the directory on file.</EmptyNote>
-        ) : results.length === 0 ? (
-          <EmptyNote>
-            No confirmed event, place, or guide page matches “{q}”.
-          </EmptyNote>
-        ) : (
-          <>
-            <p className="text-sm text-muted">
-              {results.length} result{results.length === 1 ? "" : "s"} for “{q}”
-            </p>
-            <ul className="mt-4 divide-y divide-ink/10 border-y border-ink/10">
-              {results.map((hit) => (
-                <li key={hit.href}>
-                  <Link
-                    href={hit.href}
-                    className="block py-4 hover:text-oxide"
-                  >
-                    <span
-                      className={`text-[10px] uppercase tracking-[0.2em] ${kindTone(hit.kind)}`}
-                    >
-                      {kindLabel(hit.kind)}
-                    </span>
-                    <span className="mt-1 block font-display text-2xl leading-tight tracking-tight">
-                      {hit.title}
-                    </span>
-                    <span className="mt-1 block text-sm leading-6 text-muted">
-                      {hit.subtitle}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
+        <SearchResults q={q} results={results} />
       </section>
     </main>
   );

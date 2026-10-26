@@ -9,7 +9,8 @@ import type { Place } from "../places";
 import { LandmarkFrame } from "./landmark-frame";
 import { EventCard } from "./event-card";
 import { SectionIntro } from "./section-intro";
-import { EmptyNote, ErrorNote, LoadingLines } from "./states";
+import { LoadMoreList } from "./load-more";
+import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
 
 function uniqueSorted(values: string[]) {
@@ -243,54 +244,82 @@ export function Discovery({
 
             <div id="guide-results" className="mt-8 scroll-mt-36">
               {noEventsOnFile ? (
-                <EmptyNote>No December 2026 events are listed.</EmptyNote>
+                <EmptyList href="/list" cta="List an event">
+                  No December 2026 events are listed yet.
+                </EmptyList>
               ) : null}
-              {noMatches ? <EmptyNote>{emptyCopy}</EmptyNote> : null}
+              {noMatches ? (
+                <EmptyList href="/list" cta="List an event or place">
+                  {emptyCopy}
+                </EmptyList>
+              ) : null}
               {eventsMatched.length > 0 ? (
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.2em] text-muted">
                     {eventsMatched.length} confirmed{" "}
                     {eventsMatched.length === 1 ? "event" : "events"}
                   </p>
-                  <div className="mt-4 grid gap-4">
-                    {eventsMatched.map((event) => (
-                      <EventCard
-                        key={`${event.region}-${event.when}-${event.summary}`}
-                        event={event}
-                      />
-                    ))}
+                  <div className="mt-4">
+                    <LoadMoreList
+                      items={eventsMatched}
+                      mobileSize={6}
+                      desktopSize={12}
+                      noun="events"
+                    >
+                      {(visible) => (
+                        <div className="grid gap-4">
+                          {visible.map((event) => (
+                            <EventCard
+                              key={`${event.region}-${event.when}-${event.summary}`}
+                              event={event}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </LoadMoreList>
                   </div>
                 </div>
               ) : null}
               {placesMatched.length > 0 ? (
-                <div>
+                <div className="mt-8">
                   <p className="text-[11px] uppercase tracking-[0.2em] text-muted">
                     {placesMatched.length} organiser{" "}
                     {placesMatched.length === 1 ? "page" : "pages"}
                   </p>
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    {placesMatched.map((place) => (
-                      <article
-                        key={`${place.city}-${place.name}`}
-                        className="border border-ink/15 bg-chart p-5"
-                      >
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
-                          {place.category}
-                        </p>
-                        <h2 className="mt-2 font-display text-3xl leading-none tracking-tight">
-                          {place.name}
-                        </h2>
-                        <p className="mt-3 text-sm text-ink">{place.city}</p>
-                        <a
-                          href={place.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-5 inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                        >
-                          Organiser page — leaves this site
-                        </a>
-                      </article>
-                    ))}
+                  <div className="mt-4">
+                    <LoadMoreList
+                      items={placesMatched}
+                      mobileSize={6}
+                      desktopSize={12}
+                      noun="places"
+                    >
+                      {(visible) => (
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          {visible.map((place) => (
+                            <article
+                              key={`${place.city}-${place.name}`}
+                              className="border border-ink/15 bg-chart p-5"
+                            >
+                              <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
+                                {place.category}
+                              </p>
+                              <h2 className="mt-2 font-display text-3xl leading-none tracking-tight">
+                                {place.name}
+                              </h2>
+                              <p className="mt-3 text-sm text-ink">{place.city}</p>
+                              <a
+                                href={place.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-5 inline-flex text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                              >
+                                Organiser page — leaves this site
+                              </a>
+                            </article>
+                          ))}
+                        </div>
+                      )}
+                    </LoadMoreList>
                   </div>
                 </div>
               ) : null}

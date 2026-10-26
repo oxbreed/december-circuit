@@ -42,7 +42,14 @@ async function UpcomingBody() {
   if (rows.length === 0) {
     return (
       <p className="mt-6 max-w-2xl text-sm leading-7 text-muted">
-        Nothing on the sourced list falls on or after today in Africa/Lagos.
+        Nothing on the sourced list falls on or after today in Africa/Lagos.{" "}
+        <a
+          href="/list"
+          className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+        >
+          List an event
+        </a>{" "}
+        for review.
       </p>
     );
   }

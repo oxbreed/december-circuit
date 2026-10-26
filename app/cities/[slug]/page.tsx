@@ -11,7 +11,7 @@ import {
   cityVerifiedCount,
 } from "../../cities";
 import { Breadcrumbs } from "../../components/breadcrumbs";
-import { EventCard } from "../../components/event-card";
+import { CityEventList, CityPlaceList } from "../../components/city-listings";
 import { JsonLd } from "../../components/json-ld";
 import {
   breadcrumbJsonLd,
@@ -19,7 +19,6 @@ import {
   cityPlacesItemListJsonLd,
 } from "../../jsonld";
 import { countriesOnFile } from "../../countries";
-import { placeRecordFor } from "../../place-catalog";
 import { shareImageForCity } from "../../share-images";
 import { pageMetadata } from "../../site";
 
@@ -106,68 +105,8 @@ export default async function CityPage({
         </p>
       ) : null}
 
-      {city.events.length > 0 ? (
-        <section className="mt-12">
-          <h2 className="font-display text-3xl tracking-tight">Confirmed events</h2>
-          <div className="mt-5 grid gap-4">
-            {city.events.map((event) => (
-              <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} />
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      <section className="mt-12">
-        <h2 className="font-display text-3xl tracking-tight">Organiser pages</h2>
-        <ul className="mt-5 divide-y divide-ink/10 border border-ink/15 bg-chart">
-          {city.places.map((place) => {
-            const record = placeRecordFor(place);
-            const href = record ? `/place/${record.slug}` : null;
-            return (
-            <li
-              key={`${place.category}-${place.name}`}
-              className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:px-5"
-            >
-              <div className="min-w-0">
-                <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
-                  {place.category}
-                </p>
-                {href ? (
-                  <Link
-                    href={href}
-                    className="mt-1 block font-display text-2xl leading-none break-words hover:text-oxide"
-                  >
-                    {place.name}
-                  </Link>
-                ) : (
-                  <p className="mt-1 font-display text-2xl leading-none break-words">
-                    {place.name}
-                  </p>
-                )}
-              </div>
-              <div className="flex shrink-0 flex-col items-start gap-1 text-sm sm:items-end">
-                {href ? (
-                  <Link
-                    href={href}
-                    className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                  >
-                    On this site
-                  </Link>
-                ) : null}
-                <a
-                  href={place.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted underline decoration-ink/20 underline-offset-4 hover:text-oxide"
-                >
-                  Organiser page — leaves this site
-                </a>
-              </div>
-            </li>
-            );
-          })}
-        </ul>
-      </section>
+      <CityEventList events={city.events} cityName={city.city} />
+      <CityPlaceList places={city.places} cityName={city.city} />
 
       <p className="mt-10 text-sm leading-7 text-muted">
         <Link href="/cities" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">

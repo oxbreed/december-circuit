@@ -15,7 +15,8 @@ import {
   type PoiSource,
 } from "../poi-client";
 import { SectionIntro, sectionClassCompact } from "./section-intro";
-import { EmptyNote, ErrorNote, LoadingLines } from "./states";
+import { LoadMoreList } from "./load-more";
+import { EmptyList, ErrorNote, LoadingLines } from "./states";
 
 const PoiMap = dynamic(() => import("./poi-map"), {
   ssr: false,
@@ -290,17 +291,11 @@ export function ExploreSection() {
         <ErrorNote message={state.message} onRetry={() => setAttempt((n) => n + 1)} />
       ) : null}
       {state.status === "ready" && state.results.length === 0 ? (
-        <EmptyNote>
+        <EmptyList href="/list#submit-place" cta="List a place">
           No map {poiKindFilters[kind].label.toLowerCase()} matched in {city}
-          {qParam ? ` for “${qParam}”` : ""}. Try another type, clear the name filter, or{" "}
-          <Link
-            href="/list#submit-place"
-            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-          >
-            submit a place for review
-          </Link>
-          .
-        </EmptyNote>
+          {qParam ? ` for “${qParam}”` : ""}. Try another type or clear the name
+          filter.
+        </EmptyList>
       ) : null}
 
       {state.status === "ready" && state.results.length > 0 ? (
@@ -310,36 +305,45 @@ export function ExploreSection() {
               {state.results.length}{" "}
               {state.results.length === 1 ? "result" : "results"} · {city}
             </p>
-            <ul className="mt-4 divide-y divide-ink/10 border border-ink/15 bg-chart/60">
-              {state.results.map((row) => {
-                const selected = row.id === activeId;
-                return (
-                  <li key={row.id}>
-                    <button
-                      type="button"
-                      onClick={() => setActiveId(selected ? null : row.id)}
-                      aria-pressed={selected}
-                      className={`w-full px-4 py-3 text-left transition-colors ${
-                        selected ? "bg-paper-deep" : "hover:bg-paper-deep/50"
-                      }`}
-                    >
-                      <span className="block font-display text-xl leading-tight tracking-tight text-ink">
-                        {row.name}
-                      </span>
-                      <span className="mt-1 block text-sm leading-6 text-muted">
-                        {row.category}
-                        {row.area ? ` · ${row.area}` : ""}
-                        {row.address ? ` · ${row.address}` : ""} · {row.city}
-                      </span>
-                      <span className="mt-1 block font-mono text-[12px] text-muted">
-                        {sourceLabel(row.sources)} · {row.latitude.toFixed(5)},{" "}
-                        {row.longitude.toFixed(5)}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            <LoadMoreList
+              items={state.results}
+              mobileSize={6}
+              desktopSize={12}
+              noun="results"
+            >
+              {(visible) => (
+                <ul className="mt-4 divide-y divide-ink/10 border border-ink/15 bg-chart/60">
+                  {visible.map((row) => {
+                    const selected = row.id === activeId;
+                    return (
+                      <li key={row.id}>
+                        <button
+                          type="button"
+                          onClick={() => setActiveId(selected ? null : row.id)}
+                          aria-pressed={selected}
+                          className={`w-full px-4 py-3 text-left transition-colors ${
+                            selected ? "bg-paper-deep" : "hover:bg-paper-deep/50"
+                          }`}
+                        >
+                          <span className="block font-display text-xl leading-tight tracking-tight text-ink">
+                            {row.name}
+                          </span>
+                          <span className="mt-1 block text-sm leading-6 text-muted">
+                            {row.category}
+                            {row.area ? ` · ${row.area}` : ""}
+                            {row.address ? ` · ${row.address}` : ""} · {row.city}
+                          </span>
+                          <span className="mt-1 block font-mono text-[12px] text-muted">
+                            {sourceLabel(row.sources)} · {row.latitude.toFixed(5)},{" "}
+                            {row.longitude.toFixed(5)}
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </LoadMoreList>
           </div>
 
           <div className="lg:sticky lg:top-36">

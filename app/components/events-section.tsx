@@ -2,7 +2,7 @@
 
 import type { CircuitEvent } from "../events";
 import { SectionIntro, sectionClass } from "./section-intro";
-import { EmptyNote, ErrorNote, LoadingLines } from "./states";
+import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
 
 const atmospheres = [
@@ -86,7 +86,9 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
         />
       ) : null}
       {events.status === "ready" && events.data.length === 0 ? (
-        <EmptyNote>No December 2026 events are listed.</EmptyNote>
+        <EmptyList href="/list" cta="List an event">
+          No December 2026 events are listed yet.
+        </EmptyList>
       ) : null}
     </>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 export function LoadingLines({ label }: { label?: string } = {}) {
@@ -38,5 +39,34 @@ export function EmptyNote({ children }: { children: ReactNode }) {
     <p className="max-w-xl border border-dashed border-ink/30 px-4 py-6 leading-7 text-muted">
       {children}
     </p>
+  );
+}
+
+const listLinkClass =
+  "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
+
+/**
+ * Friendly empty / no-results block plus a contribution CTA to /list.
+ */
+export function EmptyList({
+  children,
+  href = "/list",
+  cta = "List an event or place",
+}: {
+  children: ReactNode;
+  href?: string;
+  cta?: string;
+}) {
+  return (
+    <div className="max-w-xl border border-dashed border-ink/30 px-4 py-6">
+      <p className="leading-7 text-muted">{children}</p>
+      <p className="mt-4 text-sm leading-6 text-ink">
+        Know something we should have on file?{" "}
+        <Link href={href} className={listLinkClass}>
+          {cta}
+        </Link>{" "}
+        for review — unpublished until checked.
+      </p>
+    </div>
   );
 }
