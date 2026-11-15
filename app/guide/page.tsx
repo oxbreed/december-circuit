@@ -9,6 +9,12 @@ import {
 } from "../components/guide-load-more-lists";
 import { GuideTabs } from "../components/guide-tabs";
 import { JsonLd } from "../components/json-ld";
+import {
+  CarHireVisitorBlock,
+  EventsVisitorEntry,
+  FindAStayOutbound,
+  VisitorCategoryHub,
+} from "../components/visitor-category-entry";
 import { VisaSections } from "../components/visa-sections";
 import { citiesOnFile } from "../cities";
 import { events } from "../events";
@@ -189,6 +195,8 @@ export default function GuidePage() {
       </p>
       <GuideTabs />
 
+      <VisitorCategoryHub />
+
       <section id="entry" className="mt-10 scroll-mt-36">
         <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">Visa and entry</h2>
         <VisaSections />
@@ -239,6 +247,7 @@ export default function GuidePage() {
           way of getting around. A link is the organiser page stored on that
           record. This site does not take payment.
         </p>
+        <FindAStayOutbound />
         <GuidePlaceLoadMore places={stayPlaces} noun="stay places" />
       </section>
 
@@ -250,6 +259,7 @@ export default function GuidePage() {
           pin with no organiser page stays on the map. This site does not book
           rides or quote fares.
         </p>
+        <CarHireVisitorBlock />
         <GetAroundRidesInline />
         <GuidePlaceLoadMore places={transportPlaces} noun="transport places" />
         <div className="mt-10">
@@ -273,6 +283,7 @@ export default function GuidePage() {
           only what that record stores. A ticket link appears only when the
           record has one.
         </p>
+        <EventsVisitorEntry />
         <div className="mt-6">
           <GuideWhatsOnLoadMore events={events} />
         </div>

@@ -3,6 +3,12 @@ import { Suspense } from "react";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
 import { PlacesDirectory } from "../components/places-directory";
+import {
+  CarHireVisitorBlock,
+  EventsVisitorEntry,
+  FindAStayOutbound,
+  VisitorCategoryHub,
+} from "../components/visitor-category-entry";
 import { LoadingLines } from "../components/states";
 import { breadcrumbJsonLd } from "../jsonld";
 import { placesOnFile } from "../place-catalog";
@@ -62,6 +68,13 @@ export default function PlacesPage() {
           <Link href="/list">List a place</Link>
         </p>
       </section>
+
+      <div className="mx-auto w-full max-w-6xl space-y-10 px-5 md:px-8">
+        <VisitorCategoryHub />
+        <FindAStayOutbound />
+        <CarHireVisitorBlock />
+        <EventsVisitorEntry />
+      </div>
 
       <Suspense
         fallback={
