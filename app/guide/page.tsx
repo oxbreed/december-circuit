@@ -15,6 +15,7 @@ import {
   FindAStayOutbound,
   VisitorCategoryHub,
 } from "../components/visitor-category-entry";
+import { VisitorNextActions } from "../components/visitor-next-actions";
 import { VisaSections } from "../components/visa-sections";
 import { citiesOnFile } from "../cities";
 import { events } from "../events";
@@ -193,6 +194,7 @@ export default function GuidePage() {
         around, and what is on. Every line comes from a record already listed. If a fact is not
         listed, it is left out.
       </p>
+      <VisitorNextActions className="mt-8" heading="Jump to" />
       <GuideTabs />
 
       <VisitorCategoryHub />

@@ -9,6 +9,7 @@ import {
   FindAStayOutbound,
   VisitorCategoryHub,
 } from "../components/visitor-category-entry";
+import { VisitorNextActions } from "../components/visitor-next-actions";
 import { LoadingLines } from "../components/states";
 import { breadcrumbJsonLd } from "../jsonld";
 import { placesOnFile } from "../place-catalog";
@@ -70,6 +71,7 @@ export default function PlacesPage() {
       </section>
 
       <div className="mx-auto w-full max-w-6xl space-y-10 px-5 md:px-8">
+        <VisitorNextActions className="mt-8" heading="Plan next" />
         <VisitorCategoryHub />
         <FindAStayOutbound />
         <CarHireVisitorBlock />
