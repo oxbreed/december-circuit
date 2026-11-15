@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { majorEvents } from "../event-major";
+import { FeaturedSeasonGrid } from "./featured-season-grid";
 import type { CircuitEvent } from "../events";
 import { presentEvent } from "../event-view";
 import { eventTripId } from "../trip";
@@ -63,14 +64,7 @@ export function FeaturedSeason() {
             </p>
           </div>
         ) : (
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {featured.map((event) => (
-              <FeaturedCard
-                key={`${event.region}-${event.when}-${event.summary}`}
-                event={event}
-              />
-            ))}
-          </div>
+          <FeaturedSeasonGrid featured={featured} />
         )}
       </div>
     </section>

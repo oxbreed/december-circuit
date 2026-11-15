@@ -3,20 +3,10 @@ import { presentEvent } from "./event-view";
 import { landmarks, type FramePhoto } from "./landmarks";
 import { defaultShareImage } from "./site";
 
-export type ShareImage = {
-  url: string;
-  alt: string;
-  width: number;
-  height: number;
-};
+export type ShareImage = { url: string; alt: string; width: number; height: number };
 
 function fromLandmark(shot: FramePhoto): ShareImage {
-  return {
-    url: shot.src,
-    alt: `${shot.name}, ${shot.city} — dirtydecember.info`,
-    width: 960,
-    height: 540,
-  };
+  return { url: shot.src, alt: `${shot.name}, ${shot.city} — dirtydecember.info`, width: 960, height: 540 };
 }
 
 export function shareImageForCity(city: string): ShareImage {
@@ -26,19 +16,35 @@ export function shareImageForCity(city: string): ShareImage {
 
 export function shareImageForEvent(event: CircuitEvent): ShareImage {
   const view = presentEvent(event);
-  const byName = landmarks.find(
-    (item) =>
-      item.name.toLowerCase().includes(view.name.toLowerCase().slice(0, 18)) ||
-      view.name.toLowerCase().includes(item.name.toLowerCase().slice(0, 18)),
-  );
+  const byName = landmarks.find((item) => item.name.toLowerCase().includes(view.name.toLowerCase().slice(0, 18)) || view.name.toLowerCase().includes(item.name.toLowerCase().slice(0, 18)));
   if (byName) return fromLandmark(byName);
   if (view.venue) {
-    const byVenue = landmarks.find(
-      (item) =>
-        item.name.toLowerCase().includes(view.venue!.toLowerCase()) ||
-        view.venue!.toLowerCase().includes(item.name.toLowerCase()),
-    );
+    const byVenue = landmarks.find((item) => item.name.toLowerCase().includes(view.venue!.toLowerCase()) || view.venue!.toLowerCase().includes(item.name.toLowerCase()));
     if (byVenue) return fromLandmark(byVenue);
   }
   return shareImageForCity(event.region);
+}
+
+export function cardImageForEvent(event: CircuitEvent): ShareImage | null {
+  const image = shareImageForEvent(event);
+  return image.url === defaultShareImage.url ? null : image;
+}
+
+const categoryLandmarkNames: Record<string, string> = {
+  Clubs: "Bloombar at night",
+  Bars: "Bloombar at night",
+  Landmarks: "National Theatre",
+  "Event centres": "National Theatre",
+};
+
+export function cardImageForCategory(category: string): ShareImage | null {
+  const landmarkName = categoryLandmarkNames[category];
+  if (!landmarkName) return null;
+  const shot = landmarks.find((item) => item.name === landmarkName);
+  return shot ? fromLandmark(shot) : null;
+}
+
+export function cardImageForCity(city: string): ShareImage | null {
+  const image = shareImageForCity(city);
+  return image.url === defaultShareImage.url ? null : image;
 }
