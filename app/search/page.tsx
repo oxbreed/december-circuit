@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
-import { SearchPageClient } from "../components/search-page-client";
+import { SearchPageSlot } from "../components/search-page-slot";
 import { breadcrumbJsonLd } from "../jsonld";
 import { pageMetadata } from "../site";
 
@@ -18,7 +18,7 @@ export default function SearchPage() {
       <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Search", path: "/search" }])} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Search" }]} />
       <Suspense fallback={<p className="mt-10 text-sm text-muted">Loading search…</p>}>
-        <SearchPageClient />
+        <SearchPageSlot />
       </Suspense>
     </main>
   );
