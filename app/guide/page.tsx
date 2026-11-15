@@ -1,7 +1,12 @@
 import Link from "next/link";
-import { EventCard } from "../components/event-card";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { GetAroundRidesInline } from "../components/get-around-rides";
+import {
+  GuideCitiesLoadMore,
+  GuidePinLoadMore,
+  GuidePlaceLoadMore,
+  GuideWhatsOnLoadMore,
+} from "../components/guide-load-more-lists";
 import { GuideTabs } from "../components/guide-tabs";
 import { JsonLd } from "../components/json-ld";
 import { VisaSections } from "../components/visa-sections";
@@ -9,7 +14,7 @@ import { citiesOnFile } from "../cities";
 import { events } from "../events";
 import { flightSearches, seasonSearchNote } from "../flights";
 import { breadcrumbJsonLd } from "../jsonld";
-import { pins, type Pin } from "../pins";
+import { pins } from "../pins";
 import { places, type Place } from "../places";
 import { pageMetadata } from "../site";
 
@@ -234,7 +239,7 @@ export default function GuidePage() {
           way of getting around. A link is the organiser page stored on that
           record. This site does not take payment.
         </p>
-        <PlaceList rows={stayPlaces} />
+        <GuidePlaceLoadMore places={stayPlaces} noun="stay places" />
       </section>
 
       <section id="around" className="mt-14 scroll-mt-36 border-t border-ink/10 pt-10">
@@ -246,7 +251,7 @@ export default function GuidePage() {
           rides or quote fares.
         </p>
         <GetAroundRidesInline />
-        <PlaceList rows={transportPlaces} />
+        <GuidePlaceLoadMore places={transportPlaces} noun="transport places" />
         <div className="mt-10">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <h3 className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Map pins</h3>
@@ -257,7 +262,7 @@ export default function GuidePage() {
               Open the map
             </Link>
           </div>
-          <PinList rows={pins} />
+          <GuidePinLoadMore pins={pins} />
         </div>
       </section>
 
@@ -268,10 +273,8 @@ export default function GuidePage() {
           only what that record stores. A ticket link appears only when the
           record has one.
         </p>
-        <div className="mt-6 grid gap-4">
-          {events.map((event) => (
-            <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} as="h3" />
-          ))}
+        <div className="mt-6">
+          <GuideWhatsOnLoadMore events={events} />
         </div>
       </section>
 
@@ -280,18 +283,7 @@ export default function GuidePage() {
         <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
           Each city page is a city already listed.
         </p>
-        <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-          {cities.map((city) => (
-            <li key={city.slug}>
-              <Link
-                href={`/cities/${city.slug}`}
-                className="text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                {city.city}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <GuideCitiesLoadMore cities={cities} />
       </section>
     </main>
   );

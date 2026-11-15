@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { disclaimer } from "../../brand";
-import { EventCard } from "../../components/event-card";
+import { EventLoadMoreCards } from "../../components/event-load-more";
+import { PlaceOutboundLoadMore } from "../../components/place-load-more";
 import { JsonLd } from "../../components/json-ld";
 import {
   OutboundLink,
@@ -79,14 +80,12 @@ export default function LagosDecember2026Page() {
           {lagosEvents.length === 0 ? (
             <p className="mt-6 text-sm leading-7 text-muted">No Lagos events on file.</p>
           ) : (
-            <div className="mt-6 grid gap-5 md:grid-cols-2">
-              {lagosEvents.map((event) => (
-                <EventCard
-                  key={`${event.region}-${event.when}-${event.summary}`}
-                  event={event}
-                  as="h3"
-                />
-              ))}
+            <div className="mt-6">
+              <EventLoadMoreCards
+                events={lagosEvents}
+                as="h3"
+                gridClassName="grid gap-5 md:grid-cols-2"
+              />
             </div>
           )}
           <p className="mt-6 text-sm leading-7">
@@ -161,19 +160,7 @@ export default function LagosDecember2026Page() {
               <h3 className="text-[11px] uppercase tracking-[0.22em] text-lagoon">
                 Airport and car rental on file
               </h3>
-              <ul className="mt-3">
-                {transport.map((place) => (
-                  <li key={place.name} className="border-t border-ink/10 py-3">
-                    <p className="text-sm leading-6 text-ink">
-                      {place.name}
-                      <span className="text-muted"> · {place.category}</span>
-                    </p>
-                    {place.url ? (
-                      <OutboundLink href={place.url}>Organiser page</OutboundLink>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
+                            <PlaceOutboundLoadMore places={transport} noun="transport pages" />
             </div>
           ) : null}
           <p className="mt-4 text-sm leading-7 text-muted">
@@ -202,19 +189,7 @@ export default function LagosDecember2026Page() {
           {stays.length === 0 ? (
             <p className="mt-6 text-sm leading-7 text-muted">No Lagos stay rows on file.</p>
           ) : (
-            <ul className="mt-6">
-              {stays.map((place) => (
-                <li key={place.name} className="border-t border-ink/10 py-3">
-                  <p className="text-sm leading-6 text-ink">
-                    {place.name}
-                    <span className="text-muted"> · {place.category}</span>
-                  </p>
-                  {place.url ? (
-                    <OutboundLink href={place.url}>Organiser page</OutboundLink>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
+                        <PlaceOutboundLoadMore places={stays} noun="stay pages" />
           )}
           <p className="mt-4 text-sm leading-7 text-muted">
             <Link

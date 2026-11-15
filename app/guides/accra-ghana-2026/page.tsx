@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { disclaimer } from "../../brand";
-import { EventCard } from "../../components/event-card";
+import { GuideWhatsOnLoadMore } from "../../components/guide-load-more-lists";
+import { PlaceOutboundLoadMore } from "../../components/place-load-more";
 import { JsonLd } from "../../components/json-ld";
 import {
   OutboundLink,
@@ -85,14 +86,8 @@ export default function AccraGhana2026Page() {
               No December in Ghana season row is on file.
             </p>
           ) : (
-            <div className="mt-6 grid gap-5 md:grid-cols-1">
-              {seasonEvents.map((event) => (
-                <EventCard
-                  key={`${event.region}-${event.when}-${event.summary}`}
-                  event={event}
-                  as="h3"
-                />
-              ))}
+            <div className="mt-6">
+              <GuideWhatsOnLoadMore events={seasonEvents} />
             </div>
           )}
           <p className="mt-6 text-sm leading-7 text-muted">
@@ -186,19 +181,7 @@ export default function AccraGhana2026Page() {
           {stays.length === 0 ? (
             <p className="mt-6 text-sm leading-7 text-muted">No Accra stay rows on file.</p>
           ) : (
-            <ul className="mt-6">
-              {stays.map((place) => (
-                <li key={place.name} className="border-t border-ink/10 py-3">
-                  <p className="text-sm leading-6 text-ink">
-                    {place.name}
-                    <span className="text-muted"> · {place.category}</span>
-                  </p>
-                  {place.url ? (
-                    <OutboundLink href={place.url}>Organiser page</OutboundLink>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
+            <PlaceOutboundLoadMore places={stays} noun="stay pages" />
           )}
           <p className="mt-6 text-sm leading-7 text-muted">
             <Link

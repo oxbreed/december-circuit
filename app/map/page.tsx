@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
+import { MapPinListLoadMore } from "../components/map-pin-list-load-more";
 import { MapSection } from "../components/map-section";
 import { breadcrumbJsonLd } from "../jsonld";
 import { pins } from "../pins";
@@ -14,8 +15,6 @@ export const metadata = pageMetadata({
 });
 
 export default function MapPage() {
-  const sample = pins.slice(0, 40);
-
   return (
     <main id="top" className="pb-28 lg:pb-0">
       <JsonLd
@@ -33,20 +32,14 @@ export default function MapPage() {
         />
         <section aria-label="Places with coordinates" className="mt-6 pb-4">
           <h2 className="sr-only">Places with sourced coordinates</h2>
-          <ul className="columns-1 gap-x-8 text-sm leading-6 text-ink sm:columns-2 lg:columns-3">
-            {sample.map((pin) => (
-              <li
-                key={`${pin.city}-${pin.name}-${pin.latitude}-${pin.longitude}`}
-                className="break-inside-avoid py-0.5"
-              >
-                <span className="text-ink">{pin.name}</span>
-                <span className="text-muted">
-                  {" "}
-                  — {pin.city}, {pin.country}
-                </span>
+          <ul className="sr-only">
+            {pins.map((pin) => (
+              <li key={`${pin.city}-${pin.name}-${pin.latitude}-${pin.longitude}`}>
+                {pin.name} — {pin.city}, {pin.country}
               </li>
             ))}
           </ul>
+          <MapPinListLoadMore pins={pins} />
           <p className="mt-3 text-sm text-muted">
             <Link href="/explore" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
               Explore map search

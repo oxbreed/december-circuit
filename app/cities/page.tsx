@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { disclaimer } from "../brand";
 import { Breadcrumbs } from "../components/breadcrumbs";
+import { CityIndexLoadMore } from "../components/city-index-load-more";
 import { JsonLd } from "../components/json-ld";
 import { citiesOnFile } from "../cities";
 import { countriesOnFile } from "../countries";
@@ -87,29 +88,9 @@ export default function CitiesIndexPage() {
                 country
               )}
             </h2>
-            <ul className="mt-5 divide-y divide-ink/10 border border-ink/15 bg-chart">
-              {rows.map((city) => (
-                <li key={city.slug}>
-                  <Link
-                    href={`/cities/${city.slug}`}
-                    className="flex flex-col gap-1 px-4 py-4 hover:bg-paper sm:flex-row sm:items-baseline sm:justify-between sm:px-5"
-                  >
-                    <span className="font-display text-2xl leading-none tracking-tight">
-                      {city.city}
-                    </span>
-                    <span className="text-sm text-muted">
-                      {city.events.length > 0
-                        ? `${city.events.length} confirmed ${
-                            city.events.length === 1 ? "event" : "events"
-                          } · `
-                        : null}
-                      {city.places.length} organiser{" "}
-                      {city.places.length === 1 ? "page" : "pages"}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-5">
+              <CityIndexLoadMore cities={rows} />
+            </div>
           </section>
           );
         })}

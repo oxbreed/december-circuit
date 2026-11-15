@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { disclaimer } from "../../brand";
 import { JsonLd } from "../../components/json-ld";
+import { ScheduleNightsLoadMore } from "../../components/schedule-nights-load-more";
 import {
   OutboundLink,
   SeasonGuideShell,
 } from "../../components/season-guide-chrome";
-import { eventNameAndVenue, presentEvent } from "../../event-view";
+import { eventNameAndVenue } from "../../event-view";
 import { breadcrumbJsonLd } from "../../jsonld";
 import {
   carnivalPeakRollup,
@@ -138,39 +139,9 @@ export default function CarnivalCalabar2026Page() {
               No individual schedule nights are published yet.
             </p>
           ) : (
-            <ol className="mt-8 space-y-0">
-              {nights.map((event) => {
-                const view = presentEvent(event);
-                return (
-                  <li
-                    key={`${event.when}-${event.summary}`}
-                    className="border-t border-ink/10 py-4"
-                  >
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-lagoon">
-                      {event.when}
-                    </p>
-                    <p className="mt-1 font-display text-2xl leading-tight tracking-tight">
-                      {view.name}
-                    </p>
-                    {event.url ? (
-                      <p className="mt-2">
-                        <OutboundLink href={event.url}>
-                          {event.urlLabel ?? "Official page"} — leaves this site
-                        </OutboundLink>
-                      </p>
-                    ) : null}
-                    <p className="mt-2">
-                      <Link
-                        href={view.href}
-                        className="text-sm underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                      >
-                        Directory event page
-                      </Link>
-                    </p>
-                  </li>
-                );
-              })}
-            </ol>
+            <div className="mt-8">
+              <ScheduleNightsLoadMore nights={nights} />
+            </div>
           )}
         </section>
 

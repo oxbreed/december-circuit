@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { disclaimer } from "../../brand";
 import { Breadcrumbs } from "../../components/breadcrumbs";
-import { EventCard } from "../../components/event-card";
+import { CityIndexLoadMore } from "../../components/city-index-load-more";
+import { EventLoadMoreCards } from "../../components/event-load-more";
 import { JsonLd } from "../../components/json-ld";
 import {
   countriesOnFile,
@@ -90,39 +91,17 @@ export default async function CountryPage({
       {country.events.length > 0 ? (
         <section className="mt-12">
           <h2 className="font-display text-3xl tracking-tight">Confirmed events</h2>
-          <div className="mt-5 grid gap-4">
-            {country.events.map((event) => (
-              <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} />
-            ))}
+          <div className="mt-5">
+            <EventLoadMoreCards events={country.events} />
           </div>
         </section>
       ) : null}
 
       <section className="mt-12">
         <h2 className="font-display text-3xl tracking-tight">Cities on file</h2>
-        <ul className="mt-5 divide-y divide-ink/10 border border-ink/15 bg-chart">
-          {country.cities.map((city) => (
-            <li key={city.slug}>
-              <Link
-                href={`/cities/${city.slug}`}
-                className="flex flex-col gap-1 px-4 py-4 hover:bg-paper sm:flex-row sm:items-baseline sm:justify-between sm:px-5"
-              >
-                <span className="font-display text-2xl leading-none tracking-tight">
-                  {city.city}
-                </span>
-                <span className="text-sm text-muted">
-                  {city.events.length > 0
-                    ? `${city.events.length} confirmed ${
-                        city.events.length === 1 ? "event" : "events"
-                      } · `
-                    : null}
-                  {city.places.length} organiser{" "}
-                  {city.places.length === 1 ? "page" : "pages"}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-5">
+          <CityIndexLoadMore cities={country.cities} />
+        </div>
       </section>
 
       <p className="mt-10 text-sm leading-7 text-muted">

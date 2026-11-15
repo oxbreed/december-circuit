@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { disclaimer } from "../../brand";
-import { cityRecordFor } from "../../cities";
+import { PlaceOrganiserLoadMore } from "../../components/place-load-more";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { JsonLd } from "../../components/json-ld";
 import {
@@ -128,45 +128,9 @@ export default async function CategoryPage({
           <h2 className="mt-12 font-display text-3xl tracking-tight">
             Organiser pages on file
           </h2>
-          <ul className="mt-6 divide-y divide-ink/10 border border-ink/15 bg-chart">
-            {listed.map((place) => {
-              const city = cityRecordFor(place.city, place.country);
-              return (
-                <li
-                  key={place.slug}
-                  className="flex flex-col gap-2 px-4 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:px-5"
-                >
-                  <div className="min-w-0">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
-                      {place.city}, {place.country}
-                    </p>
-                    <Link
-                      href={`/place/${place.slug}`}
-                      className="mt-1 block font-display text-2xl leading-none tracking-tight hover:text-oxide"
-                    >
-                      {place.name}
-                    </Link>
-                  </div>
-                  <div className="flex shrink-0 flex-col items-start gap-1 text-sm sm:items-end">
-                    <Link
-                      href={`/place/${place.slug}`}
-                      className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                    >
-                      On this site
-                    </Link>
-                    {city ? (
-                      <Link
-                        href={`/cities/${city.slug}`}
-                        className="text-muted underline decoration-ink/20 underline-offset-4 hover:text-oxide"
-                      >
-                        {city.city} page
-                      </Link>
-                    ) : null}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="mt-6">
+            <PlaceOrganiserLoadMore places={listed} />
+          </div>
         </>
       ) : (
         <p className="mt-10 max-w-2xl text-sm leading-7 text-muted">

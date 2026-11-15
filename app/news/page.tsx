@@ -1,4 +1,5 @@
 import { disclaimer } from "../brand";
+import { NewsLoadMore } from "../components/news-load-more";
 import { loadNews } from "../news-reader";
 import { pageMetadata } from "../site";
 
@@ -29,40 +30,8 @@ export default async function NewsPage() {
         {items.length === 0 ? <p>News feeds did not return any items.</p> : null}
       </div>
       {items.length > 0 ? (
-        <div className="mt-10 space-y-10">
-          {items.map((item) => (
-            <article key={item.link} className="border-t border-ink/15 pt-8">
-              {item.image ? (
-                // The address is the feed’s own image URL. The optimizer is not used.
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={item.image}
-                  alt={item.headline}
-                  className="mb-5 h-auto w-full"
-                />
-              ) : null}
-              <p className="text-[11px] uppercase tracking-[0.18em] text-oxide">{item.source}</p>
-              <h2 className="mt-2 font-display text-3xl leading-none tracking-tight">
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  {item.headline}
-                  <span className="mt-2 block font-sans text-sm font-normal normal-case tracking-normal text-muted">
-                    Leaves this site
-                  </span>
-                </a>
-              </h2>
-              {item.published ? (
-                <time className="mt-3 block text-sm leading-6 text-muted">{item.published}</time>
-              ) : null}
-              {item.description ? (
-                <p className="mt-3 text-base leading-7 text-ink">{item.description}</p>
-              ) : null}
-            </article>
-          ))}
+        <div className="mt-10">
+          <NewsLoadMore items={items} />
         </div>
       ) : null}
     </main>

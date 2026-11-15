@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { events } from "../events";
 import { eventsInRegionOrder } from "../event-view";
-import { EventCard } from "./event-card";
+import { EventLoadMoreCards } from "./event-load-more";
+import { EmptyList } from "./states";
 
 export function ConfirmedEvents() {
   const confirmed = eventsInRegionOrder(events);
@@ -24,21 +25,14 @@ export function ConfirmedEvents() {
           Lagos is listed before Calabar. The date and the city are what the record stores. A venue line appears only when the record names one.
         </p>
         {confirmed.length === 0 ? (
-          <p className="mt-6 text-sm leading-7 text-muted">
-            No events are listed.{" "}
-            <Link
-              href="/list"
-              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-            >
-              List an event
-            </Link>{" "}
-            for review.
-          </p>
+          <div className="mt-6">
+            <EmptyList href="/list" cta="List an event">
+              No events are listed.
+            </EmptyList>
+          </div>
         ) : (
-          <div className="mt-6 grid gap-4">
-            {confirmed.map((event) => (
-              <EventCard key={`${event.region}-${event.when}-${event.summary}`} event={event} as="h3" />
-            ))}
+          <div className="mt-6">
+            <EventLoadMoreCards events={confirmed} as="h3" />
           </div>
         )}
       </div>
