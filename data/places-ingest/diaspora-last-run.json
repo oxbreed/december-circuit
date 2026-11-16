@@ -1,68 +1,61 @@
 {
-  "checkedAt": "2026-11-16T09:38:15.214Z",
+  "checkedAt": "2026-11-16T11:38:20.149Z",
   "added": [
     {
       "country": "Ghana",
       "city": "Accra",
-      "category": "Hotels",
-      "name": "La Palm Royal Beach Hotel",
-      "url": "https://lapalmroyalbeachhotel.com/"
+      "category": "Practical stops",
+      "name": "W.E.B. Du Bois Centre",
+      "url": "https://visitghana.com/w-e-b-dubois-centre/"
     },
     {
       "country": "Ghana",
       "city": "Accra",
       "category": "Practical stops",
-      "name": "National Theatre of Ghana",
-      "url": "https://visitghana.com/attractions/national-theatre/"
+      "name": "Independence Square",
+      "url": "https://visitghana.com/independence-square/"
     },
     {
       "country": "Ghana",
       "city": "Accra",
       "category": "Practical stops",
-      "name": "Kwame Nkrumah Memorial Park",
-      "url": "https://visitghana.com/attractions/kwame-nkrumah-memorial-park/"
+      "name": "Legon Botanical Gardens",
+      "url": "https://visitghana.com/legon-botanical-gardens/"
+    },
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Practical stops",
+      "name": "Osu Castle",
+      "url": "https://visitghana.com/osu-castle/"
     },
     {
       "country": "Nigeria",
       "city": "Lagos",
       "category": "Practical stops",
-      "name": "Lekki Conservation Centre",
-      "url": "https://www.ncfnigeria.org/our-parks/lekki-conservation-centre/"
+      "name": "Freedom Park Lagos",
+      "url": "https://freedomparklagos.com/"
     },
     {
       "country": "Nigeria",
       "city": "Lagos",
       "category": "Practical stops",
-      "name": "National Theatre of Nigeria",
-      "url": "https://nationaltheatre.gov.ng/"
+      "name": "Nike Art Gallery (Lagos)",
+      "url": "https://nikeartfoundation.com/"
     },
     {
       "country": "Nigeria",
       "city": "Lagos",
-      "category": "Hotels",
-      "name": "La Campagne Tropicana Beach Resort",
-      "url": "https://www.lacampagnetropicana.com/"
+      "category": "Practical stops",
+      "name": "National Museum Lagos",
+      "url": "https://museum.ng/museums/national-museums/"
     },
     {
       "country": "Nigeria",
       "city": "Calabar",
       "category": "Practical stops",
-      "name": "Tinapa Business and Leisure Resort",
-      "url": "https://www.tinapa.ng/"
-    },
-    {
-      "country": "Nigeria",
-      "city": "Calabar",
-      "category": "Hotels",
-      "name": "Obudu Mountain Resort",
-      "url": "https://obudumountainresort.com/"
-    },
-    {
-      "country": "Nigeria",
-      "city": "Calabar",
-      "category": "Practical stops",
-      "name": "Cross River State Tourism",
-      "url": "https://crossriverstate.gov.ng/tourism"
+      "name": "Drill Ranch (Calabar)",
+      "url": "https://www.pandrillus.org/drill-ranch/"
     }
   ],
   "held": [
