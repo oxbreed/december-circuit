@@ -238,7 +238,7 @@ export function accraStayPlaces() {
 }
 
 const diasporaRecreationNames =
-  /Conservation Centre|National Theatre|Tinapa Business|Obudu Mountain|Cross River State Tourism|Kwame Nkrumah Memorial|La Campagne Tropicana|Freedom Park Lagos|Nike Art Gallery|National Museum Lagos|Drill Ranch|Du Bois Centre|Independence Square|Legon Botanical Gardens|Osu Castle/i;
+  /Conservation Centre|National Theatre|Tinapa Business|Obudu Mountain|Cross River State Tourism|Kwame Nkrumah Memorial|La Campagne Tropicana|Freedom Park Lagos|Nike Art Gallery|National Museum Lagos|Drill Ranch|Du Bois Centre|Independence Square|Legon Botanical Gardens|Osu Castle|Labadi Beach|Lagos State Ministry of Tourism/i;
 
 /** Official tourism / recreation organiser pages for diaspora city guides (not airports). */
 export function lagosDiasporaRecreation() {

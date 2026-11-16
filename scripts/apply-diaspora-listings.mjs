@@ -146,6 +146,38 @@ const pinBacklog = [
     url: "https://www.pandrillus.org/drill-ranch/",
     source: "verified-ingest-2026-11-16",
   },
+  {
+    country: "Ghana",
+    city: "Accra",
+    category: "Practical stops",
+    name: "Labadi Beach",
+    url: "https://visitghana.com/attractions/labadi-beach/",
+    source: "clear-nav-2026-11-16",
+  },
+  {
+    country: "Ghana",
+    city: "Cape Coast",
+    category: "Practical stops",
+    name: "Kakum National Park",
+    url: "https://visitghana.com/attractions/kakum-national-park/",
+    source: "clear-nav-2026-11-16",
+  },
+  {
+    country: "Ghana",
+    city: "Cape Coast",
+    category: "Practical stops",
+    name: "Elmina Castle",
+    url: "https://visitghana.com/attractions/elmina-castle/",
+    source: "clear-nav-2026-11-16",
+  },
+  {
+    country: "Nigeria",
+    city: "Lagos",
+    category: "Practical stops",
+    name: "Lagos State Ministry of Tourism, Arts and Culture",
+    url: "https://lagosstate.gov.ng/ministry-of-tourism-arts-and-culture",
+    source: "clear-nav-2026-11-16",
+  },
 ];
 
 function parsePlacesTs(src) {

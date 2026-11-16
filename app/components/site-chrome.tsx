@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { disclaimer, nav } from "../brand";
+import { disclaimer, navPrimary, navSecondary } from "../brand";
 import { rideHailMarkets } from "../ride-hailing";
 import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
@@ -126,21 +126,42 @@ export function SiteChrome({
             <HeaderSearch />
             <div className="flex shrink-0 items-center gap-3">
               <HeaderTripLink compact className="lg:hidden shrink-0 text-[11px] uppercase tracking-[0.14em] text-oxide" />
-              <nav aria-label="Pages" className="hidden items-center gap-3 lg:flex xl:gap-4">
-                {nav.map(([label, href]) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    aria-current={current(pathname, href) ? "page" : undefined}
-                    className={`text-[11px] uppercase tracking-[0.14em] hover:text-oxide xl:tracking-[0.16em] ${
-                      current(pathname, href)
-                        ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
-                        : "text-ink/75"
-                    }`}
-                  >
-                    {label}
-                  </Link>
-                ))}
+              <nav aria-label="Pages" className="hidden min-w-0 items-center gap-2 lg:flex xl:gap-3">
+                <div className="flex flex-wrap items-center gap-2 xl:gap-3">
+                  <span className="sr-only">Directory and planning</span>
+                  {navPrimary.map(([label, href]) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      aria-current={current(pathname, href) ? "page" : undefined}
+                      className={`whitespace-nowrap text-[11px] uppercase tracking-[0.14em] hover:text-oxide xl:tracking-[0.16em] ${
+                        current(pathname, href)
+                          ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
+                          : "text-ink/85"
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+                <span className="hidden h-3.5 w-px shrink-0 bg-ink/20 xl:block" aria-hidden="true" />
+                <div className="hidden flex-wrap items-center gap-2 xl:flex xl:gap-3">
+                  <span className="sr-only">Trip tools</span>
+                  {navSecondary.map(([label, href]) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      aria-current={current(pathname, href) ? "page" : undefined}
+                      className={`whitespace-nowrap text-[11px] uppercase tracking-[0.12em] hover:text-oxide ${
+                        current(pathname, href)
+                          ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
+                          : "text-ink/55"
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
                 <HeaderTripLink />
               </nav>
               <Link
@@ -259,19 +280,35 @@ export function SiteChrome({
         className="fixed inset-x-0 bottom-0 z-40 max-w-full overflow-x-clip border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden"
       >
         <NewsTicker />
-        <nav aria-label="Mobile pages" className="grid grid-cols-7 px-1 py-2">
-          {nav.map(([label, href]) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={current(pathname, href) ? "page" : undefined}
-              className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-1 text-center text-[12px] font-medium uppercase leading-none tracking-tight ${
-                current(pathname, href) ? "text-oxide" : "text-ink/70"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
+        <nav aria-label="Mobile pages" className="px-1 py-2">
+          <div className="grid grid-cols-5 gap-0.5">
+            {navPrimary.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={current(pathname, href) ? "page" : undefined}
+                className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-1 text-center text-[11px] font-medium uppercase leading-none tracking-tight ${
+                  current(pathname, href) ? "text-oxide" : "text-ink/80"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          <div className="mt-1 grid grid-cols-4 gap-0.5 border-t border-ink/10 pt-1">
+            {navSecondary.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={current(pathname, href) ? "page" : undefined}
+                className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-0.5 text-center text-[10px] font-medium uppercase leading-none tracking-tight ${
+                  current(pathname, href) ? "text-oxide" : "text-ink/55"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
         </nav>
       </div>
       <noscript>

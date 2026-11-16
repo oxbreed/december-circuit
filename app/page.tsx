@@ -1,5 +1,6 @@
 import { FeaturedSeason } from "./components/featured-season";
 import { HomeHero } from "./components/home-hero";
+import { HomeStartNav } from "./components/home-start-nav";
 import { MyTrip } from "./components/my-trip";
 import { QuickHubs } from "./components/quick-hubs";
 import { UpcomingHome } from "./components/upcoming-home";
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <main id="top">
       <HomeHero />
+      <HomeStartNav />
       <FeaturedSeason />
       <QuickHubs />
       <UpcomingHome />
