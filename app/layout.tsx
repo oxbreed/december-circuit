@@ -95,7 +95,7 @@ export default function RootLayout({
         <meta
           name="impact-site-verification"
           {...({
-            value: "9c7a5938-61b2-40c3-85ac-b107faf170b8",
+            value: "a59c0ba8-532b-4068-9ffa-4d30dff4eb45",
           } as Record<string, string>)}
         />
       </head>
