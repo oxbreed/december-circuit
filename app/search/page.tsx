@@ -5,8 +5,7 @@ import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
   title: "Search",
-  description:
-    "Search confirmed events, organiser places, and season guide pages already on file at dirtydecember.info.",
+  description: "Search confirmed events, organiser places, and season guide pages already on file at dirtydecember.info.",
   path: "/search",
 });
 
@@ -17,7 +16,7 @@ export default function SearchPage() {
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Search" }]} />
       <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-lagoon">Directory search</p>
       <h1 className="mt-3 font-display text-5xl leading-none tracking-tight md:text-7xl">Search</h1>
-      <p className="mt-5 max-w-2xl text-base leading-7 text-muted">Matches confirmed events, organiser places, and guide pages already on file. Use the header search, or submit this form.</p>
+      <p className="mt-5 max-w-2xl text-base leading-7 text-muted">Matches confirmed events, organiser places, and guide pages already on file.</p>
       <form role="search" action="/events" method="get" className="mt-8 max-w-xl">
         <label htmlFor="search-page-q" className="sr-only">Search query</label>
         <div className="flex gap-2">
