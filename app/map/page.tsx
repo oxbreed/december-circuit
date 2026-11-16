@@ -8,9 +8,9 @@ import { pins } from "../pins";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
-  title: "Map — Lagos, Accra, Calabar & West Africa",
+  title: "Map — Lagos, Abuja, Accra & Abidjan",
   description:
-    "Sourced map pins for Detty December and West Africa places already on file — OpenStreetMap coordinates for Lagos, Accra, Calabar, and other listed cities. Directions leave this site.",
+    "Filterable MapLibre map for Detty December: sourced hotel, venue, and party pins in Lagos, Abuja, Accra, and Abidjan. Event dates colour-coded; travel time between two confirmed events when a routing key is set.",
   path: "/map",
 });
 

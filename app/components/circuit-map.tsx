@@ -11,10 +11,10 @@ import {
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, Point } from "geojson";
-import type { Pin } from "../pins";
+import type { CircuitMapPin } from "../circuit-map-pin";
+import { circuitPinId } from "../circuit-map-pin";
 import { OPENFREEMAP_STYLE_URL } from "../map-style";
 import { ensureMapLibreWorker } from "../maplibre-setup";
-import { pinId } from "./pin-id";
 import {
   MapErrorBoundary,
   MapFallback,
@@ -24,22 +24,23 @@ import {
   type MapListHref,
 } from "./map-fallback";
 
-type PinProps = { id: string; name: string; selected: 0 | 1 };
+type PinProps = { id: string; name: string; selected: 0 | 1; color: string };
 type PinFeature = Feature<Point, PinProps>;
 
 function pinsToFeatureCollection(
-  pins: Pin[],
+  pins: CircuitMapPin[],
   activeId: string | null,
 ): FeatureCollection<Point, PinProps> {
   const ordered = [...pins].sort((a, b) => {
-    if (pinId(a) === activeId) return 1;
-    if (pinId(b) === activeId) return -1;
+    if (circuitPinId(a) === activeId) return 1;
+    if (circuitPinId(b) === activeId) return -1;
     return 0;
   });
   return {
     type: "FeatureCollection",
     features: ordered.map((pin): PinFeature => {
-      const id = pinId(pin);
+      const id = circuitPinId(pin);
+      const color = pin.pinColor ?? "#8a6232";
       return {
         type: "Feature",
         id,
@@ -47,6 +48,7 @@ function pinsToFeatureCollection(
           id,
           name: pin.name,
           selected: id === activeId ? 1 : 0,
+          color,
         },
         geometry: {
           type: "Point",
@@ -57,7 +59,7 @@ function pinsToFeatureCollection(
   };
 }
 
-function fitPins(map: MapLibreMap, pins: Pin[], narrow: boolean) {
+function fitPins(map: MapLibreMap, pins: CircuitMapPin[], narrow: boolean) {
   if (pins.length === 0) return;
   if (pins.length === 1) {
     map.jumpTo({
@@ -85,7 +87,7 @@ function CircuitMapInner({
   onSelect,
   listHref,
 }: {
-  pins: Pin[];
+  pins: CircuitMapPin[];
   activeId: string | null;
   onSelect: (id: string) => void;
   listHref: MapListHref;
@@ -178,7 +180,12 @@ function CircuitMapInner({
             narrow ? 12 : 9,
             narrow ? 9 : 6,
           ],
-          "circle-color": ["case", ["==", ["get", "selected"], 1], "#b8432f", "#8a6232"],
+          "circle-color": [
+            "case",
+            ["==", ["get", "selected"], 1],
+            "#b8432f",
+            ["get", "color"],
+          ],
           "circle-stroke-width": ["case", ["==", ["get", "selected"], 1], 2, 1.5],
           "circle-stroke-color": [
             "case",
@@ -279,7 +286,7 @@ function CircuitMapInner({
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready || failed || !activeId) return;
-    const active = pins.find((pin) => pinId(pin) === activeId);
+    const active = pins.find((pin) => circuitPinId(pin) === activeId);
     if (!active) return;
     handedOff.current = true;
     map.easeTo({
@@ -320,7 +327,7 @@ export default function CircuitMap({
   /** Circuit / event surfaces → /events; place pin maps may pass /places. */
   listHref = "/events",
 }: {
-  pins: Pin[];
+  pins: CircuitMapPin[];
   activeId: string | null;
   onSelect: (id: string) => void;
   listHref?: MapListHref;
