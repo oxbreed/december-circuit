@@ -79,6 +79,9 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   category: "travel",
+  other: {
+    "Impact-Site-Verification": "9c7a5938-61b2-40c3-85ac-b107faf170b8",
+  },
 };
 
 export default function RootLayout({

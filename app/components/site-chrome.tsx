@@ -194,6 +194,9 @@ export function SiteChrome({
               </a>
               .
             </p>
+            <p className="mt-4 font-mono text-[11px] leading-5 text-muted">
+              Impact-Site-Verification: 9c7a5938-61b2-40c3-85ac-b107faf170b8
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10">
             <p className="min-w-0">
