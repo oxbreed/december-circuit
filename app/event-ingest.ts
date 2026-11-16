@@ -339,6 +339,41 @@ function extractFlytimeHouseRb(source: EventFeedSource, text: string): ExtractRe
   };
 }
 
+function extractAfestacc(source: EventFeedSource, text: string): ExtractResult {
+  const hasName = /AFESTACC/i.test(text);
+  const hasDates =
+    /9[–-]12\s*December\s*2026/i.test(text) ||
+    (/9\s*December/i.test(text) && /12\s*December\s*2026/i.test(text));
+  const hasAccra = /Accra/i.test(text);
+  const hasVenue = /La Palm Royal Beach Hotel/i.test(text);
+  if (!hasName || !hasDates || !hasAccra) {
+    return {
+      published: [],
+      held: [
+        hold(
+          source,
+          "Official page did not state AFESTACC, 9–12 December 2026, and Accra together.",
+        ),
+      ],
+      detail: "incomplete fields",
+    };
+  }
+  const venueSuffix = hasVenue
+    ? ", La Palm Royal Beach Hotel, Accra."
+    : ", Accra.";
+  return {
+    published: [
+      publish(source, {
+        region: "Accra",
+        when: "9-12 December",
+        summary: `AFESTACC + ISWA 2026, African Festival of Arts, Culture and Creatives${venueSuffix}`,
+      }),
+    ],
+    held: [],
+    detail: "AFESTACC confirmed",
+  };
+}
+
 function extractDecemberInGhana(source: EventFeedSource, text: string): ExtractResult {
   const hasSeason =
     /1\s*December\s*2026\s*to\s*3\s*January\s*2027/i.test(text) ||
@@ -612,6 +647,8 @@ async function runSource(source: EventFeedSource): Promise<ExtractResult & { ok:
       return { ok: true, ...extractFlytimeHouseRb(source, text) };
     case "december-in-ghana":
       return { ok: true, ...extractDecemberInGhana(source, text) };
+    case "afestacc":
+      return { ok: true, ...extractAfestacc(source, text) };
     default:
       return {
         ok: false,

@@ -179,7 +179,9 @@ export function ghanaSeasonEventsOnFile(): CircuitEvent[] {
   return events.filter(
     (event) =>
       event.region === "Ghana" ||
+      event.region === "Accra" ||
       event.sourceId === "december-in-ghana-myjoy" ||
+      event.sourceId === "afestacc-2026" ||
       /December in Ghana/i.test(event.summary),
   );
 }
@@ -233,6 +235,44 @@ export function accraStayPlaces() {
   return placesInCity("Accra", "Ghana").filter(
     (place) => place.category === "Hotels" || place.category === "Short-stay",
   );
+}
+
+const diasporaRecreationNames =
+  /Conservation Centre|National Theatre|Tinapa Business|Obudu Mountain|Cross River State Tourism|Kwame Nkrumah Memorial|La Campagne Tropicana/i;
+
+/** Official tourism / recreation organiser pages for diaspora city guides (not airports). */
+export function lagosDiasporaRecreation() {
+  return placesInCity("Lagos", "Nigeria").filter(
+    (place) =>
+      place.category === "Practical stops" && diasporaRecreationNames.test(place.name),
+  );
+}
+
+export function accraDiasporaRecreation() {
+  return placesInCity("Accra", "Ghana").filter(
+    (place) =>
+      place.category === "Practical stops" && diasporaRecreationNames.test(place.name),
+  );
+}
+
+export function calabarDiasporaRecreation() {
+  return placesInCity("Calabar", "Nigeria").filter(
+    (place) =>
+      (place.category === "Practical stops" && diasporaRecreationNames.test(place.name)) ||
+      (place.category === "Hotels" && /Obudu Mountain/i.test(place.name)),
+  );
+}
+
+export function lagosDiasporaRestaurants() {
+  return placesInCity("Lagos", "Nigeria").filter((place) => place.category === "Restaurants");
+}
+
+export function accraDiasporaRestaurants() {
+  return placesInCity("Accra", "Ghana").filter((place) => place.category === "Restaurants");
+}
+
+export function calabarDiasporaRestaurants() {
+  return placesInCity("Calabar", "Nigeria").filter((place) => place.category === "Restaurants");
 }
 
 /** Official tourism outbound links for Ghana (not event inventing). */

@@ -10,6 +10,8 @@ import {
 import { breadcrumbJsonLd } from "../../jsonld";
 import {
   accraArrivalFlights,
+  accraDiasporaRecreation,
+  accraDiasporaRestaurants,
   accraStayPlaces,
   ghanaRideMarket,
   ghanaSeasonEventsOnFile,
@@ -34,6 +36,8 @@ export default function AccraGhana2026Page() {
   const flights = accraArrivalFlights();
   const rides = ghanaRideMarket();
   const stays = accraStayPlaces();
+  const recreation = accraDiasporaRecreation();
+  const restaurants = accraDiasporaRestaurants();
 
   const flightsByOrigin = new Map<string, string>();
   for (const flight of flights) {
@@ -92,9 +96,10 @@ export default function AccraGhana2026Page() {
           )}
           <p className="mt-6 text-sm leading-7 text-muted">
             The MyJoyOnline report states a large national calendar (about 150 events in that
-            coverage). This directory does not invent those individual events — only the season
-            dates already confirmed on the published row appear above until more Tier-1 nights are
-            ingested.
+            coverage). This directory does not invent those individual events — the season row and
+            individual nights with a Tier-1 source on file (for example{" "}
+            <code className="text-ink">afestacc-2026</code> from the AUDA-NEPAD organiser page)
+            appear above until more feeds are wired.
           </p>
         </section>
 
@@ -174,6 +179,27 @@ export default function AccraGhana2026Page() {
               ))}
             </ul>
           ) : null}
+        </section>
+
+        <section className="mt-14 border-t border-ink/10 pt-10">
+          <h2 className="font-display text-3xl tracking-tight">Recreation on file</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+            Heritage sites and cultural venues from visitghana.com and other verified organiser pages.
+          </p>
+          {recreation.length === 0 ? (
+            <p className="mt-6 text-sm leading-7 text-muted">No Accra recreation rows on file.</p>
+          ) : (
+            <PlaceOutboundLoadMore places={recreation} noun="recreation pages" />
+          )}
+        </section>
+
+        <section className="mt-14 border-t border-ink/10 pt-10">
+          <h2 className="font-display text-3xl tracking-tight">Restaurants on file</h2>
+          {restaurants.length === 0 ? (
+            <p className="mt-6 text-sm leading-7 text-muted">No Accra restaurant rows on file.</p>
+          ) : (
+            <PlaceOutboundLoadMore places={restaurants} noun="restaurant pages" />
+          )}
         </section>
 
         <section className="mt-14 border-t border-ink/10 pt-10">

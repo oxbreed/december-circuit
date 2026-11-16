@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-25T22:07:41.377Z",
+  "checkedAt": "2026-11-16T09:38:24.526Z",
   "events": [
     {
       "region": "Lagos",
@@ -489,6 +489,14 @@
       "url": "https://www.myjoyonline.com/gta-unveils-december-in-gh-2026-calendar-with-150-events/",
       "urlLabel": "News report",
       "sourceId": "december-in-ghana-myjoy"
+    },
+    {
+      "region": "Accra",
+      "when": "9-12 December",
+      "summary": "AFESTACC + ISWA 2026, African Festival of Arts, Culture and Creatives, La Palm Royal Beach Hotel, Accra.",
+      "url": "https://events.auda-nepad.org/afestacc26",
+      "urlLabel": "Official page",
+      "sourceId": "afestacc-2026"
     }
   ]
 }

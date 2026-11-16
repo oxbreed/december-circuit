@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-11-16T09:38:15.214Z",
+  "added": [
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Hotels",
+      "name": "La Palm Royal Beach Hotel",
+      "url": "https://lapalmroyalbeachhotel.com/"
+    },
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Practical stops",
+      "name": "National Theatre of Ghana",
+      "url": "https://visitghana.com/attractions/national-theatre/"
+    },
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Practical stops",
+      "name": "Kwame Nkrumah Memorial Park",
+      "url": "https://visitghana.com/attractions/kwame-nkrumah-memorial-park/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Practical stops",
+      "name": "Lekki Conservation Centre",
+      "url": "https://www.ncfnigeria.org/our-parks/lekki-conservation-centre/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Practical stops",
+      "name": "National Theatre of Nigeria",
+      "url": "https://nationaltheatre.gov.ng/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Hotels",
+      "name": "La Campagne Tropicana Beach Resort",
+      "url": "https://www.lacampagnetropicana.com/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Calabar",
+      "category": "Practical stops",
+      "name": "Tinapa Business and Leisure Resort",
+      "url": "https://www.tinapa.ng/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Calabar",
+      "category": "Hotels",
+      "name": "Obudu Mountain Resort",
+      "url": "https://obudumountainresort.com/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Calabar",
+      "category": "Practical stops",
+      "name": "Cross River State Tourism",
+      "url": "https://crossriverstate.gov.ng/tourism"
+    }
+  ],
+  "held": [
+    "Federal Palace & Casino"
+  ]
+}

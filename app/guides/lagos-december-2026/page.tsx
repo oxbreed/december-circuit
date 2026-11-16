@@ -10,6 +10,8 @@ import {
 import { breadcrumbJsonLd } from "../../jsonld";
 import {
   lagosArrivalFlights,
+  lagosDiasporaRecreation,
+  lagosDiasporaRestaurants,
   lagosEventsOnFile,
   lagosStayPlaces,
   lagosTransportPlaces,
@@ -33,6 +35,8 @@ export default function LagosDecember2026Page() {
   const flights = lagosArrivalFlights();
   const rides = nigeriaRideMarket();
   const stays = lagosStayPlaces();
+  const recreation = lagosDiasporaRecreation();
+  const restaurants = lagosDiasporaRestaurants();
   const transport = lagosTransportPlaces();
 
   const flightsByOrigin = new Map<string, string>();
@@ -178,6 +182,32 @@ export default function LagosDecember2026Page() {
               Flights · Ride apps
             </Link>
           </p>
+        </section>
+
+        <section className="mt-14 border-t border-ink/10 pt-10">
+          <h2 className="font-display text-3xl tracking-tight">Recreation on file</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+            Museums, conservation sites, and official cultural venues with organiser or tourism-board
+            URLs — outbound only.
+          </p>
+          {recreation.length === 0 ? (
+            <p className="mt-6 text-sm leading-7 text-muted">No Lagos recreation rows on file.</p>
+          ) : (
+            <PlaceOutboundLoadMore places={recreation} noun="recreation pages" />
+          )}
+        </section>
+
+        <section className="mt-14 border-t border-ink/10 pt-10">
+          <h2 className="font-display text-3xl tracking-tight">Restaurants on file</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+            Sourced restaurant organiser pages already listed for Lagos — not menus or reservations
+            here.
+          </p>
+          {restaurants.length === 0 ? (
+            <p className="mt-6 text-sm leading-7 text-muted">No Lagos restaurant rows on file.</p>
+          ) : (
+            <PlaceOutboundLoadMore places={restaurants} noun="restaurant pages" />
+          )}
         </section>
 
         <section className="mt-14 border-t border-ink/10 pt-10">

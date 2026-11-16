@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { disclaimer } from "../../brand";
 import { JsonLd } from "../../components/json-ld";
+import { PlaceOutboundLoadMore } from "../../components/place-load-more";
 import { ScheduleNightsLoadMore } from "../../components/schedule-nights-load-more";
 import {
   OutboundLink,
@@ -9,9 +10,12 @@ import {
 import { eventNameAndVenue } from "../../event-view";
 import { breadcrumbJsonLd } from "../../jsonld";
 import {
+  calabarDiasporaRecreation,
+  calabarDiasporaRestaurants,
   carnivalPeakRollup,
   carnivalPublishedCheckedAt,
   carnivalScheduleNights,
+  placesInCity,
 } from "../../season-guides";
 import { pageMetadata } from "../../site";
 
@@ -31,6 +35,11 @@ export default function CarnivalCalabar2026Page() {
   const checkedAt = carnivalPublishedCheckedAt();
   const officialUrl =
     peak?.url ?? "https://www.carnival.crossriverstate.gov.ng/";
+  const recreation = calabarDiasporaRecreation();
+  const restaurants = calabarDiasporaRestaurants();
+  const stays = placesInCity("Calabar", "Nigeria").filter(
+    (place) => place.category === "Hotels" || place.category === "Short-stay",
+  );
 
   return (
     <>
@@ -143,6 +152,31 @@ export default function CarnivalCalabar2026Page() {
               <ScheduleNightsLoadMore nights={nights} />
             </div>
           )}
+        </section>
+
+        <section className="mt-14 border-t border-ink/10 pt-10">
+          <h2 className="font-display text-3xl tracking-tight">Recreation &amp; stays on file</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+            Cross River tourism, Tinapa, and Obudu resort links for carnival visitors — organiser
+            pages only. {disclaimer}
+          </p>
+          {recreation.length === 0 ? (
+            <p className="mt-6 text-sm leading-7 text-muted">No Calabar recreation rows on file.</p>
+          ) : (
+            <PlaceOutboundLoadMore places={recreation} noun="recreation pages" />
+          )}
+          {restaurants.length > 0 ? (
+            <div className="mt-10">
+              <h3 className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Restaurants</h3>
+              <PlaceOutboundLoadMore places={restaurants} noun="restaurant pages" />
+            </div>
+          ) : null}
+          {stays.length > 0 ? (
+            <div className="mt-10">
+              <h3 className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Hotels &amp; short-stay</h3>
+              <PlaceOutboundLoadMore places={stays} noun="stay pages" />
+            </div>
+          ) : null}
         </section>
 
         <p className="mt-12 text-sm leading-7 text-muted">

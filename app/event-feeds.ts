@@ -90,6 +90,14 @@ export const eventFeedSources: readonly EventFeedSource[] = [
     extractor: "december-in-ghana",
   },
   {
+    id: "afestacc-2026",
+    label: "Official page",
+    url: "https://events.auda-nepad.org/afestacc26",
+    regionHint: "Accra",
+    kind: "html",
+    extractor: "afestacc",
+  },
+  {
     id: "december-in-ghana-official",
     label: "Organiser's page",
     url: "https://decemberingh.com/",
