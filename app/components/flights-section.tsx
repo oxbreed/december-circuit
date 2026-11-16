@@ -2,7 +2,7 @@
 
 import type { FlightSearch } from "../flights";
 import { seasonSearchNote } from "../flights";
-import { FlightBoard } from "./flight-board";
+import { FlightBoardLoadMore } from "./flight-board-load-more";
 import { SectionIntro, sectionClass } from "./section-intro";
 import { ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
@@ -18,7 +18,7 @@ export function FlightsSection({ records }: { records?: FlightSearch[] }) {
         title="Search links"
         lede={`Each row opens a Google Flights search. It is a search, not a fare, a seat, or a booking. ${seasonSearchNote}`}
       />
-      {ready ? <FlightBoard flights={ready} /> : null}
+      {ready ? <FlightBoardLoadMore flights={ready} /> : null}
       {!records && remote.status === "loading" ? <LoadingLines /> : null}
       {!records && remote.status === "error" ? (
         <ErrorNote message="Flight searches did not load." onRetry={remote.retry} />

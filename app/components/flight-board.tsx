@@ -1,7 +1,7 @@
 import type { FlightSearch } from "../flights";
 import { EmptyNote } from "./states";
 
-function airportSlug(airport: string) {
+export function airportSlug(airport: string) {
   return airport
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")

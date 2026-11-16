@@ -2,6 +2,7 @@ import Link from "next/link";
 import { disclaimer } from "../brand";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
+import { VisaNationalityLoadMore } from "../components/guides-hub-load-more";
 import { VisaSections } from "../components/visa-sections";
 import { breadcrumbJsonLd } from "../jsonld";
 import { visaCheck } from "../season-guides";
@@ -48,18 +49,7 @@ export default function VisaPage() {
           Same official immigration sources, framed for travellers from these countries. Check
           date {check.checkedAtLabel}.
         </p>
-        <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-          {check.nationalityPages.map((page) => (
-            <li key={page.slug}>
-              <Link
-                href={page.path}
-                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                {page.travellerLabel}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <VisaNationalityLoadMore pages={check.nationalityPages} travellersSuffix={false} />
       </section>
       <p className="mt-10 text-sm leading-7 text-muted">
         <Link href="/guide" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { disclaimer } from "../brand";
 import { citiesOnFile } from "../cities";
 import { Breadcrumbs } from "../components/breadcrumbs";
-import { EventCard } from "../components/event-card";
+import { MajorsLoadMore } from "../components/majors-load-more";
 import { JsonLd } from "../components/json-ld";
 import { majorEvents } from "../event-major";
 import { events } from "../events";
@@ -28,7 +28,7 @@ const allEventsHref =
 
 export default function DettyDecemberPage() {
   const confirmed = eventsInRegionOrder(events);
-  const featured = majorEvents().slice(0, 8);
+  const featured = majorEvents();
   const cities = citiesOnFile();
   const spotlight = hubCities
     .map((slug) => cities.find((city) => city.slug === slug))
@@ -117,14 +117,8 @@ export default function DettyDecemberPage() {
             </Link>
           </p>
         ) : (
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {featured.map((event) => (
-              <EventCard
-                key={`${event.region}-${event.when}-${event.summary}`}
-                event={event}
-                as="h3"
-              />
-            ))}
+          <div className="mt-6">
+            <MajorsLoadMore events={featured} />
           </div>
         )}
         <p className="mt-6 text-sm leading-7">

@@ -3,9 +3,9 @@ import { airbnbCitySearches, airbnbSearchNote } from "../outbound-airbnb";
 import { events } from "../events";
 import { rideHailMarkets } from "../ride-hailing";
 import { visitorCategoryCountLine, visitorCategoryEntries } from "../visitor-categories";
+import { VisitorCategoryHubGrid } from "./visitor-category-hub-grid";
 
 const outbound = "text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide";
-const cardLink = "flex h-full flex-col border border-ink/15 bg-chart px-4 py-5 hover:border-oxide/40";
 const hubApps = ["Bolt", "inDrive"] as const;
 
 function rideAppLinks() {
@@ -28,17 +28,7 @@ export function VisitorCategoryHub() {
     <section aria-label="Browse by category" className="mt-8">
       <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Hotels, food, venues &amp; transport</p>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">Open a category hub for organiser pages already on file. Counts come from sourced directory rows only — not prices or availability.</p>
-      <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {entries.map((item) => (
-          <li key={item.slug}>
-            <Link href={`/categories/${item.slug}`} className={cardLink}>
-              <p className="font-display text-2xl leading-none tracking-tight">{item.category}</p>
-              <p className="mt-3 flex-1 text-sm leading-6 text-muted">{visitorCategoryCountLine(item.count, item.exploreKind)}</p>
-              <span className="mt-4 text-[11px] uppercase tracking-[0.16em] text-oxide">Category hub →</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <VisitorCategoryHubGrid entries={entries} />
     </section>
   );
 }

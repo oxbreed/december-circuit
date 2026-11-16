@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import type { RideHailApp, RideHailMarket } from "../ride-hailing";
 import { rideHailMarkets, rideHailNote } from "../ride-hailing";
+import { LoadMoreList } from "./load-more";
 import { SectionIntro, sectionClassCompact } from "./section-intro";
 
 const outbound =
@@ -10,38 +14,58 @@ function citiesLine(cities: string[]) {
   return `${cities.slice(0, 5).join(", ")}, and other cities on file`;
 }
 
+function AppList({ apps }: { apps: RideHailApp[] }) {
+  return (
+    <LoadMoreList items={apps} mobileSize={6} desktopSize={12} noun="ride apps">
+      {(visible) => (
+        <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+          {visible.map((app) => (
+            <li key={app.url} className="border-t border-ink/10 pt-2">
+              <a
+                href={app.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={outbound}
+              >
+                {app.name}
+                <span className="text-muted"> — {app.label}</span>
+              </a>
+              <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-muted">
+                Leaves this site
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </LoadMoreList>
+  );
+}
+
+function MarketSection({ market }: { market: RideHailMarket }) {
+  return (
+    <section className="min-w-0">
+      <h3 className="font-display text-2xl leading-tight tracking-tight">
+        {market.country}
+      </h3>
+      <p className="mt-1 text-sm leading-6 text-muted">
+        On this directory: {citiesLine(market.citiesOnFile)}.
+      </p>
+      <AppList apps={market.apps} />
+    </section>
+  );
+}
+
 function MarketGroups() {
   return (
-    <div className="mt-6 grid gap-8">
-      {rideHailMarkets.map((market) => (
-        <section key={market.country} className="min-w-0">
-          <h3 className="font-display text-2xl leading-tight tracking-tight">
-            {market.country}
-          </h3>
-          <p className="mt-1 text-sm leading-6 text-muted">
-            On this directory: {citiesLine(market.citiesOnFile)}.
-          </p>
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-            {market.apps.map((app) => (
-              <li key={app.url} className="border-t border-ink/10 pt-2">
-                <a
-                  href={app.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={outbound}
-                >
-                  {app.name}
-                  <span className="text-muted"> — {app.label}</span>
-                </a>
-                <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-muted">
-                  Leaves this site
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
-    </div>
+    <LoadMoreList items={rideHailMarkets} mobileSize={3} desktopSize={6} noun="markets">
+      {(visible) => (
+        <div className="mt-6 grid gap-8">
+          {visible.map((market) => (
+            <MarketSection key={market.country} market={market} />
+          ))}
+        </div>
+      )}
+    </LoadMoreList>
   );
 }
 

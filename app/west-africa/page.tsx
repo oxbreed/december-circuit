@@ -2,6 +2,11 @@ import Link from "next/link";
 import { disclaimer } from "../brand";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
+import {
+  WestAfricaCategoriesLoadMore,
+  WestAfricaCityLinksLoadMore,
+  WestAfricaCountriesLoadMore,
+} from "../components/west-africa-load-more";
 import { countriesOnFile, placesCountryHref } from "../countries";
 import { categoryIndex } from "../explore-categories";
 import {
@@ -21,20 +26,10 @@ export const metadata = pageMetadata({
   image: shareImageForCity("Lagos"),
 });
 
-function countryCountLine(placeCount: number, eventCount: number) {
-  const places = `${placeCount} ${placeCount === 1 ? "place" : "places"}`;
-  if (eventCount === 0) {
-    return `${places} on file · no confirmed events yet`;
-  }
-  return `${places} · ${eventCount} confirmed ${
-    eventCount === 1 ? "event" : "events"
-  }`;
-}
-
 export default function WestAfricaPage() {
   const countries = countriesOnFile();
   const categories = categoryIndex();
-  const cities = citiesOnFile().slice(0, 18);
+  const cities = citiesOnFile();
 
   return (
     <main id="top" className="mx-auto w-full max-w-6xl px-5 pb-28 pt-28 md:px-8 md:pt-36 lg:pb-16">
@@ -110,39 +105,10 @@ export default function WestAfricaPage() {
           Open a country landing for its cities, or browse that country&apos;s organiser pages in
           Places. Counts are from records already listed — places and confirmed events only.
         </p>
-        <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {countries.map((country) => (
-            <li key={country.slug} className="border border-ink/15 bg-chart">
-              <Link
-                href={`/countries/${country.slug}`}
-                className="block px-4 pt-5 pb-3 hover:bg-paper"
-              >
-                <p className="font-display text-2xl leading-none tracking-tight">
-                  {country.country}
-                </p>
-                <p className="mt-3 text-sm text-muted">
-                  {countryCountLine(country.placeCount, country.events.length)}
-                </p>
-                <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-oxide">
-                  Country landing →
-                </p>
-              </Link>
-              <p className="border-t border-ink/10 px-4 py-3 text-sm text-muted">
-                <Link
-                  href={placesCountryHref(country.country)}
-                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  Places in {country.country}
-                </Link>
-                <span className="text-muted/60">
-                  {" "}
-                  · {country.cities.length}{" "}
-                  {country.cities.length === 1 ? "city" : "cities"}
-                </span>
-              </p>
-            </li>
-          ))}
-        </ul>
+        <WestAfricaCountriesLoadMore
+          countries={countries}
+          placesHref={placesCountryHref}
+        />
       </section>
 
       <section className="mt-14">
@@ -151,39 +117,12 @@ export default function WestAfricaPage() {
           Organiser pages already listed, plus Explore map hubs for shopping, car shops, and
           landmarks — not reviews or prices.
         </p>
-        <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm leading-6">
-          {categories.map((item) => (
-            <li key={item.slug}>
-              <Link
-                href={`/categories/${item.slug}`}
-                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                {item.category}
-              </Link>
-              <span className="text-muted">
-                {" "}
-                ({item.count > 0 ? item.count : item.exploreKind ? "Explore" : 0})
-              </span>
-            </li>
-          ))}
-        </ul>
+        <WestAfricaCategoriesLoadMore categories={categories} />
       </section>
 
       <section className="mt-14">
         <h2 className="font-display text-3xl tracking-tight">City entry points</h2>
-        <ul className="mt-5 columns-1 gap-x-8 text-sm leading-6 sm:columns-2 lg:columns-3">
-          {cities.map((city) => (
-            <li key={city.slug} className="break-inside-avoid py-0.5">
-              <Link
-                href={`/cities/${city.slug}`}
-                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                {city.city}
-              </Link>
-              <span className="text-muted">, {city.country}</span>
-            </li>
-          ))}
-        </ul>
+        <WestAfricaCityLinksLoadMore cities={cities} />
         <p className="mt-4 text-sm text-muted">
           <Link href="/cities" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
             All cities →

@@ -69,14 +69,6 @@ function EventCard({ event, index }: { event: CircuitEvent; index: number }) {
 
 export function EventsSection({ rail = false }: { rail?: boolean }) {
   const events = useRecords<CircuitEvent[]>("/api/events");
-  const regions =
-    events.status === "ready"
-      ? events.data.reduce<string[]>((list, event) => {
-          if (!list.includes(event.region)) list.push(event.region);
-          return list;
-        }, [])
-      : [];
-
   const status = (
     <>
       {events.status === "loading" ? <LoadingLines label="Loading events" /> : null}
@@ -144,22 +136,19 @@ export function EventsSection({ rail = false }: { rail?: boolean }) {
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brass">
             {events.data.length} listed
           </p>
-          {regions.map((region) => (
-            <div key={region} className="mt-10">
-              <h3 className="font-display text-3xl italic tracking-tight text-gold">{region}</h3>
-              <div className="mt-4 grid gap-4 md:grid-cols-2">
-                {events.data
-                  .filter((event) => event.region === region)
-                  .map((event) => (
-                    <EventCard
-                      key={`${event.region}-${event.when}-${event.summary}`}
-                      event={event}
-                      index={events.data.indexOf(event)}
-                    />
-                  ))}
+          <LoadMoreList items={events.data} mobileSize={6} desktopSize={12} noun="events">
+            {(visible) => (
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                {visible.map((event, index) => (
+                  <EventCard
+                    key={`${event.region}-${event.when}-${event.summary}`}
+                    event={event}
+                    index={index}
+                  />
+                ))}
               </div>
-            </div>
-          ))}
+            )}
+          </LoadMoreList>
         </div>
       ) : null}
     </section>

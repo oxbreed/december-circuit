@@ -8,7 +8,7 @@ import { DateBlock } from "./event-card";
 import { SaveTripButton } from "./save-trip-button";
 
 function featuredEvents(): CircuitEvent[] {
-  return majorEvents().slice(0, 6);
+  return majorEvents();
 }
 
 function FeaturedCard({ event }: { event: CircuitEvent }) {

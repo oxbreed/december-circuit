@@ -15,7 +15,7 @@ export function UpcomingHomeList({ rows }: { rows: CircuitEvent[] }) {
     );
   }
   return (
-    <LoadMoreList items={rows} mobileSize={8} desktopSize={12} noun="upcoming events">
+    <LoadMoreList items={rows} mobileSize={6} desktopSize={8} noun="upcoming events">
       {(visible) => (
         <ul className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
           {visible.map((event) => {

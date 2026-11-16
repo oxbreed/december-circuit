@@ -109,7 +109,7 @@ export function GuidePinLoadMore({ pins }: { pins: Pin[] }) {
 
 export function GuideCitiesLoadMore({ cities }: { cities: CityRecord[] }) {
   return (
-    <LoadMoreList items={cities} mobileSize={12} desktopSize={24} noun="cities">
+    <LoadMoreList items={cities} mobileSize={6} desktopSize={12} noun="cities">
       {(visible) => (
         <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
           {visible.map((city) => (

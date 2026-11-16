@@ -2,6 +2,10 @@ import Link from "next/link";
 import { disclaimer } from "../brand";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
+import {
+  GuidesSeasonLoadMore,
+  VisaNationalityLoadMore,
+} from "../components/guides-hub-load-more";
 import { SeasonGuideNav } from "../components/season-guide-chrome";
 import { breadcrumbJsonLd } from "../jsonld";
 import {
@@ -53,24 +57,7 @@ export default function GuidesHubPage() {
 
       <section className="mt-12">
         <h2 className="font-display text-3xl tracking-tight">{SEASON_YEAR} guides</h2>
-        <ul className="mt-6 grid gap-4 md:grid-cols-2">
-          {seasonGuideIndex.map((guide) => (
-            <li key={guide.path}>
-              <Link
-                href={guide.path}
-                className="block border border-ink/15 bg-chart px-5 py-6 hover:border-oxide/40"
-              >
-                <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
-                  {guide.path}
-                </p>
-                <p className="mt-2 font-display text-2xl leading-tight tracking-tight">
-                  {guide.title}
-                </p>
-                <p className="mt-3 text-sm leading-6 text-muted">{guide.description}</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <GuidesSeasonLoadMore guides={seasonGuideIndex} />
       </section>
 
       <section className="mt-14 border-t border-ink/10 pt-10">
@@ -79,26 +66,15 @@ export default function GuidesHubPage() {
           Extends the visa guide (DD-13). Requirements repeat official Nigeria and Ghana
           immigration pages only. Check date: {visas.checkedAtLabel}.
         </p>
-        <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-          <li>
-            <Link
-              href="/visa"
-              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-            >
-              Visa and entry hub
-            </Link>
-          </li>
-          {visas.nationalityPages.map((page) => (
-            <li key={page.slug}>
-              <Link
-                href={page.path}
-                className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-              >
-                {page.travellerLabel} travellers
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <p className="mt-5 text-sm">
+          <Link
+            href="/visa"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            Visa and entry hub
+          </Link>
+        </p>
+        <VisaNationalityLoadMore pages={visas.nationalityPages} />
       </section>
 
       <section className="mt-14 border-t border-ink/10 pt-10">
