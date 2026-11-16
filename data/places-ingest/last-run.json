@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-11-16T01:16:00.000Z",
+  "branch": "cursor/stay-listings",
+  "sources": {
+    "sourced-map-pin": "app/pins.ts rows with operator URLs not yet in app/places.ts",
+    "openstreetmap-website-tag": "Overpass POI website/contact:website in Explore bboxes (Lagos, Accra, Calabar); URL reachability checked before publish"
+  },
+  "publishedPlacesAdded": 39,
+  "heldByName": [
+    "Federal Palace & Casino — duplicate of Federal Palace Hotel & Casino on file",
+    "Cosa Nostra Patron — OSM website is a link shortener, not an organiser homepage"
+  ],
+  "countsAfter": {
+    "Hotels": 58,
+    "Restaurants": 27,
+    "Clubs": 7,
+    "Bars": 9,
+    "Short-stay": 3,
+    "Event centres": 11,
+    "Car rental": 5
+  },
+  "airbnbCityLinks": 7
+}

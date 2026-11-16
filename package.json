@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "node scripts/sync-maplibre-worker.mjs",
-    "ingest:events": "npx --yes tsx scripts/ingest-events.ts"
+    "ingest:events": "npx --yes tsx scripts/ingest-events.ts",
+    "ingest:places": "node scripts/fetch-osm-place-candidates.mjs && node scripts/apply-stay-listings.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
