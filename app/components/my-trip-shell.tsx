@@ -1,0 +1,40 @@
+import Link from "next/link";
+import { tripCloudSync } from "../trip-cloud";
+import { getDirectoryUser } from "../supabase/session";
+import { MyTripList } from "./my-trip";
+import { TripAccountPanel } from "./trip-account-panel";
+
+export async function MyTripShell() {
+  const user = await getDirectoryUser();
+  const cloud = tripCloudSync();
+
+  return (
+    <section id="trip" className="scroll-mt-36 border-b border-ink/10 bg-chart">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Saved here</p>
+        <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
+          Plan your trip
+        </h2>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
+          Save an event or a place from this directory. This list stays in this browser until you sign in and
+          save to your account. Each row shows that record&apos;s name and the link already stored on it.
+        </p>
+        <MyTripList />
+        <TripAccountPanel
+          signedIn={Boolean(user)}
+          cloudSyncAvailable={cloud.connected}
+          userEmail={user?.email ?? null}
+        />
+        <p className="mt-6 text-sm leading-6 text-muted">
+          <Link
+            href="/sign-in"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            Sign in
+          </Link>{" "}
+          for email, Google, or Apple — optional when keys are configured on the server.
+        </p>
+      </div>
+    </section>
+  );
+}

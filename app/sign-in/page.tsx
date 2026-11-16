@@ -2,7 +2,9 @@ import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { signOut } from "../auth/actions";
 import { EmailSignIn } from "../components/email-sign-in";
+import { OAuthSignIn } from "../components/oauth-sign-in";
 import { directorySignIn } from "../directory-auth";
+import { signInOAuthFlags } from "./sign-in-providers";
 import { pageMetadata } from "../site";
 import { getDirectoryUser } from "../supabase/session";
 
@@ -34,13 +36,14 @@ function SignInFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function UnsignedIn() {
+function UnsignedIn({ googleConfigured, appleConfigured }: { googleConfigured: boolean; appleConfigured: boolean }) {
   return (
     <>
       <p className="mt-6 max-w-xl text-base leading-7 text-ink">
         A project URL is set, and no session is open on this request.
       </p>
       <EmailSignIn />
+      <OAuthSignIn googleConfigured={googleConfigured} appleConfigured={appleConfigured} />
     </>
   );
 }
@@ -49,6 +52,7 @@ async function SignInSession() {
   const auth = directorySignIn();
   const user = await getDirectoryUser();
   const isAdmin = Boolean(user && auth.adminEmail && user.email === auth.adminEmail);
+  const oauth = signInOAuthFlags();
 
   return (
     <SignInFrame>
@@ -73,7 +77,10 @@ async function SignInSession() {
           ) : null}
         </>
       ) : (
-        <UnsignedIn />
+        <UnsignedIn
+          googleConfigured={oauth.googleConfigured}
+          appleConfigured={oauth.appleConfigured}
+        />
       )}
     </SignInFrame>
   );
@@ -94,7 +101,7 @@ export default function SignInPage() {
     <Suspense
       fallback={
         <SignInFrame>
-          <UnsignedIn />
+          <UnsignedIn {...signInOAuthFlags()} />
         </SignInFrame>
       }
     >

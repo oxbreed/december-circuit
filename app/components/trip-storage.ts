@@ -73,3 +73,7 @@ export function toggleTrip(item: TripItem) {
 export function removeTrip(item: TripItem) {
   write(readItems().filter((row) => !(row.kind === item.kind && row.id === item.id)));
 }
+
+export function replaceTripItems(items: TripItem[]) {
+  write(items.filter((row) => isTripItem(row)));
+}

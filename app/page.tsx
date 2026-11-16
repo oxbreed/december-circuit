@@ -1,7 +1,7 @@
 import { FeaturedSeason } from "./components/featured-season";
 import { HomeHero } from "./components/home-hero";
 import { HomeStartNav } from "./components/home-start-nav";
-import { MyTrip } from "./components/my-trip";
+import { MyTripShell } from "./components/my-trip-shell";
 import { QuickHubs } from "./components/quick-hubs";
 import { UpcomingHome } from "./components/upcoming-home";
 import { pageMetadata } from "./site";
@@ -22,7 +22,7 @@ export default function Home() {
       <QuickHubs />
       <UpcomingHome />
       {/* Saved items stay reachable from sign-in (/#trip) without cluttering the first-screen job. */}
-      <MyTrip />
+      <MyTripShell />
     </main>
   );
 }
