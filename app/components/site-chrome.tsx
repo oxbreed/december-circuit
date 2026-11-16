@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { disclaimer, footerExtra, nav } from "../brand";
+import { disclaimer, nav } from "../brand";
 import { rideHailMarkets } from "../ride-hailing";
 import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
@@ -40,6 +40,42 @@ function current(pathname: string, href: string) {
 const footerLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 
 const footerKicker = "font-sans text-[11px] uppercase tracking-[0.28em] text-lagoon";
+
+const footerGroups = [
+  {
+    title: "Visit",
+    links: [
+      ["Detty December", "/detty-december"],
+      ["West Africa", "/west-africa"],
+      ["News", "/news"],
+    ],
+  },
+  {
+    title: "Plan",
+    links: [
+      ["Season guides", "/guides"],
+      ["Visa", "/visa"],
+      ["FAQ", "/faq"],
+    ],
+  },
+  {
+    title: "Directory",
+    links: [
+      ["Cities", "/cities"],
+      ["Explore", "/explore"],
+      ["List an event or place", "/list"],
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      ["Sign in", "/sign-in"],
+      ["Privacy", "/privacy"],
+      ["Terms", "/terms"],
+      ["EULA", "/eula"],
+    ],
+  },
+] as const;
 
 export function SiteChrome({
   children,
@@ -188,6 +224,7 @@ export function SiteChrome({
                         className={`text-ink ${footerLink}`}
                       >
                         {app.name}
+                        <span className="sr-only"> — leaves this site</span>
                       </a>
                     ))}
                   </span>
@@ -195,24 +232,24 @@ export function SiteChrome({
               ))}
             </div>
           </div>
-          <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2 font-sans text-sm leading-6">
-            {footerExtra.map(([label, href]) => (
-              <Link key={href} href={href} className={`text-ink ${footerLink}`}>
-                {label}
-              </Link>
+          <nav
+            aria-label="Footer"
+            className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10"
+          >
+            {footerGroups.map((group) => (
+              <div key={group.title} className="min-w-0">
+                <p className={footerKicker}>{group.title}</p>
+                <ul className="mt-3 space-y-2 font-sans text-sm leading-6">
+                  {group.links.map(([label, href]) => (
+                    <li key={href}>
+                      <Link href={href} className={`text-ink ${footerLink}`}>
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-            <Link href="/sign-in" className={`text-ink ${footerLink}`}>
-              Sign in
-            </Link>
-            <Link href="/privacy" className={`text-ink ${footerLink}`}>
-              Privacy
-            </Link>
-            <Link href="/terms" className={`text-ink ${footerLink}`}>
-              Terms
-            </Link>
-            <Link href="/eula" className={`text-ink ${footerLink}`}>
-              EULA
-            </Link>
           </nav>
         </div>
       </footer>
