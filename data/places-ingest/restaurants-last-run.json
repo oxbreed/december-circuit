@@ -1,0 +1,146 @@
+{
+  "checkedAt": "2026-11-16T12:13:05.665Z",
+  "branch": "cursor/restaurants",
+  "added": [
+    {
+      "country": "Benin",
+      "city": "Cotonou",
+      "category": "Restaurants",
+      "name": "The Palm",
+      "url": "https://www.azalai.com/azalai-hotel-cotonou/restaurants"
+    },
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Restaurants",
+      "name": "Akwaaba Restaurant",
+      "url": "https://labadibeachhotelgh.com/restaurants"
+    },
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Restaurants",
+      "name": "ASANA Bar & Kitchen",
+      "url": "https://www.kempinski.com/en/hotel-gold-coast-city/restaurants-bars/asana-bar-kitchen"
+    },
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Restaurants",
+      "name": "Papillon Restaurant",
+      "url": "https://www.kempinski.com/en/hotel-gold-coast-city/restaurants-bars/papillon-restaurant-in-accra"
+    },
+    {
+      "country": "Ghana",
+      "city": "Accra",
+      "category": "Restaurants",
+      "name": "Santoku",
+      "url": "https://www.santokuaccra.com/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Calabar",
+      "category": "Restaurants",
+      "name": "Restaurant Emem",
+      "url": "https://www.montysuites.com/calabar"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Ako by Terra",
+      "url": "https://ako.terrakulture.com/main-home/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Brazzerie",
+      "url": "https://www.marriott.com/en-us/hotels/losfp-four-points-lagos/dining/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Cilantro Restaurant",
+      "url": "https://www.marriott.com/en-us/hotels/losfp-four-points-lagos/dining/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "DaVinci Restaurant",
+      "url": "https://www.thegeorgelagos.com/en/dining.html"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Ekaabo Restaurant",
+      "url": "https://www.thelagoscontinental.com/restaurant-lounges/ekaabo-terrace"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Hotpot Restaurant",
+      "url": "https://lagosoriental.com/Dining.html"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "La Giara Italian Restaurant",
+      "url": "https://www.marriott.com/en-us/hotels/lossi-sheraton-lagos-hotel/dining/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Lounge Bar (Lilygate)",
+      "url": "https://www.lilygatelagos.com/dining"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Oriental Garden Chinese Restaurant",
+      "url": "https://lagosoriental.com/Dining.html"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Pumpkin Leaf",
+      "url": "https://www.marriott.com/en-us/hotels/lossi-sheraton-lagos-hotel/dining/"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Skyview Restaurant",
+      "url": "https://lagosoriental.com/Dining.html"
+    },
+    {
+      "country": "Nigeria",
+      "city": "Lagos",
+      "category": "Restaurants",
+      "name": "Soho Restaurant",
+      "url": "https://www.thelagoscontinental.com/restaurant-lounges/soho-restaurant"
+    }
+  ],
+  "held": [
+    "Federal Palace & Casino"
+  ],
+  "countsAfter": {
+    "Hotels": 61,
+    "Practical stops": 65,
+    "Restaurants": 45,
+    "Bars": 9,
+    "Car rental": 5,
+    "Catering": 4,
+    "Clubs": 7,
+    "Event centres": 11,
+    "Short-stay": 3
+  }
+}

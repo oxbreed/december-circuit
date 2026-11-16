@@ -14,12 +14,15 @@ function countryCountLine(placeCount: number, eventCount: number) {
   return `${places} · ${eventCount} confirmed ${eventCount === 1 ? "event" : "events"}`;
 }
 
+/** Matches `placesCountryHref` in app/countries.ts — kept client-side for RSC props. */
+function placesCountryHref(country: string) {
+  return `/places?country=${encodeURIComponent(country)}`;
+}
+
 export function WestAfricaCountriesLoadMore({
   countries,
-  placesHref,
 }: {
   countries: CountryRecord[];
-  placesHref: (country: string) => string;
 }) {
   return (
     <LoadMoreList items={countries} mobileSize={6} desktopSize={12} noun="countries">
@@ -43,7 +46,7 @@ export function WestAfricaCountriesLoadMore({
               </Link>
               <p className="border-t border-ink/10 px-4 py-3 text-sm text-muted">
                 <Link
-                  href={placesHref(country.country)}
+                  href={placesCountryHref(country.country)}
                   className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
                 >
                   Places in {country.country}

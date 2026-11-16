@@ -7,7 +7,7 @@ import {
   WestAfricaCityLinksLoadMore,
   WestAfricaCountriesLoadMore,
 } from "../components/west-africa-load-more";
-import { countriesOnFile, placesCountryHref } from "../countries";
+import { countriesOnFile } from "../countries";
 import { categoryIndex } from "../explore-categories";
 import {
   breadcrumbJsonLd,
@@ -105,10 +105,7 @@ export default function WestAfricaPage() {
           Open a country landing for its cities, or browse that country&apos;s organiser pages in
           Places. Counts are from records already listed — places and confirmed events only.
         </p>
-        <WestAfricaCountriesLoadMore
-          countries={countries}
-          placesHref={placesCountryHref}
-        />
+        <WestAfricaCountriesLoadMore countries={countries} />
       </section>
 
       <section className="mt-14">

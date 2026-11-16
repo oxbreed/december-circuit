@@ -9,7 +9,8 @@
     "lint": "eslint",
     "postinstall": "node scripts/sync-maplibre-worker.mjs",
     "ingest:events": "npx --yes tsx scripts/ingest-events.ts",
-    "ingest:places": "node scripts/fetch-osm-place-candidates.mjs && node scripts/apply-stay-listings.mjs && node scripts/apply-diaspora-listings.mjs"
+    "ingest:places": "node scripts/fetch-osm-place-candidates.mjs && node scripts/apply-stay-listings.mjs && node scripts/apply-diaspora-listings.mjs",
+    "ingest:restaurants": "node scripts/apply-restaurant-listings.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
