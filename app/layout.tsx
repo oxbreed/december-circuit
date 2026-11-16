@@ -79,9 +79,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   category: "travel",
-  other: {
-    "Impact-Site-Verification": "9c7a5938-61b2-40c3-85ac-b107faf170b8",
-  },
 };
 
 export default function RootLayout({
@@ -94,6 +91,14 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
+      <head>
+        <meta
+          name="impact-site-verification"
+          {...({
+            value: "9c7a5938-61b2-40c3-85ac-b107faf170b8",
+          } as Record<string, string>)}
+        />
+      </head>
       <body className="flex min-h-full flex-col font-sans text-ink">
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={siteJsonLd()} />
