@@ -1,13 +1,19 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { tripCloudSync } from "../trip-cloud";
 import { getDirectoryUser } from "../supabase/session";
 import { MyTripList } from "./my-trip";
 import { TripAccountPanel } from "./trip-account-panel";
 
-export async function MyTripShell() {
-  const user = await getDirectoryUser();
-  const cloud = tripCloudSync();
-
+function MyTripShellFrame({
+  signedIn,
+  cloudSyncAvailable,
+  userEmail,
+}: {
+  signedIn: boolean;
+  cloudSyncAvailable: boolean;
+  userEmail: string | null;
+}) {
   return (
     <section id="trip" className="scroll-mt-36 border-b border-ink/10 bg-chart">
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
@@ -21,9 +27,9 @@ export async function MyTripShell() {
         </p>
         <MyTripList />
         <TripAccountPanel
-          signedIn={Boolean(user)}
-          cloudSyncAvailable={cloud.connected}
-          userEmail={user?.email ?? null}
+          signedIn={signedIn}
+          cloudSyncAvailable={cloudSyncAvailable}
+          userEmail={userEmail}
         />
         <p className="mt-6 text-sm leading-6 text-muted">
           <Link
@@ -36,5 +42,32 @@ export async function MyTripShell() {
         </p>
       </div>
     </section>
+  );
+}
+
+async function MyTripShellSession() {
+  const user = await getDirectoryUser();
+  const cloud = tripCloudSync();
+
+  return (
+    <MyTripShellFrame
+      signedIn={Boolean(user)}
+      cloudSyncAvailable={cloud.connected}
+      userEmail={user?.email ?? null}
+    />
+  );
+}
+
+export function MyTripShell() {
+  const cloud = tripCloudSync();
+
+  return (
+    <Suspense
+      fallback={
+        <MyTripShellFrame signedIn={false} cloudSyncAvailable={cloud.connected} userEmail={null} />
+      }
+    >
+      <MyTripShellSession />
+    </Suspense>
   );
 }
