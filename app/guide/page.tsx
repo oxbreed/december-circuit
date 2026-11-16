@@ -21,7 +21,7 @@ import { citiesOnFile } from "../cities";
 import { events } from "../events";
 import { flightSearches, seasonSearchNote } from "../flights";
 import { breadcrumbJsonLd } from "../jsonld";
-import { pins } from "../pins";
+import { pins, type Pin } from "../pins";
 import { places, type Place } from "../places";
 import { pageMetadata } from "../site";
 
