@@ -405,6 +405,10 @@ body::before {
   animation: landmark-fade 900ms ease;
 }
 
+.hero-night-photo {
+  transition: opacity 700ms ease;
+}
+
 @keyframes landmark-fade {
   from {
     opacity: 0.4;
@@ -461,5 +465,9 @@ body::before {
   .animate-pulse,
   .support-chat-panel {
     animation: none;
+  }
+
+  .hero-night-photo {
+    transition: none;
   }
 }
