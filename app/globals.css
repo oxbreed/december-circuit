@@ -4,13 +4,8 @@
   color-scheme: light;
   --background: #f4eadc;
   --foreground: #1a1410;
-  --clock-strip: 2.75rem;
-}
-
-@media (min-width: 1024px) {
-  :root {
-    --clock-strip: 3.25rem;
-  }
+  /* Weather and the Lagos clock live on the trip planner card, not a top strip. */
+  --clock-strip: 0rem;
 }
 
 @theme inline {

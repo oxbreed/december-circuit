@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { tripCloudSync } from "../trip-cloud";
 import { getDirectoryUser } from "../supabase/session";
+import { LagosClockSlot } from "./lagos-clock-slot";
 import { MyTripList } from "./my-trip";
 import { TripAccountPanel } from "./trip-account-panel";
 
@@ -17,14 +18,23 @@ function MyTripShellFrame({
   return (
     <section id="trip" className="scroll-mt-36 border-b border-ink/10 bg-chart">
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Saved here</p>
-        <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
-          Plan your trip
-        </h2>
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Save an event or a place from this directory. This list stays in this browser until you sign in and
-          save to your account. Each row shows that record&apos;s name and the link already stored on it.
-        </p>
+        <article className="border border-ink/15 bg-paper shadow-[4px_4px_0_0_rgba(138,98,50,0.16)]">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(17.5rem,23rem)]">
+            <div className="min-w-0 px-5 py-6 sm:px-7 sm:py-8">
+              <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Trip planner</p>
+              <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
+                Plan your trip
+              </h2>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-muted">
+                Save an event or a place from this directory. This list stays in this browser until you sign in and
+                save to your account. Each row shows that record&apos;s name and the link already stored on it.
+              </p>
+            </div>
+            <div className="min-w-0 border-t border-brass/40 bg-paper-deep/80 px-5 py-5 sm:px-6 sm:py-6 lg:border-t-0 lg:border-l">
+              <LagosClockSlot />
+            </div>
+          </div>
+        </article>
         <MyTripList />
         <TripAccountPanel
           signedIn={signedIn}
