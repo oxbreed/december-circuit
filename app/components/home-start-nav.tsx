@@ -20,15 +20,15 @@ type HubPhoto = {
 
 /**
  * Home hub thumbnails saved in /public/hubs (not hotlinked).
- * Events, Places, and Guides are Wikimedia Commons photographs under CC BY-SA 4.0.
- * Visa is a photo supplied for this site. Alts do not invent an event or a country's visa rules.
+ * Places and Guides are Wikimedia Commons photographs under CC BY-SA 4.0.
+ * Events and Visa are photos supplied for this site. Alts do not invent an event
+ * or a country's visa rules.
  */
 const hubPhotos = {
   events: {
-    src: "/hubs/carnival-calabar-2025.jpg",
-    alt: "Carnival Calabar 2025 float at the 20th edition",
-    credit: "Photo: Koutchika Lihouenou Gaspard, CC BY-SA 4.0, Wikimedia Commons",
-    creditUrl: "https://commons.wikimedia.org/wiki/File:Carnival_Calabar_2025_(246).jpg",
+    src: "/hubs/carnival-parade.png",
+    alt: "Carnival parade with costumed figures and bunting",
+    credit: "Photo supplied for this site",
     focus: "object-[center_62%]",
   },
   places: {
