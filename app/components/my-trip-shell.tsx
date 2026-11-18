@@ -26,8 +26,7 @@ function MyTripShellFrame({
                 Plan your trip
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-7 text-muted">
-                Save an event or a place from this directory. This list stays in this browser until you sign in and
-                save to your account. Each row shows that record&apos;s name and the link already stored on it.
+                What you save stays in this browser.
               </p>
             </div>
             <div className="min-w-0 border-t border-brass/40 bg-paper-deep/80 px-5 py-5 sm:px-6 sm:py-6 lg:border-t-0 lg:border-l">

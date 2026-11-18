@@ -1,29 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { EmptyList } from "./states";
 import { TripRowsList } from "./trip-rows";
 import { removeTrip, useTripItems } from "./trip-storage";
+
+const textLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 
 export function MyTripList() {
   const items = useTripItems();
 
   if (items.length === 0) {
     return (
-      <div className="mt-6">
-        <EmptyList href="/events" cta="Browse confirmed events">
-          Nothing is saved yet. Save an event or a place from this directory — My Trip appears in the header
-          once you have at least one item.
-        </EmptyList>
-        <p className="mt-3 text-sm leading-6 text-muted">
-          Or{" "}
-          <Link
-            href="/list"
-            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-          >
-            list an event or place
-          </Link>{" "}
-          for review.
+      <div className="mt-6 max-w-xl border border-dashed border-ink/30 bg-paper px-4 py-6 sm:px-5">
+        <p className="text-base leading-7 text-ink">Tap Save on an event or a place to add it here.</p>
+        <p className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm leading-6">
+          <Link href="/events" className={textLink}>
+            Events
+          </Link>
+          <Link href="/places" className={textLink}>
+            Places
+          </Link>
         </p>
       </div>
     );
