@@ -12,15 +12,16 @@ type HubPhoto = {
   src: string;
   alt: string;
   credit: string;
-  creditUrl: string;
+  /** Commons file page. Omitted when the photo was supplied for this site. */
+  creditUrl?: string;
   /** Tailwind object-position so the short card keeps the subject. */
   focus: string;
 };
 
 /**
- * Home hub thumbnails. Each file is a Wikimedia Commons photograph
- * under CC BY-SA 4.0, saved in /public/hubs (not hotlinked).
- * Alts follow the file title or description. No invented event.
+ * Home hub thumbnails saved in /public/hubs (not hotlinked).
+ * Events, Places, and Guides are Wikimedia Commons photographs under CC BY-SA 4.0.
+ * Visa is a photo supplied for this site. Alts do not invent an event or a country's visa rules.
  */
 const hubPhotos = {
   events: {
@@ -43,6 +44,12 @@ const hubPhotos = {
     credit: "Photo: Reginald Bassey, CC BY-SA 4.0, Wikimedia Commons",
     creditUrl: "https://commons.wikimedia.org/wiki/File:Ikoyi,_Lagos,_Nigeria.jpg",
     focus: "object-[center_32%]",
+  },
+  visa: {
+    src: "/hubs/visa-document.jpg",
+    alt: "Close-up of a visa document",
+    credit: "Photo supplied for this site",
+    focus: "object-center",
   },
 } as const satisfies Record<string, HubPhoto>;
 
@@ -132,7 +139,7 @@ const pillars = [
     blurb: "Government visa notes checked against public pages — not legal advice.",
     tone: "bg-ink text-chart",
     mark: "visa",
-    photo: null,
+    photo: hubPhotos.visa,
   },
 ] as const;
 
@@ -197,15 +204,19 @@ export function HomeStartNav() {
                     </span>
                   </Link>
                   {item.photo ? (
-                    <a
-                      href={item.photo.creditUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-muted underline decoration-ink/20 underline-offset-2 hover:text-oxide"
-                    >
-                      {item.photo.credit}
-                      <span className="sr-only"> — leaves this site</span>
-                    </a>
+                    "creditUrl" in item.photo && item.photo.creditUrl ? (
+                      <a
+                        href={item.photo.creditUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-muted underline decoration-ink/20 underline-offset-2 hover:text-oxide"
+                      >
+                        {item.photo.credit}
+                        <span className="sr-only"> — leaves this site</span>
+                      </a>
+                    ) : (
+                      <p className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-muted">{item.photo.credit}</p>
+                    )
                   ) : null}
                 </li>
               );
