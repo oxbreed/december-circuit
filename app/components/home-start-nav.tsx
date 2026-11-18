@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { events } from "../events";
-import { heroNightLicense, heroNightSlides } from "../hero-nightlife";
-import { landmarks } from "../landmarks";
 import { visitorCategoryEntries, type VisitorCategoryEntry } from "../visitor-categories";
 import { HomeCategoryStrip } from "./home-category-strip";
 
@@ -15,30 +13,38 @@ type HubPhoto = {
   alt: string;
   credit: string;
   creditUrl: string;
+  /** Tailwind object-position so the short card keeps the subject. */
+  focus: string;
 };
 
-/** Only photos that already carry a recorded credit and source URL. */
-function landmarkPhoto(src: string): HubPhoto | null {
-  const frame = landmarks.find((item) => item.src === src);
-  if (!frame?.credit || !frame.creditUrl) return null;
-  return {
-    src: frame.src,
-    alt: `${frame.name}, ${frame.city}`,
-    credit: frame.credit,
-    creditUrl: frame.creditUrl,
-  };
-}
-
-function heroPhoto(src: string): HubPhoto | null {
-  const slide = heroNightSlides.find((item) => item.src === src);
-  if (!slide?.sourceUrl || !slide.author) return null;
-  return {
-    src: slide.src,
-    alt: slide.alt,
-    credit: `Photo: ${slide.author}, ${heroNightLicense}, Wikimedia Commons`,
-    creditUrl: slide.sourceUrl,
-  };
-}
+/**
+ * Home hub thumbnails. Each file is a Wikimedia Commons photograph
+ * under CC BY-SA 4.0, saved in /public/hubs (not hotlinked).
+ * Alts follow the file title or description. No invented event.
+ */
+const hubPhotos = {
+  events: {
+    src: "/hubs/carnival-calabar-2025.jpg",
+    alt: "Carnival Calabar 2025 float at the 20th edition",
+    credit: "Photo: Koutchika Lihouenou Gaspard, CC BY-SA 4.0, Wikimedia Commons",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Carnival_Calabar_2025_(246).jpg",
+    focus: "object-[center_62%]",
+  },
+  places: {
+    src: "/hubs/la-campagne-tropicana.jpg",
+    alt: "Play area at La Campagne Tropicana Beach Resort, Ibeju-Lekki",
+    credit: "Photo: Isaacayodele32, CC BY-SA 4.0, Wikimedia Commons",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:La_Campagne_Tropicana_Beach_Resort.jpg",
+    focus: "object-center",
+  },
+  guides: {
+    src: "/hubs/ikoyi-lagos-aerial.jpg",
+    alt: "Ikoyi, Lagos, with Victoria Island beyond the lagoon",
+    credit: "Photo: Reginald Bassey, CC BY-SA 4.0, Wikimedia Commons",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Ikoyi,_Lagos,_Nigeria.jpg",
+    focus: "object-[center_32%]",
+  },
+} as const satisfies Record<string, HubPhoto>;
 
 function Mark({ className, children }: { className: string; children: ReactNode }) {
   return (
@@ -99,7 +105,7 @@ const pillars = [
     blurb: "Dated festivals and nights on file — tickets leave this site.",
     tone: "bg-oxide text-chart",
     mark: "events",
-    photo: landmarkPhoto("/landmarks/cape-coast-fetu.jpg"),
+    photo: hubPhotos.events,
   },
   {
     href: "/places",
@@ -108,7 +114,7 @@ const pillars = [
     blurb: "Hotels, restaurants, clubs, and organiser pages already sourced.",
     tone: "bg-lagoon text-chart",
     mark: "places",
-    photo: landmarkPhoto("/landmarks/accra-bloombar.jpg"),
+    photo: hubPhotos.places,
   },
   {
     href: "/guides",
@@ -117,7 +123,7 @@ const pillars = [
     blurb: "Lagos, Accra, Calabar, and Carnival guides with outbound links.",
     tone: "bg-brass text-chart",
     mark: "guides",
-    photo: heroPhoto("/hero/osu-accra-night.jpg"),
+    photo: hubPhotos.guides,
   },
   {
     href: "/visa",
@@ -172,7 +178,7 @@ export function HomeStartNav() {
                           alt={item.photo.alt}
                           fill
                           sizes="(max-width: 1024px) 50vw, 240px"
-                          className="object-cover"
+                          className={`object-cover ${item.photo.focus}`}
                         />
                         <span className={`absolute top-2 left-2 flex h-8 w-8 items-center justify-center ${item.tone}`}>
                           <Icon className="h-4 w-4" />
