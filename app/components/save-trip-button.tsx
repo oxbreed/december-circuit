@@ -40,7 +40,7 @@ export function SaveTripButton({ kind, id }: TripItem) {
       }
     >
       <Mark saved={saved} />
-      {saved ? "Saved" : "Save"}
+      {saved ? "Saved" : "Save to My Trip"}
     </button>
   );
 }

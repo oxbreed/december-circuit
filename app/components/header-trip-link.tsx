@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useTripItems } from "./trip-storage";
 
 /**
- * My Trip in the header only after something is saved in this browser.
- * Empty trip → hidden (not a permanent nav item).
+ * My Trip stays in the header. Empty lists use a dashed placeholder;
+ * a saved item switches it to the counted link.
  */
 export function HeaderTripLink({
   className,
@@ -15,7 +15,19 @@ export function HeaderTripLink({
   compact?: boolean;
 }) {
   const items = useTripItems();
-  if (items.length === 0) return null;
+  const hideOnDesktop = className?.includes("lg:hidden") ? "lg:hidden " : "";
+
+  if (items.length === 0) {
+    return (
+      <Link
+        href="/#trip"
+        aria-label="My Trip, nothing saved yet"
+        className={`${hideOnDesktop}inline-flex shrink-0 items-center border border-dashed border-ink/35 px-2 py-1 text-[11px] uppercase tracking-[0.14em] text-ink/50 hover:border-ink/70 hover:text-ink`}
+      >
+        My Trip
+      </Link>
+    );
+  }
 
   const base =
     className ??

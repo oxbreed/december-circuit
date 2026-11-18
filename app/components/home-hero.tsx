@@ -21,6 +21,9 @@ export function HomeHero() {
           Events, places (hotels, restaurants, clubs, short stays), season guides, and visa — all from sourced
           pages. Booking always leaves this site. {disclaimer}
         </p>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-ink sm:mt-4">
+          Click Save to My Trip on any event below to start planning.
+        </p>
         <div className="mt-4 grid grid-cols-4 gap-2 sm:mt-5 sm:flex sm:flex-wrap sm:items-center lg:mt-4">
           <Link href="/events" className={`${offerLink} bg-oxide text-chart`}>
             Events
