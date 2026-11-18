@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { FeaturedSeason } from "./components/featured-season";
 import { HomeHero } from "./components/home-hero";
+import { HomeNewsCard, HomeNewsFallback } from "./components/home-news-card";
 import { HomeStartNav } from "./components/home-start-nav";
 import { MyTripShell } from "./components/my-trip-shell";
 import { QuickHubs } from "./components/quick-hubs";
@@ -21,6 +23,9 @@ export default function Home() {
       <FeaturedSeason />
       <QuickHubs />
       <UpcomingHome />
+      <Suspense fallback={<HomeNewsFallback />}>
+        <HomeNewsCard />
+      </Suspense>
       {/* Saved items stay reachable from sign-in (/#trip) without cluttering the first-screen job. */}
       <MyTripShell />
     </main>

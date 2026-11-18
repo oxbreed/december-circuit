@@ -127,15 +127,11 @@ export function NewsTicker() {
   }
 
   const events = payload?.events ?? eventTickerItems();
-  const news = payload?.news ?? [];
-  const newsMissing = failed || (payload !== null && !payload.newsAvailable);
-  // One real copy: entertainment headlines (when available) + next 8 events.
-  const items = [...news, ...events];
+  const newsCount = !failed && payload?.newsAvailable ? payload.news.length : 0;
+  // Home keeps the long feed list out of this bar. One real copy of the next 8 events only.
+  const items = events;
   const seconds = Math.max(48, Math.max(items.length, 1) * 2 * 7);
-  const summary =
-    items.length > 0
-      ? `${items.length} upcoming · headlines`
-      : "Upcoming events & headlines";
+  const summary = items.length > 0 ? `${items.length} upcoming events` : "Upcoming events";
 
   return (
     <div className="border-y border-gold/40 bg-[#efe4d0]">
@@ -143,21 +139,25 @@ export function NewsTicker() {
         <p className="min-w-0 flex-1 truncate text-[10px] uppercase tracking-[0.18em] text-lagoon">
           {summary}
         </p>
+        <a
+          href="/news"
+          className="shrink-0 text-[10px] uppercase tracking-[0.16em] text-oxide underline decoration-oxide/40 underline-offset-4 hover:decoration-oxide"
+        >
+          News & updates
+          {newsCount > 0 ? <span className="text-lagoon"> ({newsCount})</span> : null}
+        </a>
         <button
           type="button"
           onClick={toggle}
           aria-expanded={expanded}
           className="shrink-0 text-[10px] uppercase tracking-[0.16em] text-oxide underline decoration-oxide/40 underline-offset-4 hover:decoration-oxide"
         >
-          {expanded ? "Hide ticker" : "Show ticker"}
+          {expanded ? "Hide events" : "Show events"}
         </button>
       </div>
 
       {expanded ? (
-        <div
-          className="news-ticker"
-          aria-label="Confirmed events and entertainment headlines"
-        >
+        <div className="news-ticker" aria-label="Confirmed events">
           <div className="news-ticker-window">
             <div
               className="news-ticker-track flex w-max flex-nowrap items-center py-2"
@@ -168,11 +168,6 @@ export function NewsTicker() {
                   className="mx-4 inline-block h-3 w-40 shrink-0 animate-pulse bg-ink/15"
                   aria-busy="true"
                 />
-              ) : null}
-              {newsMissing ? (
-                <span className="shrink-0 whitespace-nowrap px-4 text-xs text-muted">
-                  News feeds did not return any items.
-                </span>
               ) : null}
               {items.length > 0 ? (
                 <div className="flex shrink-0 items-center">
@@ -193,10 +188,10 @@ export function NewsTicker() {
         </div>
       ) : items.length > 0 ? (
         /*
-          Collapsed: still one real crawlable copy of the next 8 (+ news), no loop clone.
-          Visually demoted via sr-only so it does not compete with core content.
+          Collapsed: one real crawlable copy of the next 8 events, no loop clone.
+          Entertainment headlines stay on /news and in the home scroll card.
         */
-        <div className="sr-only" aria-label="Confirmed events and entertainment headlines">
+        <div className="sr-only" aria-label="Confirmed events">
           <ul>
             {items.map((item, index) => (
               <li key={`${item.kind}-${item.link}-${index}-static`}>
