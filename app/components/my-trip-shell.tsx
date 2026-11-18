@@ -9,11 +9,9 @@ import { TripAccountPanel } from "./trip-account-panel";
 function MyTripShellFrame({
   signedIn,
   cloudSyncAvailable,
-  userEmail,
 }: {
   signedIn: boolean;
   cloudSyncAvailable: boolean;
-  userEmail: string | null;
 }) {
   return (
     <section id="trip" className="scroll-mt-36 border-b border-ink/10 bg-chart">
@@ -25,8 +23,16 @@ function MyTripShellFrame({
               <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
                 Plan your trip
               </h2>
-              <p className="mt-4 max-w-xl text-sm leading-7 text-muted">
-                What you save stays in this browser.
+              <p className="mt-4 max-w-xl text-base leading-7 text-ink">
+                Guest trip planning works in this browser.
+              </p>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                <Link
+                  href="/sign-in"
+                  className="underline decoration-ink/25 underline-offset-4 hover:text-ink"
+                >
+                  Sign in
+                </Link>
               </p>
             </div>
             <div className="min-w-0 border-t border-brass/40 bg-paper-deep/80 px-5 py-5 sm:px-6 sm:py-6 lg:border-t-0 lg:border-l">
@@ -35,20 +41,7 @@ function MyTripShellFrame({
           </div>
         </article>
         <MyTripList />
-        <TripAccountPanel
-          signedIn={signedIn}
-          cloudSyncAvailable={cloudSyncAvailable}
-          userEmail={userEmail}
-        />
-        <p className="mt-6 text-sm leading-6 text-muted">
-          <Link
-            href="/sign-in"
-            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-          >
-            Sign in
-          </Link>{" "}
-          for email, Google, or Apple — optional when keys are configured on the server.
-        </p>
+        <TripAccountPanel signedIn={signedIn} cloudSyncAvailable={cloudSyncAvailable} />
       </div>
     </section>
   );
@@ -59,11 +52,7 @@ async function MyTripShellSession() {
   const cloud = tripCloudSync();
 
   return (
-    <MyTripShellFrame
-      signedIn={Boolean(user)}
-      cloudSyncAvailable={cloud.connected}
-      userEmail={user?.email ?? null}
-    />
+    <MyTripShellFrame signedIn={Boolean(user)} cloudSyncAvailable={cloud.connected} />
   );
 }
 
@@ -73,7 +62,7 @@ export function MyTripShell() {
   return (
     <Suspense
       fallback={
-        <MyTripShellFrame signedIn={false} cloudSyncAvailable={cloud.connected} userEmail={null} />
+        <MyTripShellFrame signedIn={false} cloudSyncAvailable={cloud.connected} />
       }
     >
       <MyTripShellSession />
