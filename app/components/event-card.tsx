@@ -1,7 +1,10 @@
 import type { CircuitEvent } from "../events";
-import { checkedOn, dateFace, presentEvent } from "../event-view";
+import { checkedOn, dateFace, eventSlug, presentEvent } from "../event-view";
+import { isFeaturedEvent } from "../sponsors";
 import { eventTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
+import { FeaturedBadge } from "./sponsor-spot";
+import { TicketLink } from "./tracked-link";
 
 export function DateBlock({ when }: { when: string }) {
   const face = dateFace(when);
@@ -58,18 +61,24 @@ export function DateBlock({ when }: { when: string }) {
   );
 }
 
-export function PrimaryAction({ event }: { event: CircuitEvent }) {
+export function PrimaryAction({
+  event,
+  placement = "event-card",
+}: {
+  event: CircuitEvent;
+  placement?: string;
+}) {
   if (event.ticketsUrl) {
     return (
       <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-        <a
+        <TicketLink
           href={event.ticketsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          eventSlug={eventSlug(event)}
+          placement={placement}
           className="inline-flex bg-oxide px-4 py-3 text-[11px] uppercase tracking-[0.18em] text-chart"
         >
           Tickets — leaves this site
-        </a>
+        </TicketLink>
         {event.url ? (
           <a
             href={event.url}
@@ -118,6 +127,7 @@ export function EventCard({
           <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
             {view.category}
           </p>
+          {isFeaturedEvent(eventSlug(event)) ? <FeaturedBadge className="mt-2" /> : null}
           <Title className="mt-2 font-display text-3xl leading-none tracking-tight sm:text-4xl">
             <a href={view.href} className="hover:text-oxide">
               {view.name}

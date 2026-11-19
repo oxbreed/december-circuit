@@ -126,15 +126,47 @@ export default function PrivacyPage() {
           operator has set a measurement id in the server environment; it is
           off by default.
         </p>
+        <p>
+          Some outbound links are affiliate links or paid placements, and they
+          are labelled. A partner link goes through a first-party address that
+          starts with <code>/go/</code> before it opens the partner’s site. When
+          you click a partner, ticket, or paid link, the site may record which
+          partner or listing it was, the page the link sat on, the referring
+          site’s host name, a two-letter country code from the hosting edge, and
+          the time. Vercel Web Analytics may also count the click as an event.
+          This click record does not store your IP address and this site does
+          not set a cookie for it. The partner’s own site may set its own
+          cookies after you arrive; its own notices apply there. See the{" "}
+          <Link
+            href="/disclosure"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            disclosure
+          </Link>{" "}
+          and the{" "}
+          <Link
+            href="/cookies"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            cookie notice
+          </Link>
+          .
+        </p>
+        <p>
+          An organiser or business that agrees a paid placement pays through
+          the payment provider’s own page (Paystack or Flutterwave) or an
+          invoice. Card and bank details go to that provider, not to this site.
+        </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
           What is not collected
         </h2>
         <p>
           There is no advertising cookie from this directory’s own code. A
-          review has no rating. A newsletter, a fare, or a payment is not
-          offered yet. If one is added, this notice will be updated before it
-          starts. First-party visit rows do not store your IP address.
+          review has no rating. A newsletter is not offered, and no fare,
+          ticket, or room is sold on this site. If a newsletter is added, this
+          notice will be updated before it starts. First-party visit and click
+          rows do not store your IP address.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Why</h2>
@@ -150,7 +182,9 @@ export default function PrivacyPage() {
           can show them. Enquiry mail is read so the operator can reply. Visit
           and performance data are collected so Oxbreed Management can see
           whether the site loads well, which pages are used, and roughly which
-          countries readers come from.
+          countries readers come from. Click counts on partner, ticket, and paid
+          links are kept so the operator can report clicks to affiliate partners
+          and to organisers who paid for a placement.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -160,7 +194,7 @@ export default function PrivacyPage() {
           Oxbreed Management receives the submissions, pictures, reviews, and
           enquiry mail. The admin page can be opened only from the admin address
           held on the server. Supabase holds the database, the private pictures,
-          the sign-in, and any first-party page-view rows. Vercel hosts the site,
+          the sign-in, and any first-party page-view and click rows. Vercel hosts the site,
           receives the request that loads a page, and processes Web Analytics
           and Speed Insights. Enquiry mail is received at hello@dirtydecember.info and
           partners@dirtydecember.info. OpenStreetMap receives the request for a

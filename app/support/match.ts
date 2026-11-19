@@ -164,12 +164,12 @@ export function matchGroundedReply(question: string) {
     {
       keys: ["payment", "pay", "ticket", "tickets", "checkout", "booking", "buy"],
       reply:
-        "We don’t take payment or hold bookings on this site. If a record already has a ticket link, that link leaves dirtydecember.info. Same idea for stay links and flight searches — they’re not a purchase here.",
+        "We don’t take payment from visitors or hold bookings on this site. If a record already has a ticket link, that link leaves dirtydecember.info. Same idea for stay links and flight searches — they’re not a purchase here. Some hotel, flight, and tour links are labelled partner links, and we may earn a commission if you book through one — see /disclosure.",
     },
     {
       keys: ["list", "submit", "organise", "organize", "partnership", "advertise"],
       reply:
-        "You can list something at /list. Events and shows stay unpublished until someone on the team checks them. Visitor notes go to hello@dirtydecember.info; partnership notes to partners@dirtydecember.info. Placements are labeled, and we don’t take payment here.",
+        "You can list something at /list. Events and shows stay unpublished until someone on the team checks them. Visitor notes go to hello@dirtydecember.info; partnership notes to partners@dirtydecember.info. Paid placements are labeled and agreed by email first — see /get-featured.",
     },
     {
       keys: ["affiliated", "affiliation", "livespot", "official"],

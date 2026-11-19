@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BusinessPlacement } from "../components/business-placement";
 import { EventSubmission } from "../components/event-submission";
 import { PartnerOffer } from "../components/partner-offer";
@@ -9,7 +10,7 @@ import { pageMetadata } from "../site";
 export const metadata = pageMetadata({
   title: "List an event or place",
   description:
-    "Submit an event, a place, or a business to be checked, or ask about a labeled placement. This site does not take payment.",
+    "Submit an event, a place, or a business to be checked for free, or ask about a labeled paid placement.",
   path: "/list",
 });
 
@@ -50,12 +51,19 @@ export default function ListPage() {
         <PlaceSubmission connected={connected} />
       </section>
 
+      <p className="mt-6 max-w-2xl border-l-2 border-oxide pl-4 text-sm leading-6 text-ink">
+        Want a featured slot, a sponsored story, or a tracked ticket link?{" "}
+        <Link href="/get-featured" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Get featured
+        </Link>
+      </p>
+
       <section id="place-ad" className="mt-4 scroll-mt-36 border-t border-ink/10 pt-4">
         <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">
           Ad placement for a business
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-          The placement is labeled, and this site does not take payment.
+          The placement is labeled. Paid placements are agreed by email first — see Get featured.
           {connected ? " It is saved as unpublished and stays off the site until it is checked." : ""}
         </p>
         {connected ? (
@@ -76,8 +84,8 @@ export default function ListPage() {
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
           {connected
-            ? "The placement is labeled, and this site does not take payment. The product is saved as unpublished and stays off the site until it is checked."
-            : "The placement is labeled, and this site does not take payment. The product stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
+            ? "The placement is labeled. Paid placements are agreed by email first — see Get featured. The product is saved as unpublished and stays off the site until it is checked."
+            : "The placement is labeled. Paid placements are agreed by email first — see Get featured. The product stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
         </p>
         <ProductAd connected={connected} />
       </section>
@@ -88,8 +96,8 @@ export default function ListPage() {
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
           {connected
-            ? "The placement is labeled, and this site does not take payment. The offer is saved as unpublished and stays off the site until it is checked."
-            : "The placement is labeled, and this site does not take payment. The offer stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
+            ? "The placement is labeled. Paid placements are agreed by email first — see Get featured. The offer is saved as unpublished and stays off the site until it is checked."
+            : "The placement is labeled. Paid placements are agreed by email first — see Get featured. The offer stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
         </p>
         <PartnerOffer
           subject="Transportation partnership"
@@ -105,8 +113,8 @@ export default function ListPage() {
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
           {connected
-            ? "The placement is labeled, and this site does not take payment. The offer is saved as unpublished and stays off the site until it is checked."
-            : "The placement is labeled, and this site does not take payment. The offer stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
+            ? "The placement is labeled. Paid placements are agreed by email first — see Get featured. The offer is saved as unpublished and stays off the site until it is checked."
+            : "The placement is labeled. Paid placements are agreed by email first — see Get featured. The offer stays off the site until it is checked. The button opens an email to partners@dirtydecember.info."}
         </p>
         <PartnerOffer
           subject="Booking partnership"

@@ -95,17 +95,40 @@ export default function TermsPage() {
           organiser pages also leave this site. The other site’s own terms apply
           once you leave. The news page shows headlines and pictures supplied by
           the public feeds already used for the ticker. Opening an item leaves
-          this site. A newsletter, a fare, or a payment is not offered yet. If
-          one is added, these terms will be updated before it is offered.
+          this site. Some outbound links are affiliate links: if you book
+          through one, the site may earn a commission from that partner. They
+          are labelled, and they go through a first-party <code>/go/</code>{" "}
+          address that counts the click. You book and pay on the partner’s
+          site, under its terms; no fare, ticket, or room is sold here. A
+          newsletter is not offered yet. If one is added, these terms will be
+          updated before it is offered. See the{" "}
+          <Link
+            href="/disclosure"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            disclosure
+          </Link>
+          .
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
           Labeled placements
         </h2>
         <p>
-          Paid placements are labeled. No sponsor is listed, and the empty block is hidden. A placement or
-          partnership form is a request to be checked. It does not by itself buy
-          a place on the page.
+          Paid placements are labeled “Featured · Paid placement”, and their
+          links are marked as sponsored. When no sponsor is listed, the block is
+          hidden. A placement or partnership form is a request to be checked. It
+          does not by itself buy a place on the page. A placement is agreed by
+          email with a written quote, paid through a payment provider’s page
+          (Paystack or Flutterwave) or an invoice, and checked by a person before
+          it is shown. Payment does not change an event’s sourced facts. See{" "}
+          <Link
+            href="/get-featured"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            Get featured
+          </Link>
+          .
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">My trip</h2>

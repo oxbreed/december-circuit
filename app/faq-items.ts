@@ -35,7 +35,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "Does this site sell tickets or take payment?",
     answer:
-      "No. This site takes no payment and holds no bookings. A ticket link appears only when the record already has one, and that link leaves this site. A stay link and a flight search are not a purchase here either.",
+      "No. This site takes no payment from visitors and holds no bookings. A ticket link appears only when the record already has one, and that link leaves this site. A stay link and a flight search are not a purchase here either. Some hotel, flight, and tour links are labelled partner links, and the site may earn a commission if you book through one — see [[/disclosure|Disclosure]].",
   },
   {
     question: "How do flight searches work?",
@@ -60,7 +60,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "How do hotels and short stays work here?",
     answer:
-      "Hotels and short-stay names on the home page and in the guide open that place’s own organiser page. Museums, ports, and other places stay on the places list the same way. This site does not take payment.",
+      "Hotels and short-stay names on the home page and in the guide open that place’s own organiser page. Museums, ports, and other places stay on the places list the same way. Labelled partner searches on Trip.com, Agoda, and Booking.com sit beside them; booking happens on those sites, not here.",
   },
   {
     question: "How does the map work?",

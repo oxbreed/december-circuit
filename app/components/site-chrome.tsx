@@ -64,6 +64,7 @@ const footerGroups = [
       ["Cities", "/cities"],
       ["Explore", "/explore"],
       ["List an event or place", "/list"],
+      ["Get featured", "/get-featured"],
     ],
   },
   {
@@ -73,6 +74,8 @@ const footerGroups = [
       ["Privacy", "/privacy"],
       ["Terms", "/terms"],
       ["EULA", "/eula"],
+      ["Cookies", "/cookies"],
+      ["Disclosure", "/disclosure"],
     ],
   },
 ] as const;

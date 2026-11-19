@@ -1,7 +1,9 @@
 "use client";
 
 import type { CircuitEvent } from "../events";
+import { eventSlug } from "../event-view";
 import { LoadMoreList } from "./load-more";
+import { TicketLink } from "./tracked-link";
 import { SectionIntro, sectionClass } from "./section-intro";
 import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
@@ -50,17 +52,17 @@ function EventCard({ event, index }: { event: CircuitEvent; index: number }) {
           </a>
         ) : null}
         {event.ticketsUrl ? (
-          <a
+          <TicketLink
             href={event.ticketsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            eventSlug={eventSlug(event)}
+            placement="events-section"
             className="mt-3 inline-flex items-center justify-between gap-3 text-sm text-brass"
           >
             <span className="underline decoration-gold/50 underline-offset-4">Tickets</span>
             <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50">
               →
             </span>
-          </a>
+          </TicketLink>
         ) : null}
       </div>
     </article>

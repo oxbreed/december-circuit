@@ -36,8 +36,8 @@ export function VisitorCategoryHub() {
 export function FindAStayOutbound() {
   return (
     <aside aria-label="Find a stay on Airbnb" className="mt-8 border border-ink/15 bg-chart px-5 py-6 md:px-6">
-      <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Outbound stay search</p>
-      <h3 className="mt-2 font-display text-2xl leading-none tracking-tight md:text-3xl">Find a stay</h3>
+      <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Outbound stay search · not a partner link</p>
+      <h3 className="mt-2 font-display text-2xl leading-none tracking-tight md:text-3xl">Homes on Airbnb</h3>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">{airbnbSearchNote}</p>
       <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm leading-6">
         {airbnbCitySearches.map((item) => (

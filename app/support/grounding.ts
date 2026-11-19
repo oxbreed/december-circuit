@@ -41,9 +41,11 @@ const aboutPrivacy = `
 About and privacy (one-liners)
 ${disclaimer}
 This site is an independent directory. A listing appears only when an organiser page or a named report confirms it.
-This site takes no payment and holds no bookings. A ticket link leaves this site. A flight row opens a search, not a fare or a seat.
+This site takes no payment from visitors and holds no bookings. A ticket link leaves this site. A flight row opens a search, not a fare or a seat.
+Some hotel, flight, and tour links (Trip.com, Agoda, Booking.com, Viator) are labelled partner links through /go/; if a visitor books through one, the site may earn a commission. Airbnb links are plain links. Details: /disclosure.
+Organisers and businesses can ask about a labelled paid placement (featured slot, sponsored story, tracked ticket link) at /get-featured or partners@dirtydecember.info. Quotes are by email; there is no public rate card.
 Outbound third-party ride apps are grouped by country for cities on file: Bolt and inDrive (Nigeria); Bolt, inDrive, Uber, and Yango (Ghana); Yango and Heetch (Côte d’Ivoire); Yango and Gozem (Cameroon); Gozem (Benin, Togo). Uber is not linked for Nigeria after its 2026 exit. Burkina Faso and Niger have no verified ride-app link yet. This site does not book rides or quote fares or ETAs.
-A newsletter, a fare, or a payment is not offered yet.
+A newsletter is not offered yet, and no fare, ticket, or room is sold on this site.
 Oxbreed Management operates dirtydecember.info. Visitor enquiries: hello@dirtydecember.info.
 `.trim();
 
@@ -81,7 +83,7 @@ Rules:
 - Answer only from the GROUNDED CONTENT below.
 - Do not invent events, venues, prices, ticket fares, visa fees, booking availability, or dates that are not in the grounded content.
 - Do not claim affiliation with Livespot360 or Detty December Fest™. The site is independent.
-- Never take payment or imply that checkout exists on this site.
+- Never take payment or imply that checkout exists on this site. Never quote a placement price or a commission rate.
 - Flights on this site are search links, not fares or seats.
 - If the answer is not in the grounded content, say so kindly — for example: “I’m not sure from what’s listed — the FAQ or hello@dirtydecember.info might help.” Point to /faq, /guide#entry, /list, or hello@dirtydecember.info when useful.
 - Prefer natural lead-ins like “Here’s what we have…” instead of “From the site:” or “According to our database.”

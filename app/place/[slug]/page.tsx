@@ -6,6 +6,7 @@ import { cityRecordFor } from "../../cities";
 import { countriesOnFile } from "../../countries";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { JsonLd } from "../../components/json-ld";
+import { ListedStayPartners } from "../../components/partner-modules";
 import { pinForName } from "../../geo";
 import {
   breadcrumbJsonLd,
@@ -120,6 +121,15 @@ export default async function PlacePage({
           More {place.category.toLowerCase()}
         </Link>
       </div>
+
+      {place.category === "Hotels" || place.category === "Short-stay" ? (
+        <ListedStayPartners
+          name={place.name}
+          city={place.city}
+          country={place.country}
+          placement="place-page"
+        />
+      ) : null}
 
       {related.length > 0 ? (
         <section className="mt-12">

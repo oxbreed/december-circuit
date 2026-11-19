@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { JsonLd } from "../components/json-ld";
+import { StayPartners } from "../components/partner-modules";
 import { PlacesDirectory } from "../components/places-directory";
 import {
   CarHireVisitorBlock,
@@ -73,6 +74,7 @@ export default function PlacesPage() {
       <div className="mx-auto w-full max-w-6xl space-y-10 px-5 md:px-8">
         <VisitorNextActions className="mt-8" heading="Plan next" />
         <VisitorCategoryHub />
+        <StayPartners placement="places-hub" />
         <FindAStayOutbound />
         <CarHireVisitorBlock />
         <EventsVisitorEntry />
