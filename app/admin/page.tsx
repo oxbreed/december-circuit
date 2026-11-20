@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import {
+  AdminOutboundClicksSection,
+  AdminEventsSection,
+  AdminFeaturedSection,
+  AdminGetFeaturedSection,
+  AdminOverviewSection,
+  AdminPlacesSection,
+} from "../components/admin-directory-sections";
 import {
   AdminSettingsSection,
   AdminSettingsSectionFallback,
@@ -11,7 +20,7 @@ import {
   SiteAnalyticsSectionFallback,
 } from "../components/site-analytics-section";
 import { WpProbeSection, WpProbeSectionFallback } from "../components/wp-probe-section";
-import { directorySignIn } from "../directory-auth";
+import { directorySignIn, isAdminEmail } from "../directory-auth";
 import { listPublicReviews, listUnpublishedSubmissions, signSubmissionPictures } from "../reviews";
 import { PICTURE_SHOW_MESSAGE } from "../submission-picture";
 import { pageMetadata } from "../site";
@@ -145,7 +154,7 @@ async function ReviewsPanel() {
       <h2 className="font-display text-3xl leading-none tracking-tight">Reviews</h2>
       <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
         Public text reviews already on file. Full UGC moderation UI stays on the pending Supabase
-        UGC branch — this panel only lists what main already exposes.
+        UGC branch. This panel only lists what main already exposes.
       </p>
       {reviews.failed ? (
         <p className="mt-3 text-sm leading-7 text-muted">Reviews could not be read.</p>
@@ -171,16 +180,13 @@ async function AdminSession({
 }) {
   const auth = directorySignIn();
   const user = await getDirectoryUser();
-  const allowed = Boolean(user && auth.adminEmail && user.email === auth.adminEmail);
+  if (!user) {
+    redirect("/sign-in");
+  }
+  const allowed = isAdminEmail(user.email);
   if (!allowed) {
     return (
-      <AccessRefused
-        detail={
-          user
-            ? "This page opens only for the admin address held on the server."
-            : "Nobody is signed in. This page opens only for the admin address held on the server."
-        }
-      />
+      <AccessRefused detail="This page opens only for an allowlisted admin address." />
     );
   }
 
@@ -189,6 +195,40 @@ async function AdminSession({
 
   return (
     <AdminShell email={user?.email ?? auth.adminEmail ?? ""} section={section}>
+      {section === "overview" ? <AdminOverviewSection /> : null}
+
+      {section === "events" ? <AdminEventsSection /> : null}
+
+      {section === "featured" ? <AdminFeaturedSection /> : null}
+
+      {section === "places" ? <AdminPlacesSection /> : null}
+
+      {section === "get-featured" ? (
+        <Suspense
+          fallback={
+            <section className="min-w-0">
+              <h2 className="font-display text-3xl leading-none tracking-tight">Get featured</h2>
+              <p className="mt-3 text-sm leading-7 text-muted">Loading placements…</p>
+            </section>
+          }
+        >
+          <AdminGetFeaturedSection />
+        </Suspense>
+      ) : null}
+
+      {section === "clicks" ? (
+        <Suspense
+          fallback={
+            <section className="min-w-0">
+              <h2 className="font-display text-3xl leading-none tracking-tight">Outbound clicks</h2>
+              <p className="mt-3 text-sm leading-7 text-muted">Loading clicks…</p>
+            </section>
+          }
+        >
+          <AdminOutboundClicksSection />
+        </Suspense>
+      ) : null}
+
       {section === "dashboard" ? (
         <Suspense fallback={<SiteAnalyticsSectionFallback />}>
           <SiteAnalyticsSection />
@@ -252,7 +292,7 @@ export default async function AdminPage({
   return (
     <Suspense
       fallback={
-        <AccessRefused detail="Nobody is signed in. This page opens only for the admin address held on the server." />
+        <AccessRefused detail="Nobody is signed in. This page opens only for an allowlisted admin address." />
       }
     >
       <AdminSession searchParams={searchParams} />
