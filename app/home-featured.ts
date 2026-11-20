@@ -39,7 +39,7 @@ export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
     title: "YBNL: The Reunion, Future Fest '26",
     date: "18 December",
     sourceId: "future-fest-pulse",
-    poster: "/landmarks/future-fest-2026.jpg",
+    poster: "/landmarks/olamide-ybnl-reunion-2026.jpg",
   },
   {
     id: "wizkid-live-out-loud",
