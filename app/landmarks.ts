@@ -273,4 +273,14 @@ export const landmarks: FramePhoto[] = [
     alt: "YBNL The Reunion illustrated poster for Olamide, with YBNL artists in front of a lit YBNL house, Lagos",
     credit: "Poster supplied by Oxbreed Studio",
   },
+  {
+    // Official ticket-page poster:
+    // https://res.cloudinary.com/jetron-mall/image/upload/t_large/production/events/ag-2026/poster/JUY03U88TQ
+    name: "Adekunle Gold, The Greatest Showman",
+    city: "Lagos",
+    src: "/landmarks/adekunle-gold-greatest-showman-2026.jpg",
+    alt: "The Greatest Showman poster for Adekunle Gold, 26 December, National Theatre, Lagos",
+    credit: "Image on the official ticket page. https://www.jetronticket.com/ag-2026",
+    creditUrl: "https://www.jetronticket.com/ag-2026",
+  },
 ];

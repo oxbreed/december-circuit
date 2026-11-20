@@ -47,7 +47,7 @@ Merge identity is `region` + `when` + `summary` so same-day Carnival schedule ni
 | `ghana-tourism-black-star` | https://ghana.travel/black-star-experience | **Probe / held** (often HTTP 403; dates not published from this URL alone). |
 | `future-fest-pulse` | Pulse Nigeria, Asake / Future Fest '26 | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `iconiq-fest` | https://www.iconiqfest.com/ | **Probe / held.** Seed rows for Lagos 19–23 Dec and Abuja 16 Dec (added 20 Nov 2026). |
-| `adekunle-gold-showman-qed` | QED.ng, The Greatest Showman | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `adekunle-gold-showman-jetron` | https://www.jetronticket.com/ag-2026 | **Probe / held.** Official ticket page for The Greatest Showman. Seed row (updated 20 Nov 2026). |
 | `afrofuture-residency` | https://www.afrofuture.com/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `zaama-disco-dailypost` | Daily Post Ghana, 2026 Detty December calendar | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `bhim-festival` | https://bhimfestival.com/ | **Probe / held.** Seed row only (added 20 Nov 2026). |

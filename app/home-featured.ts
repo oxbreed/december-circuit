@@ -114,6 +114,14 @@ export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
     sourceId: "bhim-festival",
     poster: "/landmarks/bhim-festival-2026.jpg",
   },
+  {
+    id: "adekunle-gold-greatest-showman",
+    artist: "Adekunle Gold",
+    title: "The Greatest Showman, National Theatre",
+    date: "26 December",
+    sourceId: "adekunle-gold-showman-jetron",
+    poster: "/landmarks/adekunle-gold-greatest-showman-2026.jpg",
+  },
 ];
 
 export type HomePoster = {
