@@ -257,4 +257,12 @@ export const landmarks: FramePhoto[] = [
     credit: "Image on the organiser's page. https://www.zaamadisco.com/",
     creditUrl: "https://www.zaamadisco.com/",
   },
+  {
+    // Poster supplied by Oxbreed Studio. No public official source URL found for this image.
+    name: "Asake, M$NEY in Lagos",
+    city: "Lagos",
+    src: "/landmarks/asake-money-in-lagos-2026.jpg",
+    alt: "M$NEY in Lagos poster for Asake, 20 December, The Oasis, Lagos",
+    credit: "Poster supplied by Oxbreed Studio",
+  },
 ];

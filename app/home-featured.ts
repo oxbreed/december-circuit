@@ -76,10 +76,10 @@ export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
   {
     id: "asake-mney-in-lagos",
     artist: "Asake",
-    title: "M$NEY in Lagos, Future Fest '26",
+    title: "M$NEY in Lagos, The Oasis",
     date: "20 December",
     sourceId: "future-fest-pulse",
-    poster: "/landmarks/future-fest-2026.jpg",
+    poster: "/landmarks/asake-money-in-lagos-2026.jpg",
   },
   {
     id: "seyi-vibez-apitainment",
