@@ -198,4 +198,42 @@ export const landmarks: FramePhoto[] = [
     credit: "Image on the organiser's page. https://bhimfestival.com/",
     creditUrl: "https://bhimfestival.com/",
   },
+  {
+    // Official ticket-page poster: https://wizkid.tix.africa/assets/images/banner-mobile.jpg
+    name: "Live Out Loud Music Festival, Wizkid",
+    city: "Abuja",
+    src: "/landmarks/live-out-loud-wizkid-abuja-2026.jpg",
+    credit: "Image on the official ticket page. https://wizkid.tix.africa/",
+    creditUrl: "https://wizkid.tix.africa/",
+  },
+  {
+    // Organiser's flyer: https://www.apitix.com/wp-content/uploads/2026/11/seyi-vibez-live-in-abuja-flyer.jpg
+    name: "Apitainment Music Festival, Seyi Vibez",
+    city: "Abuja",
+    src: "/landmarks/apitainment-seyi-vibez-abuja-2026.jpg",
+    credit:
+      "Image on the organiser's page. https://www.apitix.com/product/seyi-vibez-live-in-abuja/",
+    creditUrl: "https://www.apitix.com/product/seyi-vibez-live-in-abuja/",
+  },
+  {
+    // Official tour banner on the ticket pages:
+    // https://mainlandblockparty.com/wp-content/uploads/2026/11/4h6uXfd8.jpeg
+    name: "Victony, The Bonfire Experience",
+    city: "Lagos",
+    src: "/landmarks/victony-bonfire-experience-2026.jpg",
+    credit:
+      "Image on the organiser's ticket page. https://mainlandblockparty.com/event/island-blockparty-the-bonfire-experience",
+    creditUrl:
+      "https://mainlandblockparty.com/event/island-blockparty-the-bonfire-experience",
+  },
+  {
+    // Organiser's banner on the ticket page:
+    // https://oauwyfki5yxftdbf.public.blob.vercel-storage.com/uploads/mvpm5x04-dc847ae2c3f3.webp
+    name: "ÀLÓ: Once Upon a Song",
+    city: "Lagos",
+    src: "/landmarks/alo-once-upon-a-song-2026.jpg",
+    credit:
+      "Image on the organiser's page. https://tix.dot360.co/event/a-lo-once-upon-a-song",
+    creditUrl: "https://tix.dot360.co/event/a-lo-once-upon-a-song",
+  },
 ];

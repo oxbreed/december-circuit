@@ -153,6 +153,129 @@ export const seedEvents: CircuitEvent[] = [
     urlLabel: "Organiser's page",
     sourceId: "bhim-festival",
   },
+  // Seed rows added 20 Nov 2026. Appended after the existing list so a rebase
+  // onto PR #7 (content/more-events-batch-1) stays a trivial append.
+  {
+    region: "Abuja",
+    when: "4 December",
+    summary:
+      "Victony, The Bonfire Experience. The venue has not been announced yet. Starts at 8pm.",
+    url: "https://mainlandblockparty.com/event/capital-blockparty-the-bonfire-experience",
+    urlLabel: "Organiser's page",
+    sourceId: "victony-bonfire-abuja",
+  },
+  {
+    region: "Abuja",
+    when: "5 December",
+    summary:
+      "Cibusa x The Believers Music Concert, with Soundboi BME. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Abuja",
+    when: "5 December",
+    summary:
+      "Moelogo Live in Abuja, The Yoruba Healer Live Experience at the UpeRoom by Jireh Multimedia.",
+    url: "https://tix.africa/discover/moelogo-live-in-abuja",
+    urlLabel: "Organiser's page",
+    sourceId: "moelogo-abuja-tix",
+  },
+  {
+    region: "Abuja",
+    when: "6 December",
+    summary: "Johnny's Room Live 8, Johnny Drille at the Exhibition Pavilion.",
+    url: "https://johnnydrille.tix.to/jrl8",
+    urlLabel: "Organiser's page",
+    sourceId: "johnny-room-live-8",
+  },
+  {
+    region: "Abuja",
+    when: "11 December",
+    summary:
+      "EJANLA FEST at the Harrow Park, Wuse. Carnival from 11am, concert at 7pm.",
+    url: "https://tix.africa/discover/ejanlafest",
+    urlLabel: "Organiser's page",
+    sourceId: "ejanla-fest-tix",
+  },
+  {
+    region: "Abuja",
+    when: "12-13 December",
+    summary: "DJ Tunez Blackout at the Cage Club, Drip Mall, Wuse 2.",
+    url: "https://www.visitabuja.org/event/dj-tunez-blackout-abuja/",
+    urlLabel: "Event listing",
+    sourceId: "dj-tunez-blackout-visitabuja",
+  },
+  {
+    region: "Abuja",
+    when: "13 December",
+    summary:
+      "Live Out Loud Music Festival, Wizkid at the Eagle Square. Gates at 4pm, Wizkid on stage at 10pm.",
+    url: "https://www.lolmusicfest.com/",
+    urlLabel: "Organiser's page",
+    ticketsUrl: "https://wizkid.tix.africa/",
+    sourceId: "lol-music-fest",
+  },
+  {
+    region: "Lagos",
+    when: "13 December",
+    summary:
+      "ÀLÓ: Once Upon a Song at the Shell Hall, MUSON Centre, Onikan. African folk music and storytelling, from 7pm.",
+    url: "https://tix.dot360.co/event/a-lo-once-upon-a-song",
+    urlLabel: "Organiser's page",
+    sourceId: "alo-once-upon-a-song",
+  },
+  {
+    region: "Abuja",
+    when: "19 December",
+    summary: "Rise of the Machine. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Abuja",
+    when: "19 December",
+    summary:
+      "Apitainment Music Festival, Seyi Vibez at the Abuja Velodrome. Starts at 7pm.",
+    url: "https://www.apitix.com/product/seyi-vibez-live-in-abuja/",
+    urlLabel: "Organiser's page",
+    sourceId: "apitainment-seyi-apitix",
+  },
+  {
+    region: "Abuja",
+    when: "22 December",
+    summary: "The Cavemen, Cavy Fest at the Bali City Park, Wuse 2. Starts at 7pm.",
+    url: "https://www.woya.me/programme/abuja/event/67a10dba-b46f-478c-bc2f-75b79471c2ea",
+    urlLabel: "Event listing",
+    sourceId: "cavy-fest-woya",
+  },
+  {
+    region: "Abuja",
+    when: "24 December",
+    summary: "Season Fest. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Abuja",
+    when: "24 December",
+    summary: "Mr P Live. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Lagos",
+    when: "26 December",
+    summary:
+      "Victony, The Bonfire Experience. The venue has not been announced yet. Starts at 8pm.",
+    url: "https://mainlandblockparty.com/event/island-blockparty-the-bonfire-experience",
+    urlLabel: "Organiser's page",
+    sourceId: "victony-bonfire-lagos",
+  },
 ];
 
 function publishedFromSnapshot(): IngestEvent[] {
