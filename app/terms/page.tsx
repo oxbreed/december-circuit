@@ -23,10 +23,10 @@ export default function TermsPage() {
           “Powered by Oxbreed
           Management.” and that credit links only to{" "}
           <a
-            href="https://www.oxbreedmanagement.com"
+            href="https://oxbreedstudio.com"
             className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
           >
-            https://www.oxbreedmanagement.com
+            https://oxbreedstudio.com
           </a>
           .
         </p>

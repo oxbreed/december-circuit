@@ -132,36 +132,6 @@ export const rideHailMarkets: RideHailMarket[] = [
         url: "https://yango.com/en_cm/",
         source: "https://yango.com/en_cm/ · company cities https://yango.com/en_gh/company/",
       },
-      {
-        name: "Gozem",
-        label: "Cameroon",
-        url: "https://website.gozem.co/corporate-cm/en/homepage-en/",
-        source: "https://website.gozem.co/corporate-cm/en/homepage-en/ · https://gozem.co/en/",
-      },
-    ],
-  },
-  {
-    country: "Benin",
-    citiesOnFile: ["Cotonou"],
-    apps: [
-      {
-        name: "Gozem",
-        label: "Benin",
-        url: "https://website.gozem.co/corporate-bj/en/homepage-en/",
-        source: "https://website.gozem.co/corporate-bj/en/homepage-en/ · https://gozem.co/en/",
-      },
-    ],
-  },
-  {
-    country: "Togo",
-    citiesOnFile: ["Lomé"],
-    apps: [
-      {
-        name: "Gozem",
-        label: "Togo",
-        url: "https://website.gozem.co/corporate-tg/en/homepage-en/",
-        source: "https://website.gozem.co/corporate-tg/en/homepage-en/ · https://gozem.co/en/",
-      },
     ],
   },
 ];

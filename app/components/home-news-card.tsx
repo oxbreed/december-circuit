@@ -47,7 +47,7 @@ export async function HomeNewsCard() {
         </p>
         {items.length > 0 ? (
           <ul
-            className="mt-5 max-h-64 overflow-y-auto border border-ink/15 bg-chart"
+            className="relative mt-5 max-h-64 overflow-x-hidden overflow-y-auto contain-paint border border-ink/15 bg-chart"
             aria-label="Headlines from the public feeds"
           >
             {items.map((item) => (

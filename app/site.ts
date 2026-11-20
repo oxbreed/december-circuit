@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const siteName = "dirtydecember.info";
 export const siteUrl = "https://www.dirtydecember.info";
 export const publisherName = "Oxbreed Management";
-export const publisherUrl = "https://www.oxbreedmanagement.com";
+export const publisherUrl = "https://oxbreedstudio.com";
 
 /** Shared Open Graph / Twitter image — real Lagos night photograph in /public. */
 export const defaultShareImage = {
