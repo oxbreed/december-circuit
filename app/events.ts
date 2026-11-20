@@ -29,7 +29,7 @@ export const seedEvents: CircuitEvent[] = [
     region: "Lagos",
     when: "18-30 December",
     summary:
-      "Detty December Fest. Wizkid on 18 December, DJ Tunez and Friends on 24 December, Tungba Christmas on 25 December.",
+      "Detty December Fest. Wizkid on 18 December, Lauryn Hill on 21 December, DJ Tunez and Friends on 24 December, Tungba Christmas on 25 December, Summer Walker on 27 December, Young Thug on 28 December.",
     url: "https://dettydecfest.com/",
     urlLabel: "Organiser's page",
     ticketsUrl: "https://tix.dot360.co/org/livespot/detty-december",
@@ -55,11 +55,11 @@ export const seedEvents: CircuitEvent[] = [
   {
     region: "Lagos",
     when: "22-24 December",
-    summary:
-      "Flytime Fest, Eko Convention Centre. Headliners for 2026 are still unannounced.",
-    url: "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+    summary: "Flytime Fest, Eko Convention Centre. Latto and Sexyy Red on 22 December.",
+    url: "https://guardian.ng/life/life-features/detty-december-your-guide-to-lagos-concerts/",
     urlLabel: "News report",
-    // Held by ingest until an organiser page names this night (DD-2).
+    // Artists from the Guardian Nigeria guide (20 Nov 2026). Ingest still only probes
+    // flytimefest.com and holds it (DD-2); held rows never touch this seed text.
     sourceId: "flytime-fest-home",
   },
   {
