@@ -265,4 +265,12 @@ export const landmarks: FramePhoto[] = [
     alt: "M$NEY in Lagos poster for Asake, 20 December, The Oasis, Lagos",
     credit: "Poster supplied by Oxbreed Studio",
   },
+  {
+    // Poster supplied by Oxbreed Studio. No public official source URL found for this image.
+    name: "Olamide, YBNL: The Reunion",
+    city: "Lagos",
+    src: "/landmarks/olamide-ybnl-reunion-2026.jpg",
+    alt: "YBNL The Reunion illustrated poster for Olamide, with YBNL artists in front of a lit YBNL house, Lagos",
+    credit: "Poster supplied by Oxbreed Studio",
+  },
 ];
