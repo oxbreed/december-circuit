@@ -31,6 +31,36 @@ export const landmarks: FramePhoto[] = [
       "https://dettydecfest.com/wizkid-opens-detty-december-fest-at-the-grand-opening-concert-day-1-of-13/",
   },
   {
+    // Organiser's night poster: https://dettydecfest.com/wp-content/uploads/2026/11/DDF_DOT-LAURYN-HILL-1200-x-800-scaled.webp
+    // Listed on https://dettydecfest.com/events/
+    name: "Lauryn Hill, Detty December Fest",
+    city: "Lagos",
+    src: "/landmarks/detty-december-fest-lauryn-hill-2026.jpg",
+    alt: "Detty December Fest poster for Ms. Lauryn Hill with YG Marley and Zion Marley, 21 December 2026, Lagos",
+    credit: "Image on the organiser's page. https://dettydecfest.com/events/",
+    creditUrl: "https://dettydecfest.com/events/",
+  },
+  {
+    // Organiser's night poster: https://dettydecfest.com/wp-content/uploads/2026/11/DDF_DOT-SUMMER-WALKER-AND-FRIDAYY-1200-x-800.webp
+    // Listed on https://dettydecfest.com/events/
+    name: "Summer Walker, Detty December Fest",
+    city: "Lagos",
+    src: "/landmarks/detty-december-fest-summer-walker-2026.jpg",
+    alt: "Detty December Fest poster for Summer Walker and Fridayy, 27 December 2026, Lagos",
+    credit: "Image on the organiser's page. https://dettydecfest.com/events/",
+    creditUrl: "https://dettydecfest.com/events/",
+  },
+  {
+    // Organiser's night poster: https://dettydecfest.com/wp-content/uploads/2026/11/DDF_DOT-YOUNG-THUG-1200-x-800--scaled.webp
+    // Listed on https://dettydecfest.com/events/
+    name: "Young Thug, Detty December Fest",
+    city: "Lagos",
+    src: "/landmarks/detty-december-fest-young-thug-2026.jpg",
+    alt: "Detty December Fest poster for Young Thug, 28 December 2026, Lagos",
+    credit: "Image on the organiser's page. https://dettydecfest.com/events/",
+    creditUrl: "https://dettydecfest.com/events/",
+  },
+  {
     name: "Davido, Oriade residency",
     city: "Lagos",
     src: "/landmarks/oriade-residency.jpg",
