@@ -7,6 +7,7 @@ import { events, type CircuitEvent } from "./events";
  */
 export const majorEventKeys: ReadonlyArray<{ sourceId: string; when?: string }> = [
   { sourceId: "oriade-residency" },
+  { sourceId: "adekunle-gold-showman-jetron" },
   { sourceId: "detty-december-fest" },
   { sourceId: "flytime-fest-home", when: "22-24 December" },
   { sourceId: "rhythm-unplugged-stylerave" },

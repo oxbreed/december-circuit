@@ -94,9 +94,10 @@ export const seedEvents: CircuitEvent[] = [
     when: "26 December",
     summary:
       "Adekunle Gold, The Greatest Showman, with the MUSON Orchestra at the National Theatre.",
-    url: "https://www.qed.ng/adekunle-gold-announces-return-of-the-greatest-showman-for-december/",
-    urlLabel: "News report",
-    sourceId: "adekunle-gold-showman-qed",
+    url: "https://www.jetronticket.com/ag-2026",
+    urlLabel: "Organiser's page",
+    ticketsUrl: "https://www.jetronticket.com/ag-2026",
+    sourceId: "adekunle-gold-showman-jetron",
   },
   {
     region: "Calabar",

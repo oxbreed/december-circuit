@@ -131,12 +131,12 @@ export const eventFeedSources: readonly EventFeedSource[] = [
     extractor: "iconiq-home",
   },
   {
-    id: "adekunle-gold-showman-qed",
-    label: "News report",
-    url: "https://www.qed.ng/adekunle-gold-announces-return-of-the-greatest-showman-for-december/",
+    id: "adekunle-gold-showman-jetron",
+    label: "Organiser's page",
+    url: "https://www.jetronticket.com/ag-2026",
     regionHint: "Lagos",
     kind: "probe",
-    extractor: "adekunle-gold-qed",
+    extractor: "adekunle-gold-jetron",
   },
   {
     id: "afrofuture-residency",
