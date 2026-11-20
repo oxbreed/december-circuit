@@ -218,7 +218,7 @@ export function HeaderSearch() {
                 if (query.trim()) setOpen(true);
               }}
               onKeyDown={onKeyDown}
-              className="w-full border border-ink/15 bg-paper-deep py-1.5 pl-8 pr-3 font-sans text-sm leading-5 text-ink placeholder:text-ink/40 focus:border-oxide focus:outline-none"
+              className="w-full border border-ink/15 bg-paper-deep py-1.5 pl-8 pr-3 font-sans text-sm leading-5 text-ink placeholder:text-muted focus:border-oxide focus:outline-none"
             />
           </div>
 

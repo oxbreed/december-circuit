@@ -45,6 +45,12 @@ Merge identity is `region` + `when` + `summary` so same-day Carnival schedule ni
 | `december-in-ghana-myjoy` | MyJoyOnline GTA calendar | **Auto** season dates 1 Dec 2026 – 3 Jan 2027 when stated. |
 | `december-in-ghana-official` | https://decemberingh.com/ | **Probe / held** until the official page states 2026 dates. |
 | `ghana-tourism-black-star` | https://ghana.travel/black-star-experience | **Probe / held** (often HTTP 403; dates not published from this URL alone). |
+| `future-fest-pulse` | Pulse Nigeria, Asake / Future Fest '26 | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `iconiq-fest` | https://www.iconiqfest.com/ | **Probe / held.** Seed rows for Lagos 19–23 Dec and Abuja 16 Dec (added 20 Nov 2026). |
+| `adekunle-gold-showman-qed` | QED.ng, The Greatest Showman | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `afrofuture-residency` | https://www.afrofuture.com/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `zaama-disco-dailypost` | Daily Post Ghana, 2026 Detty December calendar | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `bhim-festival` | https://bhimfestival.com/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `victony-bonfire-abuja` | Mainland Block Party, Capital BlockParty / The Bonfire Experience | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `moelogo-abuja-tix` | https://tix.africa/discover/moelogo-live-in-abuja | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `johnny-room-live-8` | https://johnnydrille.tix.to/jrl8 | **Probe / held.** Seed row only (added 20 Nov 2026). |
