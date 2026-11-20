@@ -236,4 +236,25 @@ export const landmarks: FramePhoto[] = [
       "Image on the organiser's page. https://tix.dot360.co/event/a-lo-once-upon-a-song",
     creditUrl: "https://tix.dot360.co/event/a-lo-once-upon-a-song",
   },
+  {
+    // Organiser's key visual (og:image): https://futurefest.live/assets/kv/og-hero.jpg
+    // Festival site: https://futurefest.live/ (FutureFest '26, Lagos, 11-20 December 2026)
+    name: "Future Fest '26",
+    city: "Lagos",
+    src: "/landmarks/future-fest-2026.jpg",
+    alt: "Future Fest '26 key visual: a chrome figure with open hands behind the Future Fest '26 logo, Lagos",
+    credit: "Image on the organiser's page. https://futurefest.live/",
+    creditUrl: "https://futurefest.live/",
+  },
+  {
+    // Organiser's artwork (og:image): https://www.zaamadisco.com/zaama/og.jpg
+    // Credited as official artwork by Ghanamotion:
+    // https://www.ghanamotion.com/black-sherif-zaama-disco-2026-legon-21-december/
+    name: "Black Sherif's Zaama Disco",
+    city: "Accra",
+    src: "/landmarks/zaama-disco-2026.jpg",
+    alt: "Zaama Disco 2026 artwork: the logo inside a ring of fire, Legon Sports Stadium, Accra",
+    credit: "Image on the organiser's page. https://www.zaamadisco.com/",
+    creditUrl: "https://www.zaamadisco.com/",
+  },
 ];

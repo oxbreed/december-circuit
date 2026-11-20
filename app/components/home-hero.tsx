@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { disclaimer } from "../brand";
+import { homeHeroSlides } from "../home-hero-slides";
 import { HeroNightlife } from "./hero-nightlife";
 
 const offerLink =
@@ -8,7 +9,7 @@ const offerLink =
 export function HomeHero() {
   return (
     <section className="overflow-x-clip border-b border-ink/10 pt-[4.5rem] lg:pt-[8.25rem]" aria-labelledby="home-hero-heading">
-      <HeroNightlife />
+      <HeroNightlife slides={homeHeroSlides()} />
       <div className="mx-auto max-w-6xl px-4 pb-5 pt-3 sm:px-6 sm:pb-8 sm:pt-4 lg:px-8 lg:pb-8 lg:pt-4">
         <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">dirtydecember.info</p>
         <h1
