@@ -1,5 +1,7 @@
 import { WpProbeControls } from "./wp-probe-controls";
+import { directorySignIn } from "../directory-auth";
 import { providerReports } from "../providers";
+import { tripOAuthProviders } from "../trip-oauth";
 import { getWpProbeSettings } from "../wp-probes";
 
 function flagOn(raw: string | undefined, defaultOn: boolean) {
@@ -15,14 +17,48 @@ export async function AdminSettingsSection() {
   const providers = providerReports();
   const pageviewsOn = flagOn(process.env.SITE_PAGEVIEWS_ENABLED, true);
   const gaId = (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "").trim();
+  const auth = directorySignIn();
+  const oauth = tripOAuthProviders();
 
   return (
     <section className="min-w-0">
       <h2 className="font-display text-3xl leading-none tracking-tight">Settings</h2>
       <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
-        Retention, probe storage, and analytics switches already wired for this site — grouped here
+        Retention, probe storage, and analytics switches already wired for this site, grouped here
         for Ox Management.
       </p>
+
+
+      <div className="mt-8 border-t border-ink/10 pt-6">
+        <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">Sign-in</h3>
+        <ul className="mt-3 grid gap-2 text-sm leading-6 text-ink">
+          <li>
+            Supabase Auth:{" "}
+            <span className={auth.connected ? "text-lagoon" : "text-muted"}>
+              {auth.connected ? "connected" : "not connected"}
+            </span>
+          </li>
+          <li>
+            Sign in with Google:{" "}
+            <span className={oauth.google.configured ? "text-lagoon" : "text-muted"}>
+              {oauth.google.configured ? "button is shown" : "not configured"}
+            </span>
+          </li>
+          <li>
+            Sign in with Apple:{" "}
+            <span className={oauth.apple.configured ? "text-lagoon" : "text-muted"}>
+              {oauth.apple.configured ? "button is shown" : "not configured"}
+            </span>
+          </li>
+          <li>
+            Admin allowlist: {auth.adminEmails.join(", ")}
+          </li>
+          <li className="text-muted">
+            Set provider secrets in the Supabase Auth dashboard, then set the client IDs and
+            ADMIN_EMAILS on Vercel. The full steps are in docs/auth-admin-setup.md.
+          </li>
+        </ul>
+      </div>
 
       <div className="mt-8 border-t border-ink/10 pt-6">
         <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">Probe storage</h3>
@@ -71,7 +107,7 @@ export async function AdminSettingsSection() {
             </span>
           </li>
           <li className="text-muted">
-            Change these with Vercel env vars and redeploy — there is no in-panel writer for them.
+            Change these with Vercel env vars and redeploy. There is no in-panel writer for them.
           </li>
         </ul>
         <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">

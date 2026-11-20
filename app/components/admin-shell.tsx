@@ -1,30 +1,49 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
+import { signOut } from "../auth/actions";
 import { AdminNav } from "./admin-nav";
 
 export type AdminSection =
+  | "overview"
+  | "events"
+  | "featured"
+  | "places"
+  | "get-featured"
+  | "clicks"
   | "dashboard"
   | "submissions"
   | "reviews"
   | "probes"
   | "settings";
 
+const known: AdminSection[] = [
+  "overview",
+  "events",
+  "featured",
+  "places",
+  "get-featured",
+  "clicks",
+  "dashboard",
+  "submissions",
+  "reviews",
+  "probes",
+  "settings",
+];
+
 export function parseAdminSection(
   value: string | string[] | undefined,
 ): AdminSection {
   const raw = Array.isArray(value) ? value[0] : value;
-  if (
-    raw === "submissions" ||
-    raw === "reviews" ||
-    raw === "probes" ||
-    raw === "settings" ||
-    raw === "dashboard"
-  ) {
-    return raw;
-  }
+  if (raw && (known as string[]).includes(raw)) return raw as AdminSection;
   // Back-compat aliases from older admin copy
   if (raw === "analytics" || raw === "insights") return "dashboard";
   if (raw === "wp-probes" || raw === "wp_probes") return "probes";
-  return "dashboard";
+  if (raw === "outbound" || raw === "outbound-clicks") return "clicks";
+  if (raw === "featured-submissions" || raw === "placement" || raw === "placements") {
+    return "get-featured";
+  }
+  if (raw === "directory" || raw === "home") return "overview";
+  return "overview";
 }
 
 export function AdminShell({
@@ -45,9 +64,25 @@ export function AdminShell({
             DirtyDecember
           </h1>
           <p className="mt-4 max-w-xl text-sm leading-7 text-muted">
-            Control panel for the directory on file. Signed in as {email}. Not WordPress — no posts,
-            plugins, or media library here.
+            Control panel for the directory on file. Signed in as {email}. Not WordPress, so there are
+            no posts, plugins, or a media library here.
           </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <Link
+            href="/sign-in"
+            className="text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            Account
+          </Link>
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="inline-flex max-w-full bg-ink px-4 py-3 text-left text-[11px] uppercase tracking-[0.16em] text-chart"
+            >
+              Sign out
+            </button>
+          </form>
         </div>
       </div>
 

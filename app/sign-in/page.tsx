@@ -3,14 +3,14 @@ import Link from "next/link";
 import { signOut } from "../auth/actions";
 import { EmailSignIn } from "../components/email-sign-in";
 import { OAuthSignIn } from "../components/oauth-sign-in";
-import { directorySignIn } from "../directory-auth";
+import { directorySignIn, isAdminEmail } from "../directory-auth";
 import { signInOAuthFlags } from "./sign-in-providers";
 import { pageMetadata } from "../site";
 import { getDirectoryUser } from "../supabase/session";
 
 export const metadata = pageMetadata({
   title: "Sign in",
-  description: "Sign in for keeping activities. The directory sign-in is not connected yet.",
+  description: "Sign in to dirtydecember.info. My trip still keeps events and places in this browser.",
   path: "/sign-in",
 });
 
@@ -51,7 +51,7 @@ function UnsignedIn({ googleConfigured, appleConfigured }: { googleConfigured: b
 async function SignInSession() {
   const auth = directorySignIn();
   const user = await getDirectoryUser();
-  const isAdmin = Boolean(user && auth.adminEmail && user.email === auth.adminEmail);
+  const isAdmin = isAdminEmail(user?.email);
   const oauth = signInOAuthFlags();
 
   return (

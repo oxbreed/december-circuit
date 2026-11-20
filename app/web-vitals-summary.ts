@@ -1,5 +1,5 @@
 import "server-only";
-import { directorySignIn } from "./directory-auth";
+import { directorySignIn, isAdminEmail } from "./directory-auth";
 import { createServiceClient } from "./supabase/server";
 import { getDirectoryUser } from "./supabase/session";
 
@@ -34,9 +34,9 @@ const METRIC_META: Record<
 
 async function requireAdminService() {
   const auth = directorySignIn();
-  if (!auth.connected || !auth.adminEmail) return { ok: false as const, reason: "no-key" as const };
+  if (!auth.connected) return { ok: false as const, reason: "no-key" as const };
   const user = await getDirectoryUser();
-  if (!user || user.email !== auth.adminEmail) {
+  if (!user || !isAdminEmail(user.email)) {
     return { ok: false as const, reason: "forbidden" as const };
   }
   const supabase = createServiceClient();

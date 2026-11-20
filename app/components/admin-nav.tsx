@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation";
 import type { AdminSection } from "./admin-shell";
 
 const items: { id: AdminSection; label: string }[] = [
+  { id: "overview", label: "Overview" },
+  { id: "events", label: "Events" },
+  { id: "featured", label: "Featured" },
+  { id: "places", label: "Places" },
+  { id: "get-featured", label: "Get featured" },
+  { id: "clicks", label: "Outbound clicks" },
   { id: "dashboard", label: "Dashboard / Insights" },
   { id: "submissions", label: "Submissions" },
   { id: "reviews", label: "Reviews" },
@@ -13,7 +19,7 @@ const items: { id: AdminSection; label: string }[] = [
 ];
 
 function hrefFor(section: AdminSection) {
-  return section === "dashboard" ? "/admin" : `/admin?section=${section}`;
+  return section === "overview" ? "/admin" : `/admin?section=${section}`;
 }
 
 export function AdminNav({ section }: { section: AdminSection }) {

@@ -104,3 +104,39 @@ export async function logOutboundClick(click: OutboundClick) {
     // Table or grant missing — stay quiet so the public site never breaks.
   }
 }
+
+export type OutboundClickRow = {
+  id: string;
+  kind: string;
+  partner: string;
+  target: string | null;
+  destination_host: string;
+  placement: string | null;
+  from_path: string | null;
+  referrer_host: string | null;
+  country: string | null;
+  earning: boolean;
+  ts: string;
+};
+
+/**
+ * Recent outbound clicks for the admin console. Service role only.
+ * Reports no-key when the server key is missing, and error when the table
+ * has not been applied or the query fails.
+ */
+export async function listOutboundClicks(limit = 80): Promise<{
+  reason: "ok" | "no-key" | "error";
+  rows: OutboundClickRow[];
+}> {
+  const supabase = serviceClient();
+  if (!supabase) return { reason: "no-key", rows: [] };
+  const { data, error } = await supabase
+    .from("outbound_clicks")
+    .select(
+      "id, kind, partner, target, destination_host, placement, from_path, referrer_host, country, earning, ts",
+    )
+    .order("ts", { ascending: false })
+    .limit(limit);
+  if (error) return { reason: "error", rows: [] };
+  return { reason: "ok", rows: (data ?? []) as OutboundClickRow[] };
+}

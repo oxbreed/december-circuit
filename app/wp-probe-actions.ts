@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { directorySignIn } from "./directory-auth";
+import { directorySignIn, isAdminEmail } from "./directory-auth";
 import { createServiceClient } from "./supabase/server";
 import { getDirectoryUser } from "./supabase/session";
 
@@ -12,11 +12,11 @@ export type ProbeActionState = {
 
 async function adminService() {
   const auth = directorySignIn();
-  if (!auth.connected || !auth.adminEmail) {
+  if (!auth.connected) {
     return { ok: false as const, message: "The directory sign-in is not connected yet." };
   }
   const user = await getDirectoryUser();
-  if (!user || user.email !== auth.adminEmail) {
+  if (!user || !isAdminEmail(user.email)) {
     return { ok: false as const, message: "Access refused." };
   }
   const supabase = createServiceClient();
