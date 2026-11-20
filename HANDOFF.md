@@ -64,7 +64,7 @@ From `.env.example` on `main` (do not commit values):
 
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (aliases: `SUPABASE_URL`, `SUPABASE_ANON_KEY`)
 - `TRIP_DATABASE_URL` (optional; otherwise follows the Supabase URL)
-- `ADMIN_EMAILS` (comma-separated; `ADMIN_EMAIL` is still read as a single address). If neither is set, `oxbreedmanagement@gmail.com` is the default allowlist.
+- `ADMIN_EMAILS` (comma-separated; `ADMIN_EMAIL` is still read as a single address). `oxbreedmanagement@gmail.com` is always on the allowlist; these variables add more addresses.
 - `SUPABASE_SERVICE_ROLE_KEY` (server only)
 - `WP_PROBE_INGEST_SECRET` (server only)
 - `SITE_PAGEVIEWS_ENABLED` (optional)

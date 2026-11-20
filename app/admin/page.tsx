@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import {
   AdminOutboundClicksSection,
   AdminEventsSection,
@@ -90,6 +89,44 @@ function AccessRefused({ detail }: { detail: string }) {
       </Link>
     </main>
   );
+}
+
+function AccessChecking() {
+  return (
+    <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-16 pt-20 sm:px-6 md:px-8 lg:pt-36">
+      <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">Ox Management</p>
+      <h1 className="mt-2 font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
+        DirtyDecember
+      </h1>
+      <p className="mt-6 text-base leading-7 text-ink">Checking access…</p>
+      <p className="mt-4 max-w-xl text-sm leading-7 text-muted">
+        Confirming the sign-in session for this page.
+      </p>
+    </main>
+  );
+}
+
+function SectionLoadError({ title }: { title: string }) {
+  return (
+    <section className="min-w-0">
+      <h2 className="font-display text-3xl leading-none tracking-tight">{title}</h2>
+      <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
+        This section could not be loaded. The rest of the console is still available. Try reload, or
+        open another section from the menu.
+      </p>
+    </section>
+  );
+}
+
+function safeSection(title: string, render: () => ReactNode | Promise<ReactNode>) {
+  async function BoundSection() {
+    try {
+      return await render();
+    } catch {
+      return <SectionLoadError title={title} />;
+    }
+  }
+  return <BoundSection />;
 }
 
 async function SubmissionsPanel() {
@@ -181,12 +218,16 @@ async function AdminSession({
   const auth = directorySignIn();
   const user = await getDirectoryUser();
   if (!user) {
-    redirect("/sign-in");
+    return (
+      <AccessRefused detail="Nobody is signed in. Open the sign-in page, request an email link, and open that link in this same browser. Then return here." />
+    );
   }
   const allowed = isAdminEmail(user.email);
   if (!allowed) {
     return (
-      <AccessRefused detail="This page opens only for an allowlisted admin address." />
+      <AccessRefused
+        detail={`Signed in as ${user.email}. That address is not on the admin allowlist.`}
+      />
     );
   }
 
@@ -195,13 +236,13 @@ async function AdminSession({
 
   return (
     <AdminShell email={user?.email ?? auth.adminEmail ?? ""} section={section}>
-      {section === "overview" ? <AdminOverviewSection /> : null}
+      {section === "overview" ? safeSection("Overview", () => AdminOverviewSection()) : null}
 
-      {section === "events" ? <AdminEventsSection /> : null}
+      {section === "events" ? safeSection("Events", () => AdminEventsSection()) : null}
 
-      {section === "featured" ? <AdminFeaturedSection /> : null}
+      {section === "featured" ? safeSection("Featured", () => AdminFeaturedSection()) : null}
 
-      {section === "places" ? <AdminPlacesSection /> : null}
+      {section === "places" ? safeSection("Places", () => AdminPlacesSection()) : null}
 
       {section === "get-featured" ? (
         <Suspense
@@ -212,7 +253,7 @@ async function AdminSession({
             </section>
           }
         >
-          <AdminGetFeaturedSection />
+          {safeSection("Get featured", () => AdminGetFeaturedSection())}
         </Suspense>
       ) : null}
 
@@ -225,13 +266,13 @@ async function AdminSession({
             </section>
           }
         >
-          <AdminOutboundClicksSection />
+          {safeSection("Outbound clicks", () => AdminOutboundClicksSection())}
         </Suspense>
       ) : null}
 
       {section === "dashboard" ? (
         <Suspense fallback={<SiteAnalyticsSectionFallback />}>
-          <SiteAnalyticsSection />
+          {safeSection("Dashboard / Insights", () => SiteAnalyticsSection())}
         </Suspense>
       ) : null}
 
@@ -244,7 +285,7 @@ async function AdminSession({
             </section>
           }
         >
-          <SubmissionsPanel />
+          {safeSection("Submissions", () => SubmissionsPanel())}
         </Suspense>
       ) : null}
 
@@ -257,19 +298,19 @@ async function AdminSession({
             </section>
           }
         >
-          <ReviewsPanel />
+          {safeSection("Reviews", () => ReviewsPanel())}
         </Suspense>
       ) : null}
 
       {section === "probes" ? (
         <Suspense fallback={<WpProbeSectionFallback />}>
-          <WpProbeSection searchParams={params} />
+          {safeSection("Probes", () => WpProbeSection({ searchParams: params }))}
         </Suspense>
       ) : null}
 
       {section === "settings" ? (
         <Suspense fallback={<AdminSettingsSectionFallback />}>
-          <AdminSettingsSection />
+          {safeSection("Settings", () => AdminSettingsSection())}
         </Suspense>
       ) : null}
     </AdminShell>
@@ -283,7 +324,7 @@ export default async function AdminPage({
 }) {
   if (!directorySignIn().connected) {
     return (
-      <AccessRefused detail="Nobody is signed in. The directory sign-in is not connected yet, so the records stay closed." />
+      <AccessRefused detail="The directory sign-in is not connected yet, so the records stay closed. Nobody is signed in." />
     );
   }
 
@@ -291,9 +332,7 @@ export default async function AdminPage({
   // production builds when cacheComponents is on.
   return (
     <Suspense
-      fallback={
-        <AccessRefused detail="Nobody is signed in. This page opens only for an allowlisted admin address." />
-      }
+      fallback={<AccessChecking />}
     >
       <AdminSession searchParams={searchParams} />
     </Suspense>

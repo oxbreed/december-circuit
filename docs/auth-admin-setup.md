@@ -19,7 +19,7 @@ Official references:
 - Sign-in page: `https://www.dirtydecember.info/sign-in`.
 - The email form calls `signInWithOtp` and asks Supabase to email a magic link. The link returns to `https://www.dirtydecember.info/auth/callback`, which exchanges the code and sends the visitor back to `/sign-in` as a signed-in user.
 - Admin path: `https://www.dirtydecember.info/admin`.
-- Default admin allowlist, if `ADMIN_EMAILS` and `ADMIN_EMAIL` are both unset: `oxbreedmanagement@gmail.com`. Sign in with that mailbox (or another address you add to the allowlist) to open the console.
+- `oxbreedmanagement@gmail.com` is always on the admin allowlist. `ADMIN_EMAILS` (and the older `ADMIN_EMAIL`) can add more addresses; they cannot remove that default.
 
 ## 1. Supabase Auth for email links
 
@@ -53,7 +53,7 @@ Set these on the Dirty December project (Production, and Preview or Development 
 | `ADMIN_EMAILS` | Comma-separated addresses that may open `/admin`. Example: `oxbreedmanagement@gmail.com`. |
 | `ADMIN_EMAIL` | Optional legacy single address, still read and merged into the allowlist. |
 
-If both admin variables are unset, the app allows `oxbreedmanagement@gmail.com` only. Addresses are compared in lower case.
+`oxbreedmanagement@gmail.com` is always allowed. Further addresses can be added with `ADMIN_EMAILS`. Addresses are compared in lower case.
 
 The live production site already presents the email form on `/sign-in`, which means a project URL and anon key appear to be set there. Confirm the Email provider, Site URL, and redirect allow list in the Supabase dashboard if a link fails to arrive or is refused.
 
@@ -73,3 +73,12 @@ The live production site already presents the email form on `/sign-in`, which me
 A later piece of work could store database overrides on top of those files. That is not in this change.
 
 The console also lists Get featured placement submissions and outbound clicks when the matching tables are on the project. Email enquiries sent to partners@dirtydecember.info are not stored.
+
+## If /admin says Access refused
+
+The page now states one of two cases plainly:
+
+- **Nobody is signed in:** the session cookie was not found. Request a new email link from `/sign-in` and open it in the same browser (not an in-app mail preview). The link returns to `https://www.dirtydecember.info/auth/callback`. If you land on `/sign-in` with a message that the link could not be completed, the one-time code was missing or could not be exchanged.
+- **Signed in as {email}:** you have a session, but that mailbox is not on the allowlist. `oxbreedmanagement@gmail.com` is always allowed.
+
+If a control-panel section fails, the rest of `/admin` should still open, with a short error on that section only.

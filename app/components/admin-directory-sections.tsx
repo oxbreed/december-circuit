@@ -37,7 +37,7 @@ export function AdminOverviewSection() {
   const slides = homeHeroSlides(events);
   const posterSlides = slides.filter((slide) => slide.kind === "poster");
   const nightSlides = slides.filter((slide) => slide.kind !== "poster");
-  const sources = lastRun.sources ?? [];
+  const sources = Array.isArray(lastRun?.sources) ? lastRun.sources : [];
   const sourcesOk = sources.filter((row) => row.ok).length;
   const skippedFeatures = homeFeatureKeys.length - features.length;
 
@@ -105,10 +105,10 @@ export function AdminOverviewSection() {
           not a live run.
         </p>
         <ul className="mt-3 grid gap-2 text-sm leading-6 text-ink">
-          <li>Checked: {londonStamp(lastRun.checkedAt)}</li>
-          <li>Cadence: every {lastRun.cadenceDays} days</li>
-          <li>Published in that snapshot: {lastRun.published.length}</li>
-          <li>Held: {lastRun.held.length}</li>
+          <li>Checked: {lastRun?.checkedAt ? londonStamp(lastRun.checkedAt) : "Not on file"}</li>
+          <li>Cadence: every {lastRun?.cadenceDays ?? "?"} days</li>
+          <li>Published in that snapshot: {Array.isArray(lastRun?.published) ? lastRun.published.length : 0}</li>
+          <li>Held: {Array.isArray(lastRun?.held) ? lastRun.held.length : 0}</li>
           <li>
             Sources: {sourcesOk} confirmed, {sources.length - sourcesOk} not confirmed, of{" "}
             {sources.length} checked.

@@ -21,8 +21,8 @@ function parseEmailList(value: string | undefined): string[] {
 export function adminEmails(): string[] {
   const listed = parseEmailList(process.env.ADMIN_EMAILS);
   const single = parseEmailList(process.env.ADMIN_EMAIL);
-  const merged = [...new Set([...listed, ...single])];
-  return merged.length > 0 ? merged : [defaultAdminEmail];
+  // Always keep the known operator, even if ADMIN_EMAILS is set to other addresses.
+  return [...new Set([defaultAdminEmail, ...listed, ...single])];
 }
 
 export function isAdminEmail(email: string | null | undefined): boolean {
