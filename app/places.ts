@@ -4,6 +4,14 @@ export type Place = {
   category: string;
   name: string;
   url: string;
+  /** Neighbourhood and street, as the place's own page gives it. */
+  area?: string;
+  /** Brand, cuisine or a quality marker, only as a named source states it. */
+  detail?: string;
+  /** Page the area and detail were checked against, when it differs from url. */
+  source?: string;
+  /** Day the area and detail were last checked, e.g. "20 Nov 2026". */
+  checked?: string;
 };
 
 export const places: Place[] = [
@@ -30,6 +38,7 @@ export const places: Place[] = [
   { country: "Ghana", city: "Accra", category: "Clubs", name: "Twist Night Club", url: "https://twistnightclub.com/contact/" },
   { country: "Ghana", city: "Accra", category: "Clubs", name: "Viena City Accra", url: "https://viennacity.com.gh/accra/" },
   { country: "Ghana", city: "Accra", category: "Event centres", name: "Ghana Trade Fair Centre", url: "https://tradefairgh.com/about-us" },
+  { country: "Ghana", city: "Accra", category: "Hotels", name: "Accra Marriott Hotel", url: "https://www.marriott.com/en-us/hotels/accmc-accra-marriott-hotel/overview/", area: "Airport City, Liberation Road", detail: "Marriott. The hotel calls itself 5-star and puts Kotoka International Airport about 1 km away.", checked: "20 Nov 2026" },
   { country: "Ghana", city: "Accra", category: "Hotels", name: "Airside Hotel", url: "https://airsidehotel.com.gh/" },
   { country: "Ghana", city: "Accra", category: "Hotels", name: "Alisa Hotel", url: "https://www.alisahotels.com/" },
   { country: "Ghana", city: "Accra", category: "Hotels", name: "Esther's", url: "https://www.esthers-hotel.com/" },
@@ -79,8 +88,13 @@ export const places: Place[] = [
   { country: "Nigeria", city: "Abeokuta", category: "Practical stops", name: "National Museum Abeokuta", url: "https://museum.ng/national-museums-list/" },
   { country: "Nigeria", city: "Abuja", category: "Event centres", name: "Ladi Kwali Conference Centre", url: "https://www.abujacontinental.com/about-us" },
   { country: "Nigeria", city: "Abuja", category: "Hotels", name: "Abuja Continental Hotel", url: "https://www.abujacontinental.com/contact-location" },
+  { country: "Nigeria", city: "Abuja", category: "Hotels", name: "Fraser Suites Abuja", url: "https://www.frasershospitality.com/en/nigeria/abuja/fraser-suites-abuja/", area: "Central Business District, 294 Leventis Close", detail: "Serviced apartments by Frasers Hospitality. The operator calls it 5-star, with 126 residences.", checked: "20 Nov 2026" },
+  { country: "Nigeria", city: "Abuja", category: "Hotels", name: "Hawthorn Suites by Wyndham Abuja", url: "https://hawthorn.com.ng/", area: "Area 11 Garki, 1 Uke Street off Ahmadu Bello Way", detail: "Wyndham brand, with an outdoor pool and free parking, per the hotel.", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Abuja", category: "Hotels", name: "Transcorp Hilton Abuja", url: "https://www.hilton.com/en/hotels/abuhitw-transcorp-hilton-abuja/" },
   { country: "Nigeria", city: "Abuja", category: "Practical stops", name: "Nnamdi Azikiwe International Airport", url: "https://faan.gov.ng/naia-abuja/" },
+  { country: "Nigeria", city: "Abuja", category: "Restaurants", name: "BluCabana", url: "https://blucabana.com/", area: "Mabushi, 1322 Shehu Yar’adua Way", detail: "Restaurant and café. A second branch is at Sunrise Hills Estate, Asokoro.", checked: "20 Nov 2026" },
+  { country: "Nigeria", city: "Abuja", category: "Restaurants", name: "Cilantro Maitama", url: "https://cilantrorestaurants.com/restaurants/abuja-maitama/", area: "Maitama, Ibrahim Babangida Boulevard, inside Sarius Palmetum", detail: "Indian. Reservations by phone or email through Cilantro Restaurants.", checked: "20 Nov 2026" },
+  { country: "Nigeria", city: "Abuja", category: "Restaurants", name: "Nkoyo", url: "https://nkoyo.ng/", area: "Central Business District, Ceddi Plaza, 264 Tafawa Balewa Road", detail: "Nigerian. Listed in WakaAbuja’s Abuja restaurant guide, updated 19 Nov 2026.", source: "https://wakaabuja.com/best-restaurants-in-abuja/", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Abuja", category: "Restaurants", name: "Wakkis", url: "https://wakkis.com/" },
   { country: "Nigeria", city: "Ado Ekiti", category: "Hotels", name: "Delight Hotel & Suites", url: "https://delighthotelandsuites.com/" },
   { country: "Nigeria", city: "Akure", category: "Practical stops", name: "National Museum Akure", url: "https://museum.ng/national-museums-list/" },
@@ -93,6 +107,7 @@ export const places: Place[] = [
   { country: "Nigeria", city: "Calabar", category: "Car rental", name: "Remlords Travels and Tours", url: "https://remlordstours.com/" },
   { country: "Nigeria", city: "Calabar", category: "Hotels", name: "Monty Suites Calabar", url: "https://www.montysuites.com/calabar" },
   { country: "Nigeria", city: "Calabar", category: "Hotels", name: "Obudu Mountain Resort", url: "https://obudumountainresort.com/" },
+  { country: "Nigeria", city: "Calabar", category: "Hotels", name: "The Metropolitan Hotel Calabar", url: "https://metropolitanhotelcalabar.com/", area: "10 Murtala Mohammed Highway", detail: "Formerly Transcorp Hotels Calabar, renamed after Eco Travels and Tours bought it in 2024. The hotel calls itself 4-star.", source: "https://dailypost.ng/2024/05/14/former-transcorp-calabar-the-metropolitan-hotel-elevating-citys-hospitality/", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Calabar", category: "Hotels", name: "Tinapa Lakeside Hotel", url: "https://www.tinapa.ng/facilities" },
   { country: "Nigeria", city: "Calabar", category: "Practical stops", name: "Cross River State Tourism", url: "https://crossriverstate.gov.ng/tourism" },
   { country: "Nigeria", city: "Calabar", category: "Practical stops", name: "Drill Ranch (Calabar)", url: "https://www.pandrillus.org/drill-ranch/" },
@@ -143,13 +158,16 @@ export const places: Place[] = [
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Four Points by Sheraton Lagos", url: "https://www.marriott.com/en-us/hotels/losfp-four-points-lagos/overview/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "La Campagne Tropicana Beach Resort", url: "https://www.lacampagnetropicana.com/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Lagos Continental Hotel", url: "https://www.thelagoscontinental.com/contact-location" },
+  { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Lagos Marriott Hotel Ikeja", url: "https://www.marriott.com/en-us/hotels/loslg-lagos-marriott-hotel-ikeja/overview/", area: "Ikeja GRA, 122 Joel Ogunnaike Street", detail: "Marriott. The hotel calls itself 5-star, a short drive from Murtala Muhammed International Airport.", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Lagos Oriental Hotel", url: "https://lagosoriental.com/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Lilygate Hotel", url: "https://www.lilygatelagos.com/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Maison Fahrenheit", url: "https://www.maisonfahrenheit.com/" },
+  { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Mövenpick Hotel Ikoyi Lagos", url: "https://movenpick.accor.com/en/hotels/lagos/C0S0.html", area: "Ikoyi, 47 Alfred Rewane Road", detail: "Mövenpick by Accor, 181 rooms and suites. Ran as Southern Sun Ikoyi until December 2022.", source: "https://www.southernsun.com/southern-sun-ikoyi-february-2023", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Pada Lagos", url: "https://www.padalagos.com/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Parktonian Hotel", url: "https://parktonianhotels.com/lekki/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Parkview Astoria", url: "https://parkviewastoriahotels.com/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Radisson Blu Anchorage Hotel, Lagos", url: "https://www.radissonhotels.com/en-us/hotels/radisson-blu-lagos-anchorage" },
+  { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Radisson Blu Hotel, Lagos Ikeja", url: "https://www.radissonhotels.com/en-us/hotels/radisson-blu-ikeja-lagos", area: "Ikeja GRA, 38–40 Isaac John Street", detail: "Radisson Blu, 155 rooms including 17 loft suites, per the hotel.", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Sheraton Lagos Hotel", url: "https://www.marriott.com/en-us/hotels/lossi-sheraton-lagos-hotel/overview/" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "Sun Heaven Hotel Ikoyi", url: "https://www.sun-heavens.com" },
   { country: "Nigeria", city: "Lagos", category: "Hotels", name: "The Art Hotel", url: "https://arthotelng.com/" },
@@ -203,9 +221,12 @@ export const places: Place[] = [
   { country: "Nigeria", city: "Port Harcourt", category: "Bars", name: "Bubbles Bar", url: "https://port-harcourt.goldentulip.com/en-us/" },
   { country: "Nigeria", city: "Port Harcourt", category: "Car rental", name: "Avis — GRA Phase 2", url: "https://www.avis.com/en/locations/af/ng/port-harcourt/i8u" },
   { country: "Nigeria", city: "Port Harcourt", category: "Event centres", name: "EUI Event Centre", url: "https://euicentre.com/" },
-  { country: "Nigeria", city: "Port Harcourt", category: "Hotels", name: "Hotel Presidential", url: "https://presidential-hotel.com/contact-us/" },
+  { country: "Nigeria", city: "Port Harcourt", category: "Hotels", name: "Golden Tulip Port Harcourt", url: "https://www.rivotels.com/", area: "GRA Phase II, 1c Evo Crescent off Evo Road", detail: "Golden Tulip. The hotel calls itself a 4-star international business hotel.", checked: "20 Nov 2026" },
+  { country: "Nigeria", city: "Port Harcourt", category: "Hotels", name: "Hotel Presidential", url: "https://presidential-hotel.com/contact-us/", area: "New GRA, Birabi Street, off Aba Expressway", detail: "The hotel describes its rooms as five-star.", source: "https://presidential-hotel.com/", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Port Harcourt", category: "Practical stops", name: "Port Harcourt International Airport", url: "https://faan.gov.ng/ph-international-airport/" },
   { country: "Nigeria", city: "Port Harcourt", category: "Restaurants", name: "Anioma Restaurant", url: "https://port-harcourt.goldentulip.com/en-us/" },
+  { country: "Nigeria", city: "Port Harcourt", category: "Restaurants", name: "Maseraty by 65", url: "https://maseratyby65.com/", area: "GRA Phase II, 65 Evo Road", detail: "Lounge, contemporary bistro and patio restaurant. Walk-ins and reservations, per the restaurant.", checked: "20 Nov 2026" },
+  { country: "Nigeria", city: "Port Harcourt", category: "Restaurants", name: "Tilapia & Tinz", url: "https://tilapiatinz.com/", area: "GRA, 59 Woji Road", detail: "African seafood. Also in Ikeja, Lagos and in Uyo.", checked: "20 Nov 2026" },
   { country: "Nigeria", city: "Sokoto", category: "Practical stops", name: "National Museum Sokoto", url: "https://museum.ng/national-museums-list/" },
   { country: "Nigeria", city: "Umuahia", category: "Practical stops", name: "National War Museum", url: "https://museum.ng/national-museums-list/" },
   { country: "Nigeria", city: "Uyo", category: "Hotels", name: "Villa Hilton Hotels & Apartments", url: "https://villahiltonhotels.com/" },
@@ -215,6 +236,10 @@ export const places: Place[] = [
   { country: "Nigeria", city: "Yenagoa", category: "Practical stops", name: "National Museum Yenagoa", url: "https://museum.ng/national-museums-list/" },
   { country: "Nigeria", city: "Yola", category: "Practical stops", name: "National Museum Yola", url: "https://museum.ng/national-museums-list/" },
   { country: "Nigeria", city: "Zaria", category: "Hotels", name: "Jerry Marriot Hotel", url: "https://www.jerrymarriot.com/booking" },
+  { country: "Senegal", city: "Dakar", category: "Hotels", name: "Noom Hotel Dakar Sea Plaza", url: "https://www.radissonhotels.com/en-us/hotels/radisson-individuals-noom-dakar-sea-plaza", area: "Route de la Corniche Ouest", detail: "A member of Radisson Individuals. It was the Radisson Blu Hotel, Dakar Sea Plaza until January 2025.", source: "https://teyliom.com/en/2025/01/23/the-radisson-blu-hotel-dakar-sea-plaza-has-officially-transitioned-to-noom-hotel-dakar-sea-plaza-a-member-of-radisson-individuals/", checked: "20 Nov 2026" },
+  { country: "Senegal", city: "Dakar", category: "Hotels", name: "Pullman Dakar Teranga", url: "https://pullman.accor.com/en/hotels/dakar/0563.html", area: "Plateau, 10 Rue Colbert, Place de l’Indépendance", detail: "Pullman by Accor. 5 stars on Accor’s listing, 247 rooms and suites facing the Atlantic and Gorée Island.", source: "https://all.accor.com/hotel/0563/index.en.shtml", checked: "20 Nov 2026" },
+  { country: "Senegal", city: "Dakar", category: "Hotels", name: "Terrou-Bi", url: "https://www.terroubi.com/", area: "Boulevard Martin Luther King, on the ocean", detail: "The resort calls itself a 5-star hotel, with a restaurant and bar you can book online.", checked: "20 Nov 2026" },
+  { country: "Sierra Leone", city: "Freetown", category: "Hotels", name: "Radisson Blu Mammy Yoko Hotel, Freetown", url: "https://www.radissonhotels.com/en-us/hotels/radisson-blu-freetown", area: "Lumley Beach, 17 Lumley Beach Road", detail: "Radisson Blu. From Lungi International Airport the hotel suggests the ferry across the bay.", source: "https://www.radissonhotels.com/en-us/hotels/radisson-blu-freetown/contact", checked: "20 Nov 2026" },
   { country: "Togo", city: "Lomé", category: "Hotels", name: "Hôtel 2 Février", url: "https://2fevrier.com/en/" },
   { country: "Togo", city: "Lomé", category: "Practical stops", name: "Aéroport International Gnassingbé Eyadéma", url: "https://www.aeroportdelome.com/contacts" },
 ];
