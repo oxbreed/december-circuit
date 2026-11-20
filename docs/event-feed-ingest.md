@@ -45,6 +45,18 @@ Merge identity is `region` + `when` + `summary` so same-day Carnival schedule ni
 | `december-in-ghana-myjoy` | MyJoyOnline GTA calendar | **Auto** season dates 1 Dec 2026 – 3 Jan 2027 when stated. |
 | `december-in-ghana-official` | https://decemberingh.com/ | **Probe / held** until the official page states 2026 dates. |
 | `ghana-tourism-black-star` | https://ghana.travel/black-star-experience | **Probe / held** (often HTTP 403; dates not published from this URL alone). |
+| `victony-bonfire-abuja` | Mainland Block Party, Capital BlockParty / The Bonfire Experience | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `moelogo-abuja-tix` | https://tix.africa/discover/moelogo-live-in-abuja | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `johnny-room-live-8` | https://johnnydrille.tix.to/jrl8 | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `ejanla-fest-tix` | https://tix.africa/discover/ejanlafest | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `lol-music-fest` | https://www.lolmusicfest.com/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `alo-once-upon-a-song` | https://tix.dot360.co/event/a-lo-once-upon-a-song | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `apitainment-seyi-apitix` | https://www.apitix.com/product/seyi-vibez-live-in-abuja/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `victony-bonfire-lagos` | Mainland Block Party, Island BlockParty / The Bonfire Experience | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `abujakulture-december-roundup` | https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/ (@abujakulture, posted 4 Nov 2026) | **Probe / held.** Shared sourceId for seed rows that only appear in this roundup: Cibusa x The Believers (5 Dec), Rise of the Machine (19 Dec), Season Fest (24 Dec), Mr P Live (24 Dec). Added 20 Nov 2026. |
+| `simi-live-abuja-guardian` | The Guardian, Simi puts Abuja concert on hold | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `dj-tunez-blackout-visitabuja` | https://www.visitabuja.org/event/dj-tunez-blackout-abuja/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
+| `cavy-fest-woya` | Woya Local, Cavy Fest / The Cavemen | **Probe / held.** Seed row only (added 20 Nov 2026). |
 
 Provider APIs (Ticketmaster, Merpi/Syticks, JamBase, GetYourGuide) stay disconnected — see `docs/api-sources.md` in-repo notes / project `api-sources.md`.
 
