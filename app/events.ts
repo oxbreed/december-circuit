@@ -82,6 +82,16 @@ export const seedEvents: CircuitEvent[] = [
   },
   {
     region: "Lagos",
+    when: "23 December",
+    summary:
+      "AfroJazz Fest, To the Roots. Lagbaja and The Cavemen, Amore Gardens, Lekki.",
+    url: "https://afrojazzfest.org/",
+    urlLabel: "Organiser's page",
+    ticketsUrl: "https://afrojazzfest.org/",
+    sourceId: "afrojazz-fest",
+  },
+  {
+    region: "Lagos",
     when: "25 December",
     summary:
       "Flytime Circle, Eko Convention Centre. The lineup is still unannounced.",

@@ -283,4 +283,14 @@ export const landmarks: FramePhoto[] = [
     credit: "Image on the official ticket page. https://www.jetronticket.com/ag-2026",
     creditUrl: "https://www.jetronticket.com/ag-2026",
   },
+  {
+    // Flyer from The NATIVE Instagram carousel, slide 5:
+    // https://www.instagram.com/p/DfChe1HjTfS/
+    name: "Lagbaja, AfroJazz Fest",
+    city: "Lagos",
+    src: "/landmarks/lagbaja-afrojazz-fest-2026.jpg",
+    alt: "AfroJazz Fest poster for Lagbaja, 23 December 2026, Amore Gardens, Lekki, Lagos",
+    credit: "Image on The NATIVE Instagram post. https://www.instagram.com/p/DfChe1HjTfS/",
+    creditUrl: "https://www.instagram.com/p/DfChe1HjTfS/",
+  },
 ];

@@ -139,6 +139,14 @@ export const eventFeedSources: readonly EventFeedSource[] = [
     extractor: "adekunle-gold-jetron",
   },
   {
+    id: "afrojazz-fest",
+    label: "Organiser's page",
+    url: "https://afrojazzfest.org/",
+    regionHint: "Lagos",
+    kind: "probe",
+    extractor: "afrojazz-fest-home",
+  },
+  {
     id: "afrofuture-residency",
     label: "Organiser's page",
     url: "https://www.afrofuture.com/",
