@@ -4,6 +4,7 @@
  * Captions follow the file title or description. No event, fare, or date.
  */
 export type HeroNightSlide = {
+  kind?: "photo";
   src: string;
   alt: string;
   place: string;
@@ -15,6 +16,27 @@ export type HeroNightSlide = {
   author: string;
   sourceUrl: string;
 };
+
+/**
+ * An official event poster or key visual from landmarks.ts, shown whole
+ * (object-contain) over a blurred copy of itself. Built in home-hero-slides.ts.
+ */
+export type HeroPosterSlide = {
+  kind: "poster";
+  src: string;
+  alt: string;
+  place: string;
+  city: string;
+  /** The night shown in the caption, e.g. "21 December". */
+  date: string;
+  /** Internal event page. */
+  href: string;
+  /** e.g. "Image on the organiser's page". */
+  credit?: string;
+  creditUrl?: string;
+};
+
+export type HeroSlide = HeroNightSlide | HeroPosterSlide;
 
 const license = "CC BY-SA 4.0";
 

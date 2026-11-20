@@ -1,41 +1,8 @@
-import Link from "next/link";
-import { majorEvents } from "../event-major";
+import { homeFeatures } from "../home-featured";
 import { FeaturedSeasonGrid } from "./featured-season-grid";
-import type { CircuitEvent } from "../events";
-import { presentEvent } from "../event-view";
-import { eventTripId } from "../trip";
-import { DateBlock } from "./event-card";
-import { SaveTripButton } from "./save-trip-button";
-
-function featuredEvents(): CircuitEvent[] {
-  return majorEvents();
-}
-
-function FeaturedCard({ event }: { event: CircuitEvent }) {
-  const view = presentEvent(event);
-
-  return (
-    <article className="flex flex-col border border-ink/15 bg-chart shadow-[4px_4px_0_0_rgba(184,67,47,0.12)]">
-      <div className="flex flex-1 flex-col gap-4 p-5 sm:flex-row sm:items-start sm:p-6">
-        <DateBlock when={event.when} />
-        <div className="min-w-0 flex-1">
-          <h3 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">
-            <Link href={view.href} className="hover:text-oxide">
-              {view.name}
-            </Link>
-          </h3>
-          <p className="mt-3 text-sm text-ink">{view.region}</p>
-        </div>
-      </div>
-      <div className="border-t border-ink/10 px-5 py-4 sm:px-6">
-        <SaveTripButton kind="event" id={eventTripId(event)} />
-      </div>
-    </article>
-  );
-}
 
 export function FeaturedSeason() {
-  const featured = featuredEvents();
+  const featured = homeFeatures();
 
   return (
     <section id="featured" className="scroll-mt-36 border-b border-ink/10">
@@ -47,8 +14,8 @@ export function FeaturedSeason() {
           Featured this season
         </h2>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Major confirmed nights and festivals already on file. Save any card to My trip in this
-          browser — tickets and organiser pages stay outbound.
+          Headline nights and festivals already on file, with their official posters. Save any card
+          to My trip in this browser — tickets and organiser pages stay outbound.
         </p>
         {featured.length === 0 ? (
           <div className="mt-6">
