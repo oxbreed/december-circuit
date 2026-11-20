@@ -107,6 +107,14 @@ export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
     poster: "/landmarks/zaama-disco-2026.jpg",
   },
   {
+    id: "lagbaja-afrojazz-fest",
+    artist: "Lagbaja",
+    title: "AfroJazz Fest, To the Roots",
+    date: "23 December",
+    sourceId: "afrojazz-fest",
+    poster: "/landmarks/lagbaja-afrojazz-fest-2026.jpg",
+  },
+  {
     id: "stonebwoy-bhim",
     artist: "Stonebwoy",
     title: "BHIM Festival",
