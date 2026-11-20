@@ -1,5 +1,7 @@
+import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
 import type { NextFetchEvent, NextRequest } from "next/server";
+import { directoryCredentials } from "./app/supabase/credentials";
 
 /**
  * Catch WordPress scanner probes on this Next.js app.
@@ -61,11 +63,40 @@ function recordProbe(request: NextRequest, payload: Record<string, unknown>) {
   );
 }
 
-export function proxy(request: NextRequest, event: NextFetchEvent) {
+async function refreshDirectorySession(request: NextRequest) {
+  const creds = directoryCredentials();
+  if (!creds) return NextResponse.next();
+
+  let response = NextResponse.next({ request });
+  try {
+    const supabase = createServerClient(creds.url, creds.anonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          for (const { name, value } of cookiesToSet) {
+            request.cookies.set(name, value);
+          }
+          response = NextResponse.next({ request });
+          for (const { name, value, options } of cookiesToSet) {
+            response.cookies.set(name, value, options);
+          }
+        },
+      },
+    });
+    await supabase.auth.getUser();
+  } catch {
+    // Never block /admin or /sign-in on a session refresh failure.
+  }
+  return response;
+}
+
+export async function proxy(request: NextRequest, event: NextFetchEvent) {
   const pathname = request.nextUrl.pathname;
 
   if (!isWordPressProbe(pathname)) {
-    return NextResponse.next();
+    return refreshDirectorySession(request);
   }
 
   const forwarded = request.headers.get("x-forwarded-for");
@@ -100,6 +131,10 @@ export function proxy(request: NextRequest, event: NextFetchEvent) {
 
 export const config = {
   matcher: [
+    "/admin",
+    "/admin/:path*",
+    "/sign-in",
+    "/auth/:path*",
     "/wp-admin",
     "/wp-admin/:path*",
     "/wp-includes/:path*",

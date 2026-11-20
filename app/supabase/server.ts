@@ -26,6 +26,34 @@ export async function createDirectoryClient() {
   });
 }
 
+/**
+ * Same as createDirectoryClient, but also writes auth cookies onto a
+ * NextResponse. Needed on /auth/callback: a fresh NextResponse.redirect
+ * can drop cookies that were only set through cookies().set().
+ */
+export async function createDirectoryClientForResponse(response: import("next/server").NextResponse) {
+  const creds = directoryCredentials();
+  if (!creds) return null;
+  const cookieStore = await cookies();
+  return createServerClient(creds.url, creds.anonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        for (const { name, value, options } of cookiesToSet) {
+          try {
+            cookieStore.set(name, value, options);
+          } catch {
+            // Route handlers should accept set(); Server Components may not.
+          }
+          response.cookies.set(name, value, options);
+        }
+      },
+    },
+  });
+}
+
 export function createAnonClient() {
   const creds = directoryCredentials();
   if (!creds) return null;

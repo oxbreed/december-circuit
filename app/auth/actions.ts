@@ -31,29 +31,37 @@ function signInOtpMessage(error: { code?: string | null; message?: string | null
 }
 
 export async function sendSignInLink(_prev: SignInState, formData: FormData): Promise<SignInState> {
-  if (!directorySignIn().connected) {
-    return { status: "error", message: "The directory sign-in is not connected yet." };
+  try {
+    if (!directorySignIn().connected) {
+      return { status: "error", message: "The directory sign-in is not connected yet." };
+    }
+    const email = String(formData.get("email") ?? "").trim().toLowerCase();
+    if (!email.includes("@") || /\s/.test(email) || email.length > 320) {
+      return { status: "error", message: "Enter an email address." };
+    }
+    const supabase = await createDirectoryClient();
+    if (!supabase) {
+      return { status: "error", message: "The directory sign-in is not connected yet." };
+    }
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: `${siteUrl}/auth/callback` },
+    });
+    if (error) {
+      return { status: "error", message: signInOtpMessage(error) };
+    }
+    return { status: "sent" };
+  } catch {
+    return { status: "error", message: "The sign-in link could not be sent." };
   }
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  if (!email.includes("@") || /\s/.test(email) || email.length > 320) {
-    return { status: "error", message: "Enter an email address." };
-  }
-  const supabase = await createDirectoryClient();
-  if (!supabase) {
-    return { status: "error", message: "The directory sign-in is not connected yet." };
-  }
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: `${siteUrl}/auth/callback` },
-  });
-  if (error) {
-    return { status: "error", message: signInOtpMessage(error) };
-  }
-  return { status: "sent" };
 }
 
 export async function signOut() {
-  const supabase = await createDirectoryClient();
-  if (supabase) await supabase.auth.signOut();
+  try {
+    const supabase = await createDirectoryClient();
+    if (supabase) await supabase.auth.signOut();
+  } catch {
+    // Still leave the page so a failed sign-out call cannot show a server error.
+  }
   redirect("/sign-in");
 }

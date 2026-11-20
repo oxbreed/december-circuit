@@ -6,6 +6,19 @@ import { directorySignIn, isAdminEmail } from "../directory-auth";
 import { pageMetadata } from "../site";
 import { getDirectoryUser } from "../supabase/session";
 
+function signinMessage(reason: string | undefined) {
+  if (reason === "link-failed") {
+    return "That sign-in link could not be completed. Request a new link and open it in the same browser you used on this page.";
+  }
+  if (reason === "link-incomplete") {
+    return "That sign-in link was missing the code this site needs. Request a new link and open it in the same browser.";
+  }
+  if (reason === "not-connected") {
+    return "The directory sign-in is not connected yet.";
+  }
+  return null;
+}
+
 export const metadata = pageMetadata({
   title: "Sign in",
   description: "Sign in to dirtydecember.info with an email link. My trip still keeps events and places in this browser.",
@@ -34,9 +47,12 @@ function SignInFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function UnsignedIn() {
+function UnsignedIn({ notice }: { notice?: string | null }) {
   return (
     <>
+      {notice ? (
+        <p className="mt-6 max-w-xl text-base leading-7 text-oxide">{notice}</p>
+      ) : null}
       <p className="mt-6 max-w-xl text-base leading-7 text-ink">
         Enter your email and we will send a sign-in link. Use that link to open
         a session on this site, including the admin console if your address is
@@ -47,9 +63,17 @@ function UnsignedIn() {
   );
 }
 
-async function SignInSession() {
+async function SignInSession({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const user = await getDirectoryUser();
   const isAdmin = isAdminEmail(user?.email);
+  const params = await searchParams;
+  const raw = params.signin;
+  const reason = Array.isArray(raw) ? raw[0] : raw;
+  const notice = signinMessage(reason);
 
   return (
     <SignInFrame>
@@ -74,13 +98,17 @@ async function SignInSession() {
           ) : null}
         </>
       ) : (
-        <UnsignedIn />
+        <UnsignedIn notice={notice} />
       )}
     </SignInFrame>
   );
 }
 
-export default function SignInPage() {
+export default function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   if (!directorySignIn().connected) {
     return (
       <SignInFrame>
@@ -99,7 +127,7 @@ export default function SignInPage() {
         </SignInFrame>
       }
     >
-      <SignInSession />
+      <SignInSession searchParams={searchParams} />
     </Suspense>
   );
 }
