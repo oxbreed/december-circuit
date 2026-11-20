@@ -15,9 +15,9 @@ import {
 } from "../components/admin-settings-section";
 import { AdminShell, parseAdminSection } from "../components/admin-shell";
 import {
-  SiteAnalyticsSection,
-  SiteAnalyticsSectionFallback,
-} from "../components/site-analytics-section";
+  AdminDashboardSection,
+  AdminDashboardSectionFallback,
+} from "../components/admin-dashboard-section";
 import { WpProbeSection, WpProbeSectionFallback } from "../components/wp-probe-section";
 import { directorySignIn, isAdminEmail } from "../directory-auth";
 import { listPublicReviews, listUnpublishedSubmissions, signSubmissionPictures } from "../reviews";
@@ -272,8 +272,10 @@ async function AdminSession({
       ) : null}
 
       {section === "dashboard" ? (
-        <Suspense fallback={<SiteAnalyticsSectionFallback />}>
-          {safeSection("Dashboard / Insights", () => SiteAnalyticsSection())}
+        <Suspense fallback={<AdminDashboardSectionFallback />}>
+          {safeSection("Dashboard / Insights", () =>
+            AdminDashboardSection({ range: params.range }),
+          )}
         </Suspense>
       ) : null}
 
