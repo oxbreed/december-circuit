@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import lastRun from "../../data/event-ingest/last-run.json";
 import { directorySignIn } from "../directory-auth";
 import { events, seedEvents } from "../events";
@@ -11,15 +12,79 @@ import { listUnpublishedSubmissions } from "../reviews";
 import { eventRowsForAdmin, placeRowsForAdmin } from "./admin-directory-data";
 import { AdminEventList, AdminPlaceList } from "./admin-filter-list";
 
+/**
+ * Format a stored ISO timestamp in Europe/London.
+ * dateStyle/timeStyle cannot be combined with timeZoneName (throws TypeError).
+ */
 function londonStamp(iso: string) {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return iso;
-  return new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/London",
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZoneName: "short",
-  }).format(date);
+  try {
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return iso;
+    return new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/London",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZoneName: "short",
+    }).format(date);
+  } catch (error) {
+    console.error("Admin date stamp failed", error);
+    return iso;
+  }
+}
+
+function logAdminError(scope: string, error: unknown) {
+  console.error(`Admin ${scope}`, error);
+}
+
+function OverviewCard({
+  title,
+  scope,
+  reason,
+  children,
+}: {
+  title: string;
+  scope: string;
+  reason: string;
+  children: () => ReactNode;
+}) {
+  try {
+    return children();
+  } catch (error) {
+    logAdminError(scope, error);
+    return (
+      <li className="border border-ink/15 bg-chart px-4 py-3">
+        <p className="text-[10px] uppercase tracking-[0.16em] text-muted">{title}</p>
+        <p className="mt-2 text-sm leading-6 text-muted">{reason}</p>
+      </li>
+    );
+  }
+}
+
+function OverviewBlock({
+  title,
+  scope,
+  reason,
+  children,
+}: {
+  title: string;
+  scope: string;
+  reason: string;
+  children: () => ReactNode;
+}) {
+  try {
+    return children();
+  } catch (error) {
+    logAdminError(scope, error);
+    return (
+      <div className="mt-10 border-t border-ink/10 pt-6">
+        <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">{title}</h3>
+        <p className="mt-3 text-sm leading-7 text-muted">{reason}</p>
+      </div>
+    );
+  }
 }
 
 function Status({ on, label, off }: { on: boolean; label: string; off: string }) {
@@ -31,16 +96,133 @@ function Status({ on, label, off }: { on: boolean; label: string; off: string })
   );
 }
 
-export function AdminOverviewSection() {
-  const auth = directorySignIn();
+function eventsCard() {
+  return (
+    <li className="border border-ink/15 bg-chart px-4 py-3">
+      <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Events</p>
+      <p className="mt-1 font-display text-3xl leading-none tracking-tight">{events.length}</p>
+      <p className="mt-2 text-sm leading-6 text-muted">
+        {seedEvents.length} curated seed rows, then ingest merges.
+      </p>
+    </li>
+  );
+}
+
+function placesCard() {
+  return (
+    <li className="border border-ink/15 bg-chart px-4 py-3">
+      <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Places</p>
+      <p className="mt-1 font-display text-3xl leading-none tracking-tight">{placesOnFile().length}</p>
+      <p className="mt-2 text-sm leading-6 text-muted">From places.ts, shown on /places.</p>
+    </li>
+  );
+}
+
+function featuredCard() {
   const features = homeFeaturesFrom(events);
+  const skippedFeatures = homeFeatureKeys.length - features.length;
+  return (
+    <li className="border border-ink/15 bg-chart px-4 py-3">
+      <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Featured cards</p>
+      <p className="mt-1 font-display text-3xl leading-none tracking-tight">{features.length}</p>
+      <p className="mt-2 text-sm leading-6 text-muted">
+        {homeFeatureKeys.length} keys in home-featured.ts
+        {skippedFeatures > 0
+          ? `, ${skippedFeatures} skipped because a row or poster is missing.`
+          : "."}
+      </p>
+    </li>
+  );
+}
+
+function slideshowCard() {
   const slides = homeHeroSlides(events);
   const posterSlides = slides.filter((slide) => slide.kind === "poster");
   const nightSlides = slides.filter((slide) => slide.kind !== "poster");
-  const sources = Array.isArray(lastRun?.sources) ? lastRun.sources : [];
-  const sourcesOk = sources.filter((row) => row.ok).length;
-  const skippedFeatures = homeFeatureKeys.length - features.length;
+  return (
+    <li className="border border-ink/15 bg-chart px-4 py-3">
+      <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Homepage slideshow</p>
+      <p className="mt-1 font-display text-3xl leading-none tracking-tight">{slides.length}</p>
+      <p className="mt-2 text-sm leading-6 text-muted">
+        {posterSlides.length} event posters and {nightSlides.length} night photographs. Duplicate
+        poster files are skipped.
+      </p>
+    </li>
+  );
+}
 
+function signInBlock() {
+  const auth = directorySignIn();
+  return (
+    <div className="mt-10 border-t border-ink/10 pt-6">
+      <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">Sign-in and database</h3>
+      <ul className="mt-3 grid gap-2 text-sm leading-6 text-ink">
+        <Status
+          on={auth.connected}
+          label="Supabase Auth"
+          off="not connected (project URL or anon key missing)"
+        />
+        <li>
+          Admin allowlist: {auth.adminEmails.length} address
+          {auth.adminEmails.length === 1 ? "" : "es"} on file.
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+function ingestBlock() {
+  const sources = Array.isArray(lastRun?.sources) ? lastRun.sources : [];
+  const sourcesOk = sources.filter((row) => row && row.ok).length;
+  return (
+    <div className="mt-10 border-t border-ink/10 pt-6">
+      <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">Ingest snapshot</h3>
+      <p className="mt-2 max-w-xl text-sm leading-7 text-muted">
+        Last recorded feed check, bundled from data/event-ingest/last-run.json. This is the file in
+        the repo, not a live run.
+      </p>
+      <ul className="mt-3 grid gap-2 text-sm leading-6 text-ink">
+        <li>Checked: {lastRun?.checkedAt ? londonStamp(lastRun.checkedAt) : "Not on file"}</li>
+        <li>Cadence: every {lastRun?.cadenceDays ?? "?"} days</li>
+        <li>
+          Published in that snapshot:{" "}
+          {Array.isArray(lastRun?.published) ? lastRun.published.length : 0}
+        </li>
+        <li>Held: {Array.isArray(lastRun?.held) ? lastRun.held.length : 0}</li>
+        <li>
+          Sources: {sourcesOk} confirmed, {sources.length - sourcesOk} not confirmed, of{" "}
+          {sources.length} checked.
+        </li>
+      </ul>
+      <ul className="mt-4 grid gap-2 text-sm leading-6">
+        {sources.map((source, index) => (
+          <li
+            key={source?.id ?? `source-${index}`}
+            className="border border-ink/15 bg-chart px-4 py-3"
+          >
+            <p className="text-[10px] uppercase tracking-[0.16em] text-muted">
+              {source?.id ?? "Unknown source"}
+            </p>
+            <p className={source?.ok ? "text-ink" : "text-muted"}>
+              {source?.ok ? "Confirmed" : "Not confirmed"}
+              {source?.detail ? `. ${source.detail}` : ""}
+            </p>
+            {source?.url ? (
+              <a
+                href={source.url}
+                className="mt-1 inline-flex break-all text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+              >
+                {source.url}
+              </a>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function AdminOverviewSection() {
   return (
     <section className="min-w-0">
       <h2 className="font-display text-3xl leading-none tracking-tight">Overview</h2>
@@ -51,94 +233,60 @@ export function AdminOverviewSection() {
       </p>
 
       <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-        <li className="border border-ink/15 bg-chart px-4 py-3">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Events</p>
-          <p className="mt-1 font-display text-3xl leading-none tracking-tight">{events.length}</p>
-          <p className="mt-2 text-sm leading-6 text-muted">
-            {seedEvents.length} curated seed rows, then ingest merges.
-          </p>
-        </li>
-        <li className="border border-ink/15 bg-chart px-4 py-3">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Places</p>
-          <p className="mt-1 font-display text-3xl leading-none tracking-tight">
-            {placesOnFile().length}
-          </p>
-          <p className="mt-2 text-sm leading-6 text-muted">From places.ts, shown on /places.</p>
-        </li>
-        <li className="border border-ink/15 bg-chart px-4 py-3">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Featured cards</p>
-          <p className="mt-1 font-display text-3xl leading-none tracking-tight">{features.length}</p>
-          <p className="mt-2 text-sm leading-6 text-muted">
-            {homeFeatureKeys.length} keys in home-featured.ts
-            {skippedFeatures > 0 ? `, ${skippedFeatures} skipped because a row or poster is missing.` : "."}
-          </p>
-        </li>
-        <li className="border border-ink/15 bg-chart px-4 py-3">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Homepage slideshow</p>
-          <p className="mt-1 font-display text-3xl leading-none tracking-tight">{slides.length}</p>
-          <p className="mt-2 text-sm leading-6 text-muted">
-            {posterSlides.length} event posters and {nightSlides.length} night photographs. Duplicate
-            poster files are skipped.
-          </p>
-        </li>
+        <OverviewCard title="Events" scope="overview events" reason="Event counts unavailable.">
+          {eventsCard}
+        </OverviewCard>
+        <OverviewCard title="Places" scope="overview places" reason="Place counts unavailable.">
+          {placesCard}
+        </OverviewCard>
+        <OverviewCard
+          title="Featured cards"
+          scope="overview featured"
+          reason="Featured card counts unavailable."
+        >
+          {featuredCard}
+        </OverviewCard>
+        <OverviewCard
+          title="Homepage slideshow"
+          scope="overview slideshow"
+          reason="Slideshow counts unavailable."
+        >
+          {slideshowCard}
+        </OverviewCard>
       </ul>
 
-      <div className="mt-10 border-t border-ink/10 pt-6">
-        <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">Sign-in and database</h3>
-        <ul className="mt-3 grid gap-2 text-sm leading-6 text-ink">
-          <Status
-            on={auth.connected}
-            label="Supabase Auth"
-            off="not connected (project URL or anon key missing)"
-          />
-          <li>
-            Admin allowlist: {auth.adminEmails.length} address
-            {auth.adminEmails.length === 1 ? "" : "es"} on file.
-          </li>
-        </ul>
-      </div>
+      <OverviewBlock
+        title="Sign-in and database"
+        scope="overview sign-in"
+        reason="Sign-in status unavailable."
+      >
+        {signInBlock}
+      </OverviewBlock>
 
-      <div className="mt-10 border-t border-ink/10 pt-6">
-        <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">Ingest snapshot</h3>
-        <p className="mt-2 max-w-xl text-sm leading-7 text-muted">
-          Last recorded feed check in data/event-ingest/last-run.json. This is the file in the repo,
-          not a live run.
-        </p>
-        <ul className="mt-3 grid gap-2 text-sm leading-6 text-ink">
-          <li>Checked: {lastRun?.checkedAt ? londonStamp(lastRun.checkedAt) : "Not on file"}</li>
-          <li>Cadence: every {lastRun?.cadenceDays ?? "?"} days</li>
-          <li>Published in that snapshot: {Array.isArray(lastRun?.published) ? lastRun.published.length : 0}</li>
-          <li>Held: {Array.isArray(lastRun?.held) ? lastRun.held.length : 0}</li>
-          <li>
-            Sources: {sourcesOk} confirmed, {sources.length - sourcesOk} not confirmed, of{" "}
-            {sources.length} checked.
-          </li>
-        </ul>
-        <ul className="mt-4 grid gap-2 text-sm leading-6">
-          {sources.map((source) => (
-            <li key={source.id} className="border border-ink/15 bg-chart px-4 py-3">
-              <p className="text-[10px] uppercase tracking-[0.16em] text-muted">{source.id}</p>
-              <p className={source.ok ? "text-ink" : "text-muted"}>
-                {source.ok ? "Confirmed" : "Not confirmed"}. {source.detail}
-              </p>
-              {source.url ? (
-                <a
-                  href={source.url}
-                  className="mt-1 inline-flex break-all text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
-                >
-                  {source.url}
-                </a>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <OverviewBlock
+        title="Ingest snapshot"
+        scope="overview ingest snapshot"
+        reason="Ingest snapshot unavailable."
+      >
+        {ingestBlock}
+      </OverviewBlock>
     </section>
   );
 }
 
 export function AdminEventsSection() {
-  const rows = eventRowsForAdmin();
+  let rows;
+  try {
+    rows = eventRowsForAdmin();
+  } catch (error) {
+    logAdminError("events list", error);
+    return (
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Events</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">Event list unavailable.</p>
+      </section>
+    );
+  }
   return (
     <section className="min-w-0">
       <h2 className="font-display text-3xl leading-none tracking-tight">Events</h2>
@@ -153,8 +301,20 @@ export function AdminEventsSection() {
 }
 
 export function AdminFeaturedSection() {
-  const features = homeFeaturesFrom(events);
-  const slides = homeHeroSlides(events);
+  let features;
+  let slides;
+  try {
+    features = homeFeaturesFrom(events);
+    slides = homeHeroSlides(events);
+  } catch (error) {
+    logAdminError("featured lists", error);
+    return (
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Featured</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">Featured lists unavailable.</p>
+      </section>
+    );
+  }
   return (
     <section className="min-w-0">
       <h2 className="font-display text-3xl leading-none tracking-tight">Featured</h2>
@@ -224,7 +384,18 @@ export function AdminFeaturedSection() {
 }
 
 export function AdminPlacesSection() {
-  const rows = placeRowsForAdmin();
+  let rows;
+  try {
+    rows = placeRowsForAdmin();
+  } catch (error) {
+    logAdminError("places list", error);
+    return (
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Places</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">Place list unavailable.</p>
+      </section>
+    );
+  }
   return (
     <section className="min-w-0">
       <h2 className="font-display text-3xl leading-none tracking-tight">Places</h2>
@@ -238,7 +409,21 @@ export function AdminPlacesSection() {
 }
 
 export async function AdminGetFeaturedSection() {
-  const submissions = await listUnpublishedSubmissions();
+  let submissions;
+  try {
+    submissions = await listUnpublishedSubmissions();
+  } catch (error) {
+    logAdminError("get featured submissions", error);
+    return (
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Get featured</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">Database not connected.</p>
+      </section>
+    );
+  }
+  if (submissions.reason === "error") {
+    logAdminError("get featured submissions", "submissions table missing or unreadable");
+  }
   const placements =
     submissions.reason === "ok" ? submissions.rows.filter((row) => row.kind === "placement") : [];
 
@@ -254,7 +439,7 @@ export async function AdminGetFeaturedSection() {
         <p className="mt-3 text-sm leading-7 text-muted">Database not connected.</p>
       ) : submissions.reason === "error" ? (
         <p className="mt-3 text-sm leading-7 text-muted">
-          Placement submissions could not be read. The database may be missing the submissions table.
+          Placement submissions could not be read. Table submissions missing or unreadable.
         </p>
       ) : placements.length === 0 ? (
         <p className="mt-3 text-sm leading-7 text-ink">No placement submissions are on file.</p>
@@ -283,7 +468,23 @@ export async function AdminGetFeaturedSection() {
 }
 
 export async function AdminOutboundClicksSection() {
-  const result = await listOutboundClicks();
+  let result;
+  try {
+    result = await listOutboundClicks();
+  } catch (error) {
+    logAdminError("outbound clicks", error);
+    return (
+      <section className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Outbound clicks</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">Table outbound_clicks missing or unreadable.</p>
+      </section>
+    );
+  }
+  if (result.reason === "error") {
+    logAdminError("outbound clicks", "table outbound_clicks missing or unreadable");
+  } else if (result.reason === "no-key") {
+    logAdminError("outbound clicks", "SUPABASE_SERVICE_ROLE_KEY missing");
+  }
   return (
     <section className="min-w-0">
       <h2 className="font-display text-3xl leading-none tracking-tight">Outbound clicks</h2>
@@ -296,7 +497,7 @@ export async function AdminOutboundClicksSection() {
         <p className="mt-3 text-sm leading-7 text-muted">Database not connected.</p>
       ) : result.reason === "error" ? (
         <p className="mt-3 text-sm leading-7 text-muted">
-          Database not connected. The outbound clicks table is missing or could not be read. Apply
+          Table outbound_clicks missing or unreadable. Apply
           supabase/migrations/20261119120000_outbound_clicks.sql on the project when you are ready.
         </p>
       ) : result.rows.length === 0 ? (

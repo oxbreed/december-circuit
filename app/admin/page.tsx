@@ -122,7 +122,8 @@ function safeSection(title: string, render: () => ReactNode | Promise<ReactNode>
   async function BoundSection() {
     try {
       return await render();
-    } catch {
+    } catch (error) {
+      console.error(`Admin section: ${title}`, error);
       return <SectionLoadError title={title} />;
     }
   }
