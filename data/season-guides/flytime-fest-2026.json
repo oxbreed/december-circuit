@@ -8,7 +8,7 @@
   "organiserUrl": "https://www.flytimefest.com/",
   "organiserLabel": "Organiser's page",
   "lineupStatus": "incomplete",
-  "statusPlain": "The Flytime Fest and Flytime Circle headliner lineups for 2026 are still unannounced. Only Flytime House of R&B has a named artist on file (Brandy), from a named news report. The organiser homepage (flytimefest.com) does not yet name 2026 Fest or Circle nights.",
+  "statusPlain": "Flytime House of R&B has Brandy on file (20 December), from a named news report. Flytime Fest has Latto and Sexyy Red on file for 22 December, from the Guardian Nigeria guide. Flytime Circle has no named artists on file. The organiser homepage (flytimefest.com) does not yet name 2026 Fest or Circle nights.",
   "nights": [
     {
       "id": "house-of-rb",
@@ -37,12 +37,25 @@
       "name": "Flytime Fest",
       "venue": "Eko Convention Centre",
       "lineupIncomplete": true,
-      "artists": [],
-      "summaryOnFile": "Flytime Fest, Eko Convention Centre. Headliners for 2026 are still unannounced.",
+      "artists": [
+        {
+          "name": "Latto",
+          "sourceUrl": "https://guardian.ng/life/life-features/detty-december-your-guide-to-lagos-concerts/",
+          "sourceLabel": "News report (Guardian Nigeria)",
+          "sourceId": "flytime-fest-home"
+        },
+        {
+          "name": "Sexyy Red",
+          "sourceUrl": "https://guardian.ng/life/life-features/detty-december-your-guide-to-lagos-concerts/",
+          "sourceLabel": "News report (Guardian Nigeria)",
+          "sourceId": "flytime-fest-home"
+        }
+      ],
+      "summaryOnFile": "Flytime Fest, Eko Convention Centre. Latto and Sexyy Red on 22 December.",
       "directorySourceId": "flytime-fest-home",
       "notes": [
-        "No confirmed headliners on file. Do not invent artists.",
-        "Organiser homepage probe (flytimefest.com) does not name 2026 Fest dates; ingest keeps this seed row held until an organiser page states the night (DD-2).",
+        "Latto and Sexyy Red on 22 December come from the Guardian Nigeria Lagos concerts guide (14 November 2026).",
+        "Organiser homepage probe (flytimefest.com) does not name 2026 Fest dates; ingest keeps holding that probe (DD-2), which does not change this seed row.",
         "The Essence Brandy article is not a source for this Fest night."
       ]
     },
@@ -63,6 +76,13 @@
     }
   ],
   "changelog": [
+    {
+      "at": "2026-11-20",
+      "summary": "Added Latto and Sexyy Red to Flytime Fest (22 December) from the Guardian Nigeria guide. Status stays incomplete: Flytime Circle has no named artists on file.",
+      "sources": [
+        "https://guardian.ng/life/life-features/detty-december-your-guide-to-lagos-concerts/"
+      ]
+    },
     {
       "at": "2026-10-26",
       "summary": "Opened the permanent 2026 lineup tracker. Status: incomplete. Confirmed artist on file: Brandy (House of R&B, 20 December) via Essence. Fest (22–24 December) and Circle (25 December) remain unannounced; organiser homepage still does not name those 2026 nights.",

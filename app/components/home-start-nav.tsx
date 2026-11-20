@@ -6,7 +6,7 @@ import { visitorCategoryEntries, type VisitorCategoryEntry } from "../visitor-ca
 import { HomeCategoryStrip } from "./home-category-strip";
 
 const pillarLink =
-  "flex h-full flex-col overflow-hidden border border-ink/15 bg-chart hover:border-oxide/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oxide";
+  "motion-lift flex h-full flex-col overflow-hidden border border-ink/15 bg-chart hover:border-oxide/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oxide";
 
 type HubPhoto = {
   src: string;
@@ -179,13 +179,13 @@ export function HomeStartNav() {
                 <li key={item.href} className="flex min-w-0 flex-col">
                   <Link href={item.href} className={pillarLink}>
                     {item.photo ? (
-                      <span className="relative block h-24 sm:h-28">
+                      <span className="relative block h-24 overflow-hidden sm:h-28">
                         <Image
                           src={item.photo.src}
                           alt={item.photo.alt}
                           fill
                           sizes="(max-width: 1024px) 50vw, 240px"
-                          className={`object-cover ${item.photo.focus}`}
+                          className={`motion-zoom object-cover ${item.photo.focus}`}
                         />
                         <span className={`absolute top-2 left-2 flex h-8 w-8 items-center justify-center ${item.tone}`}>
                           <Icon className="h-4 w-4" />

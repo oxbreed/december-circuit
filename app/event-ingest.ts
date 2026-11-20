@@ -204,6 +204,7 @@ function extractDettyFest(source: EventFeedSource, text: string): ExtractResult 
 
   const nights: string[] = [];
   if (/Wizkid/i.test(text)) nights.push("Wizkid on 18 December");
+  if (/Lauryn Hill/i.test(text)) nights.push("Lauryn Hill on 21 December");
   if (/DJ Tunez/i.test(text)) {
     nights.push(
       /Friends/i.test(text)
@@ -212,6 +213,8 @@ function extractDettyFest(source: EventFeedSource, text: string): ExtractResult 
     );
   }
   if (/Tungba/i.test(text)) nights.push("Tungba Christmas on 25 December");
+  if (/Summer Walker/i.test(text)) nights.push("Summer Walker on 27 December");
+  if (/Young Thug/i.test(text)) nights.push("Young Thug on 28 December");
 
   let summary = "Detty December Fest.";
   if (nights.length) summary += ` ${nights.join(", ")}.`;
@@ -238,6 +241,9 @@ function extractDettyTickets(source: EventFeedSource, text: string): ExtractResu
   const hasCollection = /Detty December Fest/i.test(text);
   const nights: string[] = [];
   if (/Wizkid/i.test(text) && /18\s*Dec/i.test(text)) nights.push("Wizkid on 18 December");
+  if (/Lauryn Hill/i.test(text) && /21\s*Dec/i.test(text)) {
+    nights.push("Lauryn Hill on 21 December");
+  }
   if (/Tunez/i.test(text) && /24\s*Dec/i.test(text)) {
     nights.push(
       /Friends/i.test(text)
@@ -247,6 +253,12 @@ function extractDettyTickets(source: EventFeedSource, text: string): ExtractResu
   }
   if (/Tungba/i.test(text) && /25\s*Dec/i.test(text)) {
     nights.push("Tungba Christmas on 25 December");
+  }
+  if (/Summer Walker/i.test(text) && /27\s*Dec/i.test(text)) {
+    nights.push("Summer Walker on 27 December");
+  }
+  if (/Young Thug/i.test(text) && /28\s*Dec/i.test(text)) {
+    nights.push("Young Thug on 28 December");
   }
   if (!hasCollection || nights.length === 0) {
     return {

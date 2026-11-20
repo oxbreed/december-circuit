@@ -21,6 +21,14 @@ import {
 import { pageMetadata } from "../../site";
 import { shareImageForCity } from "../../share-images";
 
+function sourceLabel(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "the source page";
+  }
+}
+
 export function generateStaticParams() {
   return placesOnFile().map((place) => ({ slug: place.slug }));
 }
@@ -93,9 +101,27 @@ export default async function PlacePage({
         {place.name}
       </h1>
       <p className="mt-4 text-sm text-ink">
+        {place.area ? `${place.area}, ` : null}
         {place.city}, {place.country}
       </p>
       <p className="mt-6 text-base leading-8 text-ink">{placeDescription(place)}</p>
+      {place.detail ? (
+        <p className="mt-4 text-base leading-8 text-ink">{place.detail}</p>
+      ) : null}
+      {place.checked ? (
+        <p className="mt-2 text-sm leading-7 text-muted">
+          Checked {place.checked} against{" "}
+          <a
+            href={place.source ?? place.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            {sourceLabel(place.source ?? place.url)}
+          </a>
+          . Ratings are as the named source states them; this site does not grade places.
+        </p>
+      ) : null}
       {pin ? (
         <p className="mt-4 text-sm leading-7 text-muted">
           Sourced map coordinates are on file for this name.

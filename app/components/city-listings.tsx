@@ -100,6 +100,11 @@ export function CityPlaceList({
                           {place.name}
                         </p>
                       )}
+                      {place.area || place.detail ? (
+                        <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
+                          {[place.area, place.detail].filter(Boolean).join(". ")}
+                        </p>
+                      ) : null}
                     </div>
                     <div className="flex shrink-0 flex-col items-start gap-1 text-sm sm:items-end">
                       {href ? (

@@ -54,7 +54,7 @@ export function LandmarkFrame({ firstSlide }: { firstSlide?: ReactNode }) {
             <img
               key={slide.src}
               src={slide.src}
-              alt={`${slide.name}, ${slide.city}${slide.credit ? `. ${slide.credit}` : ""}`}
+              alt={`${slide.alt ?? `${slide.name}, ${slide.city}`}${slide.credit ? `. ${slide.credit}` : ""}`}
               width={960}
               height={540}
               decoding="async"

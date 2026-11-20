@@ -55,7 +55,7 @@ export default function FlytimeFest2026Page() {
             Lineup status
           </p>
           <p className="mt-2 font-display text-2xl leading-tight tracking-tight">
-            {incomplete ? "Incomplete — headliners still unannounced for Fest and Circle" : "Updated"}
+            {incomplete ? "Incomplete — not every Fest and Circle night has a named artist on file" : "Updated"}
           </p>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-ink">{tracker.statusPlain}</p>
           <p className="mt-4">
@@ -88,9 +88,12 @@ export default function FlytimeFest2026Page() {
                 <p className="mt-3 text-sm leading-7 text-ink">{night.summaryOnFile}</p>
                 {night.lineupIncomplete || night.artists.length === 0 ? (
                   <p className="mt-4 border-l-2 border-oxide/50 pl-4 text-sm leading-7 text-ink">
-                    Lineup incomplete. No confirmed headliners are linked for this night.
+                    {night.artists.length === 0
+                      ? "Lineup incomplete. No confirmed headliners are linked for this night."
+                      : "Lineup incomplete. Only the artists below are confirmed on file."}
                   </p>
-                ) : (
+                ) : null}
+                {night.artists.length > 0 ? (
                   <ul className="mt-4 space-y-3">
                     {night.artists.map((artist) => (
                       <li key={artist.name} className="border-t border-ink/10 pt-3">
@@ -105,7 +108,7 @@ export default function FlytimeFest2026Page() {
                       </li>
                     ))}
                   </ul>
-                )}
+                ) : null}
                 <ul className="mt-4 list-disc space-y-1 pl-5 text-sm leading-7 text-muted">
                   {night.notes.map((note) => (
                     <li key={note}>{note}</li>

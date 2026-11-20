@@ -19,6 +19,15 @@ export type CircuitEvent = {
 export const seedEvents: CircuitEvent[] = [
   {
     region: "Lagos",
+    when: "11-20 December",
+    summary:
+      "Future Fest '26. YBNL: The Reunion with Olamide on 18 December, Asake's M$NEY in Lagos on 20 December, Oasis Ground, Victoria Island.",
+    url: "https://www.pulse.ng/story/asake-lagos-concert-future-fest-2026-2026111212324356431",
+    urlLabel: "News report",
+    sourceId: "future-fest-pulse",
+  },
+  {
+    region: "Lagos",
     when: "17-19 December",
     summary: "Davido, Oriade residency, three nights at the National Theatre.",
     url: "https://www.dmwhq.com/residency",
@@ -29,11 +38,20 @@ export const seedEvents: CircuitEvent[] = [
     region: "Lagos",
     when: "18-30 December",
     summary:
-      "Detty December Fest. Wizkid on 18 December, DJ Tunez and Friends on 24 December, Tungba Christmas on 25 December.",
+      "Detty December Fest. Wizkid on 18 December, Lauryn Hill on 21 December, DJ Tunez and Friends on 24 December, Tungba Christmas on 25 December, Summer Walker on 27 December, Young Thug on 28 December.",
     url: "https://dettydecfest.com/",
     urlLabel: "Organiser's page",
     ticketsUrl: "https://tix.dot360.co/org/livespot/detty-december",
     sourceId: "detty-december-fest",
+  },
+  {
+    region: "Lagos",
+    when: "19-23 December",
+    summary:
+      "ICONIQ FEST Lagos. BNXN on 19 December, Fola on 20 December, Oxlade on 21 December, Ruger on 22 December, Mr P on 23 December, The Lekki Coliseum.",
+    url: "https://www.iconiqfest.com/",
+    urlLabel: "Organiser's page",
+    sourceId: "iconiq-fest",
   },
   {
     region: "Lagos",
@@ -55,11 +73,11 @@ export const seedEvents: CircuitEvent[] = [
   {
     region: "Lagos",
     when: "22-24 December",
-    summary:
-      "Flytime Fest, Eko Convention Centre. Headliners for 2026 are still unannounced.",
-    url: "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+    summary: "Flytime Fest, Eko Convention Centre. Latto and Sexyy Red on 22 December.",
+    url: "https://guardian.ng/life/life-features/detty-december-your-guide-to-lagos-concerts/",
     urlLabel: "News report",
-    // Held by ingest until an organiser page names this night (DD-2).
+    // Artists from the Guardian Nigeria guide (20 Nov 2026). Ingest still only probes
+    // flytimefest.com and holds it (DD-2); held rows never touch this seed text.
     sourceId: "flytime-fest-home",
   },
   {
@@ -70,6 +88,15 @@ export const seedEvents: CircuitEvent[] = [
     url: "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
     urlLabel: "News report",
     sourceId: "flytime-fest-home",
+  },
+  {
+    region: "Lagos",
+    when: "26 December",
+    summary:
+      "Adekunle Gold, The Greatest Showman, with the MUSON Orchestra at the National Theatre.",
+    url: "https://www.qed.ng/adekunle-gold-announces-return-of-the-greatest-showman-for-december/",
+    urlLabel: "News report",
+    sourceId: "adekunle-gold-showman-qed",
   },
   {
     region: "Calabar",
@@ -88,6 +115,166 @@ export const seedEvents: CircuitEvent[] = [
     url: "https://www.myjoyonline.com/gta-unveils-december-in-gh-2026-calendar-with-150-events/",
     urlLabel: "News report",
     sourceId: "december-in-ghana-myjoy",
+  },
+  {
+    region: "Abuja",
+    when: "16 December",
+    summary: "ICONIQ FEST Abuja. Fola, Cloud 9, Bali Recreational Park.",
+    url: "https://www.iconiqfest.com/",
+    urlLabel: "Organiser's page",
+    sourceId: "iconiq-fest",
+  },
+  {
+    region: "Accra",
+    when: "16-31 December",
+    summary:
+      "AfroFuture Residency, Future Club, 1 Shiashie. Opening night on 16 December, Jazzwrld & Thukuthela on 20 December, Rcee Live on 22 December, Afropolitan Live on 27 December, Victony on 28 December, Young Jonn on 29 December, then a New Year's Eve party.",
+    url: "https://www.afrofuture.com/",
+    urlLabel: "Organiser's page",
+    sourceId: "afrofuture-residency",
+  },
+  {
+    region: "Accra",
+    when: "21 December",
+    summary: "Black Sherif's Zaama Disco. University of Ghana Sports Stadium.",
+    url: "https://www.dailypost.com.gh/ghanas-2026-detty-december-concerts-festivals-and-public-holidays-confirmed/",
+    urlLabel: "News report",
+    sourceId: "zaama-disco-dailypost",
+  },
+  {
+    region: "Accra",
+    when: "24 December",
+    summary:
+      "Stonebwoy's BHIM Festival. University of Ghana Sports Stadium. Supporting acts are still unannounced.",
+    // Date and venue on the organiser's page. Stonebwoy's festival and the pending
+    // supporting acts are also reported by GNA:
+    // https://gna.org.gh/2026/10/stonebwoys-bhim-festival-2026-moves-to-university-of-ghana-sports-stadium/
+    url: "https://bhimfestival.com/",
+    urlLabel: "Organiser's page",
+    sourceId: "bhim-festival",
+  },
+  // Seed rows added 20 Nov 2026. Appended after the existing list so a rebase
+  // onto PR #7 (content/more-events-batch-1) stays a trivial append.
+  {
+    region: "Abuja",
+    when: "4 December",
+    summary:
+      "Victony, The Bonfire Experience. The venue has not been announced yet. Starts at 8pm.",
+    url: "https://mainlandblockparty.com/event/capital-blockparty-the-bonfire-experience",
+    urlLabel: "Organiser's page",
+    sourceId: "victony-bonfire-abuja",
+  },
+  {
+    region: "Abuja",
+    when: "5 December",
+    summary:
+      "Cibusa x The Believers Music Concert, with Soundboi BME. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Abuja",
+    when: "5 December",
+    summary:
+      "Moelogo Live in Abuja, The Yoruba Healer Live Experience at the UpeRoom by Jireh Multimedia.",
+    url: "https://tix.africa/discover/moelogo-live-in-abuja",
+    urlLabel: "Organiser's page",
+    sourceId: "moelogo-abuja-tix",
+  },
+  {
+    region: "Abuja",
+    when: "6 December",
+    summary: "Johnny's Room Live 8, Johnny Drille at the Exhibition Pavilion.",
+    url: "https://johnnydrille.tix.to/jrl8",
+    urlLabel: "Organiser's page",
+    sourceId: "johnny-room-live-8",
+  },
+  {
+    region: "Abuja",
+    when: "11 December",
+    summary:
+      "EJANLA FEST at the Harrow Park, Wuse. Carnival from 11am, concert at 7pm.",
+    url: "https://tix.africa/discover/ejanlafest",
+    urlLabel: "Organiser's page",
+    sourceId: "ejanla-fest-tix",
+  },
+  {
+    region: "Abuja",
+    when: "12-13 December",
+    summary: "DJ Tunez Blackout at the Cage Club, Drip Mall, Wuse 2.",
+    url: "https://www.visitabuja.org/event/dj-tunez-blackout-abuja/",
+    urlLabel: "Event listing",
+    sourceId: "dj-tunez-blackout-visitabuja",
+  },
+  {
+    region: "Abuja",
+    when: "13 December",
+    summary:
+      "Live Out Loud Music Festival, Wizkid at the Eagle Square. Gates at 4pm, Wizkid on stage at 10pm.",
+    url: "https://www.lolmusicfest.com/",
+    urlLabel: "Organiser's page",
+    ticketsUrl: "https://wizkid.tix.africa/",
+    sourceId: "lol-music-fest",
+  },
+  {
+    region: "Lagos",
+    when: "13 December",
+    summary:
+      "ÀLÓ: Once Upon a Song at the Shell Hall, MUSON Centre, Onikan. African folk music and storytelling, from 7pm.",
+    url: "https://tix.dot360.co/event/a-lo-once-upon-a-song",
+    urlLabel: "Organiser's page",
+    sourceId: "alo-once-upon-a-song",
+  },
+  {
+    region: "Abuja",
+    when: "19 December",
+    summary: "Rise of the Machine. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Abuja",
+    when: "19 December",
+    summary:
+      "Apitainment Music Festival, Seyi Vibez at the Abuja Velodrome. Starts at 7pm.",
+    url: "https://www.apitix.com/product/seyi-vibez-live-in-abuja/",
+    urlLabel: "Organiser's page",
+    sourceId: "apitainment-seyi-apitix",
+  },
+  {
+    region: "Abuja",
+    when: "22 December",
+    summary: "The Cavemen, Cavy Fest at the Bali City Park, Wuse 2. Starts at 7pm.",
+    url: "https://www.woya.me/programme/abuja/event/67a10dba-b46f-478c-bc2f-75b79471c2ea",
+    urlLabel: "Event listing",
+    sourceId: "cavy-fest-woya",
+  },
+  {
+    region: "Abuja",
+    when: "24 December",
+    summary: "Season Fest. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Abuja",
+    when: "24 December",
+    summary: "Mr P Live. The venue is still to be confirmed.",
+    url: "https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/",
+    urlLabel: "Event roundup",
+    sourceId: "abujakulture-december-roundup",
+  },
+  {
+    region: "Lagos",
+    when: "26 December",
+    summary:
+      "Victony, The Bonfire Experience. The venue has not been announced yet. Starts at 8pm.",
+    url: "https://mainlandblockparty.com/event/island-blockparty-the-bonfire-experience",
+    urlLabel: "Organiser's page",
+    sourceId: "victony-bonfire-lagos",
   },
 ];
 

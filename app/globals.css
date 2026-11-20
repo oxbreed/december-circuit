@@ -16,16 +16,98 @@
   --color-ink: #1a1410;
   --color-muted: #5c5148;
   --color-line: rgba(26, 20, 16, 0.14);
-  --color-oxide: #b8432f;
-  --color-brass: #8a6232;
-  --color-brass-light: #b8432f;
-  --color-gold: #8a6232;
+  /* Oxide and brass are a shade deeper than the logo marks so small uppercase
+     labels clear WCAG AA (4.5:1) on paper, chart and paper-deep alike. */
+  --color-oxide: #a93d2a;
+  --color-oxide-deep: #8c3121;
+  --color-brass: #7f5a2d;
+  --color-brass-light: #a93d2a;
+  --color-gold: #7f5a2d;
   --color-lagoon: #1b684e;
   --color-chart: #fffaf4;
   --color-mist: #1a1410;
   --font-sans: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+  }
+
+  /* Balanced headings and fewer orphans in running text. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd,
+  figcaption {
+    text-wrap: pretty;
+  }
+
+  /* Gentle, consistent feedback on every interactive element. */
+  a,
+  button,
+  summary,
+  [role="button"],
+  input,
+  select,
+  textarea {
+    transition-property: color, background-color, border-color, text-decoration-color, box-shadow, opacity;
+    transition-duration: 160ms;
+    transition-timing-function: var(--ease-out-soft);
+  }
+
+  a:where(.underline) {
+    text-decoration-thickness: 1px;
+  }
+
+  a:where(.underline):hover {
+    text-decoration-color: currentColor;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  /* Solid oxide buttons get a deeper press colour instead of no feedback. */
+  :where(a, button).bg-oxide:hover {
+    background-color: var(--color-oxide-deep);
+  }
+
+  /* Outlined paper buttons firm up their border on hover. */
+  :where(a, button).bg-chart.border:hover {
+    border-color: rgba(26, 20, 16, 0.55);
+  }
+}
+
+/* Display type: Playfair sets tight at leading-none, which clips descenders and
+   crowds two-line headings. A hair of extra leading keeps the editorial look. */
+.font-display {
+  font-variant-numeric: lining-nums;
+  font-optical-sizing: auto;
+}
+
+.font-display.leading-none {
+  line-height: 1.04;
+}
+
+/* Small body copy at leading-7 reads double-spaced; settle it to ~1.75. */
+.text-sm.leading-7 {
+  line-height: 1.55rem;
 }
 
 body {
@@ -44,7 +126,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: 30;
-  opacity: 0.14;
+  opacity: 0.1;
   mix-blend-mode: multiply;
   background-image: radial-gradient(rgba(26, 20, 16, 0.55) 0.55px, transparent 0.55px);
   background-size: 3px 3px;
@@ -58,6 +140,13 @@ body::before {
 :focus-visible {
   outline: 2px solid #1b684e;
   outline-offset: 3px;
+  border-radius: 0;
+}
+
+/* Keep focus rings visible on oxide and lagoon fills. */
+.bg-oxide:focus-visible,
+.bg-lagoon:focus-visible {
+  outline-color: #1a1410;
 }
 
 .chip {
@@ -77,8 +166,12 @@ body::before {
 }
 
 .chip:hover {
-  border-color: #b8432f;
-  color: #b8432f;
+  border-color: var(--color-oxide);
+  color: var(--color-oxide);
+}
+
+.chip:focus-visible {
+  outline-offset: 2px;
 }
 
 .chip[aria-checked="true"],
@@ -439,6 +532,27 @@ body::before {
   }
 }
 
+/* Card lift and photo zoom used by the homepage hub cards. */
+.motion-lift {
+  transition:
+    border-color 200ms var(--ease-out-soft),
+    box-shadow 200ms var(--ease-out-soft),
+    transform 200ms var(--ease-out-soft);
+}
+
+.motion-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -22px rgba(26, 20, 16, 0.55);
+}
+
+.motion-zoom {
+  transition: transform 600ms var(--ease-out-soft);
+}
+
+.motion-lift:hover .motion-zoom {
+  transform: scale(1.04);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .news-ticker-track {
     animation: none;
@@ -464,5 +578,17 @@ body::before {
 
   .hero-night-photo {
     transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-lift:hover,
+  .motion-lift:hover .motion-zoom {
+    transform: none !important;
   }
 }

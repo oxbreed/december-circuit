@@ -149,7 +149,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
                       className={`whitespace-nowrap text-[11px] uppercase tracking-[0.12em] hover:text-oxide ${
                         current(pathname, href)
                           ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
-                          : "text-ink/55"
+                          : "text-ink/70"
                       }`}
                     >
                       {label}
@@ -182,7 +182,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
             </p>
             <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
             <p className="mt-4 font-sans text-sm leading-6 text-ink">
-              <a href="https://www.oxbreedmanagement.com" className={footerLink}>
+              <a href="https://oxbreedstudio.com" className={footerLink}>
                 Powered by Oxbreed Management
               </a>
               .
@@ -298,7 +298,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
                 href={href}
                 aria-current={current(pathname, href) ? "page" : undefined}
                 className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-0.5 text-center text-[10px] font-medium uppercase leading-none tracking-tight ${
-                  current(pathname, href) ? "text-oxide" : "text-ink/55"
+                  current(pathname, href) ? "text-oxide" : "text-ink/70"
                 }`}
               >
                 {label}

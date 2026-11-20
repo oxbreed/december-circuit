@@ -22,7 +22,7 @@ export function HeaderTripLink({
       <Link
         href="/#trip"
         aria-label="My Trip, nothing saved yet"
-        className={`${hideOnDesktop}inline-flex shrink-0 items-center border border-dashed border-ink/35 px-2 py-1 text-[11px] uppercase tracking-[0.14em] text-ink/50 hover:border-ink/70 hover:text-ink`}
+        className={`${hideOnDesktop}inline-flex shrink-0 items-center border border-dashed border-ink/35 px-2 py-1 text-[11px] uppercase tracking-[0.14em] text-ink/70 hover:border-ink/70 hover:text-ink`}
       >
         My Trip
       </Link>
@@ -38,7 +38,7 @@ export function HeaderTripLink({
   return (
     <Link href="/#trip" className={base}>
       My Trip
-      <span className="ml-1 tabular-nums text-ink/55">({items.length})</span>
+      <span className="ml-1 tabular-nums text-ink/70">({items.length})</span>
     </Link>
   );
 }

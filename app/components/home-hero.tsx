@@ -3,17 +3,17 @@ import { disclaimer } from "../brand";
 import { HeroNightlife } from "./hero-nightlife";
 
 const offerLink =
-  "inline-flex items-center justify-center px-2 py-2.5 text-center text-[10px] uppercase tracking-[0.12em] sm:px-5 sm:py-3 sm:text-[11px] sm:tracking-[0.18em]";
+  "inline-flex min-h-11 items-center justify-center px-2 py-2.5 text-center text-[10px] uppercase tracking-[0.12em] sm:px-5 sm:py-3 sm:text-[11px] sm:tracking-[0.18em]";
 
 export function HomeHero() {
   return (
     <section className="overflow-x-clip border-b border-ink/10 pt-[4.5rem] lg:pt-[8.25rem]" aria-labelledby="home-hero-heading">
       <HeroNightlife />
       <div className="mx-auto max-w-6xl px-4 pb-5 pt-3 sm:px-6 sm:pb-8 sm:pt-4 lg:px-8 lg:pb-8 lg:pt-4">
-        <p className="text-[11px] uppercase tracking-[0.32em] text-lagoon">dirtydecember.info</p>
+        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">dirtydecember.info</p>
         <h1
           id="home-hero-heading"
-          className="mt-2 max-w-3xl font-display text-[1.85rem] leading-[1.05] tracking-tight text-ink sm:mt-3 sm:text-5xl lg:text-[2.9rem]"
+          className="mt-2 max-w-3xl font-display text-[1.85rem] leading-[1.05] tracking-tight text-ink sm:mt-3 sm:text-5xl lg:text-[3.15rem] lg:leading-[1.02]"
         >
           Independent directory for Detty December &amp; West Africa
         </h1>
@@ -28,17 +28,17 @@ export function HomeHero() {
           <Link href="/events" className={`${offerLink} bg-oxide text-chart`}>
             Events
           </Link>
-          <Link href="/places" className={`${offerLink} border border-ink/25 bg-chart text-ink`}>
+          <Link href="/places" className={`${offerLink} border border-ink/25 bg-chart text-ink hover:text-oxide`}>
             Places
           </Link>
-          <Link href="/guides" className={`${offerLink} border border-ink/25 bg-chart text-ink`}>
+          <Link href="/guides" className={`${offerLink} border border-ink/25 bg-chart text-ink hover:text-oxide`}>
             Guides
           </Link>
-          <Link href="/visa" className={`${offerLink} border border-ink/25 bg-chart text-ink`}>
+          <Link href="/visa" className={`${offerLink} border border-ink/25 bg-chart text-ink hover:text-oxide`}>
             Visa
           </Link>
         </div>
-        <p className="mt-3 text-sm leading-6 text-muted sm:mt-4">
+        <p className="mt-4 text-sm leading-6 text-muted sm:mt-5">
           <Link href="#start-here" className="text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide">
             Jump to category hubs
           </Link>
