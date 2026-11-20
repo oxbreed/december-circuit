@@ -137,6 +137,9 @@ export async function listOutboundClicks(limit = 80): Promise<{
     )
     .order("ts", { ascending: false })
     .limit(limit);
-  if (error) return { reason: "error", rows: [] };
+  if (error) {
+    console.error("Admin outbound clicks query", error.message ?? error);
+    return { reason: "error", rows: [] };
+  }
   return { reason: "ok", rows: (data ?? []) as OutboundClickRow[] };
 }
