@@ -58,6 +58,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/terms", changeFrequency: "yearly", priority: 0.2 },
     { path: "/eula", changeFrequency: "yearly", priority: 0.2 },
     { path: "/list", changeFrequency: "monthly", priority: 0.4 },
+    { path: "/get-featured", changeFrequency: "monthly", priority: 0.4 },
+    { path: "/disclosure", changeFrequency: "yearly", priority: 0.2 },
+    { path: "/cookies", changeFrequency: "yearly", priority: 0.2 },
     ...countriesOnFile().map((country) => ({
       path: `/countries/${country.slug}`,
       changeFrequency: "weekly" as const,

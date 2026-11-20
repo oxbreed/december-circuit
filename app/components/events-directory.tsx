@@ -17,12 +17,13 @@ import {
   type WeekWindow,
 } from "../week";
 import { DateBlock, EventCard } from "./event-card";
-import { presentEvent } from "../event-view";
+import { eventSlug, presentEvent } from "../event-view";
 import { eventTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
 import { LoadMoreBar, useListPageSize } from "./load-more";
 import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
+import { TicketLink } from "./tracked-link";
 
 type ViewMode = "week" | "city" | "list";
 type RangeChip = "this-week" | "next-week" | "later" | "";
@@ -92,14 +93,14 @@ function MajorCard({ event }: { event: CircuitEvent }) {
         {event.ticketsUrl || event.url ? (
           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             {event.ticketsUrl ? (
-              <a
+              <TicketLink
                 href={event.ticketsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                eventSlug={eventSlug(event)}
+                placement="events-directory"
                 className="inline-flex bg-oxide px-4 py-3 text-[11px] uppercase tracking-[0.18em] text-chart"
               >
                 Tickets — leaves this site
-              </a>
+              </TicketLink>
             ) : null}
             {event.url ? (
               <a

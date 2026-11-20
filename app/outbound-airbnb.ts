@@ -15,4 +15,4 @@ export const airbnbCitySearches: readonly AirbnbCitySearch[] = [
 ] as const;
 
 export const airbnbSearchNote =
-  "Each link opens Airbnb’s own city search. This site does not list stays, prices, or availability, and does not take payment.";
+  "Each link opens Airbnb’s own city search. These are plain links: this site earns nothing from them, and does not list stays, prices, or availability.";

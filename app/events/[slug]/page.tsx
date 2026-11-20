@@ -6,7 +6,9 @@ import { AddToCalendar } from "../../components/add-to-calendar";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { JsonLd } from "../../components/json-ld";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
+import { ExperiencePartners, StayPartners, seasonCities } from "../../components/partner-modules";
 import { SaveTripButton } from "../../components/save-trip-button";
+import { FeaturedBadge } from "../../components/sponsor-spot";
 import { calendarLinksFor } from "../../event-calendar";
 import { eventDateSpan, fullEventDateLabel } from "../../event-dates";
 import { checkedOn, eventBySlug, eventSlug, presentEvent } from "../../event-view";
@@ -15,6 +17,7 @@ import { nearbyStaysFor } from "../../nearby-stays";
 import { eventTripId } from "../../trip";
 import { breadcrumbJsonLd, eventJsonLd } from "../../jsonld";
 import { shareImageForEvent } from "../../share-images";
+import { isFeaturedEvent } from "../../sponsors";
 import { pageMetadata } from "../../site";
 
 export function generateStaticParams() {
@@ -60,6 +63,8 @@ export default async function EventPage({
   const calendar = calendarLinksFor(event);
   const stays = nearbyStaysFor(event);
   const sourceLabel = event.urlLabel ?? "Source";
+  const partnerCity = seasonCities.find((item) => item.city === view.region);
+  const featured = isFeaturedEvent(eventSlug(event));
 
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-20">
@@ -84,6 +89,7 @@ export default async function EventPage({
           <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
             {view.category}
           </p>
+          {featured ? <FeaturedBadge className="mt-2" /> : null}
           <h1 className="mt-2 font-display text-4xl leading-[0.95] tracking-tight sm:text-6xl">
             {view.name}
           </h1>
@@ -123,7 +129,7 @@ export default async function EventPage({
       )}
 
       <div className="mt-8 flex flex-col items-start gap-4">
-        <PrimaryAction event={event} />
+        <PrimaryAction event={event} placement="event-page" />
         <SaveTripButton kind="event" id={eventTripId(event)} />
       </div>
 
@@ -174,6 +180,24 @@ export default async function EventPage({
               </li>
             ))}
           </ul>
+        </section>
+      ) : null}
+
+      {partnerCity ? (
+        <section className="mt-10 border-t border-ink/10 pt-8">
+          <h2 className="font-display text-2xl tracking-tight">Plan the trip around it</h2>
+          <StayPartners
+            cities={[partnerCity]}
+            placement="event-page-stays"
+            heading={`Hotels in ${partnerCity.city}`}
+            className="mt-5"
+          />
+          <ExperiencePartners
+            cities={[partnerCity]}
+            placement="event-page-tours"
+            heading={`Things to do in ${partnerCity.city}`}
+            className="mt-5"
+          />
         </section>
       ) : null}
 

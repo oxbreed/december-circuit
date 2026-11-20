@@ -11,6 +11,8 @@ export default function robots(): MetadataRoute.Robots {
         // (this site is not WordPress); listed so scanners see them as closed.
         disallow: [
           "/api/",
+          // First-party affiliate redirects (302 to partner sites).
+          "/go/",
           "/admin",
           "/auth/",
           "/wp-admin",

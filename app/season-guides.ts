@@ -117,6 +117,14 @@ export const seasonGuideIndex: SeasonGuideMeta[] = [
   },
   {
     year: SEASON_YEAR,
+    slug: "where-to-stay-lagos-december",
+    path: "/guides/where-to-stay-lagos-december",
+    title: "Where to stay in Lagos in December",
+    description:
+      "Hotels and short-stays already listed for Lagos, labelled hotel searches on partner booking sites, and Airbnb’s Lagos search — no invented prices or availability.",
+  },
+  {
+    year: SEASON_YEAR,
     slug: "accra-ghana-2026",
     path: "/guides/accra-ghana-2026",
     title: "Accra and Ghana December 2026",

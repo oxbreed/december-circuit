@@ -1,0 +1,4 @@
+# ads.txt for dirtydecember.info
+# No programmatic ad sellers are authorised for this site yet.
+# Add one line per authorised seller (IAB Tech Lab ads.txt 1.1) when an ad network is approved.
+contact=partners@dirtydecember.info

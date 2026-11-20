@@ -5,7 +5,7 @@ import { pageMetadata } from "../site";
 export const metadata = pageMetadata({
   title: "EULA",
   description:
-    "End user licence for dirtydecember.info. No payment and no bookings on this site. Governed by Nigerian law.",
+    "End user licence for dirtydecember.info. No bookings or visitor payments on this site; some outbound links are labelled affiliate links. Governed by Nigerian law.",
   path: "/eula",
 });
 
@@ -37,9 +37,9 @@ export default function EulaPage() {
           You can read the sourced records, read the news page, follow an
           outbound link, save a trip in this browser, sign in, send an
           unpublished listing or partnership note, and write a text review after
-          you sign in. This site takes no payment and holds no bookings. A
-          ticket link, a stay link, and a flight search are not a purchase on
-          this site.
+          you sign in. This site takes no payment from visitors and holds no
+          bookings. A ticket link, a stay link, and a flight search are not a
+          purchase on this site.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -50,8 +50,16 @@ export default function EulaPage() {
           organiser pages also leave this site. The other site’s own terms apply
           once you leave. The news page shows headlines and pictures supplied by
           the public feeds already used for the ticker. Opening an item leaves
-          this site. A newsletter, a fare, or a payment is not offered on this
-          site.
+          this site. Some partner links are labelled affiliate links, and the
+          site may earn a commission if you book through one. A newsletter or a
+          fare is not offered on this site. See the{" "}
+          <Link
+            href="/disclosure"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            disclosure
+          </Link>
+          .
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">

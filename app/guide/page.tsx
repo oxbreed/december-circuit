@@ -10,6 +10,7 @@ import {
 import { GuideArriveLoadMore } from "../components/guide-arrive-load-more";
 import { GuideTabs } from "../components/guide-tabs";
 import { JsonLd } from "../components/json-ld";
+import { ExperiencePartners, StayPartners } from "../components/partner-modules";
 import {
   CarHireVisitorBlock,
   EventsVisitorEntry,
@@ -116,8 +117,13 @@ export default function GuidePage() {
         <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
           Hotels, short stays, and the other places already filed that are not a
           way of getting around. A link is the organiser page stored on that
-          record. This site does not take payment.
+          record. Partner hotel searches are labelled, and booking happens on
+          their site. Visitors do not pay on this site.{" "}
+          <Link href="/guides/where-to-stay-lagos-december" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+            Where to stay in Lagos in December
+          </Link>
         </p>
+        <StayPartners placement="guide-stay" />
         <FindAStayOutbound />
         <GuidePlaceLoadMore places={stayPlaces} noun="stay places" />
       </section>
@@ -158,6 +164,7 @@ export default function GuidePage() {
         <div className="mt-6">
           <GuideWhatsOnLoadMore events={events} />
         </div>
+        <ExperiencePartners placement="guide-on" heading="Tours and experiences by city" />
       </section>
 
       <section id="cities" className="mt-14 scroll-mt-36 border-t border-ink/10 pt-10">

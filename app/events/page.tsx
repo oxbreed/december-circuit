@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { EventsDirectory } from "../components/events-directory";
+import { SponsorSpot } from "../components/sponsor-spot";
 import { LoadingLines } from "../components/states";
 import { eventSlug, presentEvent } from "../event-view";
 import { events } from "../events";
@@ -71,6 +72,8 @@ export default function EventsPage() {
           <Link href="/list">List an event</Link>
         </p>
       </section>
+
+      <SponsorSpot />
 
       <Suspense
         fallback={
