@@ -137,15 +137,6 @@ export const seedEvents: CircuitEvent[] = [
   },
   {
     region: "Abuja",
-    when: "12 December",
-    summary:
-      "Simi Live. The concert has been put on hold, and ticket refunds were announced.",
-    url: "https://guardian.ng/life/music/simi-puts-abuja-concert-on-hold-changes-lagos-venue/",
-    urlLabel: "News report",
-    sourceId: "simi-live-abuja-guardian",
-  },
-  {
-    region: "Abuja",
     when: "12-13 December",
     summary: "DJ Tunez Blackout at the Cage Club, Drip Mall, Wuse 2.",
     url: "https://www.visitabuja.org/event/dj-tunez-blackout-abuja/",

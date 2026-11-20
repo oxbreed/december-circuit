@@ -189,14 +189,6 @@ export const eventFeedSources: readonly EventFeedSource[] = [
     extractor: "abujakulture-roundup",
   },
   {
-    id: "simi-live-abuja-guardian",
-    label: "News report",
-    url: "https://guardian.ng/life/music/simi-puts-abuja-concert-on-hold-changes-lagos-venue/",
-    regionHint: "Abuja",
-    kind: "probe",
-    extractor: "simi-guardian",
-  },
-  {
     id: "dj-tunez-blackout-visitabuja",
     label: "Event listing",
     url: "https://www.visitabuja.org/event/dj-tunez-blackout-abuja/",

@@ -54,7 +54,6 @@ Merge identity is `region` + `when` + `summary` so same-day Carnival schedule ni
 | `apitainment-seyi-apitix` | https://www.apitix.com/product/seyi-vibez-live-in-abuja/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `victony-bonfire-lagos` | Mainland Block Party, Island BlockParty / The Bonfire Experience | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `abujakulture-december-roundup` | https://www.instagram.com/abujaevents/reel/DfUulaPsbqS/ (@abujakulture, posted 4 Nov 2026) | **Probe / held.** Shared sourceId for seed rows that only appear in this roundup: Cibusa x The Believers (5 Dec), Rise of the Machine (19 Dec), Season Fest (24 Dec), Mr P Live (24 Dec). Added 20 Nov 2026. |
-| `simi-live-abuja-guardian` | The Guardian, Simi puts Abuja concert on hold | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `dj-tunez-blackout-visitabuja` | https://www.visitabuja.org/event/dj-tunez-blackout-abuja/ | **Probe / held.** Seed row only (added 20 Nov 2026). |
 | `cavy-fest-woya` | Woya Local, Cavy Fest / The Cavemen | **Probe / held.** Seed row only (added 20 Nov 2026). |
 
