@@ -113,6 +113,55 @@ export const eventFeedSources: readonly EventFeedSource[] = [
     kind: "probe",
     extractor: "ghana-travel-bse",
   },
+  // Seed rows added 20 Nov 2026. Probe only: ingest fetches and holds, the seed row stays.
+  {
+    id: "future-fest-pulse",
+    label: "News report",
+    url: "https://www.pulse.ng/story/asake-lagos-concert-future-fest-2026-2026111212324356431",
+    regionHint: "Lagos",
+    kind: "probe",
+    extractor: "future-fest-pulse",
+  },
+  {
+    id: "iconiq-fest",
+    label: "Organiser's page",
+    url: "https://www.iconiqfest.com/",
+    regionHint: "Lagos",
+    kind: "probe",
+    extractor: "iconiq-home",
+  },
+  {
+    id: "adekunle-gold-showman-qed",
+    label: "News report",
+    url: "https://www.qed.ng/adekunle-gold-announces-return-of-the-greatest-showman-for-december/",
+    regionHint: "Lagos",
+    kind: "probe",
+    extractor: "adekunle-gold-qed",
+  },
+  {
+    id: "afrofuture-residency",
+    label: "Organiser's page",
+    url: "https://www.afrofuture.com/",
+    regionHint: "Accra",
+    kind: "probe",
+    extractor: "afrofuture-home",
+  },
+  {
+    id: "zaama-disco-dailypost",
+    label: "News report",
+    url: "https://www.dailypost.com.gh/ghanas-2026-detty-december-concerts-festivals-and-public-holidays-confirmed/",
+    regionHint: "Accra",
+    kind: "probe",
+    extractor: "dailypost-ghana",
+  },
+  {
+    id: "bhim-festival",
+    label: "Organiser's page",
+    url: "https://bhimfestival.com/",
+    regionHint: "Accra",
+    kind: "probe",
+    extractor: "bhim-home",
+  },
 ] as const;
 
 export function eventFeedById(id: string) {
