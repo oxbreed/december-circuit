@@ -28,7 +28,7 @@ export function QuickHubs() {
             <li key={hub.href}>
               <Link
                 href={hub.href}
-                className="flex h-full flex-col border border-ink/15 bg-chart px-5 py-6 hover:border-oxide/40"
+                className="motion-lift flex h-full flex-col border border-ink/15 bg-chart px-5 py-6 hover:border-oxide/40"
               >
                 <p className="text-[10px] uppercase tracking-[0.18em] text-lagoon">
                   {hub.kicker}
