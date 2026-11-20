@@ -179,7 +179,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
             </p>
             <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
             <p className="mt-4 font-sans text-sm leading-6 text-ink">
-              <a href="https://www.oxbreedmanagement.com" className={footerLink}>
+              <a href="https://oxbreedstudio.com" className={footerLink}>
                 Powered by Oxbreed Management
               </a>
               .
