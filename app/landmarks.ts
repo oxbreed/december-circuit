@@ -2,6 +2,8 @@ export type FramePhoto = {
   name: string;
   city: string;
   src: string;
+  /** Descriptive alt text. Falls back to "name, city — dirtydecember.info". */
+  alt?: string;
   credit?: string;
   creditUrl?: string;
 };
@@ -34,6 +36,12 @@ export const landmarks: FramePhoto[] = [
     src: "/landmarks/oriade-residency.jpg",
     credit: "Image on the organiser's page. https://www.dmwhq.com/residency",
     creditUrl: "https://www.dmwhq.com/residency",
+  },
+  {
+    name: "Coca-Cola Rhythm Unplugged",
+    city: "Lagos",
+    src: "/landmarks/coca-cola-rhythm-unplugged-2026.jpg",
+    alt: "Coca-Cola Rhythm Unplugged poster featuring Lil Baby on a red and black background, Eko Convention Centre, Lagos",
   },
   {
     name: "Carnival Calabar",

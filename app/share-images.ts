@@ -6,7 +6,12 @@ import { defaultShareImage } from "./site";
 export type ShareImage = { url: string; alt: string; width: number; height: number };
 
 function fromLandmark(shot: FramePhoto): ShareImage {
-  return { url: shot.src, alt: `${shot.name}, ${shot.city} — dirtydecember.info`, width: 960, height: 540 };
+  return {
+    url: shot.src,
+    alt: shot.alt ?? `${shot.name}, ${shot.city} — dirtydecember.info`,
+    width: 960,
+    height: 540,
+  };
 }
 
 export function shareImageForCity(city: string): ShareImage {
