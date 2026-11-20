@@ -8,7 +8,6 @@ import { homeHeroSlides } from "../home-hero-slides";
 import { listOutboundClicks } from "../outbound-clicks";
 import { placesOnFile } from "../place-catalog";
 import { listUnpublishedSubmissions } from "../reviews";
-import { tripOAuthProviders } from "../trip-oauth";
 import { eventRowsForAdmin, placeRowsForAdmin } from "./admin-directory-data";
 import { AdminEventList, AdminPlaceList } from "./admin-filter-list";
 
@@ -34,7 +33,6 @@ function Status({ on, label, off }: { on: boolean; label: string; off: string })
 
 export function AdminOverviewSection() {
   const auth = directorySignIn();
-  const oauth = tripOAuthProviders();
   const features = homeFeaturesFrom(events);
   const slides = homeHeroSlides(events);
   const posterSlides = slides.filter((slide) => slide.kind === "poster");
@@ -92,16 +90,6 @@ export function AdminOverviewSection() {
             on={auth.connected}
             label="Supabase Auth"
             off="not connected (project URL or anon key missing)"
-          />
-          <Status
-            on={oauth.google.configured}
-            label="Sign in with Google"
-            off="not configured (set a Google client ID on the server to show the button)"
-          />
-          <Status
-            on={oauth.apple.configured}
-            label="Sign in with Apple"
-            off="not configured (set an Apple Services ID on the server to show the button)"
           />
           <li>
             Admin allowlist: {auth.adminEmails.length} address

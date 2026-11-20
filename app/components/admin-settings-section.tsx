@@ -1,7 +1,6 @@
 import { WpProbeControls } from "./wp-probe-controls";
 import { directorySignIn } from "../directory-auth";
 import { providerReports } from "../providers";
-import { tripOAuthProviders } from "../trip-oauth";
 import { getWpProbeSettings } from "../wp-probes";
 
 function flagOn(raw: string | undefined, defaultOn: boolean) {
@@ -18,7 +17,6 @@ export async function AdminSettingsSection() {
   const pageviewsOn = flagOn(process.env.SITE_PAGEVIEWS_ENABLED, true);
   const gaId = (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "").trim();
   const auth = directorySignIn();
-  const oauth = tripOAuthProviders();
 
   return (
     <section className="min-w-0">
@@ -39,23 +37,12 @@ export async function AdminSettingsSection() {
             </span>
           </li>
           <li>
-            Sign in with Google:{" "}
-            <span className={oauth.google.configured ? "text-lagoon" : "text-muted"}>
-              {oauth.google.configured ? "button is shown" : "not configured"}
-            </span>
-          </li>
-          <li>
-            Sign in with Apple:{" "}
-            <span className={oauth.apple.configured ? "text-lagoon" : "text-muted"}>
-              {oauth.apple.configured ? "button is shown" : "not configured"}
-            </span>
-          </li>
-          <li>
             Admin allowlist: {auth.adminEmails.join(", ")}
           </li>
           <li className="text-muted">
-            Set provider secrets in the Supabase Auth dashboard, then set the client IDs and
-            ADMIN_EMAILS on Vercel. The full steps are in docs/auth-admin-setup.md.
+            Sign-in uses an email link through Supabase Auth. The steps are in
+            docs/auth-admin-setup.md. Set ADMIN_EMAILS on Vercel if you need more than the
+            default address.
           </li>
         </ul>
       </div>

@@ -64,8 +64,6 @@ From `.env.example` on `main` (do not commit values):
 
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (aliases: `SUPABASE_URL`, `SUPABASE_ANON_KEY`)
 - `TRIP_DATABASE_URL` (optional; otherwise follows the Supabase URL)
-- `GOOGLE_OAUTH_CLIENT_ID` / `GOOGLE_CLIENT_ID`
-- `APPLE_OAUTH_CLIENT_ID` / `APPLE_SERVICES_ID` / `APPLE_CLIENT_ID`
 - `ADMIN_EMAILS` (comma-separated; `ADMIN_EMAIL` is still read as a single address). If neither is set, `oxbreedmanagement@gmail.com` is the default allowlist.
 - `SUPABASE_SERVICE_ROLE_KEY` (server only)
 - `WP_PROBE_INGEST_SECRET` (server only)
@@ -87,7 +85,7 @@ Added on the `revenue-affiliates` branch / PR #1 (all optional):
 
 Redeploy after adding affiliate IDs (they are read at build/runtime as implemented in that branch).
 
-Google and Apple sign-in, plus the /admin console, are documented in `docs/auth-admin-setup.md`.
+Email sign-in and the /admin console are documented in `docs/auth-admin-setup.md`.
 
 ## Next steps
 

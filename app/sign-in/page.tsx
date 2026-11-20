@@ -2,15 +2,13 @@ import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { signOut } from "../auth/actions";
 import { EmailSignIn } from "../components/email-sign-in";
-import { OAuthSignIn } from "../components/oauth-sign-in";
 import { directorySignIn, isAdminEmail } from "../directory-auth";
-import { signInOAuthFlags } from "./sign-in-providers";
 import { pageMetadata } from "../site";
 import { getDirectoryUser } from "../supabase/session";
 
 export const metadata = pageMetadata({
   title: "Sign in",
-  description: "Sign in to dirtydecember.info. My trip still keeps events and places in this browser.",
+  description: "Sign in to dirtydecember.info with an email link. My trip still keeps events and places in this browser.",
   path: "/sign-in",
 });
 
@@ -36,23 +34,22 @@ function SignInFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function UnsignedIn({ googleConfigured, appleConfigured }: { googleConfigured: boolean; appleConfigured: boolean }) {
+function UnsignedIn() {
   return (
     <>
       <p className="mt-6 max-w-xl text-base leading-7 text-ink">
-        A project URL is set, and no session is open on this request.
+        Enter your email and we will send a sign-in link. Use that link to open
+        a session on this site, including the admin console if your address is
+        allowlisted.
       </p>
       <EmailSignIn />
-      <OAuthSignIn googleConfigured={googleConfigured} appleConfigured={appleConfigured} />
     </>
   );
 }
 
 async function SignInSession() {
-  const auth = directorySignIn();
   const user = await getDirectoryUser();
   const isAdmin = isAdminEmail(user?.email);
-  const oauth = signInOAuthFlags();
 
   return (
     <SignInFrame>
@@ -77,10 +74,7 @@ async function SignInSession() {
           ) : null}
         </>
       ) : (
-        <UnsignedIn
-          googleConfigured={oauth.googleConfigured}
-          appleConfigured={oauth.appleConfigured}
-        />
+        <UnsignedIn />
       )}
     </SignInFrame>
   );
@@ -101,7 +95,7 @@ export default function SignInPage() {
     <Suspense
       fallback={
         <SignInFrame>
-          <UnsignedIn {...signInOAuthFlags()} />
+          <UnsignedIn />
         </SignInFrame>
       }
     >
