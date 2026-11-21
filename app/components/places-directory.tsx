@@ -13,7 +13,7 @@ import { useRecords } from "./use-records";
 /** Hub cities shown first in the city browse row. */
 const HUB_CITIES = ["Lagos", "Accra", "Calabar", "Abuja", "Kumasi"] as const;
 
-type ShortcutId = "lagos" | "accra" | "nightlife" | "stay";
+type ShortcutId = "lagos" | "accra" | "nightlife" | "stay" | "leisure";
 
 const SHORTCUTS: {
   id: ShortcutId;
@@ -32,6 +32,11 @@ const SHORTCUTS: {
     id: "stay",
     label: "Hotels & short-stay",
     categories: ["Hotels", "Short-stay"],
+  },
+  {
+    id: "leisure",
+    label: "Beaches, boats & fun",
+    categories: ["Beach resorts", "Beaches", "Boat clubs", "Cinemas", "Recreation centres"],
   },
 ];
 

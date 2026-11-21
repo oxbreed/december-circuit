@@ -8,6 +8,11 @@ export const VISITOR_CATEGORY_LABELS = [
   "Short-stay",
   "Car rental",
   "Clubs",
+  "Cinemas",
+  "Beaches",
+  "Beach resorts",
+  "Boat clubs",
+  "Recreation centres",
 ] as const;
 
 export type VisitorCategoryEntry = {

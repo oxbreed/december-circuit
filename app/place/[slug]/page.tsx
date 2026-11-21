@@ -149,7 +149,9 @@ export default async function PlacePage({
         </Link>
       </div>
 
-      {place.category === "Hotels" || place.category === "Short-stay" ? (
+      {place.category === "Hotels" ||
+      place.category === "Short-stay" ||
+      place.category === "Beach resorts" ? (
         <ListedStayPartners
           name={place.name}
           city={place.city}
