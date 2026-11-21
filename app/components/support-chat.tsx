@@ -166,7 +166,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
   if (hiddenPath(pathname)) return null;
 
   return (
-    <div className={`support-chat pointer-events-none fixed inset-x-0 z-50 flex justify-end px-3 lg:inset-x-auto lg:right-5 lg:px-0${pathname === "/" ? " support-chat-home" : ""}`}>
+    <div className="support-chat pointer-events-none fixed inset-x-0 z-50 flex justify-end px-3 lg:inset-x-auto lg:right-5 lg:px-0">
       <div className="pointer-events-auto flex w-full max-w-[22rem] flex-col items-end gap-2">
         {open ? (
           <section

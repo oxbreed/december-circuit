@@ -288,13 +288,13 @@ body::before {
     overscroll-behavior: contain;
   }
 
-  .mobile-scroll-home {
+  .mobile-scroll:has(> main[data-homepage]) {
     flex: 1;
     min-height: 0;
     height: auto;
   }
 
-  .mobile-dock-home {
+  body:has(main[data-homepage]) .mobile-dock {
     position: relative;
     flex: none;
   }
@@ -518,21 +518,21 @@ body::before {
 }
 
 @media (max-width: 1023px) {
-  .support-chat-home {
+  body:has(main[data-homepage]) .support-chat {
     position: relative;
     border-top: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
     background: var(--color-paper);
     bottom: auto;
   }
 
-  .support-chat-home .support-chat-panel {
+  body:has(main[data-homepage]) .support-chat .support-chat-panel {
     position: absolute;
     bottom: calc(100% + 0.5rem);
     width: min(22rem, calc(100% - 1.5rem));
     max-height: min(32rem, calc(100svh - var(--clock-strip, 3rem) - var(--mobile-bar, 10rem) - 1rem));
   }
 
-  .support-chat-home button[aria-haspopup="dialog"] {
+  body:has(main[data-homepage]) .support-chat button[aria-haspopup="dialog"] {
     border: 0;
     box-shadow: none;
   }

@@ -173,7 +173,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
           <NewsTicker />
         </div>
       </header>
-      <div className={pathname === "/" ? "mobile-scroll mobile-scroll-home lg:contents" : "mobile-scroll lg:contents"}>
+      <div className="mobile-scroll lg:contents">
       {children}
       <footer className="border-t border-ink/15 pb-32 lg:pb-0">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-12 md:px-8 lg:py-16">
@@ -274,7 +274,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
       </div>
       <div
         ref={barRef}
-        className={`fixed inset-x-0 bottom-0 z-40 max-w-full lg:contents${pathname === "/" ? " mobile-dock-home" : ""}`}
+        className="mobile-dock fixed inset-x-0 bottom-0 z-40 max-w-full lg:contents"
       >
         {support}
         <div className="overflow-x-clip border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden">
