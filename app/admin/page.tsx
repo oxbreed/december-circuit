@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
-import {
-  AdminOutboundClicksSection,
-  AdminEventsSection,
-  AdminFeaturedSection,
-  AdminGetFeaturedSection,
-  AdminOverviewSection,
-  AdminPlacesSection,
-} from "../components/admin-directory-sections";
+import { AdminHomeSection } from "../components/admin-home-section";
+import { AdminApprovalsSection } from "../components/admin-approvals-section";
+import { AdminContentSection } from "../components/admin-content-section";
+import { AdminAffiliatesSection } from "../components/admin-affiliates-section";
+import { AdminAuditSection } from "../components/admin-audit-section";
+import { AdminSearchSection } from "../components/admin-search-section";
 import {
   AdminSettingsSection,
   AdminSettingsSectionFallback,
@@ -234,40 +232,56 @@ async function AdminSession({
 
   const params = await searchParams;
   const section = parseAdminSection(params.section);
+  let pendingCount = 0;
+  try {
+    const { approvalCounts } = await import("../admin-approvals");
+    const counted = await approvalCounts();
+    if (counted.reason === "ok") pendingCount = counted.counts.pending;
+  } catch (error) {
+    console.error("Admin pending badge", error);
+  }
 
   return (
-    <AdminShell email={user?.email ?? auth.adminEmail ?? ""} section={section}>
-      {section === "overview" ? safeSection("Overview", () => AdminOverviewSection()) : null}
+    <AdminShell
+      email={user?.email ?? auth.adminEmail ?? ""}
+      section={section}
+      pendingCount={pendingCount}
+    >
+      {section === "overview" ? safeSection("Overview", () => AdminHomeSection()) : null}
 
-      {section === "events" ? safeSection("Events", () => AdminEventsSection()) : null}
-
-      {section === "featured" ? safeSection("Featured", () => AdminFeaturedSection()) : null}
-
-      {section === "places" ? safeSection("Places", () => AdminPlacesSection()) : null}
-
-      {section === "get-featured" ? (
+      {section === "approvals" ? (
         <Suspense
           fallback={
             <section className="min-w-0">
-              <h2 className="font-display text-3xl leading-none tracking-tight">Get featured</h2>
-              <p className="mt-3 text-sm leading-7 text-muted">Loading placements…</p>
+              <h2 className="font-display text-3xl leading-none tracking-tight">Approvals</h2>
+              <p className="mt-3 text-sm leading-7 text-muted">Loading approvals…</p>
             </section>
           }
         >
-          {safeSection("Get featured", () => AdminGetFeaturedSection())}
+          {safeSection("Approvals", () =>
+            AdminApprovalsSection({ tab: params.tab, kind: params.kind, q: params.q }),
+          )}
         </Suspense>
       ) : null}
 
-      {section === "clicks" ? (
+      {section === "events" ? safeSection("Events", () => AdminContentSection({ kind: "event" })) : null}
+
+      {section === "places" ? safeSection("Places", () => AdminContentSection({ kind: "place" })) : null}
+
+      {section === "featured" ? safeSection("Featured", () => AdminContentSection({ kind: "featured" })) : null}
+
+      {section === "landmarks" ? safeSection("Landmarks", () => AdminContentSection({ kind: "landmark" })) : null}
+
+      {section === "affiliates" ? (
         <Suspense
           fallback={
             <section className="min-w-0">
-              <h2 className="font-display text-3xl leading-none tracking-tight">Outbound clicks</h2>
-              <p className="mt-3 text-sm leading-7 text-muted">Loading clicks…</p>
+              <h2 className="font-display text-3xl leading-none tracking-tight">Affiliates</h2>
+              <p className="mt-3 text-sm leading-7 text-muted">Loading affiliates…</p>
             </section>
           }
         >
-          {safeSection("Outbound clicks", () => AdminOutboundClicksSection())}
+          {safeSection("Affiliates", () => AdminAffiliatesSection())}
         </Suspense>
       ) : null}
 
@@ -279,18 +293,9 @@ async function AdminSession({
         </Suspense>
       ) : null}
 
-      {section === "submissions" ? (
-        <Suspense
-          fallback={
-            <section className="min-w-0">
-              <h2 className="font-display text-3xl leading-none tracking-tight">Submissions</h2>
-              <p className="mt-3 text-sm leading-7 text-muted">Loading submissions…</p>
-            </section>
-          }
-        >
-          {safeSection("Submissions", () => SubmissionsPanel())}
-        </Suspense>
-      ) : null}
+      {section === "audit" ? safeSection("Audit log", () => AdminAuditSection()) : null}
+
+      {section === "search" ? safeSection("Search", () => AdminSearchSection({ q: params.q })) : null}
 
       {section === "reviews" ? (
         <Suspense

@@ -18,6 +18,7 @@ import {
   placeDescription,
   placesOnFile,
 } from "../../place-catalog";
+import { livePlaceBySlug, livePlacesOnFile } from "../../live-directory";
 import { pageMetadata } from "../../site";
 import { shareImageForCity } from "../../share-images";
 
@@ -39,7 +40,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const place = placeBySlug(slug);
+  const place = (await livePlaceBySlug(slug)) ?? placeBySlug(slug);
   if (!place) return { title: "Place" };
   return pageMetadata({
     title: `${place.name} — ${place.city}`,
@@ -55,13 +56,13 @@ export default async function PlacePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const place = placeBySlug(slug);
+  const place = (await livePlaceBySlug(slug)) ?? placeBySlug(slug);
   if (!place) notFound();
 
   const city = cityRecordFor(place.city, place.country);
   const country = countriesOnFile().find((item) => item.country === place.country);
   const pin = pinForName(place.city, place.name);
-  const related = placesOnFile()
+  const related = (await livePlacesOnFile())
     .filter(
       (item) =>
         item.slug !== place.slug &&

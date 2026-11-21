@@ -2,6 +2,7 @@ import Link from "next/link";
 import { disclaimer } from "../brand";
 import { FeaturedEnquiryLink } from "../components/tracked-link";
 import { pageMetadata } from "../site";
+import { livePlacements } from "../live-directory";
 
 export const metadata = pageMetadata({
   title: "Get featured — organisers & businesses",
@@ -65,9 +66,10 @@ const offers = [
   },
 ] as const;
 
-export default function GetFeaturedPage() {
+export default async function GetFeaturedPage() {
   const paystack = paymentLink(process.env.PAYSTACK_PAYMENT_URL, ["paystack.com", "paystack.shop"]);
   const flutterwave = paymentLink(process.env.FLUTTERWAVE_PAYMENT_URL, ["flutterwave.com"]);
+  const placements = await livePlacements();
 
   return (
     <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-16 pt-16 sm:px-6 md:px-8 md:pt-32">
@@ -160,7 +162,42 @@ export default function GetFeaturedPage() {
         </section>
       ) : null}
 
+      <PublishedPlacements placements={placements} />
+
       <p className="mt-12 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
     </main>
+  );
+}
+
+
+function PublishedPlacements({
+  placements,
+}: {
+  placements: { slug: string; name: string; url: string; offer: string | null; city: string | null }[];
+}) {
+  if (placements.length === 0) return null;
+  return (
+    <section className="mt-12 border-t border-ink/10 pt-8">
+      <h2 className="font-display text-3xl leading-none tracking-tight sm:text-4xl">On the directory now</h2>
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+        Placements that have been checked and published. Each link opens the business or organiser page.
+      </p>
+      <ul className="mt-6 grid gap-3">
+        {placements.map((row) => (
+          <li key={row.slug} className="border border-ink/15 bg-chart px-5 py-4">
+            <p className="font-display text-2xl leading-tight tracking-tight">{row.name}</p>
+            {row.city || row.offer ? (
+              <p className="mt-1 text-sm leading-7 text-muted">{[row.city, row.offer].filter(Boolean).join(". ")}</p>
+            ) : null}
+            <a
+              href={row.url}
+              className="mt-2 inline-flex text-sm underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              Organiser or business page
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

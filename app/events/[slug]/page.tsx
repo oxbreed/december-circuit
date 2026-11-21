@@ -13,6 +13,7 @@ import { calendarLinksFor } from "../../event-calendar";
 import { eventDateSpan, fullEventDateLabel } from "../../event-dates";
 import { checkedOn, eventBySlug, eventSlug, presentEvent } from "../../event-view";
 import { events } from "../../events";
+import { liveEventBySlug } from "../../live-directory";
 import { nearbyStaysFor } from "../../nearby-stays";
 import { eventTripId } from "../../trip";
 import { breadcrumbJsonLd, eventJsonLd } from "../../jsonld";
@@ -30,7 +31,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const resolved = eventBySlug(slug);
+  const resolved = (await liveEventBySlug(slug)) ?? eventBySlug(slug);
   if (!resolved) return { title: "Event" };
   const { event } = resolved;
   const view = presentEvent(event);
@@ -49,7 +50,7 @@ export default async function EventPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const resolved = eventBySlug(slug);
+  const resolved = (await liveEventBySlug(slug)) ?? eventBySlug(slug);
   if (!resolved) notFound();
   if (!resolved.canonical) {
     permanentRedirect(`/events/${eventSlug(resolved.event)}`);

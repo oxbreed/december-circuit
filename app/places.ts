@@ -12,6 +12,8 @@ export type Place = {
   source?: string;
   /** Day the area and detail were last checked, e.g. "20 Nov 2026". */
   checked?: string;
+  /** Optional stable slug for CMS overlays. Seed rows omit this and use placeSlug(). */
+  slug?: string;
 };
 
 export const places: Place[] = [

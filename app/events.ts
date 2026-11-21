@@ -10,6 +10,8 @@ export type CircuitEvent = {
   ticketsUrl?: string;
   /** Tier-1 feed id from event-feeds.ts when the row was confirmed by ingest. */
   sourceId?: string;
+  /** Optional stable slug for CMS overlays. Seed rows omit this and use eventSlug(). */
+  slug?: string;
 };
 
 /**

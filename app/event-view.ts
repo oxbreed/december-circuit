@@ -34,8 +34,9 @@ export function legacyEventSlug(
  * Never invents events — only routes existing sourced rows.
  */
 export function eventSlug(
-  event: Pick<CircuitEvent, "region" | "when" | "summary">,
+  event: Pick<CircuitEvent, "region" | "when" | "summary" | "slug">,
 ) {
+  if (event.slug && event.slug.trim()) return slugToken(event.slug);
   const region = slugToken(event.region);
   const whenPart = whenSlugWithYear(event.when);
   const title = slugToken(eventNameAndVenue(event.summary).name);
@@ -44,10 +45,10 @@ export function eventSlug(
 }
 
 /** Resolve a public slug to a sourced event (current or legacy). */
-export function eventBySlug(slug: string) {
-  const current = events.find((item) => eventSlug(item) === slug);
+export function eventBySlug(slug: string, list: readonly CircuitEvent[] = events) {
+  const current = list.find((item) => eventSlug(item) === slug);
   if (current) return { event: current, canonical: true as const };
-  const legacy = events.find((item) => legacyEventSlug(item) === slug);
+  const legacy = list.find((item) => legacyEventSlug(item) === slug);
   if (legacy) return { event: legacy, canonical: false as const };
   return null;
 }

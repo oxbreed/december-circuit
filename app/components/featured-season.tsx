@@ -1,8 +1,8 @@
-import { homeFeatures } from "../home-featured";
+import { liveHomeFeatures } from "../live-directory";
 import { FeaturedSeasonGrid } from "./featured-season-grid";
 
-export function FeaturedSeason() {
-  const featured = homeFeatures();
+export async function FeaturedSeason() {
+  const featured = await liveHomeFeatures();
 
   return (
     <section id="featured" className="scroll-mt-36 border-b border-ink/10">
