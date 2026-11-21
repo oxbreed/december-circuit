@@ -64,9 +64,25 @@ function recordProbe(request: NextRequest, payload: Record<string, unknown>) {
   );
 }
 
+function isSessionPath(pathname: string) {
+  return (
+    pathname === "/admin" ||
+    pathname.startsWith("/admin/") ||
+    pathname === "/sign-in" ||
+    pathname.startsWith("/auth/")
+  );
+}
+
+function withPrivateCache(response: NextResponse, request: NextRequest) {
+  if (isSessionPath(request.nextUrl.pathname)) {
+    response.headers.set("Cache-Control", "no-store");
+  }
+  return response;
+}
+
 async function refreshDirectorySession(request: NextRequest) {
   const creds = directoryCredentials();
-  if (!creds) return NextResponse.next();
+  if (!creds) return withPrivateCache(NextResponse.next(), request);
 
   let response = NextResponse.next({ request });
   try {
@@ -90,7 +106,7 @@ async function refreshDirectorySession(request: NextRequest) {
   } catch {
     // Never block /admin or /sign-in on a session refresh failure.
   }
-  return response;
+  return withPrivateCache(response, request);
 }
 
 function isPreviewPath(pathname: string) {
