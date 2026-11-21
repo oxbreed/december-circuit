@@ -53,8 +53,8 @@ export default function TermsPage() {
           Acceptable use
         </h2>
         <p>
-          Use the site for that directory. Send a listing, a review, or an
-          enquiry that you mean. Do not send unlawful material, a picture you
+          Use the site for that directory. Send a listing, a review, a support
+          message, or an enquiry that you mean. Do not send unlawful material, a picture you
           have no right to send, or another person’s contact details without a
           proper reason. Do not present an unpublished submission as a listing
           that is already on the public site. Do not interfere with the site or

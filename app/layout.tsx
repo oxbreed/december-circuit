@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { JsonLd } from "./components/json-ld";
 import { SiteAnalytics } from "./components/site-analytics";
@@ -102,7 +103,9 @@ export default function RootLayout({
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={siteJsonLd()} />
         <SiteChrome>{children}</SiteChrome>
-        <SupportChatSlot />
+        <Suspense fallback={null}>
+          <SupportChatSlot />
+        </Suspense>
         <SiteAnalytics gaMeasurementId={gaMeasurementId()} />
       </body>
     </html>

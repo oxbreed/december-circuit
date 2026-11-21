@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { approvalCounts, listApprovals, approvalTitle } from "../admin-approvals";
+import { listSupportRequests } from "../support/requests";
 import { listAdminAudit } from "../admin-audit";
 import { eventRowsForAdmin, placeRowsForAdmin } from "./admin-directory-data";
 import { AdminOverviewSection } from "./admin-directory-sections";
@@ -7,10 +8,11 @@ import { hrefForSection } from "../admin-routes";
 import { formatLondonStamp } from "../admin-format";
 
 export async function AdminHomeSection() {
-  const [counts, pending, audit] = await Promise.all([
+  const [counts, pending, audit, support] = await Promise.all([
     approvalCounts(),
     listApprovals({ tab: "pending" }),
     listAdminAudit(6),
+    listSupportRequests({ tab: "open" }),
   ]);
   let eventCount = 0;
   let placeCount = 0;
@@ -26,13 +28,18 @@ export async function AdminHomeSection() {
       <section className="min-w-0" data-admin-panel="overview">
         <h2 className="font-display text-3xl leading-none tracking-tight">Overview</h2>
         <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
-          A snapshot of the directory and the work waiting in Approvals.
+          A snapshot of the directory and the work waiting in Approvals and Support.
         </p>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <HomeStat
             label="Pending approvals"
             value={String(counts.counts.pending)}
             href={hrefForSection("approvals")}
+          />
+          <HomeStat
+            label="Open support"
+            value={String(support.counts.open)}
+            href={hrefForSection("support")}
           />
           <HomeStat label="Events on file" value={String(eventCount)} href={hrefForSection("events")} />
           <HomeStat label="Places on file" value={String(placeCount)} href={hrefForSection("places")} />
@@ -47,6 +54,7 @@ export async function AdminHomeSection() {
         <ul className="mt-3 flex flex-wrap gap-2">
           {[
             ["approvals", "Review approvals"],
+            ["support", "Open support inbox"],
             ["events", "Add or edit an event"],
             ["places", "Add or edit a place"],
             ["affiliates", "Check partner clicks"],

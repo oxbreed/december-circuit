@@ -179,7 +179,7 @@ export function matchGroundedReply(question: string) {
     {
       keys: ["contact", "email", "enquire", "inquiry"],
       reply:
-        "For visitor questions, write hello@dirtydecember.info. For partnerships and placements, use partners@dirtydecember.info. Privacy, terms, and the EULA are in the footer.",
+        "You can leave a message through Ask support, or write hello@dirtydecember.info for visitor questions. For partnerships and placements, use partners@dirtydecember.info. Privacy, terms, and the EULA are in the footer.",
     },
   ];
 

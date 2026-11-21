@@ -3,6 +3,7 @@ import {
   supportSystemPrompt,
 } from "../../support/grounding";
 import { matchGroundedReply } from "../../support/match";
+import { clientAddress, rateLimit } from "../../support/rate-limit";
 
 const MAX_QUESTION = 500;
 const MAX_REPLY_TOKENS = 350;
@@ -24,8 +25,8 @@ function readKey(name: "OPENAI_API_KEY" | "ANTHROPIC_API_KEY") {
   return value && value.length > 0 ? value : null;
 }
 
-function json(body: unknown, status = 200) {
-  return Response.json(body, { status });
+function json(body: unknown, status = 200, extra?: HeadersInit) {
+  return Response.json(body, { status, headers: extra });
 }
 
 function cleanQuestion(value: unknown) {
@@ -155,6 +156,19 @@ export async function POST(request: Request) {
   }
 
   const history = cleanHistory(body.history);
+
+  const chatLimit = rateLimit(`support-chat:ip:${clientAddress(request)}`, 20, 10 * 60 * 1000);
+  if (!chatLimit.ok) {
+    return json(
+      {
+        error:
+          "A few questions have already been asked from this side. Try again in a little while, or write hello@dirtydecember.info.",
+      },
+      429,
+      { "Retry-After": String(chatLimit.retryAfterSec) },
+    );
+  }
+
   const openaiKey = readKey("OPENAI_API_KEY");
   const anthropicKey = readKey("ANTHROPIC_API_KEY");
 

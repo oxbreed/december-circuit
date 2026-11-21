@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { isSupportStatus } from "./support/topics";
+import { setSupportRequestStatus } from "./support/requests";
 import { decideApprovals } from "./admin-approvals";
 import {
   saveDirectoryEntry,
@@ -153,5 +155,20 @@ export async function setContentOrder(
   const result = await setDirectorySortOrder(id, sort_order);
   if (!result.ok) return { status: "error", message: result.message };
   revalidatePublic();
+  return { status: "ok", message: result.message };
+}
+
+export async function setSupportRequestStatusAction(
+  _prev: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  const id = String(formData.get("id") ?? "").trim();
+  const statusRaw = String(formData.get("status") ?? "").trim();
+  if (!id || !isSupportStatus(statusRaw)) {
+    return { status: "error", message: "A request and a status are required." };
+  }
+  const result = await setSupportRequestStatus({ id, status: statusRaw });
+  if (!result.ok) return { status: "error", message: result.message };
+  revalidatePath("/admin");
   return { status: "ok", message: result.message };
 }

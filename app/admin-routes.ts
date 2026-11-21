@@ -1,6 +1,7 @@
 export type AdminSection =
   | "overview"
   | "approvals"
+  | "support"
   | "events"
   | "places"
   | "featured"
