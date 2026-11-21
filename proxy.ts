@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
 import type { NextFetchEvent, NextRequest } from "next/server";
+import { previewRoutesAllowed } from "./app/preview/access";
 import { directoryCredentials } from "./app/supabase/credentials";
 
 /**
@@ -92,8 +93,26 @@ async function refreshDirectorySession(request: NextRequest) {
   return response;
 }
 
+function isPreviewPath(pathname: string) {
+  return pathname === "/preview" || pathname.startsWith("/preview/");
+}
+
+function hiddenPreviewResponse() {
+  return new NextResponse(null, {
+    status: 404,
+    headers: {
+      "Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex, nofollow",
+    },
+  });
+}
+
 export async function proxy(request: NextRequest, event: NextFetchEvent) {
   const pathname = request.nextUrl.pathname;
+
+  if (isPreviewPath(pathname) && !previewRoutesAllowed()) {
+    return hiddenPreviewResponse();
+  }
 
   if (!isWordPressProbe(pathname)) {
     return refreshDirectorySession(request);
@@ -135,6 +154,8 @@ export const config = {
     "/admin/:path*",
     "/sign-in",
     "/auth/:path*",
+    "/preview",
+    "/preview/:path*",
     "/wp-admin",
     "/wp-admin/:path*",
     "/wp-includes/:path*",

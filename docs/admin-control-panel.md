@@ -27,7 +27,10 @@ After it is applied, the table still uses service-role access from the Next.js s
 
 ## Visual QA
 
-Fixture previews (noindex, no session):
+Fixture previews (noindex, no session) work in local development and on Vercel
+preview deployments. They return 404 on production. To see them with `next start`
+locally, set `ALLOW_PREVIEW_ROUTES=1`.
+
 
 - `/preview/admin-control-panel` (Approvals)
 - `/preview/admin-control-panel/overview`

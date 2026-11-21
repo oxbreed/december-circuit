@@ -12,8 +12,8 @@ DirtyDecember monitors visits and performance with **Vercel Web Analytics**, **V
 | `POST /api/analytics/web-vital` | Best-effort LCP / INP / CLS samples from the `web-vitals` library. Quiet no-op if table/key missing. |
 | Client beacons in `SiteAnalytics` | Page views + Web Vitals on App Router navigations. Skips `/admin`, `/api/*`, `/auth/*`. |
 | `/admin` → **Dashboard / Insights** | First-party insights: 24h / 7d / 30d / 90d range with previous-period deltas, KPI cards, time series of page views and outbound clicks, ranked lists, Core Web Vitals p75, and a recent activity feed. Each widget fails on its own. |
-| `/preview/admin-dashboard` | Fixture preview for visual QA of the current dashboard (noindex). |
-| `/preview/analytics-overview` | Fixture preview of the earlier Overview Report card (noindex). |
+| `/preview/admin-dashboard` | Fixture preview for visual QA of the current dashboard (noindex). Local and Vercel preview only. 404 on production. |
+| `/preview/analytics-overview` | Fixture preview of the earlier Overview Report card (noindex). Local and Vercel preview only. 404 on production. |
 | Optional `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Loads gtag only when set. **Off by default.** |
 
 ## What Ox sees on `/admin` (signed in)

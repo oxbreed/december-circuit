@@ -11,6 +11,8 @@ import { absoluteUrl } from "./site";
 
 const checked = new Date("2026-10-26");
 
+// Fixture /preview pages are not listed here. They also return 404 in production.
+
 type Entry = {
   path: string;
   changeFrequency?: MetadataRoute.Sitemap[number]["changeFrequency"];

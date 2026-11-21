@@ -14,6 +14,7 @@ export default function robots(): MetadataRoute.Robots {
           // First-party affiliate redirects (302 to partner sites).
           "/go/",
           "/admin",
+          "/preview",
           "/auth/",
           "/wp-admin",
           "/wp-login.php",
