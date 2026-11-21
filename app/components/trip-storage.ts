@@ -22,7 +22,7 @@ function isTripItem(value: unknown): value is TripItem {
   );
 }
 
-function readItems(): TripItem[] {
+export function readTripItems(): TripItem[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(KEY);
@@ -36,7 +36,7 @@ function readItems(): TripItem[] {
 }
 
 function snapshot() {
-  return JSON.stringify(readItems());
+  return JSON.stringify(readTripItems());
 }
 
 function write(items: TripItem[]) {
@@ -63,7 +63,7 @@ export function useTripItems() {
 }
 
 export function toggleTrip(item: TripItem) {
-  const items = readItems();
+  const items = readTripItems();
   const index = items.findIndex((row) => row.kind === item.kind && row.id === item.id);
   if (index === -1) items.push(item);
   else items.splice(index, 1);
@@ -71,7 +71,7 @@ export function toggleTrip(item: TripItem) {
 }
 
 export function removeTrip(item: TripItem) {
-  write(readItems().filter((row) => !(row.kind === item.kind && row.id === item.id)));
+  write(readTripItems().filter((row) => !(row.kind === item.kind && row.id === item.id)));
 }
 
 export function replaceTripItems(items: TripItem[]) {

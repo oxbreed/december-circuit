@@ -14,13 +14,14 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps) {
   const { token } = await params;
   const trip = await loadSharedTripByToken(token);
-  return pageMetadata({
+  return { ...pageMetadata({
     title: trip ? trip.title : "Shared trip",
     description: trip
       ? `Read-only group schedule on dirtydecember.info — ${trip.items.length} saved items on file.`
       : "Shared trip link on dirtydecember.info.",
-    path: `/trip/share/${token}`,
-  });
+    path: "/trip",
+    robots: { index: false, follow: false },
+  }), referrer: "no-referrer" as const };
 }
 
 export default async function SharedTripPage({ params }: PageProps) {
