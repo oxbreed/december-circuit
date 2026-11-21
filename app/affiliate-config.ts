@@ -2,17 +2,22 @@ import "server-only";
 import { partners, type GoQuery, type PartnerSlug } from "./affiliate-partners";
 
 /**
- * Server-only partner destinations. Affiliate IDs come from env vars only.
- * With no ID set, the redirect opens the partner's normal public page and the
+ * Server-only partner destinations. Affiliate IDs come from env vars, with
+ * in-code defaults only for Trip.com (public deep-link params). With no ID
+ * and no default, the redirect opens the partner's normal public page and the
  * click is logged as not earning — the site never claims a commission it is
  * not set up to receive.
  *
  * Env vars (all optional, names only in .env.example):
- * - TRIPCOM_ALLIANCE_ID + TRIPCOM_SID — Trip.com Affiliate deep-link params
+ * - TRIPCOM_ALLIANCE_ID + TRIPCOM_SID — override the Trip.com defaults below
  * - AGODA_CID — Agoda Partners site id
  * - BOOKING_AID — Booking.com affiliate id
  * - VIATOR_PID + VIATOR_MCID — Viator Partner Program ids
  */
+
+/** Public Trip.com params for the Oxbreed Management Ltd site. Env vars override. */
+const TRIPCOM_ALLIANCE_DEFAULT = "11268503";
+const TRIPCOM_SID_DEFAULT = "335386234";
 
 function env(name: string) {
   const value = process.env[name]?.trim();
@@ -39,8 +44,8 @@ function tripCom(base: string, query: GoQuery, keyword: boolean): Built {
   const url = new URL(base);
   const text = searchText(query);
   if (keyword && text) url.searchParams.set("keyword", text);
-  const alliance = env("TRIPCOM_ALLIANCE_ID");
-  const sid = env("TRIPCOM_SID");
+  const alliance = env("TRIPCOM_ALLIANCE_ID") ?? TRIPCOM_ALLIANCE_DEFAULT;
+  const sid = env("TRIPCOM_SID") ?? TRIPCOM_SID_DEFAULT;
   const earning = Boolean(alliance && sid);
   if (alliance && sid) {
     url.searchParams.set("Allianceid", alliance);
@@ -88,7 +93,7 @@ export function partnerDestination(slug: PartnerSlug, query: GoQuery): Built {
   return builders[slug](query);
 }
 
-/** True when the partner's affiliate IDs are set in this deployment. */
+/** True when the partner's affiliate IDs are set (or defaulted) in this deployment. */
 export function partnerEarning(slug: PartnerSlug) {
   return builders[slug]({}).earning;
 }

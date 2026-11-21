@@ -2,20 +2,21 @@
 
 ## Partner links (`/go/<partner>`)
 
-| Slug | Partner | Env vars (all needed to earn) | Where it appears |
+| Slug | Partner | IDs needed to earn | Where it appears |
 | --- | --- | --- | --- |
-| `tripcom-hotels` | Trip.com hotels | `TRIPCOM_ALLIANCE_ID`, `TRIPCOM_SID` | Stays modules |
+| `tripcom-hotels` | Trip.com hotels | Defaults in `affiliate-config.ts` (Allianceid `11268503`, SID `335386234`, site "Oxbreed Management Ltd"). `TRIPCOM_ALLIANCE_ID` and `TRIPCOM_SID` override if set. | Stays modules |
 | `agoda` | Agoda | `AGODA_CID` | Stays modules |
 | `booking` | Booking.com | `BOOKING_AID` | Stays modules |
-| `tripcom-flights` | Trip.com flights | `TRIPCOM_ALLIANCE_ID`, `TRIPCOM_SID` | `/flights#book` |
+| `tripcom-flights` | Trip.com flights | Same Trip.com defaults / env overrides as hotels | `/flights#book` |
 | `viator` | Viator | `VIATOR_PID`, `VIATOR_MCID` | `/guide#on`, event pages, Lagos stay guide |
 
 - Code: `app/affiliate-partners.ts` (slugs, `goHref`), `app/affiliate-config.ts` (server-only destinations + IDs), `app/go/[partner]/route.ts`, `app/components/partner-modules.tsx`.
-- No ID set → the redirect opens the partner's normal public search, the module is labelled "Outbound search", and the click row has `earning = false`.
-- ID set → the ID is appended server-side, the module shows "We may earn a commission", and links get `rel="sponsored nofollow"`.
-- Labels are decided at build time. Redeploy after adding or changing an ID.
+- Trip.com links earn with the in-code defaults even when the env vars are unset. The Trip.com deep-link creator also offers an optional `trip_sub3` param; `/go/` does not add it.
+- No ID and no default → the redirect opens the partner's normal public search, that partner's link stays unsponsored, and the click row has `earning = false`.
+- ID present (from env, or a Trip.com default) → the ID is appended server-side, that partner's link gets `rel="sponsored nofollow"`, and a module that lists an earning partner shows "We may earn a commission". Other partners in the same module stay unsponsored until their own IDs are set.
+- Labels are decided at build time. Redeploy after adding or changing an ID or a default.
 - If a partner gives you a different deep-link format after approval (for example a CJ tracking link for Booking.com), change only the builder for that slug in `app/affiliate-config.ts`.
-- Never paste an affiliate ID into a template, and never invent one.
+- Never paste an affiliate ID into a template, and never invent one. Public Trip.com defaults belong only in `app/affiliate-config.ts`.
 - Airbnb links stay plain links (its open Associates programme closed in 2021).
 
 ## Placements
