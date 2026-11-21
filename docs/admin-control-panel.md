@@ -32,6 +32,7 @@ Fixture previews (noindex, no session):
 - `/preview/admin-control-panel` (Approvals)
 - `/preview/admin-control-panel/overview`
 - `/preview/admin-control-panel/events`
+- `/preview/admin-settings` (Settings)
 
 ## Configure
 
