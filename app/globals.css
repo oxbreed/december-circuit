@@ -274,54 +274,59 @@ body::before {
 }
 
 @media (max-width: 1023px) {
-  html,
-  body {
-    height: 100svh;
-    overflow: hidden;
+  :root {
+    --mobile-bar: calc(3.625rem + env(safe-area-inset-bottom, 0px));
   }
 
-  .mobile-scroll {
-    height: calc(100svh - var(--mobile-bar, 7rem));
-    max-width: 100%;
-    overflow-x: clip;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+  html {
+    scroll-padding-bottom: var(--mobile-bar);
   }
 
-  .mobile-scroll:has(> main[data-homepage]) {
-    flex: 1;
-    min-height: 0;
-    height: auto;
+  .site-content {
+    padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: var(--mobile-bar);
   }
 
-  body:has(main[data-homepage]) .mobile-dock {
-    position: relative;
-    flex: none;
-  }
-
-  .mobile-scroll > footer {
-    padding-bottom: 1.5rem;
-  }
-
-  .mobile-scroll main,
-  .mobile-scroll section,
-  .mobile-scroll article,
-  .mobile-scroll form,
-  .mobile-scroll figure {
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  .mobile-scroll h1,
-  .mobile-scroll h2,
-  .mobile-scroll h3 {
+  .site-content :is(h1, h2, h3, h4) {
     overflow-wrap: break-word;
   }
 
-  .news-ticker {
-    max-width: 100%;
-    max-height: 3rem;
-    overflow: hidden;
+  .mobile-dock {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: var(--mobile-bar);
+    padding: 0.375rem max(0.25rem, env(safe-area-inset-right, 0px))
+      calc(0.375rem + env(safe-area-inset-bottom, 0px))
+      max(0.25rem, env(safe-area-inset-left, 0px));
+    border-top: 1px solid var(--color-line);
+    background: var(--color-paper);
+    box-shadow: 0 -4px 20px rgb(26 20 16 / 6%);
+  }
+
+  .mobile-dock:not(:has(.support-chat)) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .mobile-dock-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+    min-width: 0;
+    min-height: 2.75rem;
+    border-radius: 0.375rem;
+    color: var(--color-ink);
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .mobile-dock-action:is([aria-current="page"], [aria-expanded="true"]) {
+    background: var(--color-chart);
+    color: var(--color-oxide);
   }
 
   #map {
@@ -513,34 +518,49 @@ body::before {
   }
 }
 
-.support-chat {
-  bottom: calc(var(--mobile-bar, 4.75rem) + 0.65rem);
-}
-
 @media (max-width: 1023px) {
-  body:has(main[data-homepage]) .support-chat {
-    position: relative;
-    border-top: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
-    background: var(--color-paper);
-    bottom: auto;
+  .support-chat,
+  .support-chat-inner {
+    display: contents;
   }
 
-  body:has(main[data-homepage]) .support-chat .support-chat-panel {
-    position: absolute;
-    bottom: calc(100% + 0.5rem);
-    width: min(22rem, calc(100% - 1.5rem));
-    max-height: min(32rem, calc(100svh - var(--clock-strip, 3rem) - var(--mobile-bar, 10rem) - 1rem));
+  .support-chat-panel {
+    position: fixed;
+    inset-inline: max(0.75rem, env(safe-area-inset-left, 0px)) max(0.75rem, env(safe-area-inset-right, 0px));
+    bottom: calc(var(--mobile-bar) + 0.5rem);
+    width: auto;
+    max-height: min(34rem, calc(100dvh - var(--mobile-bar) - 4.75rem));
+    z-index: 50;
   }
 
-  body:has(main[data-homepage]) .support-chat button[aria-haspopup="dialog"] {
-    border: 0;
-    box-shadow: none;
+  .support-chat-panel :is(input:not([type="hidden"]), select, textarea),
+  #trip input:not([type="hidden"]) {
+    font-size: 1rem;
   }
 }
 
 @media (min-width: 1024px) {
+  .mobile-dock {
+    display: contents;
+  }
+
   .support-chat {
+    position: fixed;
+    right: 1.25rem;
     bottom: 1.25rem;
+    z-index: 50;
+  }
+
+  .support-chat-inner {
+    display: flex;
+    width: min(22rem, calc(100vw - 2.5rem));
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .support-chat-panel {
+    max-height: min(36rem, calc(100dvh - 6rem));
   }
 }
 

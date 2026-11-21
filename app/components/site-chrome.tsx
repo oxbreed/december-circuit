@@ -83,21 +83,16 @@ const footerGroups = [
 
 export function SiteChrome({ children, support }: { children: ReactNode; support: ReactNode }) {
   const pathname = usePathname();
-  const barRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
-    const node = barRef.current;
-    if (!node) return;
-    const apply = () => {
-      document.documentElement.style.setProperty("--mobile-bar", `${node.offsetHeight}px`);
-    };
-    apply();
-    const observer = new ResizeObserver(apply);
-    observer.observe(node);
-    return () => {
-      observer.disconnect();
-      document.documentElement.style.removeProperty("--mobile-bar");
-    };
+    const menu = menuRef.current;
+    if (!menu) return;
+    function dismiss(event: PointerEvent) {
+      if (event.target instanceof Node && !menu?.contains(event.target)) menu?.removeAttribute("open");
+    }
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
   }, []);
 
   return (
@@ -108,9 +103,9 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
       >
         Skip to content
       </a>
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/10 bg-paper/92 backdrop-blur-md">
-        <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex shrink-0 items-center gap-2 text-ink">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/10 bg-paper/95 backdrop-blur-md max-lg:pt-[env(safe-area-inset-top,0px)] max-lg:pl-[env(safe-area-inset-left,0px)] max-lg:pr-[env(safe-area-inset-right,0px)]">
+        <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2 sm:gap-4 sm:py-3 sm:px-6 lg:px-8">
+          <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2 text-ink">
             <PlaneMark />
             <span className="font-display text-[1.05rem] leading-none tracking-tight">
               dirtydecember
@@ -120,7 +115,33 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
           <div className="flex min-w-0 flex-1 items-center justify-end gap-3 lg:justify-between lg:gap-4">
             <HeaderSearch />
             <div className="flex shrink-0 items-center gap-3">
-              <HeaderTripLink compact className="lg:hidden shrink-0 text-[11px] uppercase tracking-[0.14em] text-oxide" />
+              <details
+                ref={menuRef}
+                className="lg:hidden"
+                onKeyDown={(event) => {
+                  if (event.key !== "Escape" || !event.currentTarget.open) return;
+                  event.stopPropagation();
+                  event.currentTarget.open = false;
+                  event.currentTarget.querySelector("summary")?.focus();
+                }}
+              >
+                <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md border border-ink/20 px-3 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
+                  Menu
+                </summary>
+                <nav aria-label="More pages" className="absolute inset-x-3 top-full grid max-h-[min(26rem,65dvh)] grid-cols-2 gap-1 overflow-y-auto rounded-lg border border-ink/15 bg-chart p-2 shadow-lg">
+                  {[...navSecondary, ["Visa and entry", "/visa"], ["Give feedback", "/feedback"]].map(([label, href]) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      aria-current={current(pathname, href) ? "page" : undefined}
+                      onClick={() => menuRef.current?.removeAttribute("open")}
+                      className="flex min-h-11 items-center rounded-md px-3 text-sm hover:bg-paper focus-visible:bg-paper aria-[current=page]:font-semibold aria-[current=page]:text-oxide"
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </nav>
+              </details>
               <nav aria-label="Pages" className="hidden min-w-0 items-center gap-2 lg:flex xl:gap-3">
                 <div className="flex flex-wrap items-center gap-2 xl:gap-3">
                   <span className="sr-only">Directory and planning</span>
@@ -175,7 +196,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
       </header>
       <div className="mobile-scroll lg:contents">
       {children}
-      <footer className="border-t border-ink/15 pb-32 lg:pb-0">
+      <footer className="border-t border-ink/15">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-12 md:px-8 lg:py-16">
           <div>
             <p className="font-display text-3xl text-ink">
@@ -272,44 +293,21 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
         </div>
       </footer>
       </div>
-      <div
-        ref={barRef}
-        className="mobile-dock fixed inset-x-0 bottom-0 z-40 max-w-full lg:contents"
-      >
+      <div className="mobile-dock">
+        <nav aria-label="Mobile pages" className="contents lg:hidden">
+          {navPrimary.filter(([, href]) => href !== "/visa").map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              aria-current={current(pathname, href) ? "page" : undefined}
+              className="mobile-dock-action"
+            >
+              {label}
+            </Link>
+          ))}
+          <HeaderTripLink dock />
+        </nav>
         {support}
-        <div className="overflow-x-clip border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden">
-          <NewsTicker />
-          <nav aria-label="Mobile pages" className="px-1 py-2">
-            <div className="grid grid-cols-5 gap-0.5">
-              {navPrimary.map(([label, href]) => (
-                <Link
-                  key={href}
-                  href={href}
-                  aria-current={current(pathname, href) ? "page" : undefined}
-                  className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-1 text-center text-[11px] font-medium uppercase leading-none tracking-tight ${
-                    current(pathname, href) ? "text-oxide" : "text-ink/80"
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-            <div className="mt-1 grid grid-cols-4 gap-0.5 border-t border-ink/10 pt-1">
-              {navSecondary.map(([label, href]) => (
-                <Link
-                  key={href}
-                  href={href}
-                  aria-current={current(pathname, href) ? "page" : undefined}
-                  className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-0.5 text-center text-[10px] font-medium uppercase leading-none tracking-tight ${
-                    current(pathname, href) ? "text-oxide" : "text-ink/70"
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </nav>
-        </div>
       </div>
       <noscript>
         <p className="mx-auto max-w-6xl px-5 pb-10 text-sm leading-6 text-muted md:px-8">

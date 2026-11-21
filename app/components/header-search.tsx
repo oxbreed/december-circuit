@@ -59,6 +59,7 @@ export function HeaderSearch() {
   const router = useRouter();
   const listId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [openMobile, setOpenMobile] = useState(false);
   const [query, setQuery] = useState("");
@@ -69,25 +70,19 @@ export function HeaderSearch() {
   const [active, setActive] = useState(-1);
 
   useEffect(() => {
-    function onPointer(event: MouseEvent) {
+    function onPointer(event: PointerEvent) {
       if (!rootRef.current?.contains(event.target as Node)) {
         setOpen(false);
         setOpenMobile(false);
       }
     }
-    document.addEventListener("mousedown", onPointer);
-    return () => document.removeEventListener("mousedown", onPointer);
+    document.addEventListener("pointerdown", onPointer);
+    return () => document.removeEventListener("pointerdown", onPointer);
   }, []);
 
   useEffect(() => {
     const trimmed = query.trim();
-    if (!trimmed) {
-      setPayload(null);
-      setLoading(false);
-      setError(false);
-      setActive(-1);
-      return;
-    }
+    if (!trimmed) return;
 
     const controller = new AbortController();
     const timer = window.setTimeout(() => {
@@ -152,6 +147,7 @@ export function HeaderSearch() {
     if (event.key === "Escape") {
       setOpen(false);
       setOpenMobile(false);
+      if (openMobile) toggleRef.current?.focus();
       return;
     }
     if (!open || results.length === 0) return;
@@ -169,15 +165,16 @@ export function HeaderSearch() {
   const results = payload?.results ?? [];
 
   return (
-    <div ref={rootRef} className="relative min-w-0">
+    <div ref={rootRef} className="min-w-0 md:relative">
       <div className="flex items-center justify-end gap-2">
         <button
+          ref={toggleRef}
           type="button"
           aria-expanded={openMobile}
           aria-controls="header-search-field"
           aria-label={openMobile ? "Close search" : "Open search"}
           onClick={() => setOpenMobile((value) => !value)}
-          className="inline-flex h-9 w-9 items-center justify-center border border-ink/15 text-ink hover:border-oxide hover:text-oxide md:hidden"
+          className="inline-flex h-11 w-11 rounded-md items-center justify-center border border-ink/15 text-ink hover:border-oxide hover:text-oxide md:hidden"
         >
           <SearchIcon className="h-4 w-4" />
         </button>
@@ -187,7 +184,7 @@ export function HeaderSearch() {
           role="search"
           onSubmit={onSubmit}
           className={`relative min-w-0 ${
-            openMobile ? "absolute right-0 top-full z-50 mt-2 w-[min(100vw-2rem,22rem)]" : "hidden"
+            openMobile ? "absolute inset-x-3 top-full z-50 mt-2" : "hidden"
           } md:static md:mt-0 md:block md:w-[13rem] lg:w-[12.5rem] xl:w-[15rem]`}
         >
           <label htmlFor="header-global-search" className="sr-only">
@@ -199,6 +196,7 @@ export function HeaderSearch() {
               ref={inputRef}
               id="header-global-search"
               type="search"
+              role="combobox"
               name="q"
               value={query}
               autoComplete="off"
@@ -211,14 +209,19 @@ export function HeaderSearch() {
                 active >= 0 ? `${listId}-option-${active}` : undefined
               }
               onChange={(event) => {
-                setQuery(event.target.value);
-                setOpen(true);
+                const value = event.target.value;
+                setQuery(value);
+                setActive(-1);
+                setPayload(null);
+                setError(false);
+                setLoading(Boolean(value.trim()));
+                setOpen(Boolean(value.trim()));
               }}
               onFocus={() => {
                 if (query.trim()) setOpen(true);
               }}
               onKeyDown={onKeyDown}
-              className="w-full border border-ink/15 bg-paper-deep py-1.5 pl-8 pr-3 font-sans text-sm leading-5 text-ink placeholder:text-muted focus:border-oxide focus:outline-none"
+              className="w-full border border-ink/15 bg-paper-deep min-h-11 py-1.5 pl-8 pr-3 font-sans text-base md:min-h-0 md:text-sm leading-5 text-ink placeholder:text-muted focus:border-oxide focus:outline-none"
             />
           </div>
 
@@ -250,6 +253,7 @@ export function HeaderSearch() {
                     <li
                       key={hit.href}
                       role="option"
+                      aria-selected={index === active}
                       id={`${listId}-option-${index}`}
                     >
                       <Link
