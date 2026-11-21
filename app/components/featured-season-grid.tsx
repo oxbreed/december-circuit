@@ -11,7 +11,7 @@ import { SaveTripButton } from "./save-trip-button";
 function PosterFrame({ feature }: { feature: HomeFeature }) {
   const sizes = "(max-width: 639px) 40vw, (max-width: 1023px) 50vw, 20vw";
   return (
-    <div className="relative aspect-[4/5] w-32 shrink-0 overflow-hidden border-r border-ink/10 bg-ink sm:w-full sm:border-b sm:border-r-0">
+    <div className="relative aspect-[4/5] w-24 min-[375px]:w-28 shrink-0 overflow-hidden border-r border-ink/10 bg-ink sm:w-full sm:border-b sm:border-r-0">
       <Image src={feature.poster.src} alt="" fill sizes={sizes} className="scale-110 object-cover opacity-45 blur-xl" />
       <Image src={feature.poster.src} alt={feature.poster.alt} fill sizes={sizes} className="object-contain" />
     </div>
@@ -27,7 +27,7 @@ function FeaturedCard({ feature }: { feature: HomeFeature }) {
       <div className="flex min-w-0 flex-1 flex-col gap-3 p-3 sm:p-4">
         <DateBlock when={feature.date} />
         <div className="min-w-0">
-          <h3 className="font-display text-2xl leading-none tracking-tight">
+          <h3 className="font-display text-xl leading-tight sm:text-2xl sm:leading-none tracking-tight">
             <Link href={feature.href} className="hover:text-oxide">
               {feature.artist}
             </Link>

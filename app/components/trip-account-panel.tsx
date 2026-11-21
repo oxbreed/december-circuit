@@ -76,7 +76,7 @@ export function TripAccountPanel({ signedIn, cloudSyncAvailable }: {
 
   const unavailable = load !== "ready";
   return (
-    <section aria-labelledby="trip-account-heading" className="mt-8 rounded-lg border border-ink/15 bg-paper p-5 sm:p-6">
+    <section aria-labelledby="trip-account-heading" className="mt-8 rounded-lg border border-ink/15 bg-paper p-3 sm:p-6">
       <h3 id="trip-account-heading" className="font-display text-3xl">Trip account</h3>
       {load === "loading" && <p role="status" className="mt-3 text-sm text-muted">Loading your account trip…</p>}
       {load === "failed" && (
@@ -89,24 +89,24 @@ export function TripAccountPanel({ signedIn, cloudSyncAvailable }: {
         </div>
       )}
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        <form action={sync} className="grid content-start gap-3 rounded-lg border border-ink/15 bg-chart p-4">
+        <form action={sync} className="grid min-w-0 content-start gap-3 rounded-lg border border-ink/15 bg-chart p-4">
           <h4 className="font-semibold">Personal trip</h4>
           <p className="text-sm text-muted">Save your current list to use it on other devices.</p>
           <input type="hidden" name="items" value={JSON.stringify(localItems)} />
-          <button type="submit" disabled={unavailable || saving} className={`${button} w-fit`}>
+          <button type="submit" disabled={unavailable || saving} className={`${button} justify-center sm:w-fit`}>
             {saving ? "Saving…" : "Save to account"}
           </button>
           {save.message && <p role={save.ok ? "status" : "alert"} className="text-sm">{save.message}</p>}
         </form>
-        <form action={create} className="grid content-start gap-3 rounded-lg border border-ink/15 bg-chart p-4">
+        <form action={create} className="grid min-w-0 content-start gap-3 rounded-lg border border-ink/15 bg-chart p-4">
           <h4 className="font-semibold">Group trip</h4>
           <p className="text-sm text-muted">Start with a copy of this list and share it with friends.</p>
           <input type="hidden" name="items" value={JSON.stringify(localItems)} />
           <label className="grid gap-1 text-sm font-medium">
             Group trip name
-            <input name="title" required maxLength={120} placeholder="Lagos crew" className="ledger-input" />
+            <input name="title" required maxLength={120} placeholder="Lagos crew" className="ledger-input min-w-0 w-full" />
           </label>
-          <button type="submit" disabled={unavailable || creating} className={`${button} w-fit`}>
+          <button type="submit" disabled={unavailable || creating} className={`${button} justify-center sm:w-fit`}>
             {creating ? "Creating…" : "Start group trip"}
           </button>
           {!group.ok && group.message && <p role="alert" className="text-sm">{group.message}</p>}

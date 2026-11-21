@@ -55,11 +55,8 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
 
   useEffect(() => {
     if (!open) return;
-    if (tab === "ask") {
-      const node = inputRef.current;
-      if (node) node.focus();
-    }
-  }, [open, tab]);
+    panelRef.current?.focus();
+  }, [open]);
 
   useEffect(() => {
     const node = listRef.current;
@@ -90,7 +87,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
       if (items.length === 0) return;
       const first = items[0];
       const last = items[items.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === root)) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && document.activeElement === last) {
@@ -166,16 +163,17 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
   if (hiddenPath(pathname)) return null;
 
   return (
-    <div className="support-chat pointer-events-none fixed inset-x-0 z-50 flex justify-end px-3 lg:inset-x-auto lg:right-5 lg:px-0">
-      <div className="pointer-events-auto flex w-full max-w-[22rem] flex-col items-end gap-2">
+    <div className="support-chat">
+      <div className="support-chat-inner">
         {open ? (
           <section
             ref={panelRef}
             id={panelId}
             role="dialog"
+            tabIndex={-1}
             aria-modal="true"
             aria-labelledby={titleId}
-            className="support-chat-panel flex max-h-[min(32rem,calc(100svh-var(--clock-strip)-var(--mobile-bar,0px)-5.5rem))] w-full flex-col border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.12)] lg:max-h-[min(36rem,calc(100svh-6rem))]"
+            className="support-chat-panel flex w-full flex-col overflow-hidden rounded-xl border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.18)]"
           >
             <header className="flex items-start justify-between gap-3 border-b border-ink/10 px-4 py-3">
               <div>
@@ -192,7 +190,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
               </div>
               <button
                 type="button"
-                className="shrink-0 border border-ink/15 bg-paper px-2 py-1 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
+                className="min-h-11 shrink-0 rounded-md border border-ink/15 bg-paper px-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
                 onClick={() => setOpen(false)}
               >
                 Close
@@ -350,10 +348,11 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
           aria-expanded={open}
           aria-controls={open ? panelId : undefined}
           aria-haspopup="dialog"
-          className="min-h-11 border border-ink/15 bg-paper px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-ink shadow-[0_8px_24px_rgba(26,20,16,0.1)] hover:border-oxide hover:text-oxide"
+          className="mobile-dock-action lg:border lg:border-ink/15 lg:bg-paper lg:px-4 lg:py-3 lg:text-sm lg:shadow-md"
           onClick={() => setOpen((value) => !value)}
         >
-          {open ? "Close support" : "Ask support"}
+          <span className="lg:hidden">{open ? "Close" : "Help"}</span>
+          <span className="hidden lg:inline">{open ? "Close support" : "Ask support"}</span>
         </button>
       </div>
     </div>
