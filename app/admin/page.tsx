@@ -209,6 +209,23 @@ async function ReviewsPanel() {
   );
 }
 
+
+async function AdminPendingBadge() {
+  try {
+    const { approvalCounts } = await import("../admin-approvals");
+    const counted = await approvalCounts();
+    if (counted.reason !== "ok" || counted.counts.pending <= 0) return null;
+    return (
+      <span className="bg-oxide px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-chart">
+        {counted.counts.pending}
+      </span>
+    );
+  } catch (error) {
+    console.error("Admin pending badge", error);
+    return null;
+  }
+}
+
 async function AdminSession({
   searchParams,
 }: {
@@ -232,20 +249,16 @@ async function AdminSession({
 
   const params = await searchParams;
   const section = parseAdminSection(params.section);
-  let pendingCount = 0;
-  try {
-    const { approvalCounts } = await import("../admin-approvals");
-    const counted = await approvalCounts();
-    if (counted.reason === "ok") pendingCount = counted.counts.pending;
-  } catch (error) {
-    console.error("Admin pending badge", error);
-  }
 
   return (
     <AdminShell
       email={user?.email ?? auth.adminEmail ?? ""}
       section={section}
-      pendingCount={pendingCount}
+      pendingBadge={
+        <Suspense fallback={null}>
+          <AdminPendingBadge />
+        </Suspense>
+      }
     >
       {section === "overview" ? safeSection("Overview", () => AdminHomeSection()) : null}
 

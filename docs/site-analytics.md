@@ -29,7 +29,9 @@ Open **Dashboard / Insights** (`/admin?section=dashboard`, optional `&range=24h|
 
 Approximate sessions group views that share a country and the first 80 characters of the user agent. The site does not store a visitor id. Bot user agents are left out of page-view totals. The `admin-migration-verify` placement is left out of click totals and lists, but can still appear in the activity feed.
 
-Queries are scoped to the selected window plus the previous period (service role, server side). Aggregates then run on that slice, not on an unbounded table dump. An unapplied migration, `supabase/migrations/20261120234500_admin_dashboard_indexes.sql`, adds supporting indexes. Do not apply it until asked.
+Queries are scoped to the selected window plus the previous period (service role, server side). When `admin_insights_report` is on the database, Insights loads one compact JSON report instead of pulling raw rows into the app. If that function is missing, the app falls back to a period-scoped row fetch and aggregates in TypeScript, with the four table reads issued in parallel. The report is cached for 30 seconds. Widgets stream in under separate Suspense boundaries.
+
+The dashboard index migration `supabase/migrations/20261120234500_admin_dashboard_indexes.sql` is already applied. A further, unapplied migration, `supabase/migrations/20261121100000_admin_insights_rpc.sql`, adds the `admin_insights_report` RPC and a partial `page_views_ts_human` index. Do not apply it until asked.
 
 Analytics env toggles stay under **Settings**. Vercel Analytics remains a separate product.
 
@@ -42,8 +44,10 @@ supabase db push
 #   supabase/migrations/20261025120000_page_views.sql
 #   supabase/migrations/20261025123000_web_vitals.sql
 #   supabase/migrations/20261119120000_outbound_clicks.sql
-# Index helper (unapplied until asked):
+# Index helper (already applied on hosted DirtyDecember):
 #   supabase/migrations/20261120234500_admin_dashboard_indexes.sql
+# Insights aggregate RPC (unapplied until asked):
+#   supabase/migrations/20261121100000_admin_insights_rpc.sql
 ```
 
 Requires existing `SUPABASE_SERVICE_ROLE_KEY` (same as submissions / WP probes).

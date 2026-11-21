@@ -37,3 +37,19 @@ export async function FeaturedSeason() {
     </section>
   );
 }
+
+export function FeaturedSeasonFallback() {
+  return (
+    <section id="featured" className="scroll-mt-36 border-b border-ink/10">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">
+          December 2026
+        </p>
+        <h2 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">
+          Featured this season
+        </h2>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">Loading featured events…</p>
+      </div>
+    </section>
+  );
+}
