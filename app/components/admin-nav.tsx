@@ -11,6 +11,7 @@ export const adminNavGroups: NavGroup[] = [
     items: [
       { id: "overview", label: "Overview" },
       { id: "approvals", label: "Approvals" },
+      { id: "support", label: "Support" },
     ],
   },
   {
@@ -47,16 +48,26 @@ export function AdminNav({
   section,
   pendingCount = 0,
   pendingBadge,
+  supportOpenCount = 0,
+  supportBadge,
 }: {
   section: AdminSection;
   pendingCount?: number;
   pendingBadge?: ReactNode;
+  supportOpenCount?: number;
+  supportBadge?: ReactNode;
 }) {
   const groups = adminNavGroups.map((group) => ({
     ...group,
-    items: group.items.map((item) =>
-      item.id === "approvals" && pendingCount > 0 && !pendingBadge ? { ...item, badge: pendingCount } : item,
-    ),
+    items: group.items.map((item) => {
+      if (item.id === "approvals" && pendingCount > 0 && !pendingBadge) {
+        return { ...item, badge: pendingCount };
+      }
+      if (item.id === "support" && supportOpenCount > 0 && !supportBadge) {
+        return { ...item, badge: supportOpenCount };
+      }
+      return item;
+    }),
   }));
   const flat = groups.flatMap((group) => group.items);
 
@@ -110,6 +121,8 @@ export function AdminNav({
                   {item.label}
                   {item.id === "approvals"
                     ? pendingBadge
+                    : item.id === "support"
+                      ? supportBadge
                     : item.badge
                       ? <span className={active ? "text-chart" : "text-oxide"}>{item.badge}</span>
                       : null}
@@ -141,6 +154,8 @@ export function AdminNav({
                       <span>{item.label}</span>
                       {item.id === "approvals" ? (
                         pendingBadge
+                      ) : item.id === "support" ? (
+                        supportBadge
                       ) : item.badge ? (
                         <span className="bg-oxide px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-chart">
                           {item.badge}

@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Local dev store for support messages when the table is not applied
+/.data/
