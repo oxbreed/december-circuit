@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheLife } from "next/cache";
 import { cache } from "react";
 import { isMissingRelationError, requireAdminService } from "./admin-guard";
 import { recordAdminAudit } from "./admin-audit";
@@ -127,8 +128,9 @@ export const listDirectoryEntries = cache(async (kind?: DirectoryKind): Promise<
   return { ...result, rows: result.rows.filter((row) => row.kind === kind) };
 });
 
-/** Public, unauthenticated merge: service role, fail soft, no admin email required. */
-export const listPublicDirectoryEntries = cache(async (): Promise<DirectoryEntry[]> => {
+async function loadPublicDirectoryEntries(): Promise<DirectoryEntry[]> {
+  "use cache";
+  cacheLife({ stale: 60, revalidate: 60, expire: 300 });
   try {
     const { createServiceClient } = await import("./supabase/server");
     const supabase = createServiceClient();
@@ -149,7 +151,10 @@ export const listPublicDirectoryEntries = cache(async (): Promise<DirectoryEntry
     console.error("directory_entries public", error);
     return [];
   }
-});
+}
+
+/** Public, unauthenticated merge: service role, fail soft, no admin email required. */
+export const listPublicDirectoryEntries = cache(loadPublicDirectoryEntries);
 
 function text(payload: Record<string, unknown>, key: string) {
   const value = payload[key];
