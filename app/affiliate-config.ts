@@ -3,7 +3,7 @@ import { partners, type GoQuery, type PartnerSlug } from "./affiliate-partners";
 
 /**
  * Server-only partner destinations. Affiliate IDs come from env vars, with
- * in-code defaults only for Trip.com (public deep-link params). With no ID
+ * in-code defaults for Trip.com and Viator (public deep-link params). With no ID
  * and no default, the redirect opens the partner's normal public page and the
  * click is logged as not earning — the site never claims a commission it is
  * not set up to receive.
@@ -12,12 +12,16 @@ import { partners, type GoQuery, type PartnerSlug } from "./affiliate-partners";
  * - TRIPCOM_ALLIANCE_ID + TRIPCOM_SID — override the Trip.com defaults below
  * - AGODA_CID — Agoda Partners site id
  * - BOOKING_AID — Booking.com affiliate id
- * - VIATOR_PID + VIATOR_MCID — Viator Partner Program ids
+ * - VIATOR_PID + VIATOR_MCID — override the Viator defaults below
  */
 
 /** Public Trip.com params for the Oxbreed Management Ltd site. Env vars override. */
 const TRIPCOM_ALLIANCE_DEFAULT = "11268503";
 const TRIPCOM_SID_DEFAULT = "335386234";
+
+/** Public Viator Partner Program params. Env vars override. */
+const VIATOR_PID_DEFAULT = "P00333160";
+const VIATOR_MCID_DEFAULT = "66722";
 
 function env(name: string) {
   const value = process.env[name]?.trim();
@@ -77,8 +81,8 @@ const builders: Record<PartnerSlug, (query: GoQuery) => Built> = {
     const url = new URL("https://www.viator.com/searchResults/all");
     const text = searchText({ city: query.city, country: query.country });
     if (text) url.searchParams.set("text", text);
-    const pid = env("VIATOR_PID");
-    const mcid = env("VIATOR_MCID");
+    const pid = env("VIATOR_PID") ?? VIATOR_PID_DEFAULT;
+    const mcid = env("VIATOR_MCID") ?? VIATOR_MCID_DEFAULT;
     const earning = Boolean(pid && mcid);
     if (pid && mcid) {
       url.searchParams.set("pid", pid);
