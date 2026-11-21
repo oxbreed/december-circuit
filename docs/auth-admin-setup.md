@@ -19,7 +19,7 @@ Official references:
 - Sign-in page: `https://www.dirtydecember.info/sign-in`.
 - The email form calls `signInWithOtp` and asks Supabase to email a magic link. The link returns to `https://www.dirtydecember.info/auth/callback`, which exchanges the code and sends the visitor back to `/sign-in` as a signed-in user.
 - Admin path: `https://www.dirtydecember.info/admin`.
-- `oxbreedmanagement@gmail.com` is always on the admin allowlist. `ADMIN_EMAILS` (and the older `ADMIN_EMAIL`) can add more addresses; they cannot remove that default.
+- `dirtydecember411@gmail.com` is always on the admin allowlist. `ADMIN_EMAILS` (and the older `ADMIN_EMAIL`) can add more addresses; they cannot remove that default.
 
 ## 1. Supabase Auth for email links
 
@@ -36,7 +36,7 @@ Open the hosted project that already matches `NEXT_PUBLIC_SUPABASE_URL` (or `SUP
    - Keep magic links (or “Confirm sign in” / email one-time links) turned on. This app’s sign-in page expects a link in the inbox, not a typed six-digit code.
    - You do not need to enable a password, Google, or Apple provider for this flow.
 3. **Mail delivery**
-   - In a new Supabase project, built-in mail is enough to try one or two links, and it is rate limited. For reliable delivery to `oxbreedmanagement@gmail.com`, set a custom SMTP sender in the project’s Auth email settings.
+   - In a new Supabase project, built-in mail is enough to try one or two links, and it is rate limited. For reliable delivery to `dirtydecember411@gmail.com`, set a custom SMTP sender in the project’s Auth email settings.
    - If a link is refused, `/sign-in` may show “Supabase has reached its mail limit,” “Supabase refused this address,” or “The return address was refused.” Those usually mean the rate limit, an email allow list on the project, or a missing redirect URL.
 
 `supabase/migrations/20261119120000_outbound_clicks.sql` is still unapplied. The admin Outbound clicks section will say the database is not connected until that table exists and `SUPABASE_SERVICE_ROLE_KEY` is set. Do not apply migrations from this change unless you have decided to apply them.
@@ -50,10 +50,10 @@ Set these on the Dirty December project (Production, and Preview or Development 
 | `NEXT_PUBLIC_SUPABASE_URL` | Hosted project URL. Alias: `SUPABASE_URL`. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon (publishable) key. Alias: `SUPABASE_ANON_KEY`. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server only. Lets `/admin` read submissions, reviews, probes, analytics, and outbound clicks. Never expose this in the browser. |
-| `ADMIN_EMAILS` | Comma-separated addresses that may open `/admin`. Example: `oxbreedmanagement@gmail.com`. |
+| `ADMIN_EMAILS` | Comma-separated addresses that may open `/admin`. Example: `dirtydecember411@gmail.com`. |
 | `ADMIN_EMAIL` | Optional legacy single address, still read and merged into the allowlist. |
 
-`oxbreedmanagement@gmail.com` is always allowed. Further addresses can be added with `ADMIN_EMAILS`. Addresses are compared in lower case.
+`dirtydecember411@gmail.com` is always allowed. Further addresses can be added with `ADMIN_EMAILS`. Addresses are compared in lower case.
 
 The live production site already presents the email form on `/sign-in`, which means a project URL and anon key appear to be set there. Confirm the Email provider, Site URL, and redirect allow list in the Supabase dashboard if a link fails to arrive or is refused.
 
@@ -61,7 +61,7 @@ The live production site already presents the email form on `/sign-in`, which me
 
 1. Open `https://www.dirtydecember.info/sign-in`.
 2. You should see the email form, not the line “The directory sign-in is not connected yet.”
-3. Enter `oxbreedmanagement@gmail.com` (or another allowlisted address), submit, and open the link from that inbox on the same browser.
+3. Enter `dirtydecember411@gmail.com` (or another allowlisted address), submit, and open the link from that inbox on the same browser.
 4. You should land on `/sign-in` as a signed-in user. The account also appears under Authentication, Users in Supabase.
 5. `/admin` should then open the overview. Any other signed-in address sees “Access refused.” A visitor who is not signed in is sent to `/sign-in`.
 6. Sign out from `/sign-in` or from the button on `/admin`.
@@ -79,6 +79,6 @@ The console also lists Get featured placement submissions and outbound clicks wh
 The page now states one of two cases plainly:
 
 - **Nobody is signed in:** the session cookie was not found. Request a new email link from `/sign-in` and open it in the same browser (not an in-app mail preview). The link returns to `https://www.dirtydecember.info/auth/callback`. If you land on `/sign-in` with a message that the link could not be completed, the one-time code was missing or could not be exchanged.
-- **Signed in as {email}:** you have a session, but that mailbox is not on the allowlist. `oxbreedmanagement@gmail.com` is always allowed.
+- **Signed in as {email}:** you have a session, but that mailbox is not on the allowlist. `dirtydecember411@gmail.com` is always allowed.
 
 If a control-panel section fails, the rest of `/admin` should still open, with a short error on that section only.

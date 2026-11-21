@@ -16,7 +16,7 @@ export default function AdminControlPreviewPage() {
         Preview · fixture data
       </p>
       <AdminShell
-        email="oxbreedmanagement@gmail.com"
+        email="dirtydecember411@gmail.com"
         section="approvals"
         pendingCount={fixturePendingCount}
         preview

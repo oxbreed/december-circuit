@@ -3,7 +3,7 @@ function present(value: string | undefined) {
   return trimmed ? trimmed : null;
 }
 
-const defaultAdminEmail = "oxbreedmanagement@gmail.com";
+const defaultAdminEmail = "dirtydecember411@gmail.com";
 
 function parseEmailList(value: string | undefined): string[] {
   if (!value?.trim()) return [];
