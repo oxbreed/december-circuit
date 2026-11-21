@@ -19,17 +19,16 @@ export default function Home() {
   return (
     <main id="top">
       <HomeHero />
-      <HomeStartNav />
       <Suspense fallback={<FeaturedSeasonFallback />}>
         <FeaturedSeason />
       </Suspense>
-      <QuickHubs />
       <UpcomingHome />
+      <HomeStartNav />
+      <QuickHubs />
+      <MyTripShell />
       <Suspense fallback={<HomeNewsFallback />}>
         <HomeNewsCard />
       </Suspense>
-      {/* Saved items stay reachable from sign-in (/#trip) without cluttering the first-screen job. */}
-      <MyTripShell />
     </main>
   );
 }

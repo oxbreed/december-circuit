@@ -37,26 +37,21 @@ export async function HomeNewsCard() {
             </h2>
           </div>
           <Link href="/news" className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-oxide">
-            Open the full list →
+            All news
           </Link>
         </div>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-          {items.length > 0
-            ? `${items.length} headlines from the public feeds already used on this site. Scroll this card. The full reading view, including a picture only when that feed item has one, is on News & updates.`
-            : "The feeds did not return any headlines. News & updates reads the same sources."}
-        </p>
         {items.length > 0 ? (
           <ul
-            className="relative mt-5 max-h-64 overflow-x-hidden overflow-y-auto contain-paint border border-ink/15 bg-chart"
+            className="mt-5 grid gap-3 sm:grid-cols-3"
             aria-label="Headlines from the public feeds"
           >
-            {items.map((item) => (
-              <li key={item.link} className="border-b border-ink/10 last:border-b-0">
+            {items.slice(0, 3).map((item) => (
+              <li key={item.link} className="min-w-0 rounded-lg border border-ink/15 bg-chart">
                 <a
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block px-4 py-3 hover:bg-paper-deep/70"
+                  className="block h-full rounded-lg px-4 py-3 hover:bg-paper-deep/70"
                 >
                   <span className="text-[10px] uppercase tracking-[0.16em] text-oxide">{item.source}</span>
                   <span className="mt-1 block text-sm leading-6 text-ink">{item.headline}</span>

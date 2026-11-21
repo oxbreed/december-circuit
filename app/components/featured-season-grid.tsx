@@ -20,7 +20,7 @@ function PosterFrame({ feature, priority }: { feature: HomeFeature; priority: bo
 
 function FeaturedCard({ feature, index }: { feature: HomeFeature; index: number }) {
   return (
-    <article className="flex min-w-0 flex-row border border-ink/15 bg-chart sm:flex-col">
+    <article className="flex min-w-0 flex-row overflow-hidden rounded-lg border border-ink/15 bg-chart shadow-sm sm:flex-col">
       <Link href={feature.href} className="block shrink-0" tabIndex={-1} aria-hidden="true">
         <PosterFrame feature={feature} priority={index < 2} />
       </Link>
@@ -45,7 +45,7 @@ function FeaturedCard({ feature, index }: { feature: HomeFeature; index: number 
 
 export function FeaturedSeasonGrid({ featured }: { featured: HomeFeature[] }) {
   return (
-    <LoadMoreList items={featured} mobileSize={4} desktopSize={10} noun="featured events">
+    <LoadMoreList items={featured} mobileSize={3} desktopSize={5} noun="featured events">
       {(visible) => (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {visible.map((feature, index) => (

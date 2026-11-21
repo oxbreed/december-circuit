@@ -14,8 +14,7 @@ export async function FeaturedSeason() {
           Featured this season
         </h2>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-          Headline nights and festivals already on file, with their official posters. Save any card
-          to My trip in this browser — tickets and organiser pages stay outbound.
+          Discover headline concerts and festivals, then save your favourites to My trip.
         </p>
         {featured.length === 0 ? (
           <div className="mt-6">
