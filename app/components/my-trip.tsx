@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { TripRowsList } from "./trip-rows";
+import { lazy, Suspense } from "react";
 import { removeTrip, useTripItems } from "./trip-storage";
+
+const TripRowsList = lazy(() => import("./trip-rows").then((module) => ({ default: module.TripRowsList })));
 
 const textLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 
@@ -29,7 +31,9 @@ export function MyTripList() {
 
   return (
     <div className="mt-6">
-      <TripRowsList items={items} onRemove={removeTrip} />
+      <Suspense fallback={<p role="status">Loading your saved stops…</p>}>
+        <TripRowsList items={items} onRemove={removeTrip} />
+      </Suspense>
     </div>
   );
 }

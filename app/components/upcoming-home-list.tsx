@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { LoadMoreList } from "./load-more";
 
 type UpcomingRow = { href: string; name: string; region: string; when: string };
 
@@ -15,20 +12,16 @@ export function UpcomingHomeList({ rows }: { rows: UpcomingRow[] }) {
     );
   }
   return (
-    <LoadMoreList items={rows} mobileSize={3} desktopSize={5} noun="upcoming events">
-      {(visible) => (
-        <ul className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
-          {visible.map((event) => (
+    <ul className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
+      {rows.map((event) => (
             <li key={`${event.href}-${event.when}`} className="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
               <div className="min-w-0">
-                <Link href={event.href} className="font-display text-2xl leading-tight tracking-tight hover:text-oxide">{event.name}</Link>
+                <Link prefetch={false} href={event.href} className="font-display text-2xl leading-tight tracking-tight hover:text-oxide">{event.name}</Link>
                 <p className="mt-1.5 text-sm text-ink">{event.region}</p>
               </div>
               <p className="shrink-0 text-sm text-muted sm:text-right">{event.when}</p>
             </li>
           ))}
-        </ul>
-      )}
-    </LoadMoreList>
+    </ul>
   );
 }

@@ -7,7 +7,8 @@ const actionClass =
   "inline-flex min-h-11 items-center justify-center rounded-sm px-5 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current";
 
 export function HomeHero() {
-  const [firstSlide, ...slides] = homeHeroSlides();
+  const slides = homeHeroSlides();
+  const firstSlide = slides[0];
   return (
     <section
       className="overflow-x-clip border-b border-ink/10 bg-paper pt-[4.5rem] lg:pt-[8.25rem]"
@@ -44,7 +45,7 @@ export function HomeHero() {
         </div>
         {firstSlide && (
           <HeroNightlife
-            slides={slides}
+            count={slides.length}
             firstImage={<HeroSlideImage slide={firstSlide} first />}
             firstCaption={<HeroSlideCaption slide={firstSlide} />}
           />
