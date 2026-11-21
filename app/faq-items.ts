@@ -80,12 +80,12 @@ export const faqItems: FaqItem[] = [
   {
     question: "Who do I contact?",
     answer:
-      "Visitor enquiries: [[mailto:hello@dirtydecember.info|hello@dirtydecember.info]]. Partnership and placement: [[mailto:partners@dirtydecember.info|partners@dirtydecember.info]]. Privacy, terms, and the EULA are linked in the footer.",
+      "Open Ask support on any page and use Leave a message, or write by email. Visitor enquiries: [[mailto:hello@dirtydecember.info|hello@dirtydecember.info]]. Partnership and placement: [[mailto:partners@dirtydecember.info|partners@dirtydecember.info]]. Privacy, terms, and the EULA are linked in the footer.",
   },
   {
     question: "Is there a support chat?",
     answer:
-      "Yes. Open Ask support on any page to chat with December guide. It helps with visas, confirmed events, flights, and listing something, using what’s already on this site. It does not invent prices, fares, or bookings.",
+      "Yes. Open Ask support on any page to chat with December guide, or to leave a message for the team. The guide helps with visas, confirmed events, flights, and listing something, using what’s already on this site. It does not invent prices, fares, or bookings. A left message is stored for the team and is answered by email.",
   },
 ];
 

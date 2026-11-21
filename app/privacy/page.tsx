@@ -100,6 +100,10 @@ export default function PrivacyPage() {
         <p>
           An enquiry from the footer, or from a mail button, is an email. The
           addresses are hello@dirtydecember.info and partners@dirtydecember.info.
+          A message left through Ask support stores your name, email address,
+          chosen topic, message, and the path of the page you were on, so the
+          team can read it in the admin Support inbox and reply by email. Those
+          messages are not published on the public site.
         </p>
         <p>
           The map asks your browser to load tiles from OpenStreetMap. A
@@ -179,7 +183,9 @@ export default function PrivacyPage() {
           text can be shown on the site. My trip stays on the device so you can
           keep a list without an account. The map tiles are requested so the map
           can be drawn. The headlines are read so the ticker and the news page
-          can show them. Enquiry mail is read so the operator can reply. Visit
+          can show them. Enquiry mail is read so the operator can reply. A message left
+          through Ask support is stored so the operator can reply from the
+          admin inbox. Visit
           and performance data are collected so Oxbreed Management can see
           whether the site loads well, which pages are used, and roughly which
           countries readers come from. Click counts on partner, ticket, and paid
@@ -191,13 +197,15 @@ export default function PrivacyPage() {
           Who receives it
         </h2>
         <p>
-          Oxbreed Management receives the submissions, pictures, reviews, and
-          enquiry mail. The admin page can be opened only from the admin address
-          held on the server. Supabase holds the database, the private pictures,
-          the sign-in, and any first-party page-view and click rows. Vercel hosts the site,
+          Oxbreed Management receives the submissions, pictures, reviews,
+          enquiry mail, and messages left through Ask support. The admin page can
+          be opened only from the admin address held on the server. Supabase
+          holds the database, the private pictures, the sign-in, support
+          messages, and any first-party page-view and click rows. Vercel hosts the site,
           receives the request that loads a page, and processes Web Analytics
           and Speed Insights. Enquiry mail is received at hello@dirtydecember.info and
-          partners@dirtydecember.info. OpenStreetMap receives the request for a
+          partners@dirtydecember.info. Replies to Ask support messages are sent
+          from those addresses. OpenStreetMap receives the request for a
           map tile or a directions page when you use the map, and Nominatim
           receives the place name and city when you use Find on the map on the
           listing form. A ticket page, an organiser page, a flight search, or a
@@ -217,7 +225,9 @@ export default function PrivacyPage() {
           deleted. A picture is not given a public address by the upload. My
           trip stays in this browser until you remove the item or clear the site
           data for this browser. Signing out clears the sign-in cookie. Enquiry
-          mail stays until it is deleted. First-party page-view and Web Vitals
+          mail stays until it is deleted. A message left through Ask support
+          stays until you ask for deletion or the operator removes it.
+          First-party page-view and Web Vitals
           rows are removed after about ninety days. Vercel Analytics and Speed
           Insights follow Vercel’s retention for those products.
         </p>

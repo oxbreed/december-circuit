@@ -3,6 +3,7 @@ import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { AdminHomeSection } from "../components/admin-home-section";
 import { AdminApprovalsSection } from "../components/admin-approvals-section";
+import { AdminSupportSection } from "../components/admin-support-section";
 import { AdminContentSection } from "../components/admin-content-section";
 import { AdminAffiliatesSection } from "../components/admin-affiliates-section";
 import { AdminAuditSection } from "../components/admin-audit-section";
@@ -211,20 +212,43 @@ async function ReviewsPanel() {
 
 
 async function AdminPendingBadge() {
+  let count = 0;
   try {
     const { approvalCounts } = await import("../admin-approvals");
     const counted = await approvalCounts();
-    if (counted.reason !== "ok" || counted.counts.pending <= 0) return null;
-    return (
-      <span className="bg-oxide px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-chart">
-        {counted.counts.pending}
-      </span>
-    );
+    if (counted.reason !== "ok") return null;
+    count = counted.counts.pending;
   } catch (error) {
     console.error("Admin pending badge", error);
     return null;
   }
+  if (count <= 0) return null;
+  return (
+    <span className="bg-oxide px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-chart">
+      {count}
+    </span>
+  );
 }
+
+async function AdminSupportBadge() {
+  let count = 0;
+  try {
+    const { supportRequestCounts } = await import("../support/requests");
+    const counted = await supportRequestCounts();
+    if (counted.reason !== "ok") return null;
+    count = counted.counts.open;
+  } catch (error) {
+    console.error("Admin support badge", error);
+    return null;
+  }
+  if (count <= 0) return null;
+  return (
+    <span className="bg-oxide px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-chart">
+      {count}
+    </span>
+  );
+}
+
 
 async function AdminSession({
   searchParams,
@@ -259,6 +283,11 @@ async function AdminSession({
           <AdminPendingBadge />
         </Suspense>
       }
+      supportBadge={
+        <Suspense fallback={null}>
+          <AdminSupportBadge />
+        </Suspense>
+      }
     >
       {section === "overview" ? safeSection("Overview", () => AdminHomeSection()) : null}
 
@@ -273,6 +302,21 @@ async function AdminSession({
         >
           {safeSection("Approvals", () =>
             AdminApprovalsSection({ tab: params.tab, kind: params.kind, q: params.q }),
+          )}
+        </Suspense>
+      ) : null}
+
+      {section === "support" ? (
+        <Suspense
+          fallback={
+            <section className="min-w-0">
+              <h2 className="font-display text-3xl leading-none tracking-tight">Support</h2>
+              <p className="mt-3 text-sm leading-7 text-muted">Loading support messages…</p>
+            </section>
+          }
+        >
+          {safeSection("Support", () =>
+            AdminSupportSection({ tab: params.tab, topic: params.topic, q: params.q }),
           )}
         </Suspense>
       ) : null}
