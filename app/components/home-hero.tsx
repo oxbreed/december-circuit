@@ -1,53 +1,46 @@
 import Link from "next/link";
-import { disclaimer } from "../brand";
 import { homeHeroSlides } from "../home-hero-slides";
 import { HeroNightlife } from "./hero-nightlife";
 
-const offerLink =
-  "inline-flex min-h-11 items-center justify-center px-2 py-2.5 text-center text-[10px] uppercase tracking-[0.12em] sm:px-5 sm:py-3 sm:text-[11px] sm:tracking-[0.18em]";
+const actionClass =
+  "inline-flex min-h-11 items-center justify-center rounded-sm px-5 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current";
 
 export function HomeHero() {
   return (
-    <section className="overflow-x-clip border-b border-ink/10 pt-[4.5rem] lg:pt-[8.25rem]" aria-labelledby="home-hero-heading">
-      <HeroNightlife slides={homeHeroSlides()} />
-      <div className="mx-auto max-w-6xl px-4 pb-5 pt-3 sm:px-6 sm:pb-8 sm:pt-4 lg:px-8 lg:pb-8 lg:pt-4">
-        <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">dirtydecember.info</p>
-        <h1
-          id="home-hero-heading"
-          className="mt-2 max-w-3xl font-display text-[1.85rem] leading-[1.05] tracking-tight text-ink sm:mt-3 sm:text-5xl lg:text-[3.15rem] lg:leading-[1.02]"
-        >
-          Independent directory for Detty December &amp; West Africa
-        </h1>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-muted sm:mt-4 sm:text-base sm:leading-7 lg:mt-3">
-          Events, places (hotels, restaurants, clubs, short stays), season guides, and visa — all from sourced
-          pages. Booking always leaves this site. {disclaimer}
-        </p>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-ink sm:mt-4">
-          Click Save to My Trip on any event below to start planning.
-        </p>
-        <div className="mt-4 grid grid-cols-4 gap-2 sm:mt-5 sm:flex sm:flex-wrap sm:items-center lg:mt-4">
-          <Link href="/events" className={`${offerLink} bg-oxide text-chart`}>
-            Events
-          </Link>
-          <Link href="/places" className={`${offerLink} border border-ink/25 bg-chart text-ink hover:text-oxide`}>
-            Places
-          </Link>
-          <Link href="/guides" className={`${offerLink} border border-ink/25 bg-chart text-ink hover:text-oxide`}>
-            Guides
-          </Link>
-          <Link href="/visa" className={`${offerLink} border border-ink/25 bg-chart text-ink hover:text-oxide`}>
-            Visa
-          </Link>
+    <section
+      className="overflow-x-clip border-b border-ink/10 bg-paper pt-[4.5rem] lg:pt-[8.25rem]"
+      aria-labelledby="home-hero-heading"
+    >
+      <div className="mx-auto grid max-w-6xl gap-7 px-4 py-7 sm:px-6 sm:py-10 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:px-8">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Independent West Africa directory</p>
+          <h1
+            id="home-hero-heading"
+            className="mt-3 max-w-xl text-balance font-display text-[2.4rem] leading-[1.02] tracking-tight text-ink sm:text-5xl lg:text-6xl"
+          >
+            Your guide to Detty December
+          </h1>
+          <p className="mt-4 max-w-md text-base leading-7 text-muted">
+            Find concerts and festivals, discover where to stay and eat, and plan your trip across West Africa.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/events" className={`${actionClass} bg-oxide text-chart`}>
+              Browse events
+            </Link>
+            <Link href="/places" className={`${actionClass} border border-ink/25 bg-chart text-ink hover:text-oxide`}>
+              Explore places
+            </Link>
+          </div>
+          <nav aria-label="Trip planning shortcuts" className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-ink">
+            <Link href="/guides" className="inline-flex min-h-10 items-center underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+              Travel guides
+            </Link>
+            <Link href="#trip" className="inline-flex min-h-10 items-center underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+              My trip
+            </Link>
+          </nav>
         </div>
-        <p className="mt-4 text-sm leading-6 text-muted sm:mt-5">
-          <Link href="#start-here" className="text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide">
-            Jump to category hubs
-          </Link>
-          {" · "}
-          <Link href="/guide" className="text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide">
-            Tourist guide
-          </Link>
-        </p>
+        <HeroNightlife slides={homeHeroSlides()} />
       </div>
     </section>
   );
