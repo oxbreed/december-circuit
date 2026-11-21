@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { disclaimer } from "../../brand";
 import { AddToCalendar } from "../../components/add-to-calendar";
 import { Breadcrumbs } from "../../components/breadcrumbs";
+import { ListingRatings } from "../../components/listing-ratings";
 import { JsonLd } from "../../components/json-ld";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
 import { ExperiencePartners, StayPartners, seasonCities } from "../../components/partner-modules";
@@ -216,6 +218,9 @@ export default async function EventPage({
         </Link>
       </p>
       <p className="mt-6 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
+      <Suspense fallback={null}>
+        <ListingRatings kind="event" slug={slug} />
+      </Suspense>
     </main>
   );
 }

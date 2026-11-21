@@ -12,7 +12,11 @@ function json(body: unknown, status = 200, extra?: HeadersInit) {
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
   try {
-    body = (await request.json()) as Record<string, unknown>;
+    const input: unknown = await request.json();
+    if (typeof input !== "object" || input === null || Array.isArray(input)) {
+      return json({ error: "Send the form again in a moment." }, 400);
+    }
+    body = input as Record<string, unknown>;
   } catch {
     return json({ error: "Send the form again in a moment." }, 400);
   }

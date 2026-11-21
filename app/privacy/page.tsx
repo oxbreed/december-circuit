@@ -46,7 +46,7 @@ export default function PrivacyPage() {
         <p>
           You can read the sourced records, read the news page, save a trip in
           this browser, ask for a sign-in link, send a listing or a partnership
-          note, and write a text review after you sign in. You can also email an
+          note, leave private feedback, and rate an event or place after you sign in. You can also email an
           enquiry. Booking links, ticket links, organiser pages, and flight
           searches open other sites. The map draws coordinates that are already
           listed.
@@ -87,10 +87,9 @@ export default function PrivacyPage() {
           partners@dirtydecember.info.
         </p>
         <p>
-          A review is text only, from a signed-in visitor, with no rating. The
-          review stores that text and the id of the signed-in account. The
-          public page shows the text. The site does not add sample reviews, and
-          the reviews block stays hidden until a review is published.
+          When you rate an event or place, we store your star score, the listing
+          and your account ID so you can update your rating. Other visitors can
+          see the average score and the number of ratings.
         </p>
         <p>
           My trip is saved in this browser only. It stores the kind and id of an
@@ -100,7 +99,7 @@ export default function PrivacyPage() {
         <p>
           An enquiry from the footer, or from a mail button, is an email. The
           addresses are hello@dirtydecember.info and partners@dirtydecember.info.
-          A message left through Ask support stores your name, email address,
+          A support message or site feedback stores your name, email address,
           chosen topic, message, and the path of the page you were on, so the
           team can read it in the admin Support inbox and reply by email. Those
           messages are not published on the public site.

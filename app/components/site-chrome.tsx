@@ -71,6 +71,7 @@ const footerGroups = [
     title: "Legal",
     links: [
       ["Sign in", "/sign-in"],
+      ["Give feedback", "/feedback"],
       ["Privacy", "/privacy"],
       ["Terms", "/terms"],
       ["EULA", "/eula"],

@@ -2,6 +2,7 @@ export const supportTopics = [
   { id: "visitor", label: "Visitor question" },
   { id: "listing", label: "List an event or place" },
   { id: "partnership", label: "Partnership or placement" },
+  { id: "feedback", label: "Site feedback" },
   { id: "other", label: "Something else" },
 ] as const;
 
