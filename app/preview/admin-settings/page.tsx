@@ -18,11 +18,11 @@ export default function AdminSettingsPreviewPage() {
       <p className="mx-auto max-w-6xl px-4 pt-6 text-[11px] uppercase tracking-[0.2em] text-muted sm:px-6">
         Preview · fixture data
       </p>
-      <AdminShell email="oxbreedmanagement@gmail.com" section="settings" preview>
+      <AdminShell email="dirtydecember411@gmail.com" section="settings" preview>
         <AdminSettingsView
           auth={{
             connected: true,
-            adminEmails: ["oxbreedmanagement@gmail.com"],
+            adminEmails: ["dirtydecember411@gmail.com"],
           }}
           pageviewsOn={true}
           gaOn={false}

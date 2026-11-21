@@ -15,7 +15,7 @@ export default function AdminEventsPreviewPage() {
         Preview · fixture data
       </p>
       <AdminShell
-        email="oxbreedmanagement@gmail.com"
+        email="dirtydecember411@gmail.com"
         section="events"
         pendingCount={fixturePendingCount}
         preview
