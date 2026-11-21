@@ -8,7 +8,7 @@ import { UpcomingHomeList } from "./upcoming-home-list";
 
 async function UpcomingBody() {
   await connection();
-  const rows = upcomingEventsFrom(new Date()).map((event) => {
+  const rows = upcomingEventsFrom(new Date()).slice(0, 5).map((event) => {
     const { href, name, region } = presentEvent(event);
     return { href, name, region, when: event.when };
   });
@@ -26,7 +26,7 @@ export function UpcomingHome() {
           </div>
           <Link href="/events" className="shrink-0 text-[11px] uppercase tracking-[0.18em] text-oxide">See all events</Link>
         </div>
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">Browse upcoming events by date and save your picks to My trip.</p>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">The next five events on the calendar.</p>
         <Suspense fallback={<div className="mt-6"><LoadingLines /></div>}><UpcomingBody /></Suspense>
       </div>
     </section>

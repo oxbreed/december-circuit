@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { SupportMessageForm } from "./support-message-form";
 
 type Message = {
@@ -23,21 +22,12 @@ const suggestions = [
   "How do flight searches work?",
 ] as const;
 
-function hiddenPath(pathname: string | null) {
-  if (!pathname) return false;
-  return (
-    pathname === "/admin" ||
-    pathname.startsWith("/admin/") ||
-    pathname.startsWith("/preview/admin") ||
-    pathname === "/sign-in" ||
-    pathname.startsWith("/sign-in/") ||
-    pathname.startsWith("/auth/")
-  );
-}
-
-export function SupportChat({ liveModel }: { liveModel: boolean }) {
-  const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+export function SupportChat({ liveModel, open, onClose, panelId }: {
+  liveModel: boolean;
+  open: boolean;
+  onClose: () => void;
+  panelId: string;
+}) {
   const [tab, setTab] = useState<PanelTab>("ask");
   const [question, setQuestion] = useState("");
   const [pending, setPending] = useState(false);
@@ -46,12 +36,10 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
     { role: "assistant", text: greeting },
   ]);
   const [chipsVisible, setChipsVisible] = useState(true);
-  const panelId = useId();
   const titleId = `${panelId}-title`;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLElement>(null);
-  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -79,7 +67,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
-        setOpen(false);
+        onClose();
         return;
       }
       if (event.key !== "Tab") return;
@@ -98,15 +86,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const toggle = toggleRef.current;
-    return () => {
-      toggle?.focus();
-    };
-  }, [open]);
+  }, [open, onClose]);
 
   async function ask(text: string) {
     const trimmed = text.replace(/\s+/g, " ").trim();
@@ -160,201 +140,182 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
     void ask(question);
   }
 
-  if (hiddenPath(pathname)) return null;
+  if (!open) return null;
 
   return (
-    <div className="support-chat">
-      <div className="support-chat-inner">
-        {open ? (
-          <section
-            ref={panelRef}
-            id={panelId}
-            role="dialog"
-            tabIndex={-1}
-            aria-modal="true"
-            aria-labelledby={titleId}
-            className="support-chat-panel flex w-full flex-col overflow-hidden rounded-xl border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.18)]"
+    <section
+      ref={panelRef}
+      id={panelId}
+      role="dialog"
+      tabIndex={-1}
+      aria-modal="true"
+      aria-labelledby={titleId}
+      className="support-chat-panel flex w-full flex-col overflow-hidden rounded-xl border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.18)]"
+    >
+      <header className="flex items-start justify-between gap-3 border-b border-ink/10 px-4 py-3">
+        <div>
+          <p
+            id={titleId}
+            className="text-[11px] uppercase tracking-[0.22em] text-brass"
           >
-            <header className="flex items-start justify-between gap-3 border-b border-ink/10 px-4 py-3">
-              <div>
-                <p
-                  id={titleId}
-                  className="text-[11px] uppercase tracking-[0.22em] text-brass"
-                >
-                  Ask support
-                </p>
-                <p className="mt-1 text-sm leading-5 text-muted">
-                  Chat with {guideName}, or leave a message for the team.
-                  {liveModel ? null : " Happy to help from what’s listed."}
-                </p>
-              </div>
-              <button
-                type="button"
-                className="min-h-11 shrink-0 rounded-md border border-ink/15 bg-paper px-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
-                onClick={() => setOpen(false)}
-              >
-                Close
-              </button>
-            </header>
-
-            <div
-              role="tablist"
-              aria-label="Support options"
-              className="flex border-b border-ink/10"
-            >
-              <button
-                type="button"
-                role="tab"
-                id={`${panelId}-tab-ask`}
-                aria-selected={tab === "ask"}
-                aria-controls={`${panelId}-panel-ask`}
-                className={`flex-1 px-3 py-2 text-[11px] uppercase tracking-[0.14em] ${
-                  tab === "ask" ? "bg-ink text-chart" : "bg-chart text-ink hover:text-oxide"
-                }`}
-                onClick={() => setTab("ask")}
-              >
-                Ask
-              </button>
-              <button
-                type="button"
-                role="tab"
-                id={`${panelId}-tab-message`}
-                aria-selected={tab === "message"}
-                aria-controls={`${panelId}-panel-message`}
-                className={`flex-1 px-3 py-2 text-[11px] uppercase tracking-[0.14em] ${
-                  tab === "message" ? "bg-ink text-chart" : "bg-chart text-ink hover:text-oxide"
-                }`}
-                onClick={() => setTab("message")}
-              >
-                Leave a message
-              </button>
-            </div>
-
-            {tab === "ask" ? (
-              <div
-                id={`${panelId}-panel-ask`}
-                role="tabpanel"
-                aria-labelledby={`${panelId}-tab-ask`}
-                className="flex min-h-0 flex-1 flex-col"
-              >
-                <div
-                  ref={listRef}
-                  className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3 py-3 text-sm leading-6 text-ink"
-                  aria-live="polite"
-                >
-                  {messages.map((message, index) => (
-                    <div
-                      key={`${message.role}-${index}`}
-                      className={
-                        message.role === "user"
-                          ? "ml-8 flex justify-end"
-                          : "mr-8 flex justify-start"
-                      }
-                    >
-                      <div
-                        className={
-                          message.role === "user"
-                            ? "max-w-full border border-oxide/35 bg-paper px-3 py-2"
-                            : "max-w-full border border-lagoon/35 bg-paper-deep/60 px-3 py-2"
-                        }
-                      >
-                        <span className="mb-1 block text-[10px] uppercase tracking-[0.18em] text-muted">
-                          {message.role === "user" ? "You" : guideName}
-                        </span>
-                        <p className="whitespace-pre-wrap">{message.text}</p>
-                      </div>
-                    </div>
-                  ))}
-
-                  {chipsVisible && !pending ? (
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {suggestions.map((suggestion) => (
-                        <button
-                          key={suggestion}
-                          type="button"
-                          className="border border-brass/45 bg-paper px-2.5 py-1.5 text-left text-[11px] uppercase tracking-[0.12em] text-ink hover:border-oxide hover:text-oxide"
-                          onClick={() => void ask(suggestion)}
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  {pending ? (
-                    <p className="text-sm leading-5 text-muted">One moment…</p>
-                  ) : null}
-                  {error ? (
-                    <p className="text-sm text-oxide" role="alert">
-                      {error}
-                    </p>
-                  ) : null}
-                </div>
-
-                <form
-                  onSubmit={onSubmit}
-                  className="border-t border-ink/10 px-3 py-3"
-                >
-                  <label className="sr-only" htmlFor={`${panelId}-ask`}>
-                    Your question
-                  </label>
-                  <textarea
-                    id={`${panelId}-ask`}
-                    ref={inputRef}
-                    rows={2}
-                    value={question}
-                    onChange={(event) => setQuestion(event.target.value)}
-                    maxLength={500}
-                    disabled={pending}
-                    placeholder="Type a question…"
-                    className="ledger-input resize-none text-sm leading-5"
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" && !event.shiftKey) {
-                        event.preventDefault();
-                        void ask(question);
-                      }
-                    }}
-                  />
-                  <div className="mt-2 flex items-center justify-between gap-2">
-                    <p className="text-[10px] uppercase tracking-[0.16em] text-muted">
-                      Happy to help
-                    </p>
-                    <button
-                      type="submit"
-                      disabled={pending || question.trim().length === 0}
-                      className="bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-chart disabled:opacity-40"
-                    >
-                      Send
-                    </button>
-                  </div>
-                </form>
-              </div>
-            ) : (
-              <div
-                id={`${panelId}-panel-message`}
-                role="tabpanel"
-                aria-labelledby={`${panelId}-tab-message`}
-                className="min-h-0 flex-1 overflow-y-auto"
-              >
-                <SupportMessageForm formId={`${panelId}-message`} />
-              </div>
-            )}
-          </section>
-        ) : null}
-
+            Ask support
+          </p>
+          <p className="mt-1 text-sm leading-5 text-muted">
+            Chat with {guideName}, or leave a message for the team.
+            {liveModel ? null : " Happy to help from what’s listed."}
+          </p>
+        </div>
         <button
-          ref={toggleRef}
           type="button"
-          aria-expanded={open}
-          aria-controls={open ? panelId : undefined}
-          aria-haspopup="dialog"
-          className="mobile-dock-action lg:border lg:border-ink/15 lg:bg-paper lg:px-4 lg:py-3 lg:text-sm lg:shadow-md"
-          onClick={() => setOpen((value) => !value)}
+          className="min-h-11 shrink-0 rounded-md border border-ink/15 bg-paper px-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
+          onClick={onClose}
         >
-          <span className="lg:hidden">{open ? "Close" : "Help"}</span>
-          <span className="hidden lg:inline">{open ? "Close support" : "Ask support"}</span>
+          Close
+        </button>
+      </header>
+
+      <div
+        role="tablist"
+        aria-label="Support options"
+        className="flex border-b border-ink/10"
+      >
+        <button
+          type="button"
+          role="tab"
+          id={`${panelId}-tab-ask`}
+          aria-selected={tab === "ask"}
+          aria-controls={`${panelId}-panel-ask`}
+          className={`flex-1 px-3 py-2 text-[11px] uppercase tracking-[0.14em] ${
+            tab === "ask" ? "bg-ink text-chart" : "bg-chart text-ink hover:text-oxide"
+          }`}
+          onClick={() => setTab("ask")}
+        >
+          Ask
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id={`${panelId}-tab-message`}
+          aria-selected={tab === "message"}
+          aria-controls={`${panelId}-panel-message`}
+          className={`flex-1 px-3 py-2 text-[11px] uppercase tracking-[0.14em] ${
+            tab === "message" ? "bg-ink text-chart" : "bg-chart text-ink hover:text-oxide"
+          }`}
+          onClick={() => setTab("message")}
+        >
+          Leave a message
         </button>
       </div>
-    </div>
+
+      {tab === "ask" ? (
+        <div
+          id={`${panelId}-panel-ask`}
+          role="tabpanel"
+          aria-labelledby={`${panelId}-tab-ask`}
+          className="flex min-h-0 flex-1 flex-col"
+        >
+          <div
+            ref={listRef}
+            className="min-h-0 flex-1 space-y-3 overflow-y-auto px-3 py-3 text-sm leading-6 text-ink"
+            aria-live="polite"
+          >
+            {messages.map((message, index) => (
+              <div
+                key={`${message.role}-${index}`}
+                className={
+                  message.role === "user"
+                    ? "ml-8 flex justify-end"
+                    : "mr-8 flex justify-start"
+                }
+              >
+                <div
+                  className={
+                    message.role === "user"
+                      ? "max-w-full border border-oxide/35 bg-paper px-3 py-2"
+                      : "max-w-full border border-lagoon/35 bg-paper-deep/60 px-3 py-2"
+                  }
+                >
+                  <span className="mb-1 block text-[10px] uppercase tracking-[0.18em] text-muted">
+                    {message.role === "user" ? "You" : guideName}
+                  </span>
+                  <p className="whitespace-pre-wrap">{message.text}</p>
+                </div>
+              </div>
+            ))}
+
+            {chipsVisible && !pending ? (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {suggestions.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    className="border border-brass/45 bg-paper px-2.5 py-1.5 text-left text-[11px] uppercase tracking-[0.12em] text-ink hover:border-oxide hover:text-oxide"
+                    onClick={() => void ask(suggestion)}
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {pending ? (
+              <p className="text-sm leading-5 text-muted">One moment…</p>
+            ) : null}
+            {error ? (
+              <p className="text-sm text-oxide" role="alert">
+                {error}
+              </p>
+            ) : null}
+          </div>
+
+          <form
+            onSubmit={onSubmit}
+            className="border-t border-ink/10 px-3 py-3"
+          >
+            <label className="sr-only" htmlFor={`${panelId}-ask`}>
+              Your question
+            </label>
+            <textarea
+              id={`${panelId}-ask`}
+              ref={inputRef}
+              rows={2}
+              value={question}
+              onChange={(event) => setQuestion(event.target.value)}
+              maxLength={500}
+              disabled={pending}
+              placeholder="Type a question…"
+              className="ledger-input resize-none text-sm leading-5"
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  void ask(question);
+                }
+              }}
+            />
+            <div className="mt-2 flex items-center justify-between gap-2">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-muted">
+                Happy to help
+              </p>
+              <button
+                type="submit"
+                disabled={pending || question.trim().length === 0}
+                className="bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-chart disabled:opacity-40"
+              >
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
+      ) : (
+        <div
+          id={`${panelId}-panel-message`}
+          role="tabpanel"
+          aria-labelledby={`${panelId}-tab-message`}
+          className="min-h-0 flex-1 overflow-y-auto"
+        >
+          <SupportMessageForm formId={`${panelId}-message`} />
+        </div>
+      )}
+    </section>
   );
 }

@@ -17,8 +17,8 @@ export function HeroSlideImage({ slide, first = false }: { slide: HeroSlide; fir
       src={slide.src}
       alt={slide.alt}
       fill
-      loading={first ? "eager" : undefined}
-      fetchPriority={first ? "high" : undefined}
+      preload={first}
+      loading={first ? undefined : "eager"}
       sizes="(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) calc(100vw - 3rem), (max-width: 1151px) calc(50vw - 3.5rem), 520px"
       className={slide.kind === "poster" ? "object-contain" : `object-cover ${slide.focus}`}
     />

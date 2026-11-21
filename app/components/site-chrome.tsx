@@ -7,7 +7,7 @@ import { disclaimer, navPrimary, navSecondary } from "../brand";
 import { rideHailMarkets } from "../ride-hailing";
 import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
-import { NewsTicker } from "./news-ticker";
+import { DesktopNewsTicker } from "./desktop-news-ticker";
 
 function PlaneMark() {
   return (
@@ -190,9 +190,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
           </div>
         </div>
         <div className="hidden h-0.5 bg-oxide lg:block" />
-        <div className="hidden lg:block">
-          <NewsTicker />
-        </div>
+        <DesktopNewsTicker />
       </header>
       <div className="mobile-scroll lg:contents">
       {children}

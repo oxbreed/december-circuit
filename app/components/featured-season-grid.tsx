@@ -3,16 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { HomeFeature } from "../home-featured";
-import { DateBlock } from "./event-card";
 import { LoadMoreList } from "./load-more";
 import { SaveTripButton } from "./save-trip-button";
 
-/** The whole poster, over a blurred copy of itself so portrait and wide posters share one frame. */
+/** Use one image and keep the full poster visible. */
 function PosterFrame({ feature }: { feature: HomeFeature }) {
-  const sizes = "(max-width: 639px) 40vw, (max-width: 1023px) 50vw, 20vw";
+  const sizes = "(max-width: 374px) 96px, (max-width: 639px) 112px, (max-width: 1023px) 50vw, 20vw";
   return (
     <div className="relative aspect-[4/5] w-24 min-[375px]:w-28 shrink-0 overflow-hidden border-r border-ink/10 bg-ink sm:w-full sm:border-b sm:border-r-0">
-      <Image src={feature.poster.src} alt="" fill sizes={sizes} className="scale-110 object-cover opacity-45 blur-xl" />
       <Image src={feature.poster.src} alt={feature.poster.alt} fill sizes={sizes} className="object-contain" />
     </div>
   );
@@ -21,14 +19,14 @@ function PosterFrame({ feature }: { feature: HomeFeature }) {
 function FeaturedCard({ feature }: { feature: HomeFeature }) {
   return (
     <article className="flex min-w-0 flex-row overflow-hidden rounded-lg border border-ink/15 bg-chart shadow-sm sm:flex-col">
-      <Link href={feature.href} className="block shrink-0" tabIndex={-1} aria-hidden="true">
+      <Link prefetch={false} href={feature.href} className="block shrink-0" tabIndex={-1} aria-hidden="true">
         <PosterFrame feature={feature} />
       </Link>
       <div className="flex min-w-0 flex-1 flex-col gap-3 p-3 sm:p-4">
-        <DateBlock when={feature.date} />
+        <p className="text-xs font-semibold text-oxide">{feature.date}</p>
         <div className="min-w-0">
           <h3 className="font-display text-xl leading-tight sm:text-2xl sm:leading-none tracking-tight">
-            <Link href={feature.href} className="hover:text-oxide">
+            <Link prefetch={false} href={feature.href} className="hover:text-oxide">
               {feature.artist}
             </Link>
           </h3>
