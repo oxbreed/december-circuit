@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -5,6 +6,7 @@ import { disclaimer } from "../../brand";
 import { cityRecordFor } from "../../cities";
 import { countriesOnFile } from "../../countries";
 import { Breadcrumbs } from "../../components/breadcrumbs";
+import { ListingRatings } from "../../components/listing-ratings";
 import { JsonLd } from "../../components/json-ld";
 import { ListedStayPartners } from "../../components/partner-modules";
 import { pinForName } from "../../geo";
@@ -204,6 +206,9 @@ export default async function PlacePage({
         </Link>
       </p>
       <p className="mt-6 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
+      <Suspense fallback={null}>
+        <ListingRatings kind="place" slug={slug} />
+      </Suspense>
     </main>
   );
 }

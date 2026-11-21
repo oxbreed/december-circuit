@@ -5,7 +5,7 @@ import { supportTopics } from "../support/topics";
 
 type Status = "idle" | "pending" | "ok" | "error";
 
-export function SupportMessageForm({ formId }: { formId: string }) {
+export function SupportMessageForm({ formId, feedback = false }: { formId: string; feedback?: boolean }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [topic, setTopic] = useState("");
@@ -30,7 +30,7 @@ export function SupportMessageForm({ formId }: { formId: string }) {
         body: JSON.stringify({
           name,
           email,
-          topic,
+          topic: feedback ? "feedback" : topic,
           message,
           pagePath,
           website,
@@ -58,19 +58,20 @@ export function SupportMessageForm({ formId }: { formId: string }) {
     return (
       <div className="px-4 py-5" role="status" aria-live="polite">
         <p className="text-sm leading-6 text-ink">Thank you. Your message is with the team.</p>
-        <p className="mt-2 text-sm leading-6 text-muted">
+        {!feedback && <p className="mt-2 text-sm leading-6 text-muted">
           A reply will come to {email} from hello@dirtydecember.info, or from
           partners@dirtydecember.info for a partnership note.
-        </p>
+        </p>}
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-3 px-4 py-4" noValidate>
+    <form onSubmit={onSubmit} className="grid gap-3 px-4 py-4">
       <p className="text-sm leading-6 text-muted">
-        Leave your name, email, and a short note. The team reads these in the
-        support inbox and replies by email.
+        {feedback
+          ? "Tell us what worked, what needs correcting, or what you’d like us to add. Your feedback goes privately to the Dirty December team."
+          : "Leave your name, email, and a short note. The team reads these in the support inbox and replies by email."}
       </p>
 
       <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true">
@@ -116,7 +117,7 @@ export function SupportMessageForm({ formId }: { formId: string }) {
         />
       </label>
 
-      <label className="grid gap-1">
+      {!feedback && <label className="grid gap-1">
         <span className="text-[10px] uppercase tracking-[0.16em] text-muted">Topic</span>
         <select
           id={`${formId}-topic`}
@@ -133,7 +134,7 @@ export function SupportMessageForm({ formId }: { formId: string }) {
             </option>
           ))}
         </select>
-      </label>
+      </label>}
 
       <label className="grid gap-1">
         <span className="text-[10px] uppercase tracking-[0.16em] text-muted">Message</span>
@@ -159,7 +160,7 @@ export function SupportMessageForm({ formId }: { formId: string }) {
           disabled={status === "pending"}
           className="bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.16em] text-chart disabled:opacity-40"
         >
-          {status === "pending" ? "Sending…" : "Send message"}
+          {status === "pending" ? "Sending…" : feedback ? "Send feedback" : "Send message"}
         </button>
       </div>
 
