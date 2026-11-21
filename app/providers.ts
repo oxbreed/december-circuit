@@ -14,6 +14,7 @@ const providers = [
 
 export type ProviderReport = {
   name: (typeof providers)[number]["name"];
+  env: (typeof providers)[number]["env"];
   connected: false;
   detail: "not connected" | "A key is set. This site has not called the provider.";
 };
@@ -22,10 +23,11 @@ export function providerReports(): ProviderReport[] {
   return providers.map((provider) => {
     const key = process.env[provider.env]?.trim();
     if (!key) {
-      return { name: provider.name, connected: false, detail: "not connected" };
+      return { name: provider.name, env: provider.env, connected: false, detail: "not connected" };
     }
     return {
       name: provider.name,
+      env: provider.env,
       connected: false,
       detail: "A key is set. This site has not called the provider.",
     };
