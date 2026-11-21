@@ -17,7 +17,7 @@ export const metadata = pageMetadata({
 
 export default function Home() {
   return (
-    <main id="top">
+    <main id="top" data-homepage>
       <HomeHero />
       <Suspense fallback={<FeaturedSeasonFallback />}>
         <FeaturedSeason />
