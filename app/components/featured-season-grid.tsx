@@ -8,21 +8,21 @@ import { LoadMoreList } from "./load-more";
 import { SaveTripButton } from "./save-trip-button";
 
 /** The whole poster, over a blurred copy of itself so portrait and wide posters share one frame. */
-function PosterFrame({ feature, priority }: { feature: HomeFeature; priority: boolean }) {
+function PosterFrame({ feature }: { feature: HomeFeature }) {
   const sizes = "(max-width: 639px) 40vw, (max-width: 1023px) 50vw, 20vw";
   return (
     <div className="relative aspect-[4/5] w-32 shrink-0 overflow-hidden border-r border-ink/10 bg-ink sm:w-full sm:border-b sm:border-r-0">
-      <Image src={feature.poster.src} alt="" fill sizes={sizes} priority={priority} className="scale-110 object-cover opacity-45 blur-xl" />
-      <Image src={feature.poster.src} alt={feature.poster.alt} fill sizes={sizes} priority={priority} className="object-contain" />
+      <Image src={feature.poster.src} alt="" fill sizes={sizes} className="scale-110 object-cover opacity-45 blur-xl" />
+      <Image src={feature.poster.src} alt={feature.poster.alt} fill sizes={sizes} className="object-contain" />
     </div>
   );
 }
 
-function FeaturedCard({ feature, index }: { feature: HomeFeature; index: number }) {
+function FeaturedCard({ feature }: { feature: HomeFeature }) {
   return (
     <article className="flex min-w-0 flex-row overflow-hidden rounded-lg border border-ink/15 bg-chart shadow-sm sm:flex-col">
       <Link href={feature.href} className="block shrink-0" tabIndex={-1} aria-hidden="true">
-        <PosterFrame feature={feature} priority={index < 2} />
+        <PosterFrame feature={feature} />
       </Link>
       <div className="flex min-w-0 flex-1 flex-col gap-3 p-3 sm:p-4">
         <DateBlock when={feature.date} />
@@ -48,8 +48,8 @@ export function FeaturedSeasonGrid({ featured }: { featured: HomeFeature[] }) {
     <LoadMoreList items={featured} mobileSize={3} desktopSize={5} noun="featured events">
       {(visible) => (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {visible.map((feature, index) => (
-            <FeaturedCard key={feature.id} feature={feature} index={index} />
+          {visible.map((feature) => (
+            <FeaturedCard key={feature.id} feature={feature} />
           ))}
         </div>
       )}

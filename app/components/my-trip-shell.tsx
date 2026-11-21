@@ -6,13 +6,13 @@ import { LagosClockSlot } from "./lagos-clock-slot";
 import { MyTripList } from "./my-trip";
 import { TripAccountPanel } from "./trip-account-panel";
 
-function MyTripShellFrame({
-  signedIn,
-  cloudSyncAvailable,
-}: {
-  signedIn: boolean;
-  cloudSyncAvailable: boolean;
-}) {
+async function MyTripAccount() {
+  const cloud = tripCloudSync();
+  const user = cloud.connected ? await getDirectoryUser() : null;
+  return <TripAccountPanel signedIn={Boolean(user)} cloudSyncAvailable={cloud.connected} />;
+}
+
+export function MyTripShell() {
   return (
     <section id="trip" className="scroll-mt-36 border-b border-ink/10 bg-chart">
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
@@ -41,31 +41,10 @@ function MyTripShellFrame({
           </div>
         </article>
         <MyTripList />
-        <TripAccountPanel signedIn={signedIn} cloudSyncAvailable={cloudSyncAvailable} />
+        <Suspense fallback={null}>
+          <MyTripAccount />
+        </Suspense>
       </div>
     </section>
-  );
-}
-
-async function MyTripShellSession() {
-  const user = await getDirectoryUser();
-  const cloud = tripCloudSync();
-
-  return (
-    <MyTripShellFrame signedIn={Boolean(user)} cloudSyncAvailable={cloud.connected} />
-  );
-}
-
-export function MyTripShell() {
-  const cloud = tripCloudSync();
-
-  return (
-    <Suspense
-      fallback={
-        <MyTripShellFrame signedIn={false} cloudSyncAvailable={cloud.connected} />
-      }
-    >
-      <MyTripShellSession />
-    </Suspense>
   );
 }

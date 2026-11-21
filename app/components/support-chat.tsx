@@ -166,7 +166,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
   if (hiddenPath(pathname)) return null;
 
   return (
-    <div className="support-chat pointer-events-none fixed inset-x-0 z-50 flex justify-end px-3 lg:inset-x-auto lg:right-5 lg:px-0">
+    <div className={`support-chat pointer-events-none fixed inset-x-0 z-50 flex justify-end px-3 lg:inset-x-auto lg:right-5 lg:px-0${pathname === "/" ? " support-chat-home" : ""}`}>
       <div className="pointer-events-auto flex w-full max-w-[22rem] flex-col items-end gap-2">
         {open ? (
           <section
@@ -350,7 +350,7 @@ export function SupportChat({ liveModel }: { liveModel: boolean }) {
           aria-expanded={open}
           aria-controls={open ? panelId : undefined}
           aria-haspopup="dialog"
-          className="border border-ink/15 bg-paper px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-ink shadow-[0_8px_24px_rgba(26,20,16,0.1)] hover:border-oxide hover:text-oxide"
+          className="min-h-11 border border-ink/15 bg-paper px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-ink shadow-[0_8px_24px_rgba(26,20,16,0.1)] hover:border-oxide hover:text-oxide"
           onClick={() => setOpen((value) => !value)}
         >
           {open ? "Close support" : "Ask support"}
