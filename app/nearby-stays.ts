@@ -3,7 +3,7 @@ import { pinForName } from "./geo";
 import { placeRecordFor, type PlaceRecord } from "./place-catalog";
 import { places } from "./places";
 
-const stayCategories = new Set(["Hotels", "Short-stay"]);
+const stayCategories = new Set(["Hotels", "Short-stay", "Beach resorts"]);
 
 export type NearbyStay = {
   place: PlaceRecord;

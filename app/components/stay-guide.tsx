@@ -3,7 +3,7 @@ import { places, type Place } from "../places";
 import { placeTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
 
-const stayCategories = new Set(["Hotels", "Short-stay"]);
+const stayCategories = new Set(["Hotels", "Short-stay", "Beach resorts"]);
 
 function staysByCity() {
   const groups: { country: string; city: string; rows: Place[] }[] = [];
