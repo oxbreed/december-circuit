@@ -13,7 +13,7 @@ import {
 import { VisitorNextActions } from "../components/visitor-next-actions";
 import { LoadingLines } from "../components/states";
 import { breadcrumbJsonLd } from "../jsonld";
-import { placesOnFile } from "../place-catalog";
+import { livePlacesOnFile } from "../live-directory";
 import { pageMetadata } from "../site";
 
 export const metadata = pageMetadata({
@@ -23,8 +23,8 @@ export const metadata = pageMetadata({
   path: "/places",
 });
 
-export default function PlacesPage() {
-  const crawlPlaces = placesOnFile();
+export default async function PlacesPage() {
+  const crawlPlaces = await livePlacesOnFile();
 
   return (
     <main id="top" className="pb-28 lg:pb-0">

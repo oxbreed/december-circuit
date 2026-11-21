@@ -1,6 +1,7 @@
 import { eventDateSpan } from "../../event-dates";
 import { eventKind } from "../../event-kind";
-import { events, type CircuitEvent } from "../../events";
+import { type CircuitEvent } from "../../events";
+import { liveEvents } from "../../live-directory";
 import { eventCategory } from "../../event-view";
 
 const DEFAULT_LIMIT = 20;
@@ -56,6 +57,7 @@ function json(body: unknown, status = 200) {
 }
 
 export async function GET(request: Request) {
+  const events = await liveEvents();
   const params = new URL(request.url).searchParams;
   const cities = readCities(params);
   const category = read(params, "category");

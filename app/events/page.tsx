@@ -5,7 +5,7 @@ import { EventsDirectory } from "../components/events-directory";
 import { SponsorSpot } from "../components/sponsor-spot";
 import { LoadingLines } from "../components/states";
 import { eventSlug, presentEvent } from "../event-view";
-import { events } from "../events";
+import { liveEvents } from "../live-directory";
 import { JsonLd } from "../components/json-ld";
 import { breadcrumbJsonLd } from "../jsonld";
 import { pageMetadata } from "../site";
@@ -17,7 +17,8 @@ export const metadata = pageMetadata({
   path: "/events",
 });
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const events = await liveEvents();
   const listed = events.map((event) => {
     const view = presentEvent(event);
     return { event, view, href: `/events/${eventSlug(event)}` };

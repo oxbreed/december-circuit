@@ -225,11 +225,10 @@ function ingestBlock() {
 export function AdminOverviewSection() {
   return (
     <section className="min-w-0">
-      <h2 className="font-display text-3xl leading-none tracking-tight">Overview</h2>
+      <h2 className="font-display text-3xl leading-none tracking-tight">Directory snapshot</h2>
       <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
-        Counts from the directory files shipped in the repo. Events, places, featured cards, and
-        posters are read-only here. A later change could store overrides in the database; this
-        panel does not edit those files.
+        Counts from the seed files and ingest merge. To change a record, use Events, Places,
+        Featured, or Landmarks in this panel.
       </p>
 
       <ul className="mt-8 grid gap-3 sm:grid-cols-2">

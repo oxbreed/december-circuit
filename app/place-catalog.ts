@@ -4,6 +4,7 @@ import { places, type Place } from "./places";
 export type PlaceRecord = Place & { slug: string };
 
 export function placeSlug(place: Place) {
+  if (place.slug && place.slug.trim()) return place.slug.trim();
   return `${slugify(place.name)}-${slugify(place.city)}`;
 }
 
