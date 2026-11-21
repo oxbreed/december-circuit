@@ -23,7 +23,23 @@ export const metadata = pageMetadata({
   path: "/places",
 });
 
-export default async function PlacesPage() {
+export default function PlacesPage() {
+  return (
+    <Suspense
+      fallback={
+        <main id="top" className="pb-28 lg:pb-0">
+          <div className="mx-auto max-w-6xl px-5 pt-28 md:px-8 md:pt-36">
+            <LoadingLines />
+          </div>
+        </main>
+      }
+    >
+      <PlacesPageBody />
+    </Suspense>
+  );
+}
+
+async function PlacesPageBody() {
   const crawlPlaces = await livePlacesOnFile();
 
   return (

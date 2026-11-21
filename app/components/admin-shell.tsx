@@ -45,12 +45,14 @@ export function AdminShell({
   email,
   section,
   pendingCount = 0,
+  pendingBadge,
   preview = false,
   children,
 }: {
   email: string;
   section: AdminSection;
   pendingCount?: number;
+  pendingBadge?: ReactNode;
   preview?: boolean;
   children: ReactNode;
 }) {
@@ -92,7 +94,7 @@ export function AdminShell({
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start">
         <aside className="min-w-0 lg:sticky lg:top-28">
-          <AdminNav section={section} pendingCount={pendingCount} />
+          <AdminNav section={section} pendingCount={pendingCount} pendingBadge={pendingBadge} />
         </aside>
         <div className="min-w-0">{children}</div>
       </div>

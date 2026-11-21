@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { FeaturedSeason } from "./components/featured-season";
+import { FeaturedSeason, FeaturedSeasonFallback } from "./components/featured-season";
 import { HomeHero } from "./components/home-hero";
 import { HomeNewsCard, HomeNewsFallback } from "./components/home-news-card";
 import { HomeStartNav } from "./components/home-start-nav";
@@ -20,7 +20,9 @@ export default function Home() {
     <main id="top">
       <HomeHero />
       <HomeStartNav />
-      <FeaturedSeason />
+      <Suspense fallback={<FeaturedSeasonFallback />}>
+        <FeaturedSeason />
+      </Suspense>
       <QuickHubs />
       <UpcomingHome />
       <Suspense fallback={<HomeNewsFallback />}>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { disclaimer } from "../brand";
 import { FeaturedEnquiryLink } from "../components/tracked-link";
 import { pageMetadata } from "../site";
@@ -66,7 +67,27 @@ const offers = [
   },
 ] as const;
 
-export default async function GetFeaturedPage() {
+function GetFeaturedFallback() {
+  return (
+    <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-16 pt-16 sm:px-6 md:px-8 md:pt-32">
+      <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">For organisers &amp; businesses</p>
+      <h1 className="mt-2 max-w-3xl font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
+        Get featured
+      </h1>
+      <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">Loading placements…</p>
+    </main>
+  );
+}
+
+export default function GetFeaturedPage() {
+  return (
+    <Suspense fallback={<GetFeaturedFallback />}>
+      <GetFeaturedPageBody />
+    </Suspense>
+  );
+}
+
+async function GetFeaturedPageBody() {
   const paystack = paymentLink(process.env.PAYSTACK_PAYMENT_URL, ["paystack.com", "paystack.shop"]);
   const flutterwave = paymentLink(process.env.FLUTTERWAVE_PAYMENT_URL, ["flutterwave.com"]);
   const placements = await livePlacements();

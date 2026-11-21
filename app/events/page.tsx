@@ -17,7 +17,23 @@ export const metadata = pageMetadata({
   path: "/events",
 });
 
-export default async function EventsPage() {
+export default function EventsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main id="top" className="pb-28 lg:pb-0">
+          <div className="mx-auto max-w-6xl px-5 pt-28 md:px-8 md:pt-36">
+            <LoadingLines />
+          </div>
+        </main>
+      }
+    >
+      <EventsPageBody />
+    </Suspense>
+  );
+}
+
+async function EventsPageBody() {
   const events = await liveEvents();
   const listed = events.map((event) => {
     const view = presentEvent(event);

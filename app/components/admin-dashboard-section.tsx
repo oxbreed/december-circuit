@@ -1,12 +1,14 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import {
   loadAdminDashboard,
   parseDashboardRange,
+  periodFor,
   rangeLabel,
   type ActivityItem,
   type CountRow,
   type DashboardKpis,
+  type DashboardRange,
   type DashboardReport,
   type DashboardWidget,
   type VitalTile,
@@ -343,21 +345,198 @@ export function AdminDashboardView({
   );
 }
 
+function DashboardHeader({ range }: { range: DashboardRange }) {
+  const period = periodFor(range);
+  const bounds = formatRangeBounds(period.start.toISOString(), period.end.toISOString());
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="min-w-0">
+        <h2 className="font-display text-3xl leading-none tracking-tight">Dashboard / Insights</h2>
+        <p className="mt-3 max-w-xl text-sm leading-7 text-muted">
+          First-party traffic for dirtydecember.info. {rangeLabel(range)}. {bounds}. Bot user
+          agents are left out of page view totals. The migration test click is left out of click
+          totals.
+        </p>
+      </div>
+      <AdminDashboardRange range={range} />
+    </div>
+  );
+}
+
+function WidgetFallback({ title, tall = false }: { title: string; tall?: boolean }) {
+  return (
+    <section className="border border-ink/15 bg-chart px-4 py-4">
+      <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted">{title}</h3>
+      <p className={`mt-3 text-sm leading-7 text-muted ${tall ? "min-h-40" : ""}`}>Loading…</p>
+    </section>
+  );
+}
+
+async function KpisBlock({ range }: { range: DashboardRange }) {
+  const { report } = await loadAdminDashboard(range);
+  return <KpiGrid widget={report.kpis} />;
+}
+
+async function SeriesBlock({ range }: { range: DashboardRange }) {
+  const { report } = await loadAdminDashboard(range);
+  return (
+    <Widget
+      title="Page views and clicks"
+      widget={
+        report.series.ok && report.series.data && report.series.data.every((p) => p.pageViews === 0 && p.clicks === 0)
+          ? { ok: true, reason: null, data: [] }
+          : report.series
+      }
+      empty="No traffic in this period yet."
+    >
+      {report.series.data ? (
+        <>
+          <AdminDashboardChartLegend />
+          <AdminDashboardChart series={report.series.data} />
+        </>
+      ) : null}
+    </Widget>
+  );
+}
+
+async function TopsBlock({ range }: { range: DashboardRange }) {
+  const { report } = await loadAdminDashboard(range);
+  return (
+    <div className="grid gap-3 lg:grid-cols-2">
+      <Widget title="Top pages" widget={report.topPages} empty="No pages recorded in this period.">
+        {report.topPages.data ? <RankedList rows={report.topPages.data} /> : null}
+      </Widget>
+      <Widget
+        title="Top referrers"
+        widget={report.topReferrers}
+        empty="No external referrers in this period."
+      >
+        {report.topReferrers.data ? <RankedList rows={report.topReferrers.data} /> : null}
+      </Widget>
+      <Widget title="Countries" widget={report.topCountries} empty="No country data in this period.">
+        {report.topCountries.data ? <RankedList rows={report.topCountries.data} /> : null}
+      </Widget>
+      <Widget title="Devices" widget={report.topDevices} empty="No device data in this period.">
+        {report.topDevices.data ? <RankedList rows={report.topDevices.data} /> : null}
+      </Widget>
+      <Widget title="Browsers" widget={report.topBrowsers} empty="No browser data in this period.">
+        {report.topBrowsers.data ? <RankedList rows={report.topBrowsers.data} /> : null}
+      </Widget>
+      <Widget title="Partners" widget={report.topPartners} empty="No partner clicks in this period.">
+        {report.topPartners.data ? <RankedList rows={report.topPartners.data} /> : null}
+      </Widget>
+      <Widget
+        title="Placements"
+        widget={report.topPlacements}
+        empty="No placement labels in this period."
+      >
+        {report.topPlacements.data ? <RankedList rows={report.topPlacements.data} /> : null}
+      </Widget>
+      <Widget
+        title="Paths that sent clicks"
+        widget={report.topClickPaths}
+        empty="No click source paths in this period."
+      >
+        {report.topClickPaths.data ? <RankedList rows={report.topClickPaths.data} /> : null}
+      </Widget>
+    </div>
+  );
+}
+
+async function VitalsActivityBlock({ range }: { range: DashboardRange }) {
+  const { report } = await loadAdminDashboard(range);
+  return (
+    <div className="grid gap-3 lg:grid-cols-2">
+      <Widget
+        title="Core Web Vitals, p75"
+        widget={report.vitals}
+        empty="No Web Vitals samples in this period."
+      >
+        {report.vitals.data ? (
+          <ul className="grid gap-3 sm:grid-cols-3">
+            {report.vitals.data.map((tile) => (
+              <li key={tile.metric}>
+                <p className="text-[10px] uppercase tracking-[0.16em] text-muted">{tile.metric}</p>
+                <p
+                  className={`mt-1 font-display text-3xl leading-none tracking-tight tabular-nums ${vitalTone(tile.rating)}`}
+                >
+                  {formatVital(tile)}
+                </p>
+                <p className={`mt-2 text-sm leading-6 ${vitalTone(tile.rating)}`}>
+                  {vitalLabel(tile.rating)}
+                  {tile.samples > 0 ? ` · ${formatCount(tile.samples)} samples` : ""}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </Widget>
+      <Widget
+        title="Recent activity"
+        widget={report.activity}
+        empty="No clicks or submissions in this period."
+      >
+        {report.activity.data ? <ActivityList items={report.activity.data} /> : null}
+      </Widget>
+    </div>
+  );
+}
+
 export async function AdminDashboardSection({
   range: rawRange,
 }: {
   range?: string | string[];
 }) {
   const range = parseDashboardRange(rawRange);
-  const { report } = await loadAdminDashboard(range);
-  return <AdminDashboardView report={report} />;
+  return (
+    <section className="min-w-0" data-admin-analytics="insights">
+      <DashboardHeader range={range} />
+      <Suspense
+        fallback={
+          <p className="mt-6 text-sm leading-7 text-muted">Loading totals…</p>
+        }
+      >
+        <KpisBlock range={range} />
+      </Suspense>
+      <div className="mt-6">
+        <Suspense fallback={<WidgetFallback title="Page views and clicks" tall />}>
+          <SeriesBlock range={range} />
+        </Suspense>
+      </div>
+      <div className="mt-6">
+        <Suspense
+          fallback={
+            <div className="grid gap-3 lg:grid-cols-2">
+              <WidgetFallback title="Top pages" />
+              <WidgetFallback title="Top referrers" />
+            </div>
+          }
+        >
+          <TopsBlock range={range} />
+        </Suspense>
+      </div>
+      <div className="mt-6">
+        <Suspense
+          fallback={
+            <div className="grid gap-3 lg:grid-cols-2">
+              <WidgetFallback title="Core Web Vitals, p75" />
+              <WidgetFallback title="Recent activity" />
+            </div>
+          }
+        >
+          <VitalsActivityBlock range={range} />
+        </Suspense>
+      </div>
+    </section>
+  );
 }
 
 export function AdminDashboardSectionFallback() {
+  const range = parseDashboardRange(undefined);
   return (
-    <section className="min-w-0">
-      <h2 className="font-display text-3xl leading-none tracking-tight">Dashboard / Insights</h2>
-      <p className="mt-3 text-sm leading-7 text-muted">Loading insights…</p>
+    <section className="min-w-0" data-admin-analytics="insights">
+      <DashboardHeader range={range} />
+      <p className="mt-6 text-sm leading-7 text-muted">Loading totals…</p>
     </section>
   );
 }

@@ -1,7 +1,5 @@
-"use client";
-
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { hrefForSection, type AdminSection } from "../admin-routes";
 
 type NavItem = { id: AdminSection; label: string; badge?: number };
@@ -48,15 +46,16 @@ export const adminNavGroups: NavGroup[] = [
 export function AdminNav({
   section,
   pendingCount = 0,
+  pendingBadge,
 }: {
   section: AdminSection;
   pendingCount?: number;
+  pendingBadge?: ReactNode;
 }) {
-  const router = useRouter();
   const groups = adminNavGroups.map((group) => ({
     ...group,
     items: group.items.map((item) =>
-      item.id === "approvals" && pendingCount > 0 ? { ...item, badge: pendingCount } : item,
+      item.id === "approvals" && pendingCount > 0 && !pendingBadge ? { ...item, badge: pendingCount } : item,
     ),
   }));
   const flat = groups.flatMap((group) => group.items);
@@ -64,28 +63,36 @@ export function AdminNav({
   return (
     <nav aria-label="Control panel" className="min-w-0">
       <div className="lg:hidden">
-        <label className="block min-w-0">
-          <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-muted">
-            Section
-          </span>
-          <select
-            className="ledger-input py-2!"
-            value={section === "search" ? "overview" : section}
-            onChange={(event) => {
-              router.push(hrefForSection(event.target.value as AdminSection));
-            }}
-          >
-            {groups.map((group) => (
-              <optgroup key={group.label} label={group.label}>
-                {group.items.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.badge ? `${item.label} (${item.badge})` : item.label}
-                  </option>
+        <form action="/admin" method="get" className="block min-w-0">
+          <label className="block min-w-0">
+            <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-muted">
+              Section
+            </span>
+            <span className="flex min-w-0 items-end gap-2">
+              <select
+                className="ledger-input py-2!"
+                name="section"
+                defaultValue={section === "search" ? "overview" : section}
+              >
+                {groups.map((group) => (
+                  <optgroup key={group.label} label={group.label}>
+                    {group.items.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.badge ? `${item.label} (${item.badge})` : item.label}
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
-              </optgroup>
-            ))}
-          </select>
-        </label>
+              </select>
+              <button
+                type="submit"
+                className="inline-flex shrink-0 border border-ink/20 bg-chart px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-ink hover:border-oxide hover:text-oxide"
+              >
+                Open
+              </button>
+            </span>
+          </label>
+        </form>
         <ul className="mt-3 flex gap-2 overflow-x-auto pb-1">
           {flat.map((item) => {
             const active = item.id === section;
@@ -101,9 +108,11 @@ export function AdminNav({
                   aria-current={active ? "page" : undefined}
                 >
                   {item.label}
-                  {item.badge ? (
-                    <span className={active ? "text-chart" : "text-oxide"}>{item.badge}</span>
-                  ) : null}
+                  {item.id === "approvals"
+                    ? pendingBadge
+                    : item.badge
+                      ? <span className={active ? "text-chart" : "text-oxide"}>{item.badge}</span>
+                      : null}
                 </Link>
               </li>
             );
@@ -130,7 +139,9 @@ export function AdminNav({
                       aria-current={active ? "page" : undefined}
                     >
                       <span>{item.label}</span>
-                      {item.badge ? (
+                      {item.id === "approvals" ? (
+                        pendingBadge
+                      ) : item.badge ? (
                         <span className="bg-oxide px-1.5 py-0.5 text-[10px] uppercase tracking-[0.12em] text-chart">
                           {item.badge}
                         </span>

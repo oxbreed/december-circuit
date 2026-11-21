@@ -1,7 +1,10 @@
 import "server-only";
+import { cacheLife } from "next/cache";
+import { cache } from "react";
 import { directorySignIn, isAdminEmail } from "./directory-auth";
 import { createServiceClient } from "./supabase/server";
 import { getDirectoryUser } from "./supabase/session";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const dashboardRanges = ["24h", "7d", "30d", "90d"] as const;
 export type DashboardRange = (typeof dashboardRanges)[number];
@@ -150,7 +153,7 @@ function emptyReport(range: DashboardRange, period: Period, reason: string | nul
 
 type Period = { start: Date; end: Date; previousStart: Date; range: DashboardRange };
 
-function periodFor(range: DashboardRange, end = new Date()): Period {
+export function periodFor(range: DashboardRange, end = new Date()): Period {
   const ms = rangeMs[range];
   const start = new Date(end.getTime() - ms);
   const previousStart = new Date(start.getTime() - ms);
@@ -365,83 +368,223 @@ function submissionTitle(row: SubmissionRow) {
   return row.event_name || row.business_name || row.product_name || row.kind || "Submission";
 }
 
-export async function loadAdminDashboard(
-  range: DashboardRange,
-): Promise<{ report: DashboardReport; reason: "ok" | "no-key" | "forbidden" }> {
-  const period = periodFor(range);
-  const gate = await requireAdminService();
-  if (!gate.ok) {
-    return { report: emptyReport(range, period, gateMessage(gate.reason)), reason: gate.reason };
+function isMissingRpc(error: unknown) {
+  const err = error as { code?: string; message?: string; details?: string; hint?: string } | null;
+  const text = `${err?.code ?? ""} ${err?.message ?? ""} ${err?.details ?? ""} ${err?.hint ?? ""}`;
+  return (
+    err?.code === "PGRST202" ||
+    err?.code === "42883" ||
+    /could not find the function|admin_insights_report/i.test(text)
+  );
+}
+
+function asCountRows(value: unknown, limit = 8): CountRow[] {
+  if (!Array.isArray(value)) return [];
+  const rows: CountRow[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const row = item as { label?: unknown; count?: unknown };
+    if (typeof row.label !== "string" || !row.label) continue;
+    const count = typeof row.count === "number" && Number.isFinite(row.count) ? row.count : Number(row.count);
+    if (!Number.isFinite(count)) continue;
+    rows.push({ label: row.label, count });
+    if (rows.length >= limit) break;
+  }
+  return rows;
+}
+
+function withPageHrefs(rows: CountRow[]): CountRow[] {
+  return rows.map((row) => ({
+    ...row,
+    href: row.label.startsWith("/") ? row.label : undefined,
+  }));
+}
+
+function mapBuckets(value: unknown) {
+  const map = new Map<string, number>();
+  if (!Array.isArray(value)) return map;
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const row = item as { bucket?: unknown; count?: unknown };
+    if (typeof row.bucket !== "string" || !row.bucket) continue;
+    const count = typeof row.count === "number" && Number.isFinite(row.count) ? row.count : Number(row.count);
+    if (!Number.isFinite(count)) continue;
+    map.set(row.bucket, count);
+  }
+  return map;
+}
+
+function reportFromRpc(range: DashboardRange, period: Period, payload: Record<string, unknown>): DashboardReport {
+  const kpisRaw = (payload.kpis ?? {}) as Record<string, unknown>;
+  const num = (key: string) => {
+    const value = kpisRaw[key];
+    return typeof value === "number" && Number.isFinite(value) ? value : Number(value) || 0;
+  };
+  const pageViews = num("pageViews");
+  const prevViews = num("prevPageViews");
+  const sessions = num("sessions");
+  const prevSessions = num("prevSessions");
+  const clicks = num("clicks");
+  const prevClicks = num("prevClicks");
+  const earningClicks = num("earningClicks");
+  const prevEarning = num("prevEarningClicks");
+  const submissions = num("submissions");
+  const prevSubmissions = num("prevSubmissions");
+  const currentCtr = ctr(clicks, pageViews);
+  const previousCtr = ctr(prevClicks, prevViews);
+
+  const vitalRows = Array.isArray(payload.vitals) ? payload.vitals : [];
+  const vitalMap = new Map<string, { p75: number | null; samples: number }>();
+  for (const item of vitalRows) {
+    if (!item || typeof item !== "object") continue;
+    const row = item as { metric?: unknown; p75?: unknown; samples?: unknown };
+    if (row.metric !== "LCP" && row.metric !== "INP" && row.metric !== "CLS") continue;
+    const p75 = typeof row.p75 === "number" && Number.isFinite(row.p75) ? row.p75 : null;
+    const samples = typeof row.samples === "number" && Number.isFinite(row.samples) ? row.samples : 0;
+    vitalMap.set(row.metric, { p75, samples });
   }
 
-  const supabase = gate.supabase;
+  const activity: ActivityItem[] = [];
+  if (Array.isArray(payload.activity)) {
+    for (const item of payload.activity) {
+      if (!item || typeof item !== "object") continue;
+      const row = item as { id?: unknown; kind?: unknown; title?: unknown; detail?: unknown; ts?: unknown };
+      if (row.kind !== "click" && row.kind !== "submission") continue;
+      if (typeof row.id !== "string" || typeof row.title !== "string" || typeof row.ts !== "string") continue;
+      activity.push({
+        id: row.id,
+        kind: row.kind,
+        title: row.title,
+        detail: typeof row.detail === "string" && row.detail ? row.detail : row.kind === "click" ? "Outbound click" : "Submission",
+        ts: row.ts,
+      });
+    }
+  }
+
+  const countries = asCountRows(payload.topCountries).map((row) => ({
+    ...row,
+    label: countryName(row.label),
+  }));
+
+  return {
+    range,
+    periodStart: period.start.toISOString(),
+    periodEnd: period.end.toISOString(),
+    previousStart: period.previousStart.toISOString(),
+    kpis: ok({
+      pageViews,
+      pageViewsDelta: delta(pageViews, prevViews),
+      sessions,
+      sessionsDelta: delta(sessions, prevSessions),
+      clicks,
+      clicksDelta: delta(clicks, prevClicks),
+      ctr: currentCtr,
+      ctrDelta: currentCtr === null || previousCtr === null ? null : delta(currentCtr, previousCtr),
+      earningClicks,
+      earningClicksDelta: delta(earningClicks, prevEarning),
+      submissions,
+      submissionsDelta: delta(submissions, prevSubmissions),
+    }),
+    series: ok(fillBuckets(range, period, mapBuckets(payload.viewBuckets), mapBuckets(payload.clickBuckets))),
+    topPages: ok(withPageHrefs(asCountRows(payload.topPages))),
+    topReferrers: ok(asCountRows(payload.topReferrers)),
+    topCountries: ok(topMap(new Map(countries.map((row) => [row.label, row.count])))),
+    topDevices: ok(asCountRows(payload.topDevices, 6)),
+    topBrowsers: ok(asCountRows(payload.topBrowsers, 6)),
+    topPartners: ok(asCountRows(payload.topPartners)),
+    topPlacements: ok(asCountRows(payload.topPlacements)),
+    topClickPaths: ok(withPageHrefs(asCountRows(payload.topClickPaths))),
+    vitals: ok(
+      (["LCP", "INP", "CLS"] as const).map((metric) => {
+        const t = VITAL_THRESHOLDS[metric];
+        const row = vitalMap.get(metric);
+        const p75 = row?.p75 ?? null;
+        return {
+          metric,
+          p75,
+          unit: t.unit,
+          rating: vitalRating(metric, p75),
+          samples: row?.samples ?? 0,
+          good: t.good,
+          poor: t.poor,
+        };
+      }),
+    ),
+    activity: ok(activity),
+  };
+}
+
+async function loadDashboardFromRows(
+  supabase: SupabaseClient,
+  range: DashboardRange,
+  period: Period,
+): Promise<DashboardReport> {
   const since = period.previousStart.toISOString();
   const until = period.end.toISOString();
 
-  const viewsResult = await (async () => {
-    try {
-      const { data, error } = await supabase
-        .from("page_views")
-        .select("path, country, referrer, ua, ts")
-        .gte("ts", since)
-        .lt("ts", until)
-        .order("ts", { ascending: false })
-        .limit(20000);
-      if (error) throw error;
-      return { ok: true as const, rows: (data ?? []) as ViewRow[] };
-    } catch (error) {
-      return { ok: false as const, error };
-    }
-  })();
-
-  const clicksResult = await (async () => {
-    try {
-      const { data, error } = await supabase
-        .from("outbound_clicks")
-        .select("id, kind, partner, target, destination_host, placement, from_path, ts, earning")
-        .gte("ts", since)
-        .lt("ts", until)
-        .order("ts", { ascending: false })
-        .limit(5000);
-      if (error) throw error;
-      return { ok: true as const, rows: (data ?? []) as ClickRow[] };
-    } catch (error) {
-      return { ok: false as const, error };
-    }
-  })();
-
-  const submissionsResult = await (async () => {
-    try {
-      const { data, error } = await supabase
-        .from("submissions")
-        .select("id, kind, event_name, business_name, product_name, city, created_at")
-        .gte("created_at", since)
-        .lt("created_at", until)
-        .order("created_at", { ascending: false })
-        .limit(2000);
-      if (error) throw error;
-      return { ok: true as const, rows: (data ?? []) as SubmissionRow[] };
-    } catch (error) {
-      return { ok: false as const, error };
-    }
-  })();
-
-  const vitalsResult = await (async () => {
-    try {
-      const { data, error } = await supabase
-        .from("web_vitals")
-        .select("metric, value, ts")
-        .in("metric", ["LCP", "INP", "CLS"])
-        .gte("ts", period.start.toISOString())
-        .lt("ts", until)
-        .order("ts", { ascending: false })
-        .limit(20000);
-      if (error) throw error;
-      return { ok: true as const, rows: (data ?? []) as VitalRow[] };
-    } catch (error) {
-      return { ok: false as const, error };
-    }
-  })();
+  const [viewsResult, clicksResult, submissionsResult, vitalsResult] = await Promise.all([
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("page_views")
+          .select("path, country, referrer, ua, ts")
+          .gte("ts", since)
+          .lt("ts", until)
+          .order("ts", { ascending: false })
+          .limit(20000);
+        if (error) throw error;
+        return { ok: true as const, rows: (data ?? []) as ViewRow[] };
+      } catch (error) {
+        return { ok: false as const, error };
+      }
+    })(),
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("outbound_clicks")
+          .select("id, kind, partner, target, destination_host, placement, from_path, ts, earning")
+          .gte("ts", since)
+          .lt("ts", until)
+          .order("ts", { ascending: false })
+          .limit(5000);
+        if (error) throw error;
+        return { ok: true as const, rows: (data ?? []) as ClickRow[] };
+      } catch (error) {
+        return { ok: false as const, error };
+      }
+    })(),
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("submissions")
+          .select("id, kind, event_name, business_name, product_name, city, created_at")
+          .gte("created_at", since)
+          .lt("created_at", until)
+          .order("created_at", { ascending: false })
+          .limit(2000);
+        if (error) throw error;
+        return { ok: true as const, rows: (data ?? []) as SubmissionRow[] };
+      } catch (error) {
+        return { ok: false as const, error };
+      }
+    })(),
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("web_vitals")
+          .select("metric, value, ts")
+          .in("metric", ["LCP", "INP", "CLS"])
+          .gte("ts", period.start.toISOString())
+          .lt("ts", until)
+          .order("ts", { ascending: false })
+          .limit(20000);
+        if (error) throw error;
+        return { ok: true as const, rows: (data ?? []) as VitalRow[] };
+      } catch (error) {
+        return { ok: false as const, error };
+      }
+    })(),
+  ]);
 
   const currentViews = viewsResult.ok
     ? viewsResult.rows.filter((row) => inCurrent(row.ts, period) && !isBotUa(row.ua))
@@ -543,7 +686,7 @@ export async function loadAdminDashboard(
         const browser = browserFromUa(row.ua);
         browsers.set(browser, (browsers.get(browser) ?? 0) + 1);
       }
-      topPages = ok(topMap(paths).map((row) => ({ ...row, href: row.label.startsWith("/") ? row.label : undefined })));
+      topPages = ok(withPageHrefs(topMap(paths)));
       topReferrers = ok(topMap(referrers));
       topCountries = ok(topMap(countries));
       topDevices = ok(topMap(devices, 6));
@@ -558,10 +701,6 @@ export async function loadAdminDashboard(
       topDevices = failed;
       topBrowsers = failed;
     }
-  }
-
-  if (!clicksResult.ok && kpis.ok && kpis.data) {
-    // page views loaded but clicks table failed: keep view KPIs, zero click fields with a reason on click widgets
   }
 
   let topPartners: DashboardWidget<CountRow[]>;
@@ -599,12 +738,7 @@ export async function loadAdminDashboard(
       }
       topPartners = ok(topMap(partners));
       topPlacements = ok(topMap(placements));
-      topClickPaths = ok(
-        topMap(paths).map((row) => ({
-          ...row,
-          href: row.label.startsWith("/") ? row.label : undefined,
-        })),
-      );
+      topClickPaths = ok(withPageHrefs(topMap(paths)));
     } catch (error) {
       const failed = fail<CountRow[]>("click aggregates", error, "Outbound click totals unavailable.");
       topPartners = failed;
@@ -683,30 +817,66 @@ export async function loadAdminDashboard(
     activity = fail("activity", error, "Recent activity unavailable.");
   }
 
-  // If clicks failed, still fill series clicks as zeros when views worked
   if (series.ok && series.data && !clicksResult.ok) {
     series = ok(series.data.map((point) => ({ ...point, clicks: 0 })));
   }
 
   return {
-    report: {
-      range,
-      periodStart: period.start.toISOString(),
-      periodEnd: period.end.toISOString(),
-      previousStart: period.previousStart.toISOString(),
-      kpis,
-      series,
-      topPages,
-      topReferrers,
-      topCountries,
-      topDevices,
-      topBrowsers,
-      topPartners,
-      topPlacements,
-      topClickPaths,
-      vitals,
-      activity,
-    },
-    reason: "ok",
+    range,
+    periodStart: period.start.toISOString(),
+    periodEnd: period.end.toISOString(),
+    previousStart: period.previousStart.toISOString(),
+    kpis,
+    series,
+    topPages,
+    topReferrers,
+    topCountries,
+    topDevices,
+    topBrowsers,
+    topPartners,
+    topPlacements,
+    topClickPaths,
+    vitals,
+    activity,
   };
 }
+
+async function loadCachedDashboardReport(range: DashboardRange, endIso: string): Promise<DashboardReport> {
+  "use cache";
+  cacheLife({ stale: 30, revalidate: 30, expire: 120 });
+  const period = periodFor(range, new Date(endIso));
+  const supabase = createServiceClient();
+  if (!supabase) return emptyReport(range, period, "Database not connected. The server key is not set.");
+
+  try {
+    const { data, error } = await supabase.rpc("admin_insights_report", {
+      p_range: range,
+      p_end: endIso,
+    });
+    if (error) {
+      if (!isMissingRpc(error)) throw error;
+    } else if (data && typeof data === "object") {
+      return reportFromRpc(range, period, data as Record<string, unknown>);
+    }
+  } catch (error) {
+    if (!isMissingRpc(error)) {
+      console.error("Admin dashboard: insights rpc", error);
+    }
+  }
+
+  return loadDashboardFromRows(supabase, range, period);
+}
+
+export const loadAdminDashboard = cache(async (
+  range: DashboardRange,
+): Promise<{ report: DashboardReport; reason: "ok" | "no-key" | "forbidden" }> => {
+  const endTick = new Date(Math.floor(Date.now() / 60_000) * 60_000);
+  const period = periodFor(range, endTick);
+  const gate = await requireAdminService();
+  if (!gate.ok) {
+    return { report: emptyReport(range, period, gateMessage(gate.reason)), reason: gate.reason };
+  }
+
+  const report = await loadCachedDashboardReport(range, endTick.toISOString());
+  return { report, reason: "ok" };
+});
