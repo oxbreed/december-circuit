@@ -81,7 +81,7 @@ const footerGroups = [
   },
 ] as const;
 
-export function SiteChrome({ children }: { children: ReactNode }) {
+export function SiteChrome({ children, support }: { children: ReactNode; support: ReactNode }) {
   const pathname = usePathname();
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -173,7 +173,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
           <NewsTicker />
         </div>
       </header>
-      <div className="mobile-scroll lg:contents">
+      <div className={pathname === "/" ? "mobile-scroll mobile-scroll-home lg:contents" : "mobile-scroll lg:contents"}>
       {children}
       <footer className="border-t border-ink/15 pb-32 lg:pb-0">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-12 md:px-8 lg:py-16">
@@ -274,39 +274,42 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       </div>
       <div
         ref={barRef}
-        className="fixed inset-x-0 bottom-0 z-40 max-w-full overflow-x-clip border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden"
+        className={`fixed inset-x-0 bottom-0 z-40 max-w-full lg:contents${pathname === "/" ? " mobile-dock-home" : ""}`}
       >
-        <NewsTicker />
-        <nav aria-label="Mobile pages" className="px-1 py-2">
-          <div className="grid grid-cols-5 gap-0.5">
-            {navPrimary.map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                aria-current={current(pathname, href) ? "page" : undefined}
-                className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-1 text-center text-[11px] font-medium uppercase leading-none tracking-tight ${
-                  current(pathname, href) ? "text-oxide" : "text-ink/80"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-          <div className="mt-1 grid grid-cols-4 gap-0.5 border-t border-ink/10 pt-1">
-            {navSecondary.map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                aria-current={current(pathname, href) ? "page" : undefined}
-                className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-0.5 text-center text-[10px] font-medium uppercase leading-none tracking-tight ${
-                  current(pathname, href) ? "text-oxide" : "text-ink/70"
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-        </nav>
+        {support}
+        <div className="overflow-x-clip border-t border-ink/10 bg-paper/95 backdrop-blur-md lg:hidden">
+          <NewsTicker />
+          <nav aria-label="Mobile pages" className="px-1 py-2">
+            <div className="grid grid-cols-5 gap-0.5">
+              {navPrimary.map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={current(pathname, href) ? "page" : undefined}
+                  className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-1 text-center text-[11px] font-medium uppercase leading-none tracking-tight ${
+                    current(pathname, href) ? "text-oxide" : "text-ink/80"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+            <div className="mt-1 grid grid-cols-4 gap-0.5 border-t border-ink/10 pt-1">
+              {navSecondary.map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={current(pathname, href) ? "page" : undefined}
+                  className={`flex min-w-0 items-center justify-center whitespace-nowrap px-0.5 py-0.5 text-center text-[10px] font-medium uppercase leading-none tracking-tight ${
+                    current(pathname, href) ? "text-oxide" : "text-ink/70"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        </div>
       </div>
       <noscript>
         <p className="mx-auto max-w-6xl px-5 pb-10 text-sm leading-6 text-muted md:px-8">

@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { homeHeroSlides } from "../home-hero-slides";
 import { HeroNightlife } from "./hero-nightlife";
+import { HeroSlideCaption, HeroSlideImage } from "./hero-slide";
 
 const actionClass =
   "inline-flex min-h-11 items-center justify-center rounded-sm px-5 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current";
 
 export function HomeHero() {
+  const [firstSlide, ...slides] = homeHeroSlides();
   return (
     <section
       className="overflow-x-clip border-b border-ink/10 bg-paper pt-[4.5rem] lg:pt-[8.25rem]"
@@ -40,7 +42,13 @@ export function HomeHero() {
             </Link>
           </nav>
         </div>
-        <HeroNightlife slides={homeHeroSlides()} />
+        {firstSlide && (
+          <HeroNightlife
+            slides={slides}
+            firstImage={<HeroSlideImage slide={firstSlide} first />}
+            firstCaption={<HeroSlideCaption slide={firstSlide} />}
+          />
+        )}
       </div>
     </section>
   );

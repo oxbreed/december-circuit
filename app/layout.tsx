@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { JsonLd } from "./components/json-ld";
-import { SiteAnalytics } from "./components/site-analytics";
+import { DeferredSiteAnalytics } from "./components/deferred-site-analytics";
 import { SiteChrome } from "./components/site-chrome";
 import { SupportChatSlot } from "./components/support-chat-slot";
 import { organizationJsonLd, siteJsonLd } from "./jsonld";
@@ -102,11 +102,10 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col font-sans text-ink">
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={siteJsonLd()} />
-        <SiteChrome>{children}</SiteChrome>
-        <Suspense fallback={null}>
-          <SupportChatSlot />
-        </Suspense>
-        <SiteAnalytics gaMeasurementId={gaMeasurementId()} />
+        <SiteChrome support={<Suspense fallback={null}><SupportChatSlot /></Suspense>}>
+          {children}
+        </SiteChrome>
+        <DeferredSiteAnalytics gaMeasurementId={gaMeasurementId()} />
       </body>
     </html>
   );

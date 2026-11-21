@@ -1,13 +1,17 @@
 import { connection } from "next/server";
 import { Suspense } from "react";
 import Link from "next/link";
+import { presentEvent } from "../event-view";
 import { upcomingEventsFrom } from "../upcoming-events";
 import { LoadingLines } from "./states";
 import { UpcomingHomeList } from "./upcoming-home-list";
 
 async function UpcomingBody() {
   await connection();
-  const rows = upcomingEventsFrom(new Date());
+  const rows = upcomingEventsFrom(new Date()).map((event) => {
+    const { href, name, region } = presentEvent(event);
+    return { href, name, region, when: event.when };
+  });
   return <UpcomingHomeList rows={rows} />;
 }
 
