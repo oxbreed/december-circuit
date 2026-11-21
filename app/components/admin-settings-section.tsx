@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { connection } from "next/server";
 import { WpProbeControls } from "./wp-probe-controls";
 import { partnerEarning } from "../affiliate-config";
 import { directorySignIn } from "../directory-auth";
@@ -49,13 +50,15 @@ function SettingsCard({
   children,
 }: {
   title: string;
-  description: string;
+  description?: string;
   children: ReactNode;
 }) {
   return (
-    <section className="border border-ink/15 bg-chart px-5 py-6">
+    <section className="border border-ink/15 bg-chart px-5 py-5 sm:px-6 sm:py-6">
       <h3 className="font-display text-2xl leading-none tracking-tight">{title}</h3>
-      <p className="mt-2 max-w-xl text-sm leading-7 text-muted">{description}</p>
+      {description ? (
+        <p className="mt-2 max-w-xl text-sm leading-7 text-muted">{description}</p>
+      ) : null}
       <div className="mt-5">{children}</div>
     </section>
   );
@@ -132,7 +135,7 @@ export function AdminSettingsView({
         Sign-in, probe storage, analytics, and provider connections for this site.
       </p>
 
-      <div className="mt-8 grid gap-3">
+      <div className="mt-8 grid gap-4">
         <SettingsCard
           title="Sign-in"
           description="Operators sign in with an email link through Supabase Auth."
@@ -149,8 +152,18 @@ export function AdminSettingsView({
             <div className="min-w-0">
               <p className="text-sm leading-6 text-ink">Admin allowlist</p>
               <EnvNames names={["ADMIN_EMAILS"]} />
-              <p className="mt-1 text-sm leading-6 text-ink">{auth.adminEmails.join(", ")}</p>
-              <p className="mt-1 text-sm leading-6 text-muted">
+              {auth.adminEmails.length ? (
+                <ul className="mt-2 grid gap-1">
+                  {auth.adminEmails.map((email) => (
+                    <li key={email} className="font-mono text-[13px] leading-6 text-ink">
+                      {email}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-sm leading-6 text-muted">No addresses on file.</p>
+              )}
+              <p className="mt-2 text-sm leading-6 text-muted">
                 Set <code className="font-mono text-[11px]">ADMIN_EMAILS</code> on Vercel if you
                 need more than the default address. The steps are in{" "}
                 <code className="font-mono text-[11px]">docs/auth-admin-setup.md</code>.
@@ -200,28 +213,30 @@ export function AdminSettingsView({
           <p className="border-t border-ink/10 pt-3 text-sm leading-6 text-muted">
             Change these with Vercel env vars and redeploy. There is no in-panel writer for them.
           </p>
-          <ul className="mt-4 grid gap-3 text-sm leading-6">
-            <li>
+          <ul className="mt-3 grid gap-2">
+            <li className="border border-ink/10 px-4 py-3">
               <a
                 href="https://vercel.com/dashboard"
-                className="text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                className="block text-sm leading-6 text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Vercel Analytics
                 <span className="sr-only"> (leaves this site)</span>
               </a>
+              <p className="mt-1 font-mono text-[11px] text-muted">vercel.com/dashboard</p>
             </li>
-            <li>
+            <li className="border border-ink/10 px-4 py-3">
               <a
                 href="https://vercel.com/dashboard"
-                className="text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                className="block text-sm leading-6 text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Vercel Speed Insights
                 <span className="sr-only"> (leaves this site)</span>
               </a>
+              <p className="mt-1 font-mono text-[11px] text-muted">vercel.com/dashboard</p>
             </li>
           </ul>
         </SettingsCard>
@@ -230,6 +245,7 @@ export function AdminSettingsView({
           title="Providers"
           description="Event source keys and travel partner programmes used on this site."
         >
+          <p className="mb-1 text-[10px] uppercase tracking-[0.16em] text-muted">Event sources</p>
           {providers.map((provider) => {
             const hasKey = provider.detail !== "not connected";
             return (
@@ -239,13 +255,16 @@ export function AdminSettingsView({
                 env={[provider.env]}
                 badge={
                   hasKey
-                    ? { tone: "off", text: "Off" }
+                    ? { tone: "off", text: "Key set" }
                     : { tone: "off", text: "Not connected" }
                 }
                 detail={hasKey ? provider.detail : undefined}
               />
             );
           })}
+          <p className="mb-1 mt-4 text-[10px] uppercase tracking-[0.16em] text-muted">
+            Travel partners
+          </p>
           {affiliateProviders.map((provider) => (
             <SettingsRow
               key={provider.name}
@@ -265,6 +284,7 @@ export function AdminSettingsView({
 }
 
 export async function AdminSettingsSection() {
+  await connection();
   const settingsResult = await getWpProbeSettings();
   const probes: ProbeSettingsView =
     settingsResult.reason === "no-key"

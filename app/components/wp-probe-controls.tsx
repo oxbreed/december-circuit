@@ -77,6 +77,12 @@ export function WpProbeControls({
       </form>
 
       <form action={retAction} className="grid gap-3">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.16em] text-muted">Current retention</p>
+          <p className="mt-1 text-sm leading-6 text-ink">
+            {retentionDays === null ? "Not set" : `${retentionDays} days`}
+          </p>
+        </div>
         <label className="block min-w-0 max-w-sm">
           <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-muted">
             Retention (days)
