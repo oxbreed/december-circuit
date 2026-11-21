@@ -4,14 +4,6 @@ import { tripCloudSync } from "../trip-cloud";
 import { createDirectoryClient } from "../supabase/server";
 import { getDirectoryUser } from "../supabase/session";
 
-export type TripListSummary = {
-  id: string;
-  title: string;
-  isGroup: boolean;
-  shareToken: string | null;
-  items: TripItem[];
-};
-
 function mapItems(rows: { kind: string; item_id: string }[] | null | undefined): TripItem[] {
   if (!rows) return [];
   const out: TripItem[] = [];
@@ -23,7 +15,7 @@ function mapItems(rows: { kind: string; item_id: string }[] | null | undefined):
   return out;
 }
 
-export async function loadPersonalTripForUser(): Promise<TripListSummary | null> {
+export async function loadPersonalTripForUser(): Promise<TripItem[] | null> {
   if (!tripCloudSync().connected) return null;
   const user = await getDirectoryUser();
   if (!user) return null;
@@ -40,71 +32,36 @@ export async function loadPersonalTripForUser(): Promise<TripListSummary | null>
 
   if (listError) return null;
 
-  let list = lists?.[0];
-  if (!list) {
-    const { data: created, error: createError } = await supabase
-      .from("trip_lists")
-      .insert({ owner_id: user.id, title: "My trip", is_group: false })
-      .select("id, title, is_group, share_token")
-      .single();
-    if (createError || !created) return null;
-    list = created;
-  }
+  const list = lists?.[0];
+  if (!list) return [];
 
-  const { data: itemRows } = await supabase
+  const { data, error } = await supabase
     .from("trip_list_items")
     .select("kind, item_id")
     .eq("list_id", list.id)
     .order("sort_order", { ascending: true });
-
-  return {
-    id: list.id,
-    title: list.title,
-    isGroup: list.is_group,
-    shareToken: list.share_token,
-    items: mapItems(itemRows),
-  };
+  return error ? null : mapItems(data);
 }
 
-export async function savePersonalTripItems(items: TripItem[]): Promise<{ ok: boolean; message?: string }> {
-  if (!tripCloudSync().connected) {
-    return { ok: false, message: "Cloud sync is not configured on this deployment." };
-  }
-  const user = await getDirectoryUser();
-  if (!user) {
-    return { ok: false, message: "Sign in to sync this trip." };
-  }
+export async function savePersonalTripItems(items: TripItem[]) {
   const supabase = await createDirectoryClient();
-  if (!supabase) {
-    return { ok: false, message: "Cloud sync is not connected." };
+  if (!supabase || !(await getDirectoryUser())) {
+    return { ok: false, message: "Sign in to save your trip to your account." };
   }
 
-  const trip = await loadPersonalTripForUser();
-  if (!trip) {
-    return { ok: false, message: "Could not open your cloud trip." };
-  }
+  const { error } = await supabase.rpc("trip_write", { p_items: items });
+  return error
+    ? { ok: false, message: "Could not save your account trip. Your browser saves are still here." }
+    : { ok: true, message: "Trip saved to your account." };
+}
 
-  const { error: deleteError } = await supabase.from("trip_list_items").delete().eq("list_id", trip.id);
-  if (deleteError) {
-    return { ok: false, message: "Could not update the cloud trip." };
-  }
-
-  if (items.length > 0) {
-    const payload = items.map((item, index) => ({
-      list_id: trip.id,
-      kind: item.kind,
-      item_id: item.id,
-      sort_order: index,
-    }));
-    const { error: insertError } = await supabase.from("trip_list_items").insert(payload);
-    if (insertError) {
-      return { ok: false, message: "Could not save items to the cloud trip." };
-    }
-  }
-
-  await supabase.from("trip_lists").update({ updated_at: new Date().toISOString() }).eq("id", trip.id);
-
-  return { ok: true };
+export async function loadAccountGroupTrips() {
+  const supabase = await createDirectoryClient();
+  if (!supabase || !(await getDirectoryUser())) return [];
+  const { data } = await supabase.from("trip_lists").select("title, share_token")
+    .eq("is_group", true).not("share_token", "is", null)
+    .order("updated_at", { ascending: false });
+  return (data ?? []).filter((row): row is { title: string; share_token: string } => Boolean(row.share_token));
 }
 
 function randomShareToken(): string {
@@ -113,53 +70,21 @@ function randomShareToken(): string {
   return Array.from(bytes, (b) => (b % 36).toString(36)).join("");
 }
 
-export async function createGroupTrip(title: string): Promise<
-  { ok: true; shareToken: string; listId: string } | { ok: false; message: string }
-> {
-  if (!tripCloudSync().connected) {
-    return { ok: false, message: "Cloud sync is not configured." };
-  }
-  const user = await getDirectoryUser();
-  if (!user) return { ok: false, message: "Sign in to start a group trip." };
+export async function createGroupTrip(title: string, items: TripItem[]) {
   const supabase = await createDirectoryClient();
-  if (!supabase) return { ok: false, message: "Cloud sync is not connected." };
+  if (!supabase || !(await getDirectoryUser())) {
+    return { ok: false as const, message: "Sign in to start a group trip." };
+  }
 
-  const trimmed = title.trim().slice(0, 120) || "Group trip";
   const shareToken = randomShareToken();
-
-  const { data, error } = await supabase
-    .from("trip_lists")
-    .insert({
-      owner_id: user.id,
-      title: trimmed,
-      is_group: true,
-      share_token: shareToken,
-    })
-    .select("id")
-    .single();
-
-  if (error || !data) {
-    return { ok: false, message: "Could not create the group trip." };
-  }
-
-  const personal = await loadPersonalTripForUser();
-  if (personal && personal.items.length > 0) {
-    const payload = personal.items.map((item, index) => ({
-      list_id: data.id,
-      kind: item.kind,
-      item_id: item.id,
-      sort_order: index,
-    }));
-    await supabase.from("trip_list_items").insert(payload);
-  }
-
-  await supabase.from("trip_list_members").insert({
-    list_id: data.id,
-    user_id: user.id,
-    role: "owner",
+  const { error } = await supabase.rpc("trip_write", {
+    p_title: title,
+    p_items: items,
+    p_token: shareToken,
   });
-
-  return { ok: true, shareToken, listId: data.id };
+  return error
+    ? { ok: false as const, message: "Could not create the group trip. Try again shortly." }
+    : { ok: true as const, shareToken };
 }
 
 export async function joinGroupTrip(shareToken: string): Promise<{ ok: boolean; message?: string }> {
@@ -171,25 +96,9 @@ export async function joinGroupTrip(shareToken: string): Promise<{ ok: boolean; 
   const supabase = await createDirectoryClient();
   if (!supabase) return { ok: false, message: "Cloud sync is not connected." };
 
-  const { data: list } = await supabase
-    .from("trip_lists")
-    .select("id, is_group, share_token")
-    .eq("share_token", shareToken)
-    .maybeSingle();
-
-  if (!list?.is_group) {
-    return { ok: false, message: "This group link is not on file." };
-  }
-
-  const { error } = await supabase.from("trip_list_members").upsert({
-    list_id: list.id,
-    user_id: user.id,
-    role: "editor",
-  });
-
-  if (error) {
-    return { ok: false, message: "Could not join this group trip." };
-  }
+  const { data, error } = await supabase.rpc("trip_join_by_token", { p_token: shareToken });
+  if (error) return { ok: false, message: "Could not join this group trip. Try again shortly." };
+  if (!data) return { ok: false, message: "This invitation is no longer available." };
   return { ok: true };
 }
 
@@ -244,4 +153,22 @@ export async function canEditSharedList(listId: string): Promise<boolean> {
     .eq("user_id", user.id)
     .maybeSingle();
   return Boolean(member && (member.role === "owner" || member.role === "editor"));
+}
+export async function updateSharedTrip(shareToken: string, remove: TripItem | null, add: TripItem[]) {
+  const trip = await loadSharedTripByToken(shareToken);
+  if (!trip || !(await canEditSharedList(trip.listId))) return false;
+  const supabase = await createDirectoryClient();
+  if (!supabase) return false;
+
+  if (remove) {
+    const { error } = await supabase.from("trip_list_items").delete().eq("list_id", trip.listId)
+      .eq("kind", remove.kind).eq("item_id", remove.id);
+    return !error;
+  }
+
+  const { error } = await supabase.from("trip_list_items").upsert(
+    add.map((item) => ({ list_id: trip.listId, kind: item.kind, item_id: item.id, sort_order: 1000 })),
+    { onConflict: "list_id,kind,item_id", ignoreDuplicates: true },
+  );
+  return !error;
 }

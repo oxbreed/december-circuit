@@ -97,9 +97,11 @@ export function TripRowsList({
   items,
   readOnly,
   onRemove,
+  removePending = false,
 }: {
   items: TripItem[];
   readOnly?: boolean;
+  removePending?: boolean;
   onRemove?: (item: TripItem) => void;
 }) {
   const rows = items.map(resolveTripItem);
@@ -134,8 +136,9 @@ export function TripRowsList({
               {readOnly || !onRemove ? null : (
                 <button
                   type="button"
+                  disabled={removePending}
                   onClick={() => onRemove(row.item)}
-                  className="inline-flex shrink-0 self-start border border-ink/25 bg-chart px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
+                  className="inline-flex shrink-0 self-start border border-ink/25 bg-chart px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide disabled:opacity-50"
                 >
                   Remove
                 </button>

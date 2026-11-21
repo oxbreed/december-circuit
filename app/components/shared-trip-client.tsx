@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
-import { joinGroupTripAction, type TripActionResult } from "../trip/actions";
+import { startTransition, useActionState } from "react";
+import { editGroupTripAction, joinGroupTripAction, type TripActionResult } from "../trip/actions";
 import { TripRowsList } from "./trip-rows";
-import type { TripItem } from "./trip-storage";
+import { useTripItems, type TripItem } from "./trip-storage";
 
 const joinInitial: TripActionResult = { ok: false };
 
@@ -25,9 +25,22 @@ export function SharedTripClient({
 }) {
   const [joinState, joinAction, joinPending] = useActionState(joinGroupTripAction, joinInitial);
 
+  const [editState, editAction, editPending] = useActionState(editGroupTripAction, joinInitial);
+  const localItems = useTripItems();
+  const groupKeys = new Set(items.map((item) => `${item.kind}:${item.id}`));
+  const available = localItems.filter((item) => !groupKeys.has(`${item.kind}:${item.id}`));
+  function remove(item: TripItem) {
+    if (editPending) return;
+    const data = new FormData();
+    data.set("shareToken", shareToken);
+    data.set("intent", "remove");
+    data.set("items", JSON.stringify([item]));
+    startTransition(() => editAction(data));
+  }
+
   return (
     <>
-      <p className="mt-4 text-[11px] uppercase tracking-[0.28em] text-lagoon">Shared schedule — leaves account only when you copy the link</p>
+      <p className="mt-4 text-[11px] uppercase tracking-[0.28em] text-lagoon">Shared group trip</p>
       <h1 className="mt-3 font-display text-4xl leading-none tracking-tight md:text-5xl">{title}</h1>
       {!cloudSyncAvailable ? (
         <p className="mt-4 text-sm leading-7 text-muted">Cloud trips are not configured on this deployment.</p>
@@ -42,8 +55,19 @@ export function SharedTripClient({
         <p className="mt-6 text-sm leading-7 text-muted">Nothing is saved on this schedule yet.</p>
       ) : (
         <div className="mt-6">
-          <TripRowsList items={items} readOnly />
+          <TripRowsList items={items} readOnly={!canEdit} onRemove={remove} removePending={editPending} />
         </div>
+      )}
+      {canEdit && (
+        <form action={editAction} className="mt-6 grid justify-items-start gap-3">
+          <input type="hidden" name="shareToken" value={shareToken} />
+          <input type="hidden" name="intent" value="add" />
+          <input type="hidden" name="items" value={JSON.stringify(available)} />
+          <button type="submit" disabled={editPending || !available.length} className="min-h-11 rounded-sm bg-ink px-4 py-3 text-sm font-semibold text-chart disabled:opacity-50">
+            {editPending ? "Updating…" : "Add your browser saves"}
+          </button>
+          {editState.message && <p role={editState.ok ? "status" : "alert"} className="text-sm">{editState.message}</p>}
+        </form>
       )}
       {cloudSyncAvailable && !canEdit ? (
         <div className="mt-8 border border-ink/15 bg-chart p-4">

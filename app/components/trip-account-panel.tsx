@@ -1,150 +1,128 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useEffect, useRef, useState, useTransition } from "react";
+import { useActionState, useEffect, useState } from "react";
 import {
   fetchCloudPersonalTrip,
   pushCloudPersonalTrip,
   startGroupTrip,
   type TripActionResult,
 } from "../trip/actions";
-import { replaceTripItems, useTripItems } from "./trip-storage";
+import { readTripItems, replaceTripItems, useTripItems } from "./trip-storage";
 
-type TripAccountPanelProps = {
-  signedIn: boolean;
-  cloudSyncAvailable: boolean;
-};
-
-const groupInitial: TripActionResult = { ok: false };
-const syncInitial: TripActionResult = { ok: false };
+const initial: TripActionResult = { ok: false };
+const button = "inline-flex min-h-11 items-center rounded-sm bg-ink px-4 py-3 text-sm font-semibold text-chart disabled:opacity-60";
 
 function ShareField({ token }: { token: string }) {
-  const [copied, setCopied] = useState(false);
-  const origin = typeof window === "undefined" ? "https://www.dirtydecember.info" : window.location.origin;
-  const href = `${origin}/trip/share/${token}`;
+  const [copyNote, setCopyNote] = useState("");
+  const path = `/trip/share/${token}`;
+  const href = `https://www.dirtydecember.info${path}`;
 
   return (
-    <div className="mt-4 border border-ink/15 bg-paper p-4">
-      <p className="text-[10px] uppercase tracking-[0.16em] text-lagoon">Group link — read-only until a signed-in friend joins</p>
-      <p className="mt-2 break-all font-mono text-sm text-ink">{href}</p>
-      <button
-        type="button"
-        onClick={async () => {
+    <div className="mt-4 grid gap-3 rounded-lg border border-ink/15 bg-paper p-4">
+      <p className="text-sm font-semibold">Group trip created</p>
+      <p className="text-sm text-muted">Anyone with the link can view the trip. Signed-in guests can join and edit it.</p>
+      <input aria-label="Group trip invitation link" readOnly value={href} className="ledger-input text-sm" onFocus={(event) => event.target.select()} />
+      <div className="flex flex-wrap items-center gap-3">
+        <Link href={path} className={button}>Open group trip</Link>
+        <button type="button" className="min-h-11 px-3 text-sm font-semibold underline underline-offset-4" onClick={async () => {
           try {
             await navigator.clipboard.writeText(href);
-            setCopied(true);
-            window.setTimeout(() => setCopied(false), 2000);
+            setCopyNote("Invitation copied.");
           } catch {
-            setCopied(false);
+            setCopyNote("Select and copy the invitation link above.");
           }
-        }}
-        className="mt-3 inline-flex border border-ink/25 bg-chart px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
-      >
-        {copied ? "Copied" : "Copy share link"}
-      </button>
-      <p className="mt-3 text-sm leading-6 text-muted">
-        Anyone with the link can view the schedule. Collaborators can edit after they{" "}
-        <Link href="/sign-in" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
-          sign in
-        </Link>{" "}
-        and join from that page.
-      </p>
+        }}>Copy invitation</button>
+      </div>
+      {copyNote && <p role="status" className="text-sm">{copyNote}</p>}
     </div>
   );
 }
 
-export function TripAccountPanel({ signedIn, cloudSyncAvailable }: TripAccountPanelProps) {
+export function TripAccountPanel({ signedIn, cloudSyncAvailable }: {
+  signedIn: boolean;
+  cloudSyncAvailable: boolean;
+}) {
   const localItems = useTripItems();
-  const [syncNote, setSyncNote] = useState<string | null>(null);
-  const [groupToken, setGroupToken] = useState<string | null>(null);
-  const pulled = useRef(false);
-  const [, startTransition] = useTransition();
-  const [groupState, groupAction, groupPending] = useActionState(startGroupTrip, groupInitial);
-  const [pushState, pushAction, pushPending] = useActionState(pushCloudPersonalTrip, syncInitial);
+  const [load, setLoad] = useState<"loading" | "ready" | "failed">("loading");
+  const [attempt, setAttempt] = useState(0);
+  const [groups, setGroups] = useState<Awaited<ReturnType<typeof fetchCloudPersonalTrip>>["groups"]>([]);
+  const [group, create, creating] = useActionState(startGroupTrip, initial);
+  const [save, sync, saving] = useActionState(pushCloudPersonalTrip, initial);
 
   useEffect(() => {
-    if (!signedIn || !cloudSyncAvailable || pulled.current) return;
-    pulled.current = true;
-    startTransition(async () => {
-      const cloud = await fetchCloudPersonalTrip();
-      if (cloud === null) return;
-      if (cloud.length === 0 && localItems.length > 0) {
-        setSyncNote("This browser has saved items that are not in your account yet. Use Save to account below.");
+    if (!signedIn || !cloudSyncAvailable) return;
+    let active = true;
+    fetchCloudPersonalTrip().then(({ items, groups }) => {
+      if (!active) return;
+      if (!items) {
+        setLoad("failed");
         return;
       }
-      if (cloud.length > 0) {
-        replaceTripItems(cloud);
-        setSyncNote("Loaded your account trip into this browser.");
-      }
+      const current = readTripItems();
+      const seen = new Set(current.map((item) => `${item.kind}:${item.id}`));
+      const missing = items.filter((item) => !seen.has(`${item.kind}:${item.id}`));
+      if (missing.length) replaceTripItems([...current, ...missing]);
+      setGroups(groups);
+      setLoad("ready");
+    }).catch(() => {
+      if (active) setLoad("failed");
     });
-  }, [signedIn, cloudSyncAvailable, localItems.length]);
+    return () => { active = false; };
+  }, [signedIn, cloudSyncAvailable, attempt]);
 
-  useEffect(() => {
-    if (groupState.ok && groupState.shareToken) {
-      setGroupToken(groupState.shareToken);
-    }
-  }, [groupState]);
-
-  useEffect(() => {
-    if (pushState.ok) {
-      setSyncNote("Saved to your account. It can follow you on other devices when cloud sync is on.");
-    } else if (pushState.message) {
-      setSyncNote(pushState.message);
-    }
-  }, [pushState]);
-
-  if (!cloudSyncAvailable) {
-    return (
-      <p className="mt-6 max-w-xl text-sm leading-6 text-muted">
-        Cloud sync is off. This list stays on this device.
-      </p>
-    );
-  }
-
+  if (!cloudSyncAvailable) return <p className="mt-6 text-sm text-muted">Account sync is unavailable. Your trip is saved in this browser.</p>;
   if (!signedIn) return null;
 
+  const unavailable = load !== "ready";
   return (
-    <div className="mt-8 max-w-2xl border border-ink/15 bg-paper p-4 sm:p-5">
-      <p className="text-[10px] uppercase tracking-[0.16em] text-lagoon">Account</p>
-      <p className="mt-3 text-sm leading-7 text-muted">
-        Saves from this browser can sync to your account.
-      </p>
-      {syncNote ? <p className="mt-3 text-sm leading-6 text-ink">{syncNote}</p> : null}
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <form action={pushAction}>
+    <section aria-labelledby="trip-account-heading" className="mt-8 rounded-lg border border-ink/15 bg-paper p-5 sm:p-6">
+      <h3 id="trip-account-heading" className="font-display text-3xl">Trip account</h3>
+      {load === "loading" && <p role="status" className="mt-3 text-sm text-muted">Loading your account trip…</p>}
+      {load === "failed" && (
+        <div className="mt-3 text-sm">
+          <p role="alert">Your account trip could not load. Your browser saves are still here.</p>
+          <button type="button" className="min-h-11 underline underline-offset-4" onClick={() => {
+            setLoad("loading");
+            setAttempt((value) => value + 1);
+          }}>Try again</button>
+        </div>
+      )}
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <form action={sync} className="grid content-start gap-3 rounded-lg border border-ink/15 bg-chart p-4">
+          <h4 className="font-semibold">Personal trip</h4>
+          <p className="text-sm text-muted">Save your current list to use it on other devices.</p>
           <input type="hidden" name="items" value={JSON.stringify(localItems)} />
-          <button
-            type="submit"
-            disabled={pushPending}
-            className="inline-flex bg-ink px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-chart disabled:opacity-60"
-          >
-            Save to account
+          <button type="submit" disabled={unavailable || saving} className={`${button} w-fit`}>
+            {saving ? "Saving…" : "Save to account"}
           </button>
+          {save.message && <p role={save.ok ? "status" : "alert"} className="text-sm">{save.message}</p>}
         </form>
-        <form action={groupAction} className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-end">
-          <label className="min-w-0 flex-1">
-            <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-muted">Group trip name</span>
-            <input
-              name="title"
-              type="text"
-              placeholder="Lagos crew"
-              className="ledger-input py-2!"
-              maxLength={120}
-            />
+        <form action={create} className="grid content-start gap-3 rounded-lg border border-ink/15 bg-chart p-4">
+          <h4 className="font-semibold">Group trip</h4>
+          <p className="text-sm text-muted">Start with a copy of this list and share it with friends.</p>
+          <input type="hidden" name="items" value={JSON.stringify(localItems)} />
+          <label className="grid gap-1 text-sm font-medium">
+            Group trip name
+            <input name="title" required maxLength={120} placeholder="Lagos crew" className="ledger-input" />
           </label>
-          <button
-            type="submit"
-            disabled={groupPending}
-            className="inline-flex shrink-0 border border-ink/25 bg-chart px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide disabled:opacity-60"
-          >
-            Start group trip
+          <button type="submit" disabled={unavailable || creating} className={`${button} w-fit`}>
+            {creating ? "Creating…" : "Start group trip"}
           </button>
+          {!group.ok && group.message && <p role="alert" className="text-sm">{group.message}</p>}
         </form>
       </div>
-      {groupState.ok === false && groupState.message ? (
-        <p className="mt-3 text-sm leading-6 text-oxide">{groupState.message}</p>
-      ) : null}
-      {groupToken ? <ShareField token={groupToken} /> : null}
-    </div>
+      {group.shareToken && <ShareField key={group.shareToken} token={group.shareToken} />}
+      {groups.length > 0 && (
+        <div className="mt-5">
+          <h4 className="font-semibold">Your group trips</h4>
+          <ul className="mt-2 grid gap-2">
+            {groups.map((trip) => (
+              <li key={trip.share_token}><Link href={`/trip/share/${trip.share_token}`} className="text-sm underline underline-offset-4">{trip.title}</Link></li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }
