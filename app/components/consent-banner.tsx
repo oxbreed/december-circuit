@@ -77,7 +77,7 @@ export function ConsentBanner() {
       aria-modal="false"
       aria-labelledby={titleId}
       aria-describedby={textId}
-      className={`consent-banner fixed z-[45] border border-ink bg-chart p-4 text-ink shadow-[4px_4px_0_0_rgba(26,20,16,0.12)] max-lg:inset-x-3 max-lg:bottom-[calc(var(--mobile-bar,3.625rem)+0.75rem)] lg:bottom-5 lg:left-5 lg:right-auto lg:w-[min(32rem,calc(100vw-14rem))]${settingsOpen ? " consent-banner-open" : ""}`}
+      className={`consent-banner fixed z-[45] border border-ink bg-chart p-4 text-ink shadow-[4px_4px_0_0_rgba(26,20,16,0.12)]${settingsOpen ? " consent-banner-open" : ""}`}
     >
       <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-oxide">Cookies</p>
       <p id={titleId} className="mt-2 font-display text-2xl leading-none tracking-tight">
