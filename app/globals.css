@@ -601,6 +601,24 @@ body::before {
   transform: scale(1.04);
 }
 
+
+/* Footer: visual padding plus clearance for the fixed header and mobile dock. */
+.site-footer {
+  scroll-margin-top: 9rem;
+}
+
+.site-footer-inner {
+  padding-top: 3rem;
+  padding-bottom: calc(3rem + var(--mobile-bar, 0px));
+}
+
+@media (min-width: 1024px) {
+  .site-footer-inner {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .news-ticker-track {
     animation: none;
