@@ -14,7 +14,7 @@ export function HomeHero() {
       aria-labelledby="home-hero-heading"
     >
       <HeroBackground poster={poster} />
-      <div className="mx-auto grid max-w-6xl gap-5 px-4 py-5 sm:px-6 sm:py-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:px-8 lg:py-10">
+      <div className="mx-auto grid max-w-6xl gap-4 px-4 py-4 sm:gap-5 sm:px-6 sm:py-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12 lg:px-8 lg:py-10">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-oxide">Independent West Africa directory</p>
           <h1
