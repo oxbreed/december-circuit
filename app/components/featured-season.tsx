@@ -10,7 +10,7 @@ export async function FeaturedSeason() {
   return (
     <HomeSection
       id="featured"
-      number="01"
+      number="02"
       kicker="December 2026"
       title="Featured this season"
       titleId="featured-heading"
@@ -36,7 +36,7 @@ export function FeaturedSeasonFallback() {
   return (
     <HomeSection
       id="featured"
-      number="01"
+      number="02"
       kicker="December 2026"
       title="Featured this season"
       titleId="featured-heading"

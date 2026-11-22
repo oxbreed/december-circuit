@@ -7,7 +7,7 @@ export function HomeNewsFallback() {
   return (
     <HomeSection
       id="news-updates"
-      number="05"
+      number="06"
       kicker="Public feeds"
       title="News & updates"
       titleId="home-news-heading"
@@ -29,7 +29,7 @@ export async function HomeNewsCard() {
   return (
     <HomeSection
       id="news-updates"
-      number="05"
+      number="06"
       kicker="Public feeds"
       title="News & updates"
       titleId="home-news-heading"

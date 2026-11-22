@@ -7,7 +7,7 @@ export function PlanYourTrip() {
   return (
     <HomeSection
       id="trip"
-      number="04"
+      number="05"
       kicker="Travel guides and your trip"
       title="Plan your trip"
       lede="Guides for getting there and around, and the events and places you have saved."
