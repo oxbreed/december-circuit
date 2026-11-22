@@ -3,10 +3,11 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { disclaimer, navPrimary, navSecondary } from "../brand";
+import { navPrimary, navSecondary } from "../brand";
 import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
 import { DesktopNewsTicker } from "./desktop-news-ticker";
+import { SiteFooter } from "./site-footer";
 
 function PlaneMark() {
   return (
@@ -35,57 +36,6 @@ function current(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
-
-const footerLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
-
-const footerKicker = "font-sans text-[11px] uppercase tracking-[0.28em] text-lagoon";
-
-const footerGroups = [
-  {
-    title: "Visit",
-    links: [
-      ["Events", "/events"],
-      ["Places", "/places"],
-      ["Cities", "/cities"],
-      ["Detty December", "/detty-december"],
-      ["West Africa", "/west-africa"],
-      ["News", "/news"],
-    ],
-  },
-  {
-    title: "Plan",
-    links: [
-      ["Season guides", "/guides"],
-      ["Travel guide", "/guide"],
-      ["Flights", "/flights"],
-      ["Map", "/map"],
-      ["Visa", "/visa"],
-      ["FAQ", "/faq"],
-      ["Get around", "/guide#around"],
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      ["About", "/about"],
-      ["Explore", "/explore"],
-      ["List an event or place", "/list"],
-      ["Get featured", "/get-featured"],
-      ["Give feedback", "/feedback"],
-      ["Sign in", "/sign-in"],
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      ["Privacy", "/privacy"],
-      ["Terms", "/terms"],
-      ["EULA", "/eula"],
-      ["Cookies", "/cookies"],
-      ["Disclosure", "/disclosure"],
-    ],
-  },
-] as const;
 
 export function SiteChrome({ children, support }: { children: ReactNode; support: ReactNode }) {
   const pathname = usePathname();
@@ -200,67 +150,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
       </header>
       <div className="mobile-scroll lg:contents">
       {children}
-      <footer className="site-footer scroll-mt-36 border-t border-ink/15">
-        <div className="site-footer-inner mx-auto flex max-w-6xl flex-col gap-10 px-5 md:px-8">
-          <div>
-            <p className="font-display text-3xl text-ink">
-              dirtydecember<span className="text-oxide">.info</span>
-            </p>
-            <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
-            <div className="mt-6 grid max-w-xl grid-cols-1 gap-x-10 gap-y-1 sm:grid-cols-2">
-              <p className="min-w-0">
-                <span className={`block ${footerKicker}`}>Visitor enquiries</span>
-                <a
-                  href="mailto:hello@dirtydecember.info"
-                  className={`inline-flex min-h-11 max-w-full items-center font-sans text-sm text-ink ${footerLink}`}
-                >
-                  hello@dirtydecember.info
-                </a>
-              </p>
-              <p className="min-w-0">
-                <span className={`block ${footerKicker}`}>Partner enquiries</span>
-                <a
-                  href="mailto:partners@dirtydecember.info"
-                  className={`inline-flex min-h-11 max-w-full items-center font-sans text-sm text-ink ${footerLink}`}
-                >
-                  partners@dirtydecember.info
-                </a>
-              </p>
-            </div>
-          </div>
-          <nav
-            aria-label="Footer"
-            className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-10"
-          >
-            {footerGroups.map((group) => (
-              <div key={group.title} className="min-w-0">
-                <p className={footerKicker}>{group.title}</p>
-                <ul className="mt-2 font-sans text-sm">
-                  {group.links.map(([label, href]) => (
-                    <li key={href}>
-                      <Link
-                        href={href}
-                        className={`inline-flex min-h-11 items-center text-ink ${footerLink}`}
-                      >
-                        {label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
-          <p className="border-t border-ink/15 pt-6 font-sans text-sm leading-6 text-muted lg:pr-36">
-            © 2026 dirtydecember.info, powered by{" "}
-            <a
-              href="https://oxbreedstudio.com"
-              className={`inline-flex min-h-11 items-center text-ink ${footerLink}`}
-            >
-              Oxbreed Management
-            </a>
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
       </div>
       <div className="mobile-dock">
         <nav aria-label="Mobile pages" className="contents lg:hidden">

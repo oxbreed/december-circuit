@@ -604,7 +604,14 @@ body::before {
 
 /* Footer: visual padding plus clearance for the fixed header and mobile dock. */
 .site-footer {
-  scroll-margin-top: 9rem;
+  /* Mobile header is ~61px; 9rem is the desktop header + ticker offset. */
+  scroll-margin-top: calc(4.75rem + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: 1024px) {
+  .site-footer {
+    scroll-margin-top: 9rem;
+  }
 }
 
 .site-footer-inner {
@@ -616,6 +623,116 @@ body::before {
   .site-footer-inner {
     padding-top: 4rem;
     padding-bottom: 4rem;
+  }
+}
+
+/* Mobile: stacked accordion. Desktop: four always-visible columns. */
+.site-footer-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.site-footer-group {
+  border-top: 1px solid var(--color-ink);
+  scroll-margin-top: calc(4.75rem + env(safe-area-inset-top, 0px));
+  scroll-margin-bottom: var(--mobile-bar, 0px);
+}
+
+.site-footer-group:last-child {
+  border-bottom: 1px solid var(--color-ink);
+}
+
+.site-footer-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.35rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.site-footer-summary::-webkit-details-marker,
+.site-footer-summary::marker {
+  display: none;
+  content: "";
+}
+
+.footer-acc-icon {
+  position: relative;
+  display: block;
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+.footer-acc-icon-bar {
+  position: absolute;
+  background: var(--color-ink);
+}
+
+.footer-acc-icon-h {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+
+.footer-acc-icon-v {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1.5px;
+  transform: translateX(-50%);
+}
+
+.site-footer-group[open] .footer-acc-icon-v {
+  display: none;
+}
+
+.site-footer-links {
+  margin: 0;
+  padding: 0 0 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 2.5rem;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .site-footer-group {
+    border-top: 0;
+    scroll-margin-top: 0;
+    scroll-margin-bottom: 0;
+  }
+
+  .site-footer-group:last-child {
+    border-bottom: 0;
+  }
+
+  .site-footer-summary {
+    pointer-events: none;
+    cursor: default;
+    min-height: 0;
+    padding: 1rem 0 0.25rem;
+  }
+
+  .footer-acc-icon {
+    display: none;
+  }
+
+  /* Keep columns visible if a group is closed, including without JS. */
+  .site-footer-group > *:not(summary) {
+    display: block !important;
+  }
+
+  .site-footer-links {
+    padding-bottom: 0;
   }
 }
 
