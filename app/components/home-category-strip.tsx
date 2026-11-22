@@ -13,7 +13,7 @@ export function HomeCategoryStrip({ entries }: { entries: VisitorCategoryEntry[]
           >
             <span className="block font-display text-xl leading-tight tracking-tight">{item.category}</span>
             <span className="mt-2 block text-sm leading-6 text-muted">
-              {visitorCategoryCountLine(item.count, item.exploreKind)}
+              {visitorCategoryCountLine(item.count, item.category, item.exploreKind)}
             </span>
           </Link>
         </li>

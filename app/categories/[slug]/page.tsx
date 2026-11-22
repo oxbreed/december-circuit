@@ -126,7 +126,7 @@ export default async function CategoryPage({
       {listed.length > 0 ? (
         <>
           <h2 className="mt-12 font-display text-3xl tracking-tight">
-            Organiser pages on file
+            {listed.length} organiser {listed.length === 1 ? "page" : "pages"}
           </h2>
           <div className="mt-6">
             <PlaceOrganiserLoadMore places={listed} />

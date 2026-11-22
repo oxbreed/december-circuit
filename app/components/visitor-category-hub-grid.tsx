@@ -16,7 +16,7 @@ export function VisitorCategoryHubGrid({ entries }: { entries: VisitorCategoryEn
             <li key={item.slug}>
               <Link href={`/categories/${item.slug}`} className={cardLink}>
                 <p className="font-display text-2xl leading-none tracking-tight">{item.category}</p>
-                <p className="mt-3 flex-1 text-sm leading-6 text-muted">{visitorCategoryCountLine(item.count, item.exploreKind)}</p>
+                <p className="mt-3 flex-1 text-sm leading-6 text-muted">{visitorCategoryCountLine(item.count, item.category, item.exploreKind)}</p>
                 <span className="mt-4 text-[11px] uppercase tracking-[0.16em] text-oxide">Category hub →</span>
               </Link>
             </li>
