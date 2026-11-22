@@ -4,7 +4,7 @@ import { lazy, Suspense, useCallback, useId, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const SupportChat = lazy(() => import("./support-chat").then((module) => ({ default: module.SupportChat })));
-const buttonClass = "mobile-dock-action lg:border lg:border-ink/15 lg:bg-paper lg:px-4 lg:py-3 lg:text-sm lg:shadow-md";
+const buttonClass = "mobile-dock-action lg:min-h-11 lg:border lg:border-ink/15 lg:bg-chart lg:px-3 lg:text-xs lg:font-semibold lg:shadow-[4px_4px_0_0_rgba(184,67,47,0.12)]";
 
 export function SupportLauncher({ liveModel }: { liveModel: boolean }) {
   const pathname = usePathname();
