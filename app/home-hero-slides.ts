@@ -75,20 +75,35 @@ export function homeHeroSlides(rows = events): HeroSlide[] {
 }
 
 /**
- * The hero stage. One poster today; the hero shows `HERO_STAGE_SLIDE_COUNT` of the
- * featured posters, so going to about eight slides later is a data change here
- * plus a client wrapper around `HeroStage` for the controls. Event posters only:
- * the night photos stay in `heroNightSlides` for the slideshow API and admin.
+ * The homepage hero slideshow: the ONE place to change which posters it shows.
+ * Add, remove or reorder rows here (about eight is the design); nothing else needs editing.
+ *
+ * Each row names a poster already in `homeHeroSlides()` (the featured posters in
+ * home-featured.ts and the extra ones above), so the caption, date and link always come from a
+ * sourced event row. No events are invented here: a `src` with no matching slide is skipped.
+ * Pick posters that are roughly 4:5 portrait; the stage frame is 4:5 and crops with object-cover,
+ * so a landscape banner would lose most of its artwork.
  */
-export const HERO_STAGE_SLIDE_COUNT = 1;
+export const HERO_POSTER_SLIDES: ReadonlyArray<{
+  /** Public path of the poster, as in landmarks.ts. */
+  src: string;
+  /** Optional CSS object-position for the 4:5 crop, e.g. "50% 30%". Default is centred. */
+  objectPosition?: string;
+}> = [
+  { src: "/landmarks/olamide-ybnl-reunion-2026.jpg" },
+  { src: "/landmarks/live-out-loud-wizkid-abuja-2026.jpg" },
+  { src: "/landmarks/asake-money-in-lagos-2026.jpg" },
+  { src: "/landmarks/apitainment-seyi-vibez-abuja-2026.jpg" },
+  { src: "/landmarks/coca-cola-rhythm-unplugged-2026.jpg" },
+  { src: "/landmarks/lagbaja-afrojazz-fest-2026.jpg" },
+  { src: "/landmarks/adekunle-gold-greatest-showman-2026.jpg" },
+  { src: "/landmarks/iconiq-fest-abuja-2026.jpg" },
+];
 
 export type HeroStagePoster = {
   /** Public path of the poster image. */
   src: string;
   alt: string;
-  /** Intrinsic size when known; the stage frame is always 4:5 (the image is cropped with object-cover). */
-  width?: number;
-  height?: number;
   /** Headline of the caption, e.g. "Olamide, YBNL: The Reunion, Future Fest '26". */
   title: string;
   /** City shown beside the date. */
@@ -103,10 +118,13 @@ export type HeroStagePoster = {
   objectPosition?: string;
 };
 
+/** The slideshow posters, in `HERO_POSTER_SLIDES` order. Rows that cannot be resolved are skipped. */
 export function heroStagePosters(rows = events): HeroStagePoster[] {
+  const all = homeHeroSlides(rows);
   const posters: HeroStagePoster[] = [];
-  for (const slide of homeHeroSlides(rows)) {
-    if (slide.kind !== "poster") continue;
+  for (const pick of HERO_POSTER_SLIDES) {
+    const slide = all.find((item) => item.kind === "poster" && item.src === pick.src);
+    if (!slide || slide.kind !== "poster") continue;
     posters.push({
       src: slide.src,
       alt: slide.alt,
@@ -116,8 +134,8 @@ export function heroStagePosters(rows = events): HeroStagePoster[] {
       href: slide.href,
       credit: slide.credit,
       creditUrl: slide.creditUrl,
+      objectPosition: pick.objectPosition,
     });
-    if (posters.length >= HERO_STAGE_SLIDE_COUNT) break;
   }
   return posters;
 }
