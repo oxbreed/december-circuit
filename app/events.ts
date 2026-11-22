@@ -97,7 +97,11 @@ export const seedEvents: CircuitEvent[] = [
     when: "25 December",
     summary:
       "Flytime Circle, Eko Convention Centre. The lineup is still unannounced.",
-    url: "https://www.essence.com/entertainment/brandy-flytimes-house-of-r-and-b/",
+    // Punch (opened 22 Nov 2026) names Flytime Circle on 25 December and says
+    // further artiste announcements are expected. flytimefest.com still does
+    // not name the 2026 Circle night. The Essence House of R&B article is not
+    // this row's source.
+    url: "https://punchng.com/full-list-lauryn-hill-brandy-lil-baby-others-set-for-lagos-detty-december/",
     urlLabel: "News report",
     sourceId: "flytime-fest-home",
   },

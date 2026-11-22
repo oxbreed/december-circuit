@@ -4,6 +4,35 @@ import { events, type CircuitEvent } from "./events";
 
 export const eventCategory = "Confirmed event";
 
+/** Editorial label used when the primary `url` is a named news or magazine report. */
+export function isNewsSource(event: Pick<CircuitEvent, "urlLabel">) {
+  return event.urlLabel === "News report";
+}
+
+const NEWS_PUBLICATIONS: Record<string, string> = {
+  "pulse.ng": "Pulse",
+  "essence.com": "Essence",
+  "stylerave.com": "Style Rave",
+  "guardian.ng": "The Guardian",
+  "myjoyonline.com": "MyJoyOnline",
+  "dailypost.com.gh": "Daily Post",
+  "punchng.com": "Punch",
+  "leadership.ng": "Leadership",
+};
+
+/** Short publication name from a news URL. Unknown hosts fall back to the first domain label. */
+export function publicationNameFromUrl(url: string) {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./i, "").toLowerCase();
+    if (NEWS_PUBLICATIONS[host]) return NEWS_PUBLICATIONS[host];
+    const first = host.split(".")[0] ?? "";
+    if (!first) return host || "the report";
+    return first.charAt(0).toUpperCase() + first.slice(1);
+  } catch {
+    return "the report";
+  }
+}
+
 function slugToken(value: string) {
   return value
     .normalize("NFD")

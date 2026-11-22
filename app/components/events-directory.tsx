@@ -17,7 +17,8 @@ import {
   type WeekWindow,
 } from "../week";
 import { DateBlock, EventCard } from "./event-card";
-import { eventSlug, presentEvent } from "../event-view";
+import { eventSlug, isNewsSource, presentEvent } from "../event-view";
+import { ReportedByCredit } from "./reported-by-credit";
 import { eventTripId } from "../trip";
 import { SaveTripButton } from "./save-trip-button";
 import { LoadMoreBar, useListPageSize } from "./load-more";
@@ -102,7 +103,9 @@ function MajorCard({ event }: { event: CircuitEvent }) {
                 Tickets — leaves this site
               </TicketLink>
             ) : null}
-            {event.url ? (
+            {isNewsSource(event) && event.url ? (
+              <ReportedByCredit url={event.url} />
+            ) : event.url ? (
               <a
                 href={event.url}
                 target="_blank"
