@@ -98,50 +98,24 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
                   ))}
                 </nav>
               </details>
-              <nav aria-label="Pages" className="hidden min-w-0 items-center gap-2 lg:flex xl:gap-3">
-                <div className="flex flex-wrap items-center gap-2 xl:gap-3">
-                  <span className="sr-only">Directory and planning</span>
-                  {navPrimary.map(([label, href]) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      aria-current={current(pathname, href) ? "page" : undefined}
-                      className={`whitespace-nowrap text-[11px] uppercase tracking-[0.14em] hover:text-oxide xl:tracking-[0.16em] ${
-                        current(pathname, href)
-                          ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
-                          : "text-ink/85"
-                      }`}
-                    >
-                      {label}
-                    </Link>
-                  ))}
-                </div>
-                <span className="hidden h-3.5 w-px shrink-0 bg-ink/20 xl:block" aria-hidden="true" />
-                <div className="hidden flex-wrap items-center gap-2 xl:flex xl:gap-3">
-                  <span className="sr-only">Trip tools</span>
-                  {navSecondary.map(([label, href]) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      aria-current={current(pathname, href) ? "page" : undefined}
-                      className={`whitespace-nowrap text-[11px] uppercase tracking-[0.12em] hover:text-oxide ${
-                        current(pathname, href)
-                          ? "text-oxide underline decoration-oxide decoration-2 underline-offset-8"
-                          : "text-ink/70"
-                      }`}
-                    >
-                      {label}
-                    </Link>
-                  ))}
-                </div>
+              <nav aria-label="Pages" className="hidden min-w-0 items-center gap-5 lg:flex">
+                <span className="sr-only">Directory</span>
+                {navPrimary.map(([label, href]) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    aria-current={current(pathname, href) ? "page" : undefined}
+                    className={`whitespace-nowrap text-[12px] tracking-wide hover:text-oxide ${
+                      current(pathname, href)
+                        ? "font-semibold text-oxide"
+                        : "text-ink/85"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
                 <HeaderTripLink />
               </nav>
-              <Link
-                href="/guide"
-                className="hidden shrink-0 bg-oxide px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-chart xl:inline-flex"
-              >
-                Explore the guide
-              </Link>
             </div>
           </div>
         </div>

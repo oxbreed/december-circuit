@@ -9,9 +9,13 @@ export const navPrimary = [
   ["Visa", "/visa"],
 ] as const;
 
-/** Secondary tools kept in header and footer; trimmed on the mobile bar. */
+/**
+ * Secondary tools. Shown in the footer and the mobile menu, not in the desktop
+ * header (that stays: Events, Places, Guides, Visa, search, My trip).
+ * `/guide` is kept as "Travel guide" so it is not confused with "Guides".
+ */
 export const navSecondary = [
-  ["Guide", "/guide"],
+  ["Travel guide", "/guide"],
   ["Flights", "/flights"],
   ["Map", "/map"],
   ["About", "/about"],
@@ -23,4 +27,3 @@ export const nav = [
   ...navPrimary,
   ...navSecondary,
 ] as const;
-
