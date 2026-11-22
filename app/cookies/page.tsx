@@ -11,25 +11,53 @@ export const metadata = pageMetadata({
 
 const link = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 
+const categories = [
+  {
+    name: "Necessary",
+    why: "Storage that keeps the site working as you asked: staying signed in, and holding a trip list you save on this device.",
+  },
+  {
+    name: "Analytics and performance",
+    why: "Tools that count page views, measure how quickly pages load, and — only if the operator turns it on — collect page statistics. These are not used to show ads.",
+  },
+] as const;
+
 const rows = [
   {
+    category: "Necessary",
     name: "Sign-in cookie (Supabase)",
     when: "Only after you open a sign-in link",
+    lasts: "Until you sign out or clear site data for this browser.",
     why: "Keeps you signed in so you can write a review, sync My Trip, or open the admin page.",
   },
   {
+    category: "Necessary",
     name: "My Trip (browser storage)",
     when: "When you save an event or a place",
+    lasts: "Until you remove the item or clear site data for this browser.",
     why: "Keeps your trip list on this device. It is not a cookie and is not sent to the server unless you sign in and sync.",
   },
   {
+    category: "Analytics and performance",
     name: "Vercel Web Analytics and Speed Insights",
     when: "Every page",
+    lasts:
+      "Web Analytics does not use a cookie. Vercel identifies a visit with a hash from the request and discards that hash after 24 hours. Speed Insights sends anonymous page-speed readings on each page load; Vercel does not describe a cookie for that product.",
     why: "Counts page views, clicks on partner links, and page speed. Vercel states that Web Analytics stores anonymised data and does not use advertising cookies.",
   },
   {
+    category: "Analytics and performance",
+    name: "First-party visit and speed records",
+    when: "Every public page",
+    lasts: "No cookie. The records are removed after about ninety days.",
+    why: "The site may also store the path you opened, an optional referrer, a short browser user-agent string, a two-letter country code from the hosting edge, and Core Web Vitals samples, so the signed-in admin page can show usage and performance numbers. These records do not store your IP address and do not set an advertising cookie.",
+  },
+  {
+    category: "Analytics and performance",
     name: "Google Analytics",
     when: "Only if the operator turns it on (off by default)",
+    lasts:
+      "If it is turned on, Google may set its own analytics cookies, including _ga and _ga_ (2 years) and _gid (24 hours).",
     why: "Page and click statistics with IP anonymisation. If it is turned on, Google sets its own analytics cookies.",
   },
 ] as const;
@@ -44,14 +72,32 @@ export default function CookiesPage() {
       <p className="mt-6 text-base leading-7 text-muted">{disclaimer}</p>
       <div className="mt-8 space-y-4 text-base leading-7 text-ink">
         <p>
-          This directory’s own code sets no advertising cookie. Here is what the site uses.
+          This directory’s own code sets no advertising cookie. We use cookies and similar
+          storage to keep the site working, and also for analytics and performance. The
+          categories are below. The table then names each tool, what it does, and how long it
+          lasts.
         </p>
+
+        <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Categories</h2>
+        <ul className="mt-6 divide-y divide-ink/10 border border-ink/15 bg-chart">
+          {categories.map((category) => (
+            <li key={category.name} className="px-4 py-4 sm:px-5">
+              <p className="font-display text-xl leading-tight">{category.name}</p>
+              <p className="mt-2 text-sm leading-7 text-muted">{category.why}</p>
+            </li>
+          ))}
+        </ul>
+
+        <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Details</h2>
         <ul className="mt-6 divide-y divide-ink/10 border border-ink/15 bg-chart">
           {rows.map((row) => (
             <li key={row.name} className="px-4 py-4 sm:px-5">
               <p className="font-display text-xl leading-tight">{row.name}</p>
-              <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-lagoon">{row.when}</p>
+              <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-lagoon">
+                {row.category} · {row.when}
+              </p>
               <p className="mt-2 text-sm leading-7 text-muted">{row.why}</p>
+              <p className="mt-2 text-sm leading-7 text-muted">Lasts: {row.lasts}</p>
             </li>
           ))}
         </ul>
