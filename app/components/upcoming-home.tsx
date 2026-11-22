@@ -19,7 +19,7 @@ export function UpcomingHome() {
   return (
     <HomeSection
       id="upcoming"
-      number="03"
+      number="04"
       kicker="Event calendar"
       title="Next on the calendar"
       lede="The next three events, by date."

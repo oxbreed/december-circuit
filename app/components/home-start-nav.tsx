@@ -9,11 +9,11 @@ export function HomeStartNav() {
 
   return (
     <HomeSection
-      id="start-here"
-      number="02"
+      id="explore-places"
+      number="03"
       kicker="Where to go"
       title="Explore places"
-      titleId="home-start-heading"
+      titleId="explore-places-heading"
       lede="Find somewhere to stay, eat, or go out."
       action={{ href: "/places", label: "Browse all places" }}
     >
