@@ -183,9 +183,11 @@ export function HeaderSearch() {
           id="header-search-field"
           role="search"
           onSubmit={onSubmit}
-          className={`relative min-w-0 ${
-            openMobile ? "absolute inset-x-3 top-full z-50 mt-2" : "hidden"
-          } md:static md:mt-0 md:block md:w-[13rem] lg:w-[12.5rem] xl:w-[15rem]`}
+          className={`min-w-0 ${
+            openMobile
+              ? "absolute inset-x-3 top-full z-50 mt-2 border border-ink/15 bg-chart p-2 shadow-[4px_4px_0_0_rgba(184,67,47,0.12)]"
+              : "hidden"
+          } md:relative md:static md:mt-0 md:block md:border-0 md:bg-transparent md:p-0 md:shadow-none md:w-[16rem] lg:w-[18rem]`}
         >
           <label htmlFor="header-global-search" className="sr-only">
             Search events, places, and guides
