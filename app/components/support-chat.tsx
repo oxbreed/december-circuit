@@ -150,7 +150,7 @@ export function SupportChat({ liveModel, open, onClose, panelId }: {
       tabIndex={-1}
       aria-modal="true"
       aria-labelledby={titleId}
-      className="support-chat-panel flex w-full flex-col overflow-hidden rounded-xl border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.18)]"
+      className="support-chat-panel flex w-full flex-col overflow-hidden border border-ink/15 bg-chart shadow-[0_12px_40px_rgba(26,20,16,0.18)]"
     >
       <header className="flex items-start justify-between gap-3 border-b border-ink/10 px-4 py-3">
         <div>
@@ -167,7 +167,7 @@ export function SupportChat({ liveModel, open, onClose, panelId }: {
         </div>
         <button
           type="button"
-          className="min-h-11 shrink-0 rounded-md border border-ink/15 bg-paper px-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
+          className="min-h-11 shrink-0 border border-ink/15 bg-paper px-3 text-[11px] uppercase tracking-[0.16em] text-ink hover:border-oxide hover:text-oxide"
           onClick={onClose}
         >
           Close

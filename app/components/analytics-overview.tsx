@@ -237,7 +237,7 @@ function OverviewChrome({
             <select
               value={range}
               onChange={(event) => onRange(event.target.value as RangeKey)}
-              className="appearance-none rounded-full border bg-white px-3 py-1.5 pr-8 text-[13px] outline-none"
+              className="appearance-none border bg-white px-3 py-1.5 pr-8 text-[13px] outline-none"
               style={{ borderColor: "#c3c4c7", color: BLUE }}
             >
               <option value="7">Last 7 days</option>
@@ -245,7 +245,7 @@ function OverviewChrome({
             </select>
           </label>
           <span
-            className="inline-flex h-8 w-8 items-center justify-center rounded-sm border text-[14px]"
+            className="inline-flex h-8 w-8 items-center justify-center border text-[14px]"
             style={{ borderColor: "#c3c4c7", color: MUTED }}
             aria-hidden="true"
             title="Expand"
@@ -253,7 +253,7 @@ function OverviewChrome({
             ⤢
           </span>
           <span
-            className="inline-flex h-8 w-8 items-center justify-center rounded-sm border text-[14px]"
+            className="inline-flex h-8 w-8 items-center justify-center border text-[14px]"
             style={{ borderColor: "#c3c4c7", color: MUTED }}
             aria-hidden="true"
             title="Settings"

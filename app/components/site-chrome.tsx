@@ -131,17 +131,17 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
                   event.currentTarget.querySelector("summary")?.focus();
                 }}
               >
-                <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md border border-ink/20 px-3 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center border border-ink/20 px-3 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
                   Menu
                 </summary>
-                <nav aria-label="More pages" className="absolute inset-x-3 top-full grid max-h-[min(26rem,65dvh)] grid-cols-2 gap-1 overflow-y-auto rounded-lg border border-ink/15 bg-chart p-2 shadow-lg">
+                <nav aria-label="More pages" className="absolute inset-x-3 top-full grid max-h-[min(26rem,65dvh)] grid-cols-2 gap-1 overflow-y-auto border border-ink/15 bg-chart p-2 shadow-lg">
                   {[...navSecondary, ["Visa and entry", "/visa"], ["Give feedback", "/feedback"]].map(([label, href]) => (
                     <Link
                       key={href}
                       href={href}
                       aria-current={current(pathname, href) ? "page" : undefined}
                       onClick={() => menuRef.current?.removeAttribute("open")}
-                      className="flex min-h-11 items-center rounded-md px-3 text-sm hover:bg-paper focus-visible:bg-paper aria-[current=page]:font-semibold aria-[current=page]:text-oxide"
+                      className="flex min-h-11 items-center px-3 text-sm hover:bg-paper focus-visible:bg-paper aria-[current=page]:font-semibold aria-[current=page]:text-oxide"
                     >
                       {label}
                     </Link>

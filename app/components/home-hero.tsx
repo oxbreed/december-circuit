@@ -4,7 +4,7 @@ import { HeroBackground } from "./hero-background";
 import { HeroStage } from "./hero-stage";
 
 const actionClass =
-  "inline-flex min-h-11 items-center justify-center rounded-sm px-5 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current";
+  "inline-flex min-h-11 items-center justify-center px-5 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current";
 
 export function HomeHero() {
   const poster = heroStagePosters()[0];
