@@ -3,8 +3,7 @@ import { FeaturedSeason, FeaturedSeasonFallback } from "./components/featured-se
 import { HomeHero } from "./components/home-hero";
 import { HomeNewsCard, HomeNewsFallback } from "./components/home-news-card";
 import { HomeStartNav } from "./components/home-start-nav";
-import { MyTripShell } from "./components/my-trip-shell";
-import { QuickHubs } from "./components/quick-hubs";
+import { PlanYourTrip } from "./components/plan-your-trip";
 import { UpcomingHome } from "./components/upcoming-home";
 import { pageMetadata } from "./site";
 
@@ -22,10 +21,9 @@ export default function Home() {
       <Suspense fallback={<FeaturedSeasonFallback />}>
         <FeaturedSeason />
       </Suspense>
-      <UpcomingHome />
       <HomeStartNav />
-      <QuickHubs />
-      <MyTripShell />
+      <UpcomingHome />
+      <PlanYourTrip />
       <Suspense fallback={<HomeNewsFallback />}>
         <HomeNewsCard />
       </Suspense>

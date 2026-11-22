@@ -10,7 +10,7 @@ export function HomeStartNav() {
   return (
     <HomeSection
       id="start-here"
-      number="03"
+      number="02"
       kicker="Where to go"
       title="Explore places"
       titleId="home-start-heading"

@@ -13,11 +13,14 @@ export function MyTripList() {
 
   if (items.length === 0) {
     return (
-      <div className="mt-6 max-w-xl border border-dashed border-ink/30 bg-paper px-4 py-6 sm:px-5">
+      <div className="mt-4 border border-dashed border-ink/30 bg-paper px-4 py-6 sm:px-5">
         <p className="text-base leading-7 text-ink">
-          Click Save to My Trip on an event or a place to add it here.
+          Nothing saved yet. Save a featured event or a place to start your trip.
         </p>
         <p className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm leading-6">
+          <Link href="#featured" className={textLink}>
+            Featured events
+          </Link>
           <Link href="/events" className={textLink}>
             Events
           </Link>

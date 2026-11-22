@@ -15,6 +15,7 @@ export async function FeaturedSeason() {
       title="Featured this season"
       titleId="featured-heading"
       lede={lede}
+      action={{ href: "/events", label: "All events" }}
     >
       {featured.length === 0 ? (
         <p className="text-sm leading-7 text-muted">

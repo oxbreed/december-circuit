@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HomeSection, homeCard } from "./home-section";
+import { homeCard } from "./home-section";
 
 const tripTools = [
   ["Visa and entry", "/visa"],
@@ -22,10 +22,12 @@ const hubs = [
   },
 ] as const;
 
+/** Guide links for the merged Plan your trip section (no section wrapper of its own). */
 export function QuickHubs() {
   return (
-    <HomeSection id="hubs" number="04" kicker="Travel guides" title="Plan your trip">
-      <ul className="grid gap-4 sm:grid-cols-2">
+    <div id="hubs" className="min-w-0 scroll-mt-36">
+      <h3 className="font-display text-2xl leading-none tracking-tight">Travel guides</h3>
+      <ul className="mt-4 grid gap-4 sm:grid-cols-2">
         {hubs.map((hub) => (
           <li key={hub.href}>
             <Link
@@ -51,6 +53,6 @@ export function QuickHubs() {
           </Link>
         ))}
       </nav>
-    </HomeSection>
+    </div>
   );
 }

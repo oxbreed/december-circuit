@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { seasonNews } from "../home-news-filter";
 import { loadNews } from "../news-reader";
 import { HomeSection, homeCard } from "./home-section";
 
@@ -6,7 +7,7 @@ export function HomeNewsFallback() {
   return (
     <HomeSection
       id="news-updates"
-      number="06"
+      number="05"
       kicker="Public feeds"
       title="News & updates"
       titleId="home-news-heading"
@@ -20,7 +21,7 @@ export async function HomeNewsCard() {
   let items: Awaited<ReturnType<typeof loadNews>>["news"] = [];
   try {
     const payload = await loadNews();
-    items = payload.news;
+    items = seasonNews(payload.news);
   } catch {
     items = [];
   }
@@ -28,7 +29,7 @@ export async function HomeNewsCard() {
   return (
     <HomeSection
       id="news-updates"
-      number="06"
+      number="05"
       kicker="Public feeds"
       title="News & updates"
       titleId="home-news-heading"
@@ -54,11 +55,11 @@ export async function HomeNewsCard() {
         </ul>
       ) : (
         <p className="border border-dashed border-ink/30 bg-chart px-4 py-5 text-sm leading-6 text-muted">
-          No headlines to show.{" "}
+          No season headlines right now.{" "}
           <Link href="/news" className="text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide">
             News & updates
           </Link>{" "}
-          checks the same feeds.
+          has every headline from the same feeds.
         </p>
       )}
     </HomeSection>
