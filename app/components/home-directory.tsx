@@ -19,39 +19,36 @@ type HubPhoto = {
 
 /**
  * Homepage directory tiles. Sources are compressed 16:10 WebP derivatives in
- * /public/hubs (*-card.webp). The original photographs remain in that folder.
- * Places and Guides are Wikimedia Commons photographs under CC BY-SA 4.0.
- * Events and Visa are photos supplied for this site.
+ * /public/hubs (*-card.webp). Earlier photographs remain in that folder.
+ * The four tiles currently use photos supplied for this site.
  */
 const hubPhotos = {
   events: {
-    src: "/hubs/carnival-parade-card.webp",
-    alt: "Carnival parade with costumed figures and bunting",
-    width: 717,
-    height: 448,
+    src: "/hubs/national-theatre-lagos-card.webp",
+    alt: "The National Theatre in Lagos, lit at night",
+    width: 1458,
+    height: 911,
     credit: "Photo supplied for this site",
   },
   places: {
-    src: "/hubs/la-campagne-tropicana-card.webp",
-    alt: "Play area at La Campagne Tropicana Beach Resort, Ibeju-Lekki",
-    width: 1600,
-    height: 1000,
-    credit: "Photo: Isaacayodele32, CC BY-SA 4.0, Wikimedia Commons",
-    creditUrl: "https://commons.wikimedia.org/wiki/File:La_Campagne_Tropicana_Beach_Resort.jpg",
+    src: "/hubs/lekki-link-bridge-card.webp",
+    alt: "The Lekki-Ikoyi Link Bridge in Lagos at night",
+    width: 1000,
+    height: 625,
+    credit: "Photo supplied for this site",
   },
   guides: {
-    src: "/hubs/ikoyi-lagos-aerial-card.webp",
-    alt: "Ikoyi, Lagos, with Victoria Island beyond the lagoon",
+    src: "/hubs/black-star-gate-card.webp",
+    alt: "Black Star Gate in Accra, with the star and the words Freedom and Justice",
     width: 1600,
     height: 1000,
-    credit: "Photo: Reginald Bassey, CC BY-SA 4.0, Wikimedia Commons",
-    creditUrl: "https://commons.wikimedia.org/wiki/File:Ikoyi,_Lagos,_Nigeria.jpg",
+    credit: "Photo supplied for this site",
   },
   visa: {
-    src: "/hubs/visa-document-card.webp",
-    alt: "Close-up of a visa document",
-    width: 1600,
-    height: 1000,
+    src: "/hubs/abuja-city-gate-card.webp",
+    alt: "Abuja City Gate at night, with the You Are Welcome sign",
+    width: 1052,
+    height: 658,
     credit: "Photo supplied for this site",
   },
 } as const satisfies Record<string, HubPhoto>;
@@ -188,19 +185,7 @@ export function HomeDirectory() {
                     <span className="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-oxide">Open →</span>
                   </span>
                 </Link>
-                {"creditUrl" in item.photo && item.photo.creditUrl ? (
-                  <a
-                    href={item.photo.creditUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-muted underline decoration-ink/20 underline-offset-2 hover:text-oxide"
-                  >
-                    {item.photo.credit}
-                    <span className="sr-only"> — leaves this site</span>
-                  </a>
-                ) : (
-                  <p className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-muted">{item.photo.credit}</p>
-                )}
+                <p className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-muted">{item.photo.credit}</p>
               </li>
             );
           })}
