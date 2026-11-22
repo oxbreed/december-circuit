@@ -858,18 +858,75 @@ html[data-analytics-consent] .consent-banner:not(.consent-banner-open) {
   display: none;
 }
 
-/* Keep the banner clear of the mobile dock and the desktop Ask support pill. */
+/* Compact full-width bar above the mobile dock, or along the desktop bottom.
+   No backdrop. Content on desktop stops short of the Ask support pill. */
 .consent-banner {
-  left: max(0.75rem, env(safe-area-inset-left, 0px));
-  right: max(0.75rem, env(safe-area-inset-right, 0px));
-  bottom: calc(var(--mobile-bar, 0px) + 0.75rem);
+  position: fixed;
+  z-index: 45;
+  left: 0;
+  right: 0;
+  bottom: var(--mobile-bar, 0px);
+  border: 0;
+  border-top: 1px solid var(--color-ink);
+  background: var(--color-chart);
+  color: var(--color-ink);
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 -4px 16px rgb(26 20 16 / 8%);
+}
+
+.consent-banner-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.consent-banner-kicker {
+  display: none;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-oxide);
+}
+
+.consent-banner-copy {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+
+.consent-banner-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 @media (min-width: 1024px) {
   .consent-banner {
-    left: 1.25rem;
-    right: auto;
-    bottom: 1.25rem;
-    width: min(32rem, calc(100vw - 14rem));
+    bottom: 0;
+    /* Leave the 22rem-wide support drawer (and the Ask support pill) clear
+       of the Accept and Reject buttons, which would otherwise be unclickable. */
+    padding: 0.625rem 24.5rem 0.625rem 1.25rem;
+  }
+
+  .consent-banner-kicker {
+    display: block;
+  }
+
+  .consent-banner-copy {
+    flex: 1 1 auto;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    white-space: nowrap;
   }
 }

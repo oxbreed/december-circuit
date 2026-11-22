@@ -15,7 +15,7 @@ import {
 const linkClass = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 
 const buttonClass =
-  "inline-flex min-h-11 min-w-[8.5rem] flex-1 items-center justify-center border border-ink bg-chart px-4 font-sans text-sm font-semibold text-ink hover:bg-paper";
+  "inline-flex h-11 min-w-[5.75rem] items-center justify-center border border-ink bg-chart px-3 font-sans text-sm font-semibold text-ink hover:bg-paper";
 
 function hideOnPath(pathname: string | null) {
   if (!pathname) return false;
@@ -72,43 +72,41 @@ export function ConsentBanner() {
   }
 
   return (
-    <div
-      role="dialog"
-      aria-modal="false"
+    <aside
+      role="region"
       aria-labelledby={titleId}
       aria-describedby={textId}
-      className={`consent-banner fixed z-[45] border border-ink bg-chart p-4 text-ink shadow-[4px_4px_0_0_rgba(26,20,16,0.12)]${settingsOpen ? " consent-banner-open" : ""}`}
+      className={`consent-banner${settingsOpen ? " consent-banner-open" : ""}`}
     >
-      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-oxide">Cookies</p>
-      <p id={titleId} className="mt-2 font-display text-2xl leading-none tracking-tight">
-        Analytics on this site
-      </p>
-      <p id={textId} className="mt-3 text-sm leading-6 text-ink">
-        We use analytics to count visits and measure how quickly pages load. They
-        only run if you accept. Necessary storage, such as staying signed in, always
-        works.{" "}
-        <Link href="/cookies" className={linkClass}>
-          Read the cookie notice
-        </Link>
-        .
-      </p>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <button type="button" className={buttonClass} onClick={() => choose("rejected")}>
-          Reject
-        </button>
-        <button type="button" className={buttonClass} onClick={() => choose("accepted")}>
-          Accept
-        </button>
+      <div className="consent-banner-inner">
+        <p id={titleId} className="consent-banner-kicker">
+          Cookies
+        </p>
+        <p id={textId} className="consent-banner-copy">
+          We use analytics only if you accept.{" "}
+          <Link href="/cookies" className={linkClass}>
+            Cookie notice
+          </Link>
+          .
+        </p>
+        <div className="consent-banner-actions">
+          <button type="button" className={buttonClass} onClick={() => choose("rejected")}>
+            Reject
+          </button>
+          <button type="button" className={buttonClass} onClick={() => choose("accepted")}>
+            Accept
+          </button>
+          {consent ? (
+            <button
+              type="button"
+              className={`inline-flex h-11 items-center font-sans text-sm text-muted ${linkClass}`}
+              onClick={() => setSettingsOpen(false)}
+            >
+              Close
+            </button>
+          ) : null}
+        </div>
       </div>
-      {consent ? (
-        <button
-          type="button"
-          className={`mt-3 inline-flex min-h-11 items-center font-sans text-sm text-muted ${linkClass}`}
-          onClick={() => setSettingsOpen(false)}
-        >
-          Close without changing
-        </button>
-      ) : null}
-    </div>
+    </aside>
   );
 }
