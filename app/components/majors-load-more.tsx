@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import type { CircuitEvent } from "../events";
-import { presentEvent } from "../event-view";
+import { isNewsSource, presentEvent } from "../event-view";
+import { ReportedByCredit } from "./reported-by-credit";
 import { cardImageForEvent } from "../share-images";
 import { eventTripId } from "../trip";
 import { DateBlock } from "./event-card";
@@ -26,7 +27,7 @@ function MajorCard({ event }: { event: CircuitEvent }) {
         </div>
       </div>
       <div className="flex flex-col items-start gap-4 border-t border-ink/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        {event.url ? <a href={event.url} target="_blank" rel="noopener noreferrer" className="text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide">{event.urlLabel ?? "Organiser page"} — leaves this site</a> : <p className="text-sm text-muted">No organiser page listed</p>}
+        {isNewsSource(event) && event.url ? <ReportedByCredit url={event.url} /> : event.url ? <a href={event.url} target="_blank" rel="noopener noreferrer" className="text-sm text-ink underline decoration-ink/30 underline-offset-4 hover:text-oxide">{event.urlLabel ?? "Organiser page"} — leaves this site</a> : <p className="text-sm text-muted">No organiser page listed</p>}
         <SaveTripButton kind="event" id={eventTripId(event)} />
       </div>
     </article>

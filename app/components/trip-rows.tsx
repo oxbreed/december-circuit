@@ -1,6 +1,7 @@
 "use client";
 
-import { presentEvent } from "../event-view";
+import { isNewsSource, presentEvent } from "../event-view";
+import { ReportedByCredit } from "./reported-by-credit";
 import { events, type CircuitEvent } from "../events";
 import { places } from "../places";
 import { eventTripId, placeTripId } from "../trip";
@@ -19,12 +20,16 @@ export type TripRow = {
   href?: string;
   meta: string;
   links: TripLink[];
+  /** News citation URL, shown as a quiet “Reported by” credit instead of a leave-site CTA. */
+  newsCreditUrl?: string;
 };
 
 function eventLinks(event: CircuitEvent): TripLink[] {
   const links: TripLink[] = [];
   if (event.ticketsUrl) links.push({ href: event.ticketsUrl, label: "Tickets" });
-  if (event.url) links.push({ href: event.url, label: event.urlLabel ?? "Organiser page" });
+  if (event.url && !isNewsSource(event)) {
+    links.push({ href: event.url, label: event.urlLabel ?? "Organiser page" });
+  }
   return links;
 }
 
@@ -48,6 +53,7 @@ export function resolveTripItem(item: TripItem): TripRow {
       href: view.href,
       meta: `${view.region} · ${event.when}`,
       links: eventLinks(event),
+      newsCreditUrl: isNewsSource(event) && event.url ? event.url : undefined,
     };
   }
 
@@ -70,8 +76,8 @@ export function resolveTripItem(item: TripItem): TripRow {
   };
 }
 
-function StoredLinks({ links }: { links: TripLink[] }) {
-  if (links.length === 0) {
+function StoredLinks({ links, newsCreditUrl }: { links: TripLink[]; newsCreditUrl?: string }) {
+  if (links.length === 0 && !newsCreditUrl) {
     return <p className="mt-3 text-sm leading-6 text-muted">The link is not listed.</p>;
   }
 
@@ -89,6 +95,11 @@ function StoredLinks({ links }: { links: TripLink[] }) {
           </a>
         </li>
       ))}
+      {newsCreditUrl ? (
+        <li>
+          <ReportedByCredit url={newsCreditUrl} />
+        </li>
+      ) : null}
     </ul>
   );
 }
@@ -131,7 +142,7 @@ export function TripRowsList({
                   </h3>
                 )}
                 {row.meta ? <p className="mt-2 text-sm text-ink">{row.meta}</p> : null}
-                <StoredLinks links={row.links} />
+                <StoredLinks links={row.links} newsCreditUrl={row.newsCreditUrl} />
               </div>
               {readOnly || !onRemove ? null : (
                 <button

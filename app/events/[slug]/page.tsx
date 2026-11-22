@@ -13,7 +13,7 @@ import { SaveTripButton } from "../../components/save-trip-button";
 import { FeaturedBadge } from "../../components/sponsor-spot";
 import { calendarLinksFor } from "../../event-calendar";
 import { eventDateSpan, fullEventDateLabel } from "../../event-dates";
-import { checkedOn, eventBySlug, eventSlug, presentEvent } from "../../event-view";
+import { checkedOn, eventBySlug, eventSlug, isNewsSource, presentEvent } from "../../event-view";
 import { events } from "../../events";
 import { liveEventBySlug } from "../../live-directory";
 import { nearbyStaysFor } from "../../nearby-stays";
@@ -113,7 +113,7 @@ export default async function EventPage({
       </div>
       <p className="mt-8 text-base leading-8 text-ink">{event.summary}</p>
 
-      {event.url ? (
+      {isNewsSource(event) && event.url ? null : event.url ? (
         <p className="mt-6 text-sm leading-7 text-muted">
           <span className="text-[10px] uppercase tracking-[0.16em] text-lagoon">Source</span>
           <span className="mt-1 block">

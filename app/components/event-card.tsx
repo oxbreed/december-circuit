@@ -1,7 +1,8 @@
 import type { CircuitEvent } from "../events";
-import { checkedOn, dateFace, eventSlug, presentEvent } from "../event-view";
+import { checkedOn, dateFace, eventSlug, isNewsSource, presentEvent } from "../event-view";
 import { isFeaturedEvent } from "../sponsors";
 import { eventTripId } from "../trip";
+import { ReportedByCredit } from "./reported-by-credit";
 import { SaveTripButton } from "./save-trip-button";
 import { FeaturedBadge } from "./sponsor-spot";
 import { TicketLink } from "./tracked-link";
@@ -68,6 +69,8 @@ export function PrimaryAction({
   event: CircuitEvent;
   placement?: string;
 }) {
+  const news = isNewsSource(event);
+
   if (event.ticketsUrl) {
     return (
       <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
@@ -79,7 +82,9 @@ export function PrimaryAction({
         >
           Tickets — leaves this site
         </TicketLink>
-        {event.url ? (
+        {news && event.url ? (
+          <ReportedByCredit url={event.url} />
+        ) : event.url ? (
           <a
             href={event.url}
             target="_blank"
@@ -91,6 +96,10 @@ export function PrimaryAction({
         ) : null}
       </div>
     );
+  }
+
+  if (news && event.url) {
+    return <ReportedByCredit url={event.url} />;
   }
 
   if (event.url) {
