@@ -13,7 +13,7 @@ const SWIPE_MIN_PX = 48;
  * `intro` (heading, copy, buttons; server-rendered and the same on every slide) beside the stage.
  * No autoplay. Slides change only on Previous/Next, a horizontal swipe (touch or pen), or the
  * Left/Right arrow keys while focus is in the slideshow, with a 400ms crossfade (instant under
- * prefers-reduced-motion, handled in CSS). Render this inside the hero `<section>`; the backdrop
+ * prefers-reduced-motion, handled in CSS). Render this inside the hero `<section>`; the paper backdrop
  * is positioned against it.
  *
  * Images are loaded lazily: only slide one at first. The first time the visitor hovers, touches,
@@ -94,7 +94,7 @@ export function HeroCarousel({ posters, intro }: { posters: HeroStagePoster[]; i
             aria-label="Featured event posters"
             tabIndex={interactive ? 0 : undefined}
             onKeyDown={onKeyDown}
-            className="min-w-0 outline-offset-8 focus-visible:outline-2 focus-visible:outline-chart"
+            className="min-w-0 outline-offset-8 focus-visible:outline-2 focus-visible:outline-ink"
           >
             <HeroStage posters={posters} index={index} mounted={mounted} />
             {interactive ? (
