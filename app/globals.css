@@ -851,3 +851,9 @@ body::before {
     transform: none !important;
   }
 }
+
+/* Hide the SSR cookie banner when a stored choice already exists, so it does
+   not flash for returning visitors. Cookie settings adds .consent-banner-open. */
+html[data-analytics-consent] .consent-banner:not(.consent-banner-open) {
+  display: none;
+}

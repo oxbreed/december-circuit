@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef } from "react";
 import Link from "next/link";
+import { openCookieSettings } from "../analytics-consent";
 import { disclaimer } from "../brand";
 
 const footerLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
@@ -176,6 +177,17 @@ export function SiteFooter() {
                       </Link>
                     </li>
                   ))}
+                  {group.title === "Legal" ? (
+                    <li>
+                      <button
+                        type="button"
+                        onClick={openCookieSettings}
+                        className={`flex min-h-11 w-full items-center text-left text-ink ${footerLink}`}
+                      >
+                        Cookie settings
+                      </button>
+                    </li>
+                  ) : null}
                 </ul>
               </details>
             );

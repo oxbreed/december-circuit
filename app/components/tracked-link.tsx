@@ -2,6 +2,7 @@
 
 import { track } from "@vercel/analytics";
 import type { ReactNode } from "react";
+import { hasAnalyticsConsent } from "../analytics-consent";
 
 /**
  * Client-side click events for outbound money links. Fires a Vercel Web
@@ -13,6 +14,7 @@ type EventName = "outbound_go" | "stay_click" | "ticket_click" | "featured_enqui
 type Props = Record<string, string | number | boolean | null>;
 
 export function trackClick(name: EventName, props: Props) {
+  if (!hasAnalyticsConsent()) return;
   try {
     track(name, props);
   } catch {
@@ -27,6 +29,7 @@ export function trackClick(name: EventName, props: Props) {
 }
 
 function beacon(body: Record<string, string>) {
+  if (!hasAnalyticsConsent()) return;
   try {
     const json = JSON.stringify({ ...body, path: window.location.pathname });
     if (typeof navigator.sendBeacon === "function") {
