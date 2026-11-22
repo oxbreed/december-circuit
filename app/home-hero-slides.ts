@@ -73,3 +73,51 @@ export function homeHeroSlides(rows = events): HeroSlide[] {
 
   return [...slides, ...heroNightSlides];
 }
+
+/**
+ * The hero stage. One poster today; the hero shows `HERO_STAGE_SLIDE_COUNT` of the
+ * featured posters, so going to about eight slides later is a data change here
+ * plus a client wrapper around `HeroStage` for the controls. Event posters only:
+ * the night photos stay in `heroNightSlides` for the slideshow API and admin.
+ */
+export const HERO_STAGE_SLIDE_COUNT = 1;
+
+export type HeroStagePoster = {
+  /** Public path of the poster image. */
+  src: string;
+  alt: string;
+  /** Intrinsic size when known; the stage frame is always 4:5 (the image is cropped with object-cover). */
+  width?: number;
+  height?: number;
+  /** Headline of the caption, e.g. "Olamide, YBNL: The Reunion, Future Fest '26". */
+  title: string;
+  /** City shown beside the date. */
+  place: string;
+  /** The night shown on the poster, e.g. "18 December". */
+  date: string;
+  /** Internal event page. */
+  href: string;
+  credit?: string;
+  creditUrl?: string;
+  /** CSS object-position for the 4:5 crop, e.g. "50% 30%". */
+  objectPosition?: string;
+};
+
+export function heroStagePosters(rows = events): HeroStagePoster[] {
+  const posters: HeroStagePoster[] = [];
+  for (const slide of homeHeroSlides(rows)) {
+    if (slide.kind !== "poster") continue;
+    posters.push({
+      src: slide.src,
+      alt: slide.alt,
+      title: slide.place,
+      place: slide.city,
+      date: slide.date,
+      href: slide.href,
+      credit: slide.credit,
+      creditUrl: slide.creditUrl,
+    });
+    if (posters.length >= HERO_STAGE_SLIDE_COUNT) break;
+  }
+  return posters;
+}
