@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navPrimary, navSecondary } from "../brand";
+import { HeaderMenu } from "./header-menu";
 import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
 import { DesktopNewsTicker } from "./desktop-news-ticker";
@@ -39,17 +40,6 @@ function current(pathname: string, href: string) {
 
 export function SiteChrome({ children, support }: { children: ReactNode; support: ReactNode }) {
   const pathname = usePathname();
-  const menuRef = useRef<HTMLDetailsElement>(null);
-
-  useEffect(() => {
-    const menu = menuRef.current;
-    if (!menu) return;
-    function dismiss(event: PointerEvent) {
-      if (event.target instanceof Node && !menu?.contains(event.target)) menu?.removeAttribute("open");
-    }
-    document.addEventListener("pointerdown", dismiss);
-    return () => document.removeEventListener("pointerdown", dismiss);
-  }, []);
 
   return (
     <>
@@ -71,33 +61,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
           <div className="flex min-w-0 flex-1 items-center justify-end gap-3 lg:justify-between lg:gap-4">
             <HeaderSearch />
             <div className="flex shrink-0 items-center gap-3">
-              <details
-                ref={menuRef}
-                className="lg:hidden"
-                onKeyDown={(event) => {
-                  if (event.key !== "Escape" || !event.currentTarget.open) return;
-                  event.stopPropagation();
-                  event.currentTarget.open = false;
-                  event.currentTarget.querySelector("summary")?.focus();
-                }}
-              >
-                <summary className="flex min-h-11 cursor-pointer list-none items-center border border-ink/20 px-3 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
-                  Menu
-                </summary>
-                <nav aria-label="More pages" className="absolute inset-x-3 top-full grid max-h-[min(26rem,65dvh)] grid-cols-2 gap-1 overflow-y-auto border border-ink/15 bg-chart p-2 shadow-lg">
-                  {[...navSecondary, ["Visa and entry", "/visa"], ["Give feedback", "/feedback"]].map(([label, href]) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      aria-current={current(pathname, href) ? "page" : undefined}
-                      onClick={() => menuRef.current?.removeAttribute("open")}
-                      className="flex min-h-11 items-center px-3 text-sm hover:bg-paper focus-visible:bg-paper aria-[current=page]:font-semibold aria-[current=page]:text-oxide"
-                    >
-                      {label}
-                    </Link>
-                  ))}
-                </nav>
-              </details>
+              <HeaderMenu />
               <nav aria-label="Pages" className="hidden min-w-0 items-center gap-2 lg:flex xl:gap-3">
                 <div className="flex flex-wrap items-center gap-2 xl:gap-3">
                   <span className="sr-only">Directory and planning</span>
