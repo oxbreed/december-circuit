@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { homeCard } from "./home-section";
 
 type UpcomingRow = { href: string; name: string; region: string; when: string };
 
@@ -12,16 +13,16 @@ export function UpcomingHomeList({ rows }: { rows: UpcomingRow[] }) {
     );
   }
   return (
-    <ul className="divide-y divide-ink/10 border-y border-ink/10">
+    <ul className="grid gap-3 md:grid-cols-3 md:gap-4">
       {rows.map((event) => (
-            <li key={`${event.href}-${event.when}`} className="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
-              <div className="min-w-0">
-                <Link prefetch={false} href={event.href} className="font-display text-2xl leading-tight tracking-tight hover:text-oxide">{event.name}</Link>
-                <p className="mt-1.5 text-sm text-ink">{event.region}</p>
-              </div>
-              <p className="shrink-0 text-sm text-muted sm:text-right">{event.when}</p>
-            </li>
-          ))}
+        <li key={`${event.href}-${event.when}`} className={`flex min-w-0 flex-col gap-2 p-4 ${homeCard}`}>
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-oxide">{event.when}</p>
+          <Link prefetch={false} href={event.href} className="font-display text-xl leading-tight tracking-tight hover:text-oxide">
+            {event.name}
+          </Link>
+          <p className="mt-auto text-xs uppercase tracking-[0.16em] text-muted">{event.region}</p>
+        </li>
+      ))}
     </ul>
   );
 }
