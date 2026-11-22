@@ -8,7 +8,7 @@ export function HomeCategoryStrip({ entries }: { entries: VisitorCategoryEntry[]
         <li key={item.slug} className="min-w-0">
           <Link
             href={`/categories/${item.slug}`}
-            className="motion-lift block h-full rounded-lg border border-ink/15 bg-chart p-4 hover:border-oxide/40"
+            className="motion-lift block h-full border border-ink/15 bg-chart p-4 hover:border-oxide/40"
           >
             <span className="block font-display text-xl leading-tight tracking-tight">{item.category}</span>
             <span className="mt-2 block text-sm leading-6 text-muted">
