@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { HomeFeature } from "../home-featured";
 import { LoadMoreList } from "./load-more";
+import { homeCard } from "./home-section";
 import { SaveTripButton } from "./save-trip-button";
 
 /** Use one image and keep the full poster visible. */
@@ -18,7 +19,7 @@ function PosterFrame({ feature }: { feature: HomeFeature }) {
 
 function FeaturedCard({ feature }: { feature: HomeFeature }) {
   return (
-    <article className="flex min-w-0 flex-row overflow-hidden border border-ink/15 bg-chart shadow-sm sm:flex-col">
+    <article className={`flex min-w-0 flex-row overflow-hidden ${homeCard} sm:flex-col`}>
       <Link prefetch={false} href={feature.href} className="block shrink-0" tabIndex={-1} aria-hidden="true">
         <PosterFrame feature={feature} />
       </Link>
@@ -45,7 +46,7 @@ export function FeaturedSeasonGrid({ featured }: { featured: HomeFeature[] }) {
   return (
     <LoadMoreList items={featured} mobileSize={3} desktopSize={5} noun="featured events">
       {(visible) => (
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {visible.map((feature) => (
             <FeaturedCard key={feature.id} feature={feature} />
           ))}

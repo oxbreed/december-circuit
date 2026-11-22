@@ -5,14 +5,14 @@ type UpcomingRow = { href: string; name: string; region: string; when: string };
 export function UpcomingHomeList({ rows }: { rows: UpcomingRow[] }) {
   if (rows.length === 0) {
     return (
-      <p className="mt-6 max-w-2xl text-sm leading-7 text-muted">
+      <p className="max-w-2xl text-sm leading-7 text-muted">
         Nothing on the sourced list falls on or after today in Africa/Lagos.{" "}
         <a href="/list" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">List an event</a> for review.
       </p>
     );
   }
   return (
-    <ul className="mt-6 divide-y divide-ink/10 border-y border-ink/10">
+    <ul className="divide-y divide-ink/10 border-y border-ink/10">
       {rows.map((event) => (
             <li key={`${event.href}-${event.when}`} className="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
               <div className="min-w-0">
