@@ -65,12 +65,20 @@
     text-wrap: pretty;
   }
 
-  /* Square native controls. Radios and checkboxes keep their intrinsic shape. */
+  /* Square native controls. Radios and checkboxes keep their intrinsic shape.
+     appearance:none is required on iOS Safari: it paints rounded buttons when
+     appearance is "button" (Tailwind preflight), even if border-radius is 0.
+     Leave select's appearance alone so the dropdown arrow stays visible. */
   button,
   input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),
-  select,
   textarea,
   summary {
+    border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  select {
     border-radius: 0;
   }
 
@@ -338,6 +346,8 @@ body::before {
     min-width: 0;
     min-height: 2.75rem;
     border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
     color: var(--color-ink);
     font-size: 0.8125rem;
     font-weight: 600;
@@ -772,6 +782,25 @@ body::before {
 
   .site-footer-links {
     padding-bottom: 0;
+  }
+}
+
+
+@keyframes menu-slide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes menu-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
