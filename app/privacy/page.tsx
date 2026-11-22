@@ -114,9 +114,11 @@ export default function PrivacyPage() {
           site does not store that picture.
         </p>
         <p>
-          Site monitoring uses Vercel Web Analytics and Vercel Speed Insights.
-          Those tools measure page views, rough location by country, devices,
-          and Core Web Vitals. Vercel states that Web Analytics stores
+          Site monitoring uses Vercel Web Analytics and Vercel Speed Insights,
+          but only after you accept analytics in the cookie banner. Reject is as
+          easy as Accept, and you can change your choice later with Cookie
+          settings in the footer. Those tools measure page views, rough location
+          by country, devices, and Core Web Vitals. Vercel states that Web Analytics stores
           anonymised data and does not use advertising cookies for that
           product. A separate first-party page-view record may also store the
           path you opened, an optional referrer, a short browser user-agent
@@ -126,14 +128,14 @@ export default function PrivacyPage() {
           optional country code so the signed-in admin page can show performance
           numbers. Those first-party records do not store your IP address and
           do not set an advertising cookie. Google Analytics runs only if the
-          operator has set a measurement id in the server environment; it is
-          off by default.
+          operator has set a measurement id in the server environment and you
+          have accepted analytics; it is off by default.
         </p>
         <p>
           Some outbound links are affiliate links or paid placements, and they
           are labelled. A partner link goes through a first-party address that
           starts with <code>/go/</code> before it opens the partner’s site. When
-          you click a partner, ticket, or paid link, the site may record which
+          you click a partner, ticket, or paid link, and only if you have accepted analytics, the site may record which
           partner or listing it was, the page the link sat on, the referring
           site’s host name, a two-letter country code from the hosting edge, and
           the time. Vercel Web Analytics may also count the click as an event.

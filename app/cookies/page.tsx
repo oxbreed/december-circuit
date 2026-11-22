@@ -40,7 +40,7 @@ const rows = [
   {
     category: "Analytics and performance",
     name: "Vercel Web Analytics and Speed Insights",
-    when: "Every page",
+    when: "Only after you accept analytics",
     lasts:
       "Web Analytics does not use a cookie. Vercel identifies a visit with a hash from the request and discards that hash after 24 hours. Speed Insights sends anonymous page-speed readings on each page load; Vercel does not describe a cookie for that product.",
     why: "Counts page views, clicks on partner links, and page speed. Vercel states that Web Analytics stores anonymised data and does not use advertising cookies.",
@@ -48,7 +48,7 @@ const rows = [
   {
     category: "Analytics and performance",
     name: "First-party visit and speed records",
-    when: "Every public page",
+    when: "Only after you accept analytics",
     lasts: "No cookie. The records are removed after about ninety days.",
     why: "The site may also store the path you opened, an optional referrer, a short browser user-agent string, a two-letter country code from the hosting edge, and Core Web Vitals samples, so the signed-in admin page can show usage and performance numbers. These records do not store your IP address and do not set an advertising cookie.",
   },
@@ -73,9 +73,10 @@ export default function CookiesPage() {
       <div className="mt-8 space-y-4 text-base leading-7 text-ink">
         <p>
           This directory’s own code sets no advertising cookie. We use cookies and similar
-          storage to keep the site working, and also for analytics and performance. The
-          categories are below. The table then names each tool, what it does, and how long it
-          lasts.
+          storage to keep the site working, and also for analytics and performance if you
+          accept. A small banner asks you to accept or reject analytics on your first visit,
+          and you can change that later with Cookie settings in the footer. The categories
+          are below. The table then names each tool, what it does, and how long it lasts.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Categories</h2>
@@ -116,8 +117,17 @@ export default function CookiesPage() {
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">Your choices</h2>
         <p>
-          You can clear cookies and site storage in your browser settings at any time. Clearing
-          them signs you out and empties My Trip on this device. More detail is in the{" "}
+          Analytics and performance tools only run after you press Accept on the cookie
+          banner. Reject is always as easy as Accept. Your choice is stored on this device
+          for twelve months, in first-party storage and a first-party cookie named{" "}
+          <code>dd_analytics_consent</code>. You can change it at any time with Cookie
+          settings in the footer, which reopens the banner. If you later withdraw consent,
+          the tools stop on the next page load. Necessary storage still works either way.
+        </p>
+        <p>
+          You can also clear cookies and site storage in your browser settings at any time.
+          Clearing them signs you out, empties My Trip on this device, and will ask for
+          your analytics choice again. More detail is in the{" "}
           <Link href="/privacy" className={link}>
             privacy notice
           </Link>

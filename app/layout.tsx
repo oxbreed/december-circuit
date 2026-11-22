@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { JsonLd } from "./components/json-ld";
+import { ConsentBanner } from "./components/consent-banner";
 import { DeferredSiteAnalytics } from "./components/deferred-site-analytics";
 import { SiteChrome } from "./components/site-chrome";
 import { SupportChatSlot } from "./components/support-chat-slot";
@@ -94,6 +95,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var m=document.cookie.match(/(?:^|; )dd_analytics_consent=([^;]*)/);if(m)document.documentElement.setAttribute('data-analytics-consent',decodeURIComponent(m[1]));}catch(e){}})();",
+          }}
+        />
         <meta
           name="impact-site-verification"
           {...({
@@ -107,6 +114,7 @@ export default function RootLayout({
         <SiteChrome support={<Suspense fallback={null}><SupportChatSlot /></Suspense>}>
           {children}
         </SiteChrome>
+        <ConsentBanner />
         <DeferredSiteAnalytics gaMeasurementId={gaMeasurementId()} />
       </body>
     </html>

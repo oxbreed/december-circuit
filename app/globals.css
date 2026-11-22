@@ -851,3 +851,25 @@ body::before {
     transform: none !important;
   }
 }
+
+/* Hide the SSR cookie banner when a stored choice already exists, so it does
+   not flash for returning visitors. Cookie settings adds .consent-banner-open. */
+html[data-analytics-consent] .consent-banner:not(.consent-banner-open) {
+  display: none;
+}
+
+/* Keep the banner clear of the mobile dock and the desktop Ask support pill. */
+.consent-banner {
+  left: max(0.75rem, env(safe-area-inset-left, 0px));
+  right: max(0.75rem, env(safe-area-inset-right, 0px));
+  bottom: calc(var(--mobile-bar, 0px) + 0.75rem);
+}
+
+@media (min-width: 1024px) {
+  .consent-banner {
+    left: 1.25rem;
+    right: auto;
+    bottom: 1.25rem;
+    width: min(32rem, calc(100vw - 14rem));
+  }
+}
