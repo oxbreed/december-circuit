@@ -63,7 +63,7 @@ export function SharedTripClient({
           <input type="hidden" name="shareToken" value={shareToken} />
           <input type="hidden" name="intent" value="add" />
           <input type="hidden" name="items" value={JSON.stringify(available)} />
-          <button type="submit" disabled={editPending || !available.length} className="min-h-11 rounded-sm bg-ink px-4 py-3 text-sm font-semibold text-chart disabled:opacity-50">
+          <button type="submit" disabled={editPending || !available.length} className="min-h-11 bg-ink px-4 py-3 text-sm font-semibold text-chart disabled:opacity-50">
             {editPending ? "Updating…" : "Add your browser saves"}
           </button>
           {editState.message && <p role={editState.ok ? "status" : "alert"} className="text-sm">{editState.message}</p>}

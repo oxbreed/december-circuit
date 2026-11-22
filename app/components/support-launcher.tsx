@@ -24,7 +24,7 @@ export function SupportLauncher({ liveModel }: { liveModel: boolean }) {
     <div className="support-chat">
       <div className="support-chat-inner">
         {requested && (
-          <Suspense fallback={open ? <p role="status" className="support-chat-panel rounded-lg bg-chart p-4 text-sm">Opening support…</p> : null}>
+          <Suspense fallback={open ? <p role="status" className="support-chat-panel bg-chart p-4 text-sm">Opening support…</p> : null}>
             <SupportChat liveModel={liveModel} open={open} onClose={close} panelId={panelId} />
           </Suspense>
         )}

@@ -174,7 +174,7 @@ export function HeaderSearch() {
           aria-controls="header-search-field"
           aria-label={openMobile ? "Close search" : "Open search"}
           onClick={() => setOpenMobile((value) => !value)}
-          className="inline-flex h-11 w-11 rounded-md items-center justify-center border border-ink/15 text-ink hover:border-oxide hover:text-oxide md:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center border border-ink/15 text-ink hover:border-oxide hover:text-oxide md:hidden"
         >
           <SearchIcon className="h-4 w-4" />
         </button>

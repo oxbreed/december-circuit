@@ -17,7 +17,7 @@ export function ListingRatingForm({
         <legend className="mb-2 text-sm font-semibold">{score ? "Update your rating" : "Your rating"}</legend>
         <div className="flex flex-wrap gap-2">
           {[1, 2, 3, 4, 5].map((value) => (
-            <label key={value} className="flex min-h-11 items-center gap-1 rounded border border-ink/20 px-2 text-sm">
+            <label key={value} className="flex min-h-11 items-center gap-1 border border-ink/20 px-2 text-sm">
               <input required type="radio" name="score" value={value} defaultChecked={score === value} />
               <span aria-label={`${value} out of 5 stars`}>{value} ★</span>
             </label>
