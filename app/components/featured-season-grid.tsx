@@ -18,7 +18,7 @@ function PosterFrame({ feature }: { feature: HomeFeature }) {
 
 function FeaturedCard({ feature }: { feature: HomeFeature }) {
   return (
-    <article className="flex min-w-0 flex-row overflow-hidden rounded-lg border border-ink/15 bg-chart shadow-sm sm:flex-col">
+    <article className="flex min-w-0 flex-row overflow-hidden border border-ink/15 bg-chart shadow-sm sm:flex-col">
       <Link prefetch={false} href={feature.href} className="block shrink-0" tabIndex={-1} aria-hidden="true">
         <PosterFrame feature={feature} />
       </Link>

@@ -46,12 +46,12 @@ export async function HomeNewsCard() {
             aria-label="Headlines from the public feeds"
           >
             {items.slice(0, 3).map((item) => (
-              <li key={item.link} className="min-w-0 rounded-lg border border-ink/15 bg-chart">
+              <li key={item.link} className="min-w-0 border border-ink/15 bg-chart">
                 <a
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block h-full rounded-lg px-4 py-3 hover:bg-paper-deep/70"
+                  className="block h-full px-4 py-3 hover:bg-paper-deep/70"
                 >
                   <span className="text-[10px] uppercase tracking-[0.16em] text-oxide">{item.source}</span>
                   <span className="mt-1 block text-sm leading-6 text-ink">{item.headline}</span>

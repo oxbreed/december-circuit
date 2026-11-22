@@ -55,7 +55,7 @@ export function HeroNightlife({
 
   return (
     <figure
-      className="min-w-0 overflow-hidden rounded-xl border border-ink/15 bg-chart shadow-sm"
+      className="min-w-0 overflow-hidden border border-ink/15 bg-chart shadow-sm"
       aria-roledescription="carousel"
       aria-label="December event posters and West African nights"
       onKeyDown={onKeyDown}
