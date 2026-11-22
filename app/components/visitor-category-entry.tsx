@@ -27,7 +27,7 @@ export function VisitorCategoryHub() {
   return (
     <section aria-label="Browse by category" className="mt-8">
       <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Hotels, food, venues &amp; transport</p>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">Open a category hub for organiser pages already on file. Counts come from sourced directory rows only — not prices or availability.</p>
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">Open a category hub for sourced organiser pages — not prices or availability.</p>
       <VisitorCategoryHubGrid entries={entries} />
     </section>
   );
@@ -59,7 +59,7 @@ export function CarHireVisitorBlock() {
     <aside aria-label="Car rental and rides" className="mt-8 border border-ink/15 bg-paper px-5 py-6">
       <p className="text-[11px] uppercase tracking-[0.22em] text-lagoon">Car hire &amp; rides</p>
       <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-        {car ? (<><Link href={`/categories/${car.slug}`} className={outbound}>Car rental</Link>{car.count > 0 ? <span> — {visitorCategoryCountLine(car.count, car.exploreKind)} in the category hub. </span> : <span> category hub. </span>}</>) : null}
+        {car ? (<><Link href={`/categories/${car.slug}`} className={outbound}>Car rental</Link>{car.count > 0 ? <span> — {visitorCategoryCountLine(car.count, car.category, car.exploreKind)}. </span> : <span> category hub. </span>}</>) : null}
         No sourced car-hauling operators on file yet. For city rides, use verified apps (outbound only):
       </p>
       <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">

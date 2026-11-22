@@ -9,6 +9,7 @@ import { SaveTripButton } from "./save-trip-button";
 import { LoadMoreBar, useListPageSize } from "./load-more";
 import { EmptyList, ErrorNote, LoadingLines } from "./states";
 import { useRecords } from "./use-records";
+import { placesFilterCountLine } from "../visitor-categories";
 
 /** Hub cities shown first in the city browse row. */
 const HUB_CITIES = ["Lagos", "Accra", "Calabar", "Abuja", "Kumasi"] as const;
@@ -485,7 +486,7 @@ export function PlacesDirectory() {
             ) : (
               <>
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brass">
-                  {matched.length} {matched.length === 1 ? "place" : "places"} on file
+                  {placesFilterCountLine(matched.length, categories)}
                 </p>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   {pageRows.map((place) => (
