@@ -293,6 +293,19 @@ export const seedEvents: CircuitEvent[] = [
     urlLabel: "Organiser's page",
     sourceId: "victony-bonfire-lagos",
   },
+  {
+    region: "Abidjan",
+    when: "27-28 December",
+    summary:
+      "Mother Africa Festival 2026. 5th edition, with Quavo headlining, at Marcory Zone 4 in Abidjan, Côte d’Ivoire. Organised by KT7 Production. Tickets from 20,000 F CFA (XOF). Hours unconfirmed; previous editions ran 14:00–04:00.",
+    // Official festival site motherafricafestival.com resolved but the vhost
+    // was suspended (HTTP 503, x-suspended-vhost) when this row was added, so
+    // it is omitted. Official tickets: Tikerama.
+    url: "https://tikerama.com/fr/evenements/mother-africa-festival-2026",
+    urlLabel: "Official page",
+    ticketsUrl: "https://tikerama.com/fr/evenements/mother-africa-festival-2026",
+    sourceId: "mother-africa-festival-tikerama",
+  },
 ];
 
 function publishedFromSnapshot(): IngestEvent[] {

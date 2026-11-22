@@ -293,4 +293,14 @@ export const landmarks: FramePhoto[] = [
     credit: "Image on The NATIVE Instagram post. https://www.instagram.com/p/DfChe1HjTfS/",
     creditUrl: "https://www.instagram.com/p/DfChe1HjTfS/",
   },
+  {
+    // Flyer supplied by Oxbreed Studio. The 1xBet Côte d'Ivoire sponsor mark
+    // in the top-right was removed and filled with the surrounding green and
+    // orange-wave background. A compressed WebP sits beside this JPG source.
+    name: "Mother Africa Festival 2026",
+    city: "Abidjan",
+    src: "/landmarks/mother-africa-festival-2026.jpg",
+    alt: "Mother Africa Festival 2026 poster for Quavo, 27 and 28 December, Marcory Zone 4, Abidjan",
+    credit: "Poster supplied by Oxbreed Studio. Betting sponsor mark removed.",
+  },
 ];
