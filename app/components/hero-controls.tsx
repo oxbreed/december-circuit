@@ -1,5 +1,5 @@
 const buttonClass =
-  "inline-flex min-h-11 min-w-11 items-center justify-center gap-2 border border-chart/45 bg-ink/40 px-3 text-sm font-semibold text-chart hover:bg-chart hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-chart";
+  "inline-flex min-h-11 min-w-11 items-center justify-center gap-2 border border-ink/25 bg-chart px-3 text-sm font-semibold text-ink hover:border-ink hover:text-oxide focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
 
 function Arrow({ dir }: { dir: "prev" | "next" }) {
   return (
@@ -34,7 +34,7 @@ export function HeroControls({
         <span>Next<span className="sr-only"> poster</span></span>
         <Arrow dir="next" />
       </button>
-      <p role="status" aria-live="polite" aria-atomic="true" className="ml-auto font-mono text-[11px] uppercase tracking-[0.16em] text-chart/90">
+      <p role="status" aria-live="polite" aria-atomic="true" className="ml-auto font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
         <span className="sr-only">Poster </span>
         {index + 1} of {count}
       </p>
