@@ -4,7 +4,6 @@ import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { disclaimer, navPrimary, navSecondary } from "../brand";
-import { rideHailMarkets } from "../ride-hailing";
 import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
 import { DesktopNewsTicker } from "./desktop-news-ticker";
@@ -45,6 +44,9 @@ const footerGroups = [
   {
     title: "Visit",
     links: [
+      ["Events", "/events"],
+      ["Places", "/places"],
+      ["Cities", "/cities"],
       ["Detty December", "/detty-december"],
       ["West Africa", "/west-africa"],
       ["News", "/news"],
@@ -54,24 +56,28 @@ const footerGroups = [
     title: "Plan",
     links: [
       ["Season guides", "/guides"],
+      ["Travel guide", "/guide"],
+      ["Flights", "/flights"],
+      ["Map", "/map"],
       ["Visa", "/visa"],
       ["FAQ", "/faq"],
+      ["Get around", "/guide#around"],
     ],
   },
   {
-    title: "Directory",
+    title: "Company",
     links: [
-      ["Cities", "/cities"],
+      ["About", "/about"],
       ["Explore", "/explore"],
       ["List an event or place", "/list"],
       ["Get featured", "/get-featured"],
+      ["Give feedback", "/feedback"],
+      ["Sign in", "/sign-in"],
     ],
   },
   {
     title: "Legal",
     links: [
-      ["Sign in", "/sign-in"],
-      ["Give feedback", "/feedback"],
       ["Privacy", "/privacy"],
       ["Terms", "/terms"],
       ["EULA", "/eula"],
@@ -194,92 +200,48 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
       </header>
       <div className="mobile-scroll lg:contents">
       {children}
-      <footer className="border-t border-ink/15">
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-12 md:px-8 lg:py-16">
+      <footer className="site-footer scroll-mt-36 border-t border-ink/15">
+        <div className="site-footer-inner mx-auto flex max-w-6xl flex-col gap-10 px-5 md:px-8">
           <div>
             <p className="font-display text-3xl text-ink">
               dirtydecember<span className="text-oxide">.info</span>
             </p>
             <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
-            <p className="mt-4 font-sans text-sm leading-6 text-ink">
-              <a href="https://oxbreedstudio.com" className={footerLink}>
-                Powered by Oxbreed Management
-              </a>
-              .
-            </p>
-            <p className="mt-4 font-mono text-[11px] leading-5 text-muted">
-              Impact-Site-Verification: 9c7a5938-61b2-40c3-85ac-b107faf170b8
-            </p>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-10">
-            <p className="min-w-0">
-              <span className={`block ${footerKicker}`}>Visitor enquiries</span>
-              <a
-                href="mailto:hello@dirtydecember.info"
-                className={`mt-2 inline-block max-w-full font-sans text-sm leading-6 text-ink ${footerLink}`}
-              >
-                hello@dirtydecember.info
-              </a>
-            </p>
-            <p className="min-w-0">
-              <span className={`block ${footerKicker}`}>Partner enquiries</span>
-              <a
-                href="mailto:partners@dirtydecember.info"
-                className={`mt-2 inline-block max-w-full font-sans text-sm leading-6 text-ink ${footerLink}`}
-              >
-                partners@dirtydecember.info
-              </a>
-            </p>
-          </div>
-          <div>
-            <p className={footerKicker}>Get around</p>
-            <p className="mt-2 max-w-xl font-sans text-sm leading-6 text-muted">
-              Third-party ride apps by country — outbound only, not a booking on
-              this site. Full city notes on{" "}
-              <Link href="/guide#around" className={footerLink}>
-                Guide · Get around
-              </Link>
-              {" · "}
-              <Link href="/flights#get-around" className={footerLink}>
-                Flights
-              </Link>
-              .
-            </p>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {rideHailMarkets.map((market) => (
-                <p key={market.country} className="min-w-0 font-sans text-sm leading-6">
-                  <span className="block text-[11px] uppercase tracking-[0.22em] text-lagoon">
-                    {market.country}
-                  </span>
-                  <span className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                    {market.apps.map((app) => (
-                      <a
-                        key={app.url}
-                        href={app.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`text-ink ${footerLink}`}
-                      >
-                        {app.name}
-                        <span className="sr-only"> — leaves this site</span>
-                      </a>
-                    ))}
-                  </span>
-                </p>
-              ))}
+            <div className="mt-6 grid max-w-xl grid-cols-1 gap-x-10 gap-y-1 sm:grid-cols-2">
+              <p className="min-w-0">
+                <span className={`block ${footerKicker}`}>Visitor enquiries</span>
+                <a
+                  href="mailto:hello@dirtydecember.info"
+                  className={`inline-flex min-h-11 max-w-full items-center font-sans text-sm text-ink ${footerLink}`}
+                >
+                  hello@dirtydecember.info
+                </a>
+              </p>
+              <p className="min-w-0">
+                <span className={`block ${footerKicker}`}>Partner enquiries</span>
+                <a
+                  href="mailto:partners@dirtydecember.info"
+                  className={`inline-flex min-h-11 max-w-full items-center font-sans text-sm text-ink ${footerLink}`}
+                >
+                  partners@dirtydecember.info
+                </a>
+              </p>
             </div>
           </div>
           <nav
             aria-label="Footer"
-            className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10"
+            className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-10"
           >
             {footerGroups.map((group) => (
               <div key={group.title} className="min-w-0">
                 <p className={footerKicker}>{group.title}</p>
-                <ul className="mt-3 space-y-2 font-sans text-sm leading-6">
+                <ul className="mt-2 font-sans text-sm">
                   {group.links.map(([label, href]) => (
                     <li key={href}>
-                      <Link href={href} className={`text-ink ${footerLink}`}>
+                      <Link
+                        href={href}
+                        className={`inline-flex min-h-11 items-center text-ink ${footerLink}`}
+                      >
                         {label}
                       </Link>
                     </li>
@@ -288,6 +250,15 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
               </div>
             ))}
           </nav>
+          <p className="border-t border-ink/15 pt-6 font-sans text-sm leading-6 text-muted lg:pr-36">
+            © 2026 dirtydecember.info, powered by{" "}
+            <a
+              href="https://oxbreedstudio.com"
+              className={`inline-flex min-h-11 items-center text-ink ${footerLink}`}
+            >
+              Oxbreed Management
+            </a>
+          </p>
         </div>
       </footer>
       </div>
