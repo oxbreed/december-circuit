@@ -20,7 +20,7 @@ const categories = [
   },
   {
     name: "Analytics and performance",
-    why: "Tools that count page views, measure how quickly pages load, and — only if the operator turns it on — collect page statistics. These are not used to show ads.",
+    why: "Tools that count page views, measure how quickly pages load, and collect page statistics, including Google Analytics 4 after you accept. These are not used to show ads.",
   },
 ] as const;
 
@@ -57,10 +57,10 @@ const rows = [
   {
     category: "Analytics and performance",
     name: "Google Analytics",
-    when: "Only if the operator turns it on (off by default)",
+    when: "Only after you accept analytics",
     lasts:
-      "If it is turned on, Google may set its own analytics cookies, including _ga and _ga_ (2 years) and _gid (24 hours).",
-    why: "Page and click statistics with IP anonymisation. If it is turned on, Google sets its own analytics cookies.",
+      "Google may set its own analytics cookies, including _ga and _ga_ (2 years) and _gid (24 hours).",
+    why: "Page, click and traffic-source statistics with IP anonymisation. Google Analytics 4 is enabled on the live site and still only loads after you accept analytics.",
   },
 ] as const;
 

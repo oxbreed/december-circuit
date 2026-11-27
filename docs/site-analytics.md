@@ -14,7 +14,7 @@ DirtyDecember monitors visits and performance with **Vercel Web Analytics**, **V
 | `/admin` → **Dashboard / Insights** | First-party insights: 24h / 7d / 30d / 90d range with previous-period deltas, KPI cards, time series of page views and outbound clicks, ranked lists, Core Web Vitals p75, and a recent activity feed. Each widget fails on its own. |
 | `/preview/admin-dashboard` | Fixture preview for visual QA of the current dashboard (noindex). Local and Vercel preview only. 404 on production. |
 | `/preview/analytics-overview` | Fixture preview of the earlier Overview Report card (noindex). Local and Vercel preview only. 404 on production. |
-| Optional `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Loads gtag only when set. **Off by default.** |
+| Google Analytics 4 (`NEXT_PUBLIC_GA_MEASUREMENT_ID`, default `G-WHF2P9X0Y6` on Vercel production) | Loads gtag only after the visitor accepts `dd_analytics_consent`. Off in local and preview unless the env var is set. Set the var to `off` to disable production GA. |
 
 ## What Ox sees on `/admin` (signed in)
 
@@ -68,7 +68,7 @@ Enable **Web Analytics** and **Speed Insights** on the Vercel project if they ar
 | (none new for Vercel packages) | — | Analytics + Speed Insights work once enabled on the Vercel project. |
 | `SUPABASE_SERVICE_ROLE_KEY` | For first-party rows + `/admin` dashboard | Already used for admin. Server only. |
 | `SITE_PAGEVIEWS_ENABLED` | No | Default on when unset. Set `false` to skip first-party pageview **and** web-vital inserts. |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | No | Optional GA. Leave empty. |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | No | Optional override. Unset: production uses `G-WHF2P9X0Y6`. Set to a `G-` id to override, or `off` to disable. Local and preview stay off unless a `G-` id is set. |
 
 See `.env.example`.
 
@@ -79,7 +79,7 @@ See `.env.example`.
 - First-party Web Vitals: path, metric name, numeric value, rating, optional country. **No visitor IP.**
 - Retention: first-party rows swept after ~90 days on ingest; Vercel products follow Vercel retention.
 - `/privacy` discloses visit monitoring, country derivation, and optional GA.
-- Do not enable GA unless deliberately chosen; default remains off.
+- Google Analytics 4 is on for Vercel production (`G-WHF2P9X0Y6`) and still only loads after cookie-banner consent. Set `NEXT_PUBLIC_GA_MEASUREMENT_ID=off` to disable.
 
 ## What this does not do
 

@@ -14,12 +14,8 @@ import {
   siteUrl,
 } from "./site";
 import { staticSeo } from "./seo";
+import { resolveGaMeasurementId } from "./ga-measurement-id";
 import "./globals.css";
-
-function gaMeasurementId() {
-  const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
-  return id && id.length > 0 ? id : null;
-}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -115,7 +111,7 @@ export default function RootLayout({
           {children}
         </SiteChrome>
         <ConsentBanner />
-        <DeferredSiteAnalytics gaMeasurementId={gaMeasurementId()} />
+        <DeferredSiteAnalytics gaMeasurementId={resolveGaMeasurementId()} />
       </body>
     </html>
   );

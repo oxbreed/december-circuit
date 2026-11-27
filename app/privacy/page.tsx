@@ -130,9 +130,7 @@ export default function PrivacyPage() {
           send Core Web Vitals samples (LCP, INP, CLS) with the path and an
           optional country code so the signed-in admin page can show performance
           numbers. Those first-party records do not store your IP address and
-          do not set an advertising cookie. Google Analytics runs only if the
-          operator has set a measurement id in the server environment and you
-          have accepted analytics; it is off by default.
+          do not set an advertising cookie. Google Analytics 4 runs on the live site only after you have accepted analytics, and uses IP anonymisation.
         </p>
         <p>
           Some outbound links are affiliate links or paid placements, and they
