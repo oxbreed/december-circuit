@@ -39,11 +39,13 @@ const mapStyles = `
   }
   @media (max-width: 1023px) {
     #map .map-stage {
-      height: calc(100svh - var(--mobile-bar, 7.5rem) - 12px);
-      overflow: hidden;
+      overflow: visible;
+    }
+    #map .map-lead > div:first-child {
+      margin-bottom: 0.75rem;
     }
     #map .map-lead h2 {
-      font-size: 2rem;
+      font-size: 1.75rem;
       line-height: 1.05;
     }
     #map .map-filters .chip {
@@ -53,6 +55,8 @@ const mapStyles = `
       padding: 0.5rem 0.75rem;
     }
     #map .map-frame {
+      height: min(52svh, 24rem);
+      min-height: 16rem;
       scroll-margin-top: 4.5rem;
       scroll-margin-bottom: calc(var(--mobile-bar, 7.5rem) + 12px);
     }
@@ -101,7 +105,7 @@ type TravelState =
 export function MapSection() {
   const markersState = useRecords<MapMarker[]>("/api/map-markers");
   const focusCities = useMemo(() => mapFocusCitiesWithPins(), []);
-  const [city, setCity] = useState<CityFilter>("all");
+  const [city, setCity] = useState<CityFilter>("Lagos");
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [date, setDate] = useState<string>("");
   const [activeId, setActiveId] = useState<string | null>(null);

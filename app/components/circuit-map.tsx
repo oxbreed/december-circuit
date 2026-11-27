@@ -59,6 +59,39 @@ function pinsToFeatureCollection(
   };
 }
 
+/** Drop airports and far-flung resorts from the default city fit (km from the median pin). */
+const CORE_FIT_RADIUS_KM = 10;
+
+function haversineKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+) {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 2 * 6371.0088 * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+function pinsForFit(pins: CircuitMapPin[]): CircuitMapPin[] {
+  if (pins.length < 4) return pins;
+  const lats = pins.map((pin) => pin.latitude).sort((a, b) => a - b);
+  const lngs = pins.map((pin) => pin.longitude).sort((a, b) => a - b);
+  const mid = Math.floor(pins.length / 2);
+  const medianLat = lats[mid];
+  const medianLng = lngs[mid];
+  const core = pins.filter(
+    (pin) =>
+      haversineKm(pin.latitude, pin.longitude, medianLat, medianLng) <=
+      CORE_FIT_RADIUS_KM,
+  );
+  return core.length >= 3 ? core : pins;
+}
+
 function fitPins(map: MapLibreMap, pins: CircuitMapPin[], narrow: boolean) {
   if (pins.length === 0) return;
   if (pins.length === 1) {
@@ -68,8 +101,9 @@ function fitPins(map: MapLibreMap, pins: CircuitMapPin[], narrow: boolean) {
     });
     return;
   }
+  const visible = pinsForFit(pins);
   const bounds = new LngLatBounds();
-  for (const pin of pins) {
+  for (const pin of visible) {
     bounds.extend([pin.longitude, pin.latitude]);
   }
   map.fitBounds(bounds, {
