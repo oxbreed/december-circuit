@@ -30,7 +30,10 @@ export default function MapPage() {
             { name: "Map" },
           ]}
         />
-        <section aria-label="Places with coordinates" className="mt-6 pb-4">
+      </div>
+      <MapSection />
+      <div className="mx-auto w-full max-w-6xl px-5 pb-8 md:px-8">
+        <section aria-label="Places with coordinates" className="pb-4">
           <h2 className="sr-only">Places with sourced coordinates</h2>
           <ul className="sr-only">
             {pins.map((pin) => (
@@ -55,7 +58,6 @@ export default function MapPage() {
           </p>
         </section>
       </div>
-      <MapSection />
     </main>
   );
 }

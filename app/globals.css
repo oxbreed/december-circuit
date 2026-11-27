@@ -472,6 +472,26 @@ body::before {
   color: #1b684e;
 }
 
+/* Keep OpenFreeMap credit as a compact info control on small canvases
+   so the attribution bar cannot cover the map. */
+@media (max-width: 1023px) {
+  .maplibre-map .maplibregl-ctrl-attrib {
+    max-width: 2.25rem;
+    max-height: 2.25rem;
+    overflow: hidden;
+    background: rgba(244, 234, 220, 0.92);
+  }
+  .maplibre-map .maplibregl-ctrl-attrib.maplibregl-compact-show {
+    max-width: min(16rem, calc(100% - 4.75rem));
+    max-height: none;
+    overflow: visible;
+  }
+  .maplibre-map .maplibregl-ctrl-attrib-inner {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+}
+
 .maplibre-map .maplibregl-ctrl-group {
   border: 1px solid rgba(26, 20, 16, 0.35);
   border-radius: 0;
