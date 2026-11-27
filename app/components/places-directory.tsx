@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Place } from "../places";
 import { placeTripId } from "../trip";
@@ -245,9 +245,13 @@ export function PlacesDirectory() {
   const pageRows = matched.slice(0, visibleCount);
   const hasMore = matched.length > visibleCount;
 
-  useEffect(() => {
+  // Reset the page length when a filter changes (adjust state during render).
+  const filterKey = `${country}~${city}~${categories.join("|")}~${pageSize}`;
+  const [seenFilterKey, setSeenFilterKey] = useState(filterKey);
+  if (seenFilterKey !== filterKey) {
+    setSeenFilterKey(filterKey);
     setVisibleCount(pageSize);
-  }, [country, city, categories.join("|"), pageSize]);
+  }
 
   return (
     <div>

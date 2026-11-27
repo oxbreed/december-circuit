@@ -78,6 +78,16 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   category: "travel",
+  // Optional search-engine ownership tags. Set the env vars in Vercel; nothing renders when they are empty.
+  // Google also verifies through /googlee04c5399f26464ef.html.
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
+      : {}),
+  },
 };
 
 export default function RootLayout({
@@ -87,7 +97,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-GB"
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
       <head>

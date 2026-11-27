@@ -8,6 +8,23 @@ import { join } from "node:path";
 
 const today = new Date().toISOString().slice(0, 10);
 
+// Safe to run before every build: with no git history (not a repo, or a shallow
+// clone such as Vercel's) the dates would be wrong, so keep the committed file.
+function gitOut(args) {
+  try {
+    return execFileSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  } catch {
+    return "";
+  }
+}
+if (
+  gitOut(["rev-parse", "--is-inside-work-tree"]) !== "true" ||
+  gitOut(["rev-parse", "--is-shallow-repository"]) !== "false"
+) {
+  console.log("update-lastmod: no full git history here, keeping data/lastmod.json as committed.");
+  process.exit(0);
+}
+
 function git(args) {
   try {
     return execFileSync("git", args, { encoding: "utf8" }).trim();
