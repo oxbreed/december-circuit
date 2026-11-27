@@ -1,12 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { HomeFeature } from "../home-featured";
+import { FEATURED_COUNT, type HomeFeature } from "../home-featured";
 import { homeCard } from "./home-section";
 import { SaveTripButton } from "./save-trip-button";
 
-/** First N cards: a swipe rail on small screens, four across from `lg`. */
-const RAIL_COUNT = 7;
-const DESKTOP_COUNT = 4;
+/** First FEATURED_COUNT (8) cards: a swipe rail on phones, two across on tablets, 4x2 from `lg`. */
 
 /** Every poster fills the same 4:5 frame; wide artwork is cropped, not boxed in black. */
 function PosterFrame({ feature, index }: { feature: HomeFeature; index: number }) {
@@ -16,7 +14,7 @@ function PosterFrame({ feature, index }: { feature: HomeFeature; index: number }
         src={feature.poster.src}
         alt={feature.poster.alt}
         fill
-        sizes="(max-width: 639px) 68vw, (max-width: 1023px) 44vw, 25vw"
+        sizes="(max-width: 639px) 68vw, (max-width: 1023px) 48vw, 25vw"
         loading={index < 2 ? "eager" : "lazy"}
         className="object-cover"
       />
@@ -27,9 +25,7 @@ function PosterFrame({ feature, index }: { feature: HomeFeature; index: number }
 function FeaturedCard({ feature, index }: { feature: HomeFeature; index: number }) {
   return (
     <li
-      className={`flex w-[68%] min-w-0 shrink-0 snap-start flex-col sm:w-[44%] lg:w-auto ${homeCard} ${
-        index >= DESKTOP_COUNT ? "lg:hidden" : ""
-      }`}
+      className={`flex w-[68%] min-w-0 shrink-0 snap-start flex-col sm:w-auto ${homeCard}`}
     >
       <Link prefetch={false} href={feature.href} className="block" tabIndex={-1} aria-hidden="true">
         <PosterFrame feature={feature} index={index} />
@@ -57,9 +53,9 @@ export function FeaturedSeasonGrid({ featured }: { featured: HomeFeature[] }) {
   return (
     <ul
       aria-label="Featured events"
-      className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 [scrollbar-width:thin] sm:-mx-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0"
+      className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-3 [scrollbar-width:thin] sm:mx-0 sm:scroll-px-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4"
     >
-      {featured.slice(0, RAIL_COUNT).map((feature, index) => (
+      {featured.slice(0, FEATURED_COUNT).map((feature, index) => (
         <FeaturedCard key={feature.id} feature={feature} index={index} />
       ))}
     </ul>

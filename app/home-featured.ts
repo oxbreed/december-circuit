@@ -18,7 +18,14 @@ import { eventTripId } from "./trip";
  * https://www.turntablecharts.com/charts/3
  *
  * /events keeps its own major list in event-major.ts.
+ *
+ * Order matters. The first FEATURED_COUNT keys are the homepage "Featured this
+ * season" cards: ABE Lagos first (unpaid promo listing, shown with no sponsor
+ * label), then the biggest upcoming headliners with flyers by date. Keys after
+ * that still supply posters for event pages and the hero carousel.
  */
+export const FEATURED_COUNT = 8;
+
 export type HomeFeatureKey = {
   id: string;
   artist: string;
@@ -34,12 +41,12 @@ export type HomeFeatureKey = {
 
 export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
   {
-    id: "olamide-ybnl-reunion",
-    artist: "Olamide",
-    title: "YBNL: The Reunion, Future Fest '26",
-    date: "18 December",
-    sourceId: "future-fest-pulse",
-    poster: "/landmarks/olamide-ybnl-reunion-2026.jpg",
+    id: "abe-lagos-christmas-night",
+    artist: "All Black Everything",
+    title: "ABE Lagos, Christmas Night, Landmark Event Centre",
+    date: "25 December",
+    sourceId: "abe-lagos-christmas-night",
+    poster: "/landmarks/abe-lagos-christmas-night-2026.jpg",
   },
   {
     id: "wizkid-live-out-loud",
@@ -50,44 +57,12 @@ export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
     poster: "/landmarks/live-out-loud-wizkid-abuja-2026.jpg",
   },
   {
-    id: "lauryn-hill-detty-december-fest",
-    artist: "Lauryn Hill",
-    title: "Detty December Fest",
-    date: "21 December",
-    sourceId: "detty-december-fest",
-    poster: "/landmarks/detty-december-fest-lauryn-hill-2026.jpg",
-  },
-  {
-    id: "abe-lagos-christmas-night",
-    artist: "All Black Everything",
-    title: "ABE Lagos, Christmas Night, Landmark Event Centre",
-    date: "25 December",
-    sourceId: "abe-lagos-christmas-night",
-    poster: "/landmarks/abe-lagos-christmas-night-2026.jpg",
-  },
-  {
-    id: "lil-baby-rhythm-unplugged",
-    artist: "Lil Baby",
-    title: "Coca-Cola Rhythm Unplugged",
-    date: "21 December",
-    sourceId: "rhythm-unplugged-stylerave",
-    poster: "/landmarks/coca-cola-rhythm-unplugged-2026.jpg",
-  },
-  {
     id: "davido-oriade",
     artist: "Davido",
     title: "Oriade residency, National Theatre",
     date: "17-19 December",
     sourceId: "oriade-residency",
     poster: "/landmarks/oriade-residency.jpg",
-  },
-  {
-    id: "asake-mney-in-lagos",
-    artist: "Asake",
-    title: "M$NEY in Lagos, The Oasis",
-    date: "20 December",
-    sourceId: "future-fest-pulse",
-    poster: "/landmarks/asake-money-in-lagos-2026.jpg",
   },
   {
     id: "seyi-vibez-apitainment",
@@ -105,6 +80,38 @@ export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
     sourceId: "iconiq-fest",
     when: "19-23 December",
     poster: "/landmarks/iconiq-fest-lagos-2026.jpg",
+  },
+  {
+    id: "asake-mney-in-lagos",
+    artist: "Asake",
+    title: "M$NEY in Lagos, The Oasis",
+    date: "20 December",
+    sourceId: "future-fest-pulse",
+    poster: "/landmarks/asake-money-in-lagos-2026.jpg",
+  },
+  {
+    id: "lil-baby-rhythm-unplugged",
+    artist: "Lil Baby",
+    title: "Coca-Cola Rhythm Unplugged",
+    date: "21 December",
+    sourceId: "rhythm-unplugged-stylerave",
+    poster: "/landmarks/coca-cola-rhythm-unplugged-2026.jpg",
+  },
+  {
+    id: "lauryn-hill-detty-december-fest",
+    artist: "Lauryn Hill",
+    title: "Detty December Fest",
+    date: "21 December",
+    sourceId: "detty-december-fest",
+    poster: "/landmarks/detty-december-fest-lauryn-hill-2026.jpg",
+  },
+  {
+    id: "olamide-ybnl-reunion",
+    artist: "Olamide",
+    title: "YBNL: The Reunion, Future Fest '26",
+    date: "18 December",
+    sourceId: "future-fest-pulse",
+    poster: "/landmarks/olamide-ybnl-reunion-2026.jpg",
   },
   {
     id: "black-sherif-zaama-disco",
