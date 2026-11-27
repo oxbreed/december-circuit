@@ -78,15 +78,14 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   category: "travel",
-  // Optional search-engine ownership tags. Set the env vars in Vercel; nothing renders when they are empty.
+  // Search-engine ownership tags. The env vars override these defaults when set in Vercel.
   // Google also verifies through /googlee04c5399f26464ef.html.
   verification: {
-    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
-      : {}),
-    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
-      ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
-      : {}),
+    google:
+      process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "Y5s2QnYsanYgBAdOWnqfjoOg_21g3cE1RwBkcU5kx50",
+    other: {
+      "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "492D4229102110F2FC9950503A74BD9D",
+    },
   },
 };
 
