@@ -60,6 +60,22 @@ function walk(dir) {
 }
 walk("app");
 
+// Hub pages list their children, so a hub changes whenever a page under it (or the
+// shared data it renders) changes. Without this a regenerated build could push a hub's
+// date back behind its newest child, e.g. /guides behind a freshly added guide.
+const hubSharedFiles = {
+  "/guides": ["app/season-guides.ts", "app/seo-article-drafts.ts", "app/components/season-guide-chrome.tsx"],
+};
+for (const route of Object.keys(staticPaths)) {
+  if (route === "/") continue; // home has its own rule below
+  const childDates = Object.entries(staticPaths)
+    .filter(([r]) => r.startsWith(route + "/"))
+    .map(([, d]) => d);
+  const shared = (hubSharedFiles[route] ?? []).map(dateOf);
+  const all = [staticPaths[route], ...childDates, ...shared].filter(Boolean).sort();
+  if (all.length) staticPaths[route] = all.at(-1);
+}
+
 const eventsDate = latest([
   "app/events.ts",
   "data/event-ingest/published.json",
