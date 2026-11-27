@@ -5,6 +5,7 @@ import { partnerEarning } from "../affiliate-config";
 import { directorySignIn } from "../directory-auth";
 import { providerReports, type ProviderReport } from "../providers";
 import { getWpProbeSettings } from "../wp-probes";
+import { resolveGaMeasurementId } from "../ga-measurement-id";
 
 function flagOn(raw: string | undefined, defaultOn: boolean) {
   if (raw === undefined || raw === "") return defaultOn;
@@ -208,7 +209,7 @@ export function AdminSettingsView({
             label="Google Analytics"
             env={["NEXT_PUBLIC_GA_MEASUREMENT_ID"]}
             badge={gaOn ? { tone: "on", text: "On" } : { tone: "off", text: "Off" }}
-            detail="Leave the variable empty unless you deliberately enable Google Analytics."
+            detail="On in production with the built-in Dirty December measurement ID. Set NEXT_PUBLIC_GA_MEASUREMENT_ID to override, or to off to disable."
           />
           <p className="border-t border-ink/10 pt-3 text-sm leading-6 text-muted">
             Change these with Vercel env vars and redeploy. There is no in-panel writer for them.
@@ -301,7 +302,7 @@ export async function AdminSettingsSection() {
     <AdminSettingsView
       auth={directorySignIn()}
       pageviewsOn={flagOn(process.env.SITE_PAGEVIEWS_ENABLED, true)}
-      gaOn={Boolean((process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "").trim())}
+      gaOn={Boolean(resolveGaMeasurementId())}
       providers={providerReports()}
       affiliateProviders={currentAffiliateProviders()}
       probes={probes}
