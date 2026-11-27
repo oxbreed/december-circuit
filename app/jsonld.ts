@@ -46,9 +46,12 @@ export function organizationJsonLd() {
       height: 180,
     },
     email: "hello@dirtydecember.info",
+    // Same entity id, name and legal name as oxbreedstudio.com uses, so the two sites reconcile.
     parentOrganization: {
       "@type": "Organization",
-      name: publisherName,
+      "@id": `${publisherUrl}/#organization`,
+      name: "Oxbreed Studio",
+      legalName: "Oxbreed Management Ltd",
       url: publisherUrl,
     },
     sameAs: [publisherUrl],

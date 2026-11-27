@@ -33,6 +33,17 @@ export default function AboutPage() {
           not a fare or a seat. The map uses the coordinates already listed,
           and directions leave this site.
         </p>
+        <p>
+          dirtydecember.info was built and launched by Oxbreed Studio, the
+          consultancy of Oxbreed Management Ltd in Lagos. Read the{" "}
+          <a
+            href="https://oxbreedstudio.com/work/dirty-december/"
+            className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+          >
+            Dirty December case study on oxbreedstudio.com
+          </a>
+          .
+        </p>
       </div>
     </main>
   );

@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "lastmod": "node scripts/update-lastmod.mjs",
+    "prebuild": "node scripts/update-lastmod.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

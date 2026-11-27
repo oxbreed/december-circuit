@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { isMajorEvent, majorEventsFrom } from "../event-major";
 import { eventKind, kindsPresentIn, type EventKind } from "../event-kind";
@@ -263,9 +263,14 @@ export function EventsDirectory() {
   const pageRows = smaller.slice(0, visibleCount);
   const hasMore = smaller.length > visibleCount;
 
-  useEffect(() => {
+  // Reset the page length when a filter changes. Adjusting state during render
+  // avoids the extra effect pass that the react-hooks rules flag.
+  const filterKey = `${citiesSelected.join("|")}~${range}~${category}~${pageSize}`;
+  const [seenFilterKey, setSeenFilterKey] = useState(filterKey);
+  if (seenFilterKey !== filterKey) {
+    setSeenFilterKey(filterKey);
     setVisibleCount(pageSize);
-  }, [citiesSelected.join("|"), range, category, pageSize]);
+  }
 
   const weekGroups = useMemo(() => {
     const groups = new Map<string, { window: WeekWindow; events: CircuitEvent[] }>();
