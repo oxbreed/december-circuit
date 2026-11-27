@@ -115,7 +115,7 @@ export function currentAffiliateProviders(): AffiliateProviderRow[] {
       env: ["TRIPCOM_ALLIANCE_ID", "TRIPCOM_SID"],
     },
     { name: "Agoda", earning: partnerEarning("agoda"), env: ["AGODA_CID"] },
-    { name: "Booking.com", earning: partnerEarning("booking"), env: ["BOOKING_AID"] },
+    { name: "Booking.com", earning: partnerEarning("booking"), env: ["BOOKING_CJ_PID", "BOOKING_CJ_LINK_ID", "BOOKING_AID"] },
     { name: "Viator", earning: partnerEarning("viator"), env: ["VIATOR_PID", "VIATOR_MCID"] },
   ];
 }

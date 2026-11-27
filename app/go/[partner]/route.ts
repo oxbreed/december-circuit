@@ -27,12 +27,13 @@ export async function GET(
   }
 
   const search = request.nextUrl.searchParams;
+  const placement = clip(search.get("from"), 64);
   const query = {
     city: clip(search.get("city"), 80) ?? undefined,
     country: clip(search.get("country"), 80) ?? undefined,
     name: clip(search.get("name"), 120) ?? undefined,
+    placement: placement ?? undefined,
   };
-  const placement = clip(search.get("from"), 64);
   const { url, earning } = partnerDestination(partner, query);
 
   const referrer = request.headers.get("referer");

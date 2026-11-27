@@ -6,17 +6,17 @@
 | --- | --- | --- | --- |
 | `tripcom-hotels` | Trip.com hotels | Defaults in `affiliate-config.ts` (Allianceid `11268503`, SID `335386234`, site "Oxbreed Management Ltd"). `TRIPCOM_ALLIANCE_ID` and `TRIPCOM_SID` override if set. | Stays modules |
 | `agoda` | Agoda | `AGODA_CID` | Stays modules |
-| `booking` | Booking.com | `BOOKING_AID` | Stays modules |
+| `booking` | Booking.com MEA via CJ | Defaults in `affiliate-config.ts` (CJ website PID `101934385`, text-link ID `11916287` 'Secret Deals', from the CJ dashboard on 27 Nov 2026). `BOOKING_CJ_PID` and `BOOKING_CJ_LINK_ID` override if set; set either to empty to blank the default. Redirects to `https://www.dpbolvw.net/click-<PID>-<LINKID>?url=<encoded www.booking.com/searchresults.html?ss=…>&sid=<from, max 64>`. If CJ IDs are blanked, `BOOKING_AID` is the direct-aid fallback on booking.com. | Stays modules |
 | `tripcom-flights` | Trip.com flights | Same Trip.com defaults / env overrides as hotels | `/flights#book` |
 | `viator` | Viator | Defaults in `affiliate-config.ts` (`pid` `P00333160`, `mcid` `66722`). `VIATOR_PID` and `VIATOR_MCID` override if set. Redirects append `pid`, `mcid`, and `medium=link` on the Viator search URL, which is Viator's documented deep-link format. | `/guide#on`, event pages, Lagos stay guide |
 
 - Code: `app/affiliate-partners.ts` (slugs, `goHref`), `app/affiliate-config.ts` (server-only destinations + IDs), `app/go/[partner]/route.ts`, `app/components/partner-modules.tsx`.
-- Trip.com and Viator links earn with the in-code defaults even when the env vars are unset. The Trip.com deep-link creator also offers an optional `trip_sub3` param; `/go/` does not add it. Viator links use `pid`, `mcid`, and `medium=link` on `https://www.viator.com/searchResults/all` (optional `campaign` is not added).
+- Trip.com, Viator, and Booking.com CJ links earn with the in-code defaults even when the env vars are unset. The Trip.com deep-link creator also offers an optional `trip_sub3` param; `/go/` does not add it. Viator links use `pid`, `mcid`, and `medium=link` on `https://www.viator.com/searchResults/all` (optional `campaign` is not added). Booking.com uses a CJ deep link on `www.dpbolvw.net`; the `url` param is always a first-party-built `www.booking.com/searchresults.html` address (plus `ss` when a search was passed), never a visitor-supplied URL.
 - No ID and no default → the redirect opens the partner's normal public search, that partner's link stays unsponsored, and the click row has `earning = false`.
-- ID present (from env, or a Trip.com or Viator default) → the ID is appended server-side, that partner's link gets `rel="sponsored nofollow"`, and a module that lists an earning partner shows "We may earn a commission". Other partners in the same module stay unsponsored until their own IDs are set.
+- ID present (from env, or a Trip.com, Viator, or Booking.com CJ default) → the ID is appended server-side, that partner's link gets `rel="sponsored nofollow"`, and a module that lists an earning partner shows "We may earn a commission". Other partners in the same module stay unsponsored until their own IDs are set.
 - Labels are decided at build time. Redeploy after adding or changing an ID or a default.
-- If a partner gives you a different deep-link format after approval (for example a CJ tracking link for Booking.com), change only the builder for that slug in `app/affiliate-config.ts`.
-- Never paste an affiliate ID into a template, and never invent one. Public Trip.com and Viator defaults belong only in `app/affiliate-config.ts`.
+- If a partner gives you a different deep-link format after approval, change only the builder for that slug in `app/affiliate-config.ts`.
+- Never paste an affiliate ID into a template, and never invent one. Public Trip.com, Viator, and Booking.com CJ defaults belong only in `app/affiliate-config.ts`.
 - Airbnb links stay plain links (its open Associates programme closed in 2021).
 
 ## Placements
