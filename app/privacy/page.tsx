@@ -48,9 +48,9 @@ export default function PrivacyPage() {
         </h2>
         <p>
           You can read the sourced records, read the news page, save a trip in
-          this browser, ask for a sign-in link, send a listing or a partnership
-          note, leave private feedback, and rate an event or place after you sign in. You can also email an
-          enquiry. Booking links, ticket links, organiser pages, and flight
+          this browser, ask for a sign-in link, sign up to the email list, send
+          a listing or a partnership note, leave private feedback, and rate an
+          event or place after you sign in. You can also email an enquiry. Booking links, ticket links, organiser pages, and flight
           searches open other sites. The map draws coordinates that are already
           listed.
         </p>
@@ -64,6 +64,22 @@ export default function PrivacyPage() {
           in this browser so the site can tell that you are signed in. The admin
           page opens only when that signed-in email matches the admin address
           held on the server.
+        </p>
+        <p>
+          The email list form collects the address you type, the time you
+          submitted it, that you ticked the consent box, and an optional
+          referral code if you arrived from a friend&apos;s link. That address
+          is sent to Brevo, the email tool we use, so it can send you a
+          confirmation message. You are added to the live list only after you
+          confirm from that message. After you confirm, Oxbreed Management uses
+          the address to send the Lagos December events checklist and Dirty
+          December event picks from hello@dirtydecember.info: weekly at first,
+          and daily from 15 December to 1 January. You can unsubscribe from any
+          of those emails, or write to hello@dirtydecember.info to ask for
+          deletion. This browser may also remember that you closed the signup,
+          or that you have already signed up, so the pop-up does not return on
+          every page. That memory stays in this browser and is not sent to the
+          server.
         </p>
         <p>
           A listing or partnership form, when the directory is connected, stores
@@ -169,9 +185,7 @@ export default function PrivacyPage() {
         </h2>
         <p>
           There is no advertising cookie from this directory’s own code. A
-          review has no rating. A newsletter is not offered, and no fare,
-          ticket, or room is sold on this site. If a newsletter is added, this
-          notice will be updated before it starts. First-party visit and click
+          review has no rating. No fare, ticket, or room is sold on this site. First-party visit and click
           rows do not store your IP address.
         </p>
 
@@ -179,7 +193,8 @@ export default function PrivacyPage() {
         <p>
           The email and the sign-in cookie are there so you can sign in and
           write a review, and so the admin page can stay closed to everyone
-          else. A submission is stored so a person can check it before anything
+          else. The email list address is kept so we can send the checklist
+          and event picks you asked for. A submission is stored so a person can check it before anything
           from it is considered for the public records. The picture is stored so
           that check can include the image you chose. A review is stored so the
           text can be shown on the site. My trip stays on the device so you can
@@ -214,7 +229,7 @@ export default function PrivacyPage() {
           news headline is received by the site you open. A news picture is
           requested from the address supplied in that feed. This directory does
           not send your email to those sites. If Google Analytics is enabled,
-          Google receives the measurement events for that product.
+          Google receives the measurement events for that product. If you sign up to the email list, Brevo (Brevo SAS) receives your email address and consent record so it can send the confirmation message and, after you confirm, the checklist and event picks. Oxbreed Management can also see the list in that account.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -231,7 +246,7 @@ export default function PrivacyPage() {
           stays until you ask for deletion or the operator removes it.
           First-party page-view and Web Vitals
           rows are removed after about ninety days. Vercel Analytics and Speed
-          Insights follow Vercel’s retention for those products.
+          Insights follow Vercel’s retention for those products. An email list address stays until you unsubscribe or you ask for it to be deleted. The browser flag that hides the signup pop-up lasts about fourteen days after you close it, or until you clear site data. The flag that you have already signed up stays in this browser until you clear site data.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
@@ -240,8 +255,8 @@ export default function PrivacyPage() {
         <p>
           Email hello@dirtydecember.info from the address you used. Say whether
           you want a copy or deletion of the sign-in, the submission, the
-          picture, or the review. The operator will use that address to find the
-          matching row. If you are in Nigeria, you can also complain to the
+          picture, the review, or the email list address. The operator will use that address to find the
+          matching row. You can also unsubscribe from the link in any list email. If you are in Nigeria, you can also complain to the
           Nigeria Data Protection Commission. If you live elsewhere, you can
           contact the data protection authority for the place where you live.
         </p>
@@ -250,7 +265,7 @@ export default function PrivacyPage() {
         <p>
           This directory is written for people planning a trip. It is not
           directed at children. It does not knowingly collect a child’s email,
-          submission, picture, or review. If a child has sent one, email
+          submission, picture, review, or email-list signup. If a child has sent one, email
           hello@dirtydecember.info and ask for it to be deleted.
         </p>
 

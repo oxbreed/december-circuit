@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { Suspense, useEffect, useId, useRef } from "react";
 import Link from "next/link";
 import { openCookieSettings } from "../analytics-consent";
 import { disclaimer } from "../brand";
+import { NewsletterFooter } from "./newsletter-footer";
 import { PlaneMark } from "./plane-mark";
 
 const footerLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
@@ -67,7 +68,7 @@ const footerGroups = [
 
 const mdQuery = "(min-width: 768px)";
 
-export function SiteFooter() {
+export function SiteFooter({ newsletterLive }: { newsletterLive: boolean }) {
   const baseId = useId();
   const detailsRefs = useRef<Array<HTMLDetailsElement | null>>([]);
 
@@ -138,6 +139,9 @@ export function SiteFooter() {
               </a>
             </p>
           </div>
+          <Suspense fallback={null}>
+            <NewsletterFooter live={newsletterLive} />
+          </Suspense>
         </div>
         <nav aria-label="Footer" className="site-footer-nav">
           {footerGroups.map((group, index) => {

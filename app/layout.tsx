@@ -15,6 +15,7 @@ import {
 } from "./site";
 import { staticSeo } from "./seo";
 import { resolveGaMeasurementId } from "./ga-measurement-id";
+import { isNewsletterLive } from "./newsletter-config";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -116,7 +117,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col font-sans text-ink">
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={siteJsonLd()} />
-        <SiteChrome support={<Suspense fallback={null}><SupportChatSlot /></Suspense>}>
+        <SiteChrome newsletterLive={isNewsletterLive()} support={<Suspense fallback={null}><SupportChatSlot /></Suspense>}>
           {children}
         </SiteChrome>
         <ConsentBanner />

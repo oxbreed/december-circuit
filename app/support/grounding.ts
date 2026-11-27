@@ -45,7 +45,7 @@ This site takes no payment from visitors and holds no bookings. A ticket link le
 Some hotel, flight, and tour links (Trip.com, Agoda, Booking.com, Viator) are labelled partner links through /go/; if a visitor books through one, the site may earn a commission. Airbnb links are plain links. Details: /disclosure.
 Organisers and businesses can ask about a labelled paid placement (featured slot, sponsored story, tracked ticket link) at /get-featured or partners@dirtydecember.info. Quotes are by email; there is no public rate card.
 Outbound third-party ride apps are grouped by country for cities on file: Bolt and inDrive (Nigeria); Bolt, inDrive, Uber, and Yango (Ghana); Yango and Heetch (Côte d’Ivoire); Yango and Gozem (Cameroon); Gozem (Benin, Togo). Uber is not linked for Nigeria after its 2026 exit. Burkina Faso and Niger have no verified ride-app link yet. This site does not book rides or quote fares or ETAs.
-A newsletter is not offered yet, and no fare, ticket, or room is sold on this site.
+An email list is offered for the Lagos December events checklist and Dirty December event picks. Sign up on the site, confirm your email, and unsubscribe any time. No fare, ticket, or room is sold on this site.
 Oxbreed Management operates dirtydecember.info. Visitor enquiries: hello@dirtydecember.info, or leave a message through Ask support. The team replies by email.
 `.trim();
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navPrimary } from "../brand";
@@ -9,6 +9,7 @@ import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
 import { DesktopNewsTicker } from "./desktop-news-ticker";
 import { PlaneMark } from "./plane-mark";
+import { NewsletterCapture } from "./newsletter-capture";
 import { SiteFooter } from "./site-footer";
 
 function current(pathname: string, href: string) {
@@ -16,7 +17,7 @@ function current(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function SiteChrome({ children, support }: { children: ReactNode; support: ReactNode }) {
+export function SiteChrome({ children, support, newsletterLive }: { children: ReactNode; support: ReactNode; newsletterLive: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -66,7 +67,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
       </header>
       <div className="mobile-scroll lg:contents">
       {children}
-      <SiteFooter />
+      <SiteFooter newsletterLive={newsletterLive} />
       </div>
       <div className="mobile-dock">
         <nav aria-label="Mobile pages" className="contents lg:hidden">
@@ -84,6 +85,9 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
         </nav>
         {support}
       </div>
+      <Suspense fallback={null}>
+        <NewsletterCapture live={newsletterLive} />
+      </Suspense>
       <noscript>
         <p className="mx-auto max-w-6xl px-5 pb-10 text-sm leading-6 text-muted md:px-8">
           This directory loads events, places, flight searches, and the map from

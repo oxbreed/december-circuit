@@ -54,8 +54,7 @@ export default function EulaPage() {
           once you leave. The news page shows headlines and pictures supplied by
           the public feeds already used for the ticker. Opening an item leaves
           this site. Some partner links are labelled affiliate links, and the
-          site may earn a commission if you book through one. A newsletter or a
-          fare is not offered on this site. See the{" "}
+          site may earn a commission if you book through one. No fare, ticket, or room is sold on this site. The email list is described in the privacy notice and the terms. See the{" "}
           <Link
             href="/disclosure"
             className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"

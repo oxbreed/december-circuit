@@ -950,3 +950,64 @@ html[data-analytics-consent] .consent-banner:not(.consent-banner-open) {
     white-space: nowrap;
   }
 }
+
+/* Email capture: sticky banner sits in the same bottom slot as the cookie
+   banner, but only after that banner has been accepted or rejected. */
+.newsletter-sticky {
+  position: fixed;
+  z-index: 36;
+  left: 0;
+  right: 0;
+  bottom: var(--mobile-bar, 0px);
+  border-top: 1px solid var(--color-ink);
+  background: var(--color-chart);
+  color: var(--color-ink);
+  padding: 0.75rem 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 16px rgb(26 20 16 / 8%);
+}
+
+.newsletter-sticky-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem 1rem;
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+@media (min-width: 1024px) {
+  .newsletter-sticky {
+    bottom: 0;
+    /* Leave the Ask support pill clear, same inset as the cookie banner. */
+    padding: 0.875rem 24.5rem 0.875rem 1.25rem;
+  }
+}
+
+.newsletter-dialog-root {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.newsletter-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(26 20 16 / 55%);
+  cursor: pointer;
+}
+
+.newsletter-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(32rem, 100%);
+  max-height: min(90vh, 40rem);
+  overflow: auto;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  padding: 1.5rem 1.5rem 1.75rem;
+}
