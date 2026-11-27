@@ -331,13 +331,13 @@ export function EventsDirectory() {
         className="sticky z-30 mt-8 border-y border-ink/10 bg-paper/95 backdrop-blur-md"
         style={{ top: "calc(var(--clock-strip, 2.75rem) + 3.35rem)" }}
       >
-        <div className="mx-auto w-full max-w-6xl px-5 py-4 md:px-8">
-          <div className="flex flex-col gap-4">
-            <div>
-              <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-muted">
+        <div className="mx-auto w-full max-w-6xl px-5 py-4 md:px-8 lg:py-2">
+          <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-6 lg:gap-y-1">
+            <div className="lg:flex lg:items-center lg:gap-2">
+              <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-muted lg:mb-0 lg:shrink-0">
                 City
               </p>
-              <div className="chip-row flex gap-2 overflow-x-auto pb-1">
+              <div className="chip-row flex gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-visible lg:pb-0">
                 {cityOptions.length === 0 ? (
                   <span className="text-sm text-muted">Cities load with the list.</span>
                 ) : (
@@ -356,11 +356,11 @@ export function EventsDirectory() {
               </div>
             </div>
 
-            <div>
-              <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-muted">
+            <div className="lg:flex lg:items-center lg:gap-2">
+              <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-muted lg:mb-0 lg:shrink-0">
                 Date
               </p>
-              <div className="chip-row flex gap-2 overflow-x-auto pb-1">
+              <div className="chip-row flex gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-visible lg:pb-0">
                 {(
                   [
                     ["this-week", "This week"],
@@ -382,11 +382,11 @@ export function EventsDirectory() {
             </div>
 
             {categoryOptions.length > 0 ? (
-              <div>
-                <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-muted">
+              <div className="lg:flex lg:items-center lg:gap-2">
+                <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-muted lg:mb-0 lg:shrink-0">
                   Category
                 </p>
-                <div className="chip-row flex gap-2 overflow-x-auto pb-1">
+                <div className="chip-row flex gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-visible lg:pb-0">
                   {categoryOptions.map((kind) => (
                     <button
                       key={kind}

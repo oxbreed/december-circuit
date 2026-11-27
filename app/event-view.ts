@@ -185,13 +185,15 @@ export function eventNote(summary: string, name: string, venue: string | null) {
 }
 
 export function presentEvent(event: CircuitEvent) {
-  const { name, venue } = eventNameAndVenue(event.summary);
+  const parsed = eventNameAndVenue(event.summary);
+  const { name } = parsed;
+  const venue = event.venue ?? parsed.venue;
   const slug = eventSlug(event);
   return {
     slug,
     name,
     venue,
-    note: eventNote(event.summary, name, venue),
+    note: eventNote(event.summary, name, parsed.venue),
     category: eventKind(event) ?? eventCategory,
     region: event.region,
     when: event.when,

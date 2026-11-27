@@ -62,7 +62,7 @@ export function HeroControls({
       >
         <PlayPauseIcon playing={playing} />
       </button>
-      <p role="status" aria-live="polite" aria-atomic="true" className="ml-auto font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+      <p role="status" aria-live="polite" aria-atomic="true" className="ml-auto whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
         <span className="sr-only">Poster </span>
         {index + 1} of {count}
       </p>

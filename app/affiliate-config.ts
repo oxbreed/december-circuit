@@ -135,6 +135,13 @@ const builders: Record<PartnerSlug, (query: GoQuery) => Built> = {
     if (aid) dest.searchParams.set("aid", aid);
     return { url: dest, earning: Boolean(aid) };
   },
+  // No GetYourGuide partner ID yet: a plain, unsponsored city search.
+  getyourguide: (query) => {
+    const url = new URL("https://www.getyourguide.com/s/");
+    const text = searchText({ city: query.city, country: query.country });
+    if (text) url.searchParams.set("q", text);
+    return { url, earning: false };
+  },
   viator: (query) => {
     const url = new URL("https://www.viator.com/searchResults/all");
     const text = searchText({ city: query.city, country: query.country });

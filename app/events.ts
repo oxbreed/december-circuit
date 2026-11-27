@@ -5,6 +5,8 @@ export type CircuitEvent = {
   region: string;
   when: string;
   summary: string;
+  /** Optional short venue line for the event page and calendar links. Overrides the venue parsed from the summary. */
+  venue?: string;
   url?: string;
   urlLabel?: string;
   ticketsUrl?: string;
@@ -319,6 +321,7 @@ export const seedEvents: CircuitEvent[] = [
     urlLabel: "Organiser's page",
     ticketsUrl: "https://abetour.com",
     sourceId: "abe-lagos-christmas-night",
+    venue: "Landmark Event Centre, Oniru, Victoria Island",
   },
 ];
 
