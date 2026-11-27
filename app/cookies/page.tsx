@@ -16,7 +16,7 @@ const link = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 const categories = [
   {
     name: "Necessary",
-    why: "Storage that keeps the site working as you asked: staying signed in, and holding a trip list you save on this device.",
+    why: "Storage that keeps the site working as you asked: staying signed in, holding a trip list you save on this device, and remembering that you closed or completed the email list signup.",
   },
   {
     name: "Analytics and performance",
@@ -38,6 +38,14 @@ const rows = [
     when: "When you save an event or a place",
     lasts: "Until you remove the item or clear site data for this browser.",
     why: "Keeps your trip list on this device. It is not a cookie and is not sent to the server unless you sign in and sync.",
+  },
+  {
+    category: "Necessary",
+    name: "Email list signup (browser storage)",
+    when: "When you close the signup, or after you submit the email list form",
+    lasts:
+      "About fourteen days after you close the signup, or until you clear site data. If you have already signed up, that flag stays until you clear site data.",
+    why: "Stops the signup pop-up and sticky banner returning on every page view. It is not a cookie, is not used for advertising, and is not sent to the server.",
   },
   {
     category: "Analytics and performance",

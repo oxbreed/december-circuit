@@ -102,9 +102,7 @@ export default function TermsPage() {
           through one, the site may earn a commission from that partner. They
           are labelled, and they go through a first-party <code>/go/</code>{" "}
           address that counts the click. You book and pay on the partner’s
-          site, under its terms; no fare, ticket, or room is sold here. A
-          newsletter is not offered yet. If one is added, these terms will be
-          updated before it is offered. See the{" "}
+          site, under its terms; no fare, ticket, or room is sold here. See the{" "}
           <Link
             href="/disclosure"
             className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
@@ -112,6 +110,19 @@ export default function TermsPage() {
             disclosure
           </Link>
           .
+        </p>
+
+        <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
+          Email list
+        </h2>
+        <p>
+          You can ask to join the Dirty December email list on this site. After
+          you confirm your address, Oxbreed Management may send the Lagos
+          December events checklist and event picks from
+          hello@dirtydecember.info, weekly at first and daily from 15 December
+          to 1 January. You can unsubscribe at any time from the link in those
+          emails, or by writing to hello@dirtydecember.info. The list is
+          optional. No fare, ticket, or room is sold here.
         </p>
 
         <h2 className="pt-8 font-display text-3xl leading-none tracking-tight">
