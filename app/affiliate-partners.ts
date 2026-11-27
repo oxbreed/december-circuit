@@ -14,7 +14,8 @@ export type PartnerSlug =
   | "agoda"
   | "booking"
   | "tripcom-flights"
-  | "viator";
+  | "viator"
+  | "getyourguide";
 
 export type PartnerMeta = {
   slug: PartnerSlug;
@@ -35,6 +36,12 @@ export const partners: Record<PartnerSlug, PartnerMeta> = {
     label: "Flights on Trip.com",
   },
   viator: { slug: "viator", name: "Viator", kind: "experiences", label: "Tours on Viator" },
+  getyourguide: {
+    slug: "getyourguide",
+    name: "GetYourGuide",
+    kind: "experiences",
+    label: "Tours on GetYourGuide",
+  },
 };
 
 export const stayPartnerSlugs: readonly PartnerSlug[] = ["tripcom-hotels", "agoda", "booking"];
