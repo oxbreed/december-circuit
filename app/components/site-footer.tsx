@@ -4,6 +4,7 @@ import { useEffect, useId, useRef } from "react";
 import Link from "next/link";
 import { openCookieSettings } from "../analytics-consent";
 import { disclaimer } from "../brand";
+import { PlaneMark } from "./plane-mark";
 
 const footerLink = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 
@@ -106,8 +107,11 @@ export function SiteFooter() {
     <footer className="site-footer scroll-mt-36 border-t border-ink bg-paper-deep">
       <div className="site-footer-inner mx-auto flex max-w-6xl flex-col gap-8 px-5 md:gap-10 md:px-8">
         <div>
-          <p className="font-display text-3xl text-ink">
-            dirtydecember<span className="text-oxide">.info</span>
+          <p className="flex items-center gap-3 font-display text-3xl text-ink">
+            <PlaneMark className="h-8 w-8 shrink-0" />
+            <span>
+              dirtydecember<span className="text-gold">.info</span>
+            </span>
           </p>
           <p className="mt-3 max-w-md text-sm leading-6 text-muted">{disclaimer}</p>
           <div className="mt-6 grid max-w-xl grid-cols-1 gap-x-10 gap-y-1 sm:grid-cols-2">
