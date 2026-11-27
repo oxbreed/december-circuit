@@ -68,6 +68,7 @@ export const pins: Pin[] = [
   { city: "Lagos", country: "Nigeria", name: "Lagos Continental Hotel", latitude: 6.4349121, longitude: 3.4228469, url: "https://www.thelagoscontinental.com/contact-location" },
   { city: "Lagos", country: "Nigeria", name: "Lagos Oriental Hotel", latitude: 6.436242, longitude: 3.4447826, url: "https://lagosoriental.com/" },
   { city: "Lagos", country: "Nigeria", name: "Landmark Event Centre", latitude: 6.4231205, longitude: 3.445348, url: "https://landmarklagos.com/contact-us-2/" },
+  { city: "Lagos", country: "Nigeria", name: "Landmark Hotel", latitude: 6.4236201, longitude: 3.4478166, url: "https://landmarkhotel.ng" },
   { city: "Lagos", country: "Nigeria", name: "Murtala Muhammed International Airport", latitude: 6.5743175, longitude: 3.3208504, url: "https://faan.gov.ng/contact/" },
   { city: "Lagos", country: "Nigeria", name: "MUSON Centre", latitude: 6.4436864, longitude: 3.4015082, url: "https://muson.org/contact-us/" },
   { city: "Lagos", country: "Nigeria", name: "NOK by Alara", latitude: 6.4304916, longitude: 3.4214068, url: "https://www.nokbyalara.com/welcome" },
