@@ -1,0 +1,32 @@
+type PlaneMarkProps = {
+  className?: string;
+};
+
+/**
+ * Owner mark: rounded square, thick gold border, cream interior,
+ * ink top-down plane, red tail chevron. No wordmark in the tile.
+ */
+export function PlaneMark({ className }: PlaneMarkProps) {
+  return (
+    <svg viewBox="0 0 125 125" aria-hidden="true" className={className}>
+      <rect width="125" height="125" rx="22.8" fill="#84633a" />
+      <rect x="8" y="8" width="109" height="109" rx="14.8" fill="#f2eadd" />
+      <path
+        fill="#aa4b37"
+        d="M52.8 93.1 32.3 103.6 32.3 111.5 62.5 102.8 92.7 111.5 92.7 103.6 72.2 93.1Z"
+      />
+      <path
+        fill="#191410"
+        d="M62.5 12.3 75.4 43.1 114.9 59.3 114.9 71.2 77 63.5 75.3 63.5 71.4 92.4 62.5 100.2 53.6 92.4 49.7 63.5 48 63.5 10.1 71.2 10.1 59.3 49.6 43.1Z"
+      />
+      <path
+        fill="none"
+        stroke="#191410"
+        strokeWidth="2.8"
+        strokeLinejoin="miter"
+        strokeLinecap="butt"
+        d="M32.3 111.5 62.5 102.8 92.7 111.5"
+      />
+    </svg>
+  );
+}

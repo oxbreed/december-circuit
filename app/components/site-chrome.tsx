@@ -8,30 +8,8 @@ import { HeaderMenu } from "./header-menu";
 import { HeaderSearch } from "./header-search";
 import { HeaderTripLink } from "./header-trip-link";
 import { DesktopNewsTicker } from "./desktop-news-ticker";
+import { PlaneMark } from "./plane-mark";
 import { SiteFooter } from "./site-footer";
-
-function PlaneMark() {
-  return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4">
-      <rect width="32" height="32" rx="6" fill="#f4eadc" />
-      <rect
-        x="1.5"
-        y="1.5"
-        width="29"
-        height="29"
-        rx="5"
-        fill="none"
-        stroke="#8a6232"
-        strokeWidth="2"
-      />
-      <path
-        fill="#1a1410"
-        d="M16 3.5 19.2 11.2 29 15.2 29 18.2 19.2 16.2 18.2 23.5 23.5 26.5 23.5 28.5 16 26.2 8.5 28.5 8.5 26.5 13.8 23.5 12.8 16.2 3 18.2 3 15.2 12.8 11.2Z"
-      />
-      <path fill="#b8432f" d="M8.5 26.2 13.6 23.6 16 25.4 18.4 23.6 23.5 26.2 23.5 28.2 16 26 8.5 28.2Z" />
-    </svg>
-  );
-}
 
 function current(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -52,7 +30,7 @@ export function SiteChrome({ children, support }: { children: ReactNode; support
       <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/10 bg-paper/95 backdrop-blur-md max-lg:pt-[env(safe-area-inset-top,0px)] max-lg:pl-[env(safe-area-inset-left,0px)] max-lg:pr-[env(safe-area-inset-right,0px)]">
         <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2 sm:gap-4 sm:py-3 sm:px-6 lg:px-8">
           <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2 text-ink">
-            <PlaneMark />
+            <PlaneMark className="h-6 w-6 lg:h-8 lg:w-8" />
             <span className="font-display text-[1.05rem] leading-none tracking-tight">
               dirtydecember
               <span className="text-gold">.info</span>
