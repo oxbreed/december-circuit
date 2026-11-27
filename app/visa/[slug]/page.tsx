@@ -8,6 +8,7 @@ import { VisaSections } from "../../components/visa-sections";
 import { breadcrumbJsonLd } from "../../jsonld";
 import { visaCheck, visaNationality } from "../../season-guides";
 import { pageMetadata } from "../../site";
+import { fitTitleFrom } from "../../seo";
 
 export function generateStaticParams() {
   return visaCheck().nationalityPages.map((page) => ({ slug: page.slug }));
@@ -23,7 +24,11 @@ export async function generateMetadata({
   if (!page) return { title: "Visa" };
   const check = visaCheck();
   return pageMetadata({
-    title: `Visa for ${page.travellerLabel} travellers — Nigeria & Ghana`,
+    title: fitTitleFrom([
+      `Nigeria & Ghana Visa for ${page.travellerLabel} Travellers 2026`,
+      `${page.travellerLabel} Visa Guide: Nigeria & Ghana, Detty December`,
+      `Visa for ${page.travellerLabel} Travellers: Nigeria & Ghana`,
+    ]),
     description: `Visa and entry notes for ${page.travellerLabel} travellers planning Detty December in Nigeria or Ghana. Repeats Nigeria Immigration Service and Ghana Immigration Service pages only. Check date ${check.checkedAtLabel}. No application or payment on this site.`,
     path: page.path,
   });

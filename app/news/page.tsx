@@ -2,6 +2,8 @@ import { disclaimer } from "../brand";
 import { NewsLoadMore } from "../components/news-load-more";
 import { loadNews } from "../news-reader";
 import { pageMetadata } from "../site";
+import { JsonLd } from "../components/json-ld";
+import { breadcrumbJsonLd } from "../jsonld";
 
 export const metadata = pageMetadata({
   title: "News & updates",
@@ -16,6 +18,7 @@ export default async function NewsPage() {
 
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pb-28 pt-28 md:px-8 md:pt-32">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "News", path: "/news" }])} />
       <p className="text-[11px] uppercase tracking-[0.28em] text-brass">News & updates</p>
       <h1 className="mt-4 font-display text-5xl leading-none tracking-tight md:text-6xl">
         News & updates

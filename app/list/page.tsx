@@ -6,6 +6,8 @@ import { PlaceSubmission } from "../components/place-submission";
 import { ProductAd } from "../components/product-ad";
 import { directorySignIn } from "../directory-auth";
 import { pageMetadata } from "../site";
+import { JsonLd } from "../components/json-ld";
+import { breadcrumbJsonLd } from "../jsonld";
 
 export const metadata = pageMetadata({
   title: "List an event or place",
@@ -19,6 +21,7 @@ export default function ListPage() {
 
   return (
     <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-12 pt-16 sm:px-6 md:px-8 md:pt-32 lg:pb-16">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "List an event or place", path: "/list" }])} />
       <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">On this site</p>
       <h1 className="mt-2 max-w-3xl font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
         List an event or place

@@ -48,13 +48,13 @@ export function countryDescription(country: CountryRecord) {
   const placeCount = country.placeCount;
   const eventCount = country.events.length;
   const cities = `${cityCount} ${cityCount === 1 ? "city" : "cities"}`;
-  const pages = `${placeCount} organiser ${placeCount === 1 ? "page" : "pages"}`;
+  const pages = `${placeCount} ${placeCount === 1 ? "place" : "places"}`;
   if (eventCount === 0) {
-    return `${country.country} on dirtydecember.info — ${cities} and ${pages} listed for West Africa tourism. No confirmed December event is listed for this country yet.`;
+    return `${country.country} travel guide: ${cities} and ${pages} listed for West Africa trips. No confirmed December event is listed for this country yet.`;
   }
-  return `${country.country} on dirtydecember.info — ${cities}, ${pages}, and ${eventCount} confirmed December ${
+  return `${country.country} travel guide for Detty December 2026: ${eventCount} confirmed December ${
     eventCount === 1 ? "event" : "events"
-  } on file for Detty December planning and the season.`;
+  }, ${cities} and ${pages} listed. See dates, venues and where to stay.`;
 }
 
 /** Existing Places directory filter — country name must match sourced place.country. */

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { disclaimer } from "../brand";
 import { pageMetadata } from "../site";
+import { JsonLd } from "../components/json-ld";
+import { breadcrumbJsonLd } from "../jsonld";
 
 export const metadata = pageMetadata({
   title: "Privacy",
@@ -12,6 +14,7 @@ export const metadata = pageMetadata({
 export default function PrivacyPage() {
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pb-28 pt-28 md:px-8 md:pt-32">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Privacy", path: "/privacy" }])} />
       <p className="text-[11px] uppercase tracking-[0.28em] text-brass">Privacy</p>
       <h1 className="mt-4 font-display text-5xl leading-none tracking-tight md:text-6xl">
         Privacy notice

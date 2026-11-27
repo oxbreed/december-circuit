@@ -309,9 +309,9 @@ export function EventsDirectory() {
         <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">
           dirtydecember.info
         </p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl leading-none tracking-tight md:text-6xl">
+        <h2 className="mt-3 max-w-3xl font-display text-4xl leading-none tracking-tight md:text-6xl">
           Confirmed events
-        </h1>
+        </h2>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
           Confirmed events on file for Lagos, Calabar, Ghana, and other regions
           listed — parties, festivals, and season dates from organiser pages or

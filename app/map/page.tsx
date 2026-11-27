@@ -24,6 +24,7 @@ export default function MapPage() {
         ])}
       />
       <div className="mx-auto w-full max-w-6xl px-5 pt-28 md:px-8 md:pt-36">
+        <h1 className="sr-only">Detty December 2026 map: venues, hotels and party spots in Lagos, Abuja, Accra and Abidjan</h1>
         <Breadcrumbs
           items={[
             { name: "Home", href: "/" },

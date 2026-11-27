@@ -22,6 +22,12 @@ import {
 import { shareImageForEvent } from "./share-images";
 
 import { datesOnFile } from "./event-dates";
+import {
+  offersFor,
+  organizerFor,
+  performersFor,
+  startDateWithTime,
+} from "./event-seo";
 
 export { datesOnFile };
 
@@ -30,14 +36,22 @@ export function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${siteUrl}/#organization`,
-    name: publisherName,
-    url: publisherUrl,
-    brand: {
-      "@type": "Brand",
-      name: siteName,
-      url: siteUrl,
+    name: siteName,
+    legalName: publisherName,
+    url: siteUrl,
+    logo: {
+      "@type": "ImageObject",
+      url: absoluteUrl("/apple-icon.png"),
+      width: 180,
+      height: 180,
     },
     email: "hello@dirtydecember.info",
+    parentOrganization: {
+      "@type": "Organization",
+      name: publisherName,
+      url: publisherUrl,
+    },
+    sameAs: [publisherUrl],
   };
 }
 
@@ -47,6 +61,7 @@ export function siteJsonLd() {
     "@type": "WebSite",
     "@id": `${siteUrl}/#website`,
     name: siteName,
+    alternateName: "Dirty December",
     url: siteUrl,
     description: defaultDescription,
     inLanguage: "en",
@@ -55,7 +70,7 @@ export function siteJsonLd() {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${siteUrl}/events?date={search_term_string}`,
+        urlTemplate: `${siteUrl}/search?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -238,18 +253,40 @@ export function eventsItemListJsonLd(
   };
 }
 
+const placeSchemaType: Record<string, string> = {
+  Hotels: "Hotel",
+  "Short-stay": "LodgingBusiness",
+  "Beach resorts": "Resort",
+  Restaurants: "Restaurant",
+  Catering: "FoodEstablishment",
+  Clubs: "NightClub",
+  Bars: "BarOrPub",
+  Beaches: "Beach",
+  Cinemas: "MovieTheater",
+  Landmarks: "LandmarksOrHistoricalBuildings",
+  "Event centres": "EventVenue",
+  "Recreation centres": "SportsActivityLocation",
+  "Boat clubs": "SportsActivityLocation",
+  "Car rental": "AutoRental",
+  "Practical stops": "TouristAttraction",
+};
+
 export function listedPlaceJsonLd(place: PlaceRecord) {
   const pageUrl = absoluteUrl(`/place/${place.slug}`);
   const pin = pinForName(place.city, place.name);
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": "Place",
+    "@type":
+      /airport|aéroport/i.test(place.name) && place.category === "Practical stops"
+        ? "Airport"
+        : (placeSchemaType[place.category] ?? "Place"),
     "@id": pageUrl,
     name: place.name,
     url: pageUrl,
     description: placeDescription(place),
     address: {
       "@type": "PostalAddress",
+      ...(place.area ? { streetAddress: place.area } : {}),
       addressLocality: place.city,
       addressCountry: place.country,
     },
@@ -307,19 +344,9 @@ export function webPageJsonLd({
   };
 }
 
-function organizerName(event: CircuitEvent) {
-  if (event.urlLabel && event.urlLabel !== "News report") return event.urlLabel;
-  if (!event.url) return "Listed source";
-  try {
-    return new URL(event.url).hostname.replace(/^www\./, "");
-  } catch {
-    return "Listed source";
-  }
-}
-
 export function eventJsonLd(event: CircuitEvent) {
   const view = presentEvent(event);
-  const dates = datesOnFile(event.when);
+  const timed = startDateWithTime(event);
   const cityRow = places.find((item) => item.city === event.region);
   const address: Record<string, string> = { "@type": "PostalAddress" };
   if (cityRow) {
@@ -353,7 +380,7 @@ export function eventJsonLd(event: CircuitEvent) {
     "@id": pageUrl,
     name: view.name,
     description: event.summary,
-    startDate: dates.startDate,
+    startDate: timed.startDate,
     url: pageUrl,
     image: [absoluteUrl(share.url)],
     location,
@@ -361,17 +388,16 @@ export function eventJsonLd(event: CircuitEvent) {
     eventStatus: "https://schema.org/EventScheduled",
     inLanguage: "en",
   };
-  if (dates.endDate) data.endDate = dates.endDate;
-  if (event.url) {
-    data.organizer = {
-      "@type": "Organization",
-      name: organizerName(event),
-      url: event.url,
-    };
+  if (timed.endDate) data.endDate = timed.endDate;
+  const organizer = organizerFor(event);
+  if (organizer) data.organizer = { "@type": "Organization", ...organizer };
+  const performers = performersFor(event);
+  if (performers.length > 0) {
+    data.performer = performers.map((name) => ({ "@type": "PerformingGroup", name }));
   }
-  if (event.ticketsUrl) {
-    // Outbound ticket link only — no price, fare, or availability claim on this site.
-    data.sameAs = event.ticketsUrl;
-  }
+  // Ticket link only; price appears only when the summary states one.
+  const offers = offersFor(event);
+  if (offers) data.offers = offers;
+  if (event.url) data.sameAs = event.ticketsUrl ?? event.url;
   return data;
 }

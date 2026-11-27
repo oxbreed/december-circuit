@@ -5,11 +5,19 @@ import {
   OutboundLink,
   SeasonGuideShell,
 } from "../../components/season-guide-chrome";
-import { breadcrumbJsonLd } from "../../jsonld";
+import { breadcrumbJsonLd, eventJsonLd } from "../../jsonld";
+import { events } from "../../events";
+import { presentEvent } from "../../event-view";
+import { absoluteUrl } from "../../site";
 import { flytimeTracker } from "../../season-guides";
 import { pageMetadata } from "../../site";
 
 const tracker = flytimeTracker();
+const flytimeEvent = events.find(
+  (event) =>
+    event.sourceId === "flytime-fest-home" &&
+    presentEvent(event).name.startsWith("Flytime Fest"),
+);
 
 export const metadata = pageMetadata({
   title: tracker.title,
@@ -23,6 +31,15 @@ export default function FlytimeFest2026Page() {
 
   return (
     <>
+      {flytimeEvent ? (
+        <JsonLd
+          data={{
+            ...eventJsonLd(flytimeEvent),
+            "@id": absoluteUrl(tracker.path),
+            url: absoluteUrl(tracker.path),
+          }}
+        />
+      ) : null}
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },

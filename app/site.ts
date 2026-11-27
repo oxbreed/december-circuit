@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { fitDescription, fitTitle, staticSeo } from "./seo";
 
 export const siteName = "dirtydecember.info";
 export const siteUrl = "https://www.dirtydecember.info";
@@ -14,7 +15,7 @@ export const defaultShareImage = {
 } as const;
 
 export const defaultDescription =
-  "Independent Detty December and West Africa tourism directory: sourced events, places, maps, and outbound booking links for Lagos, Accra, Calabar, and neighbouring cities. No payment on this site.";
+  "Detty December 2026 guide: confirmed events, hotels, places and maps for Lagos, Accra, Abuja, Abidjan and Calabar, with official ticket and booking links.";
 
 export function absoluteUrl(path: string) {
   if (path === "/") return siteUrl;
@@ -46,7 +47,11 @@ export function pageMetadata({
   /** When set (e.g. thin city pages), controls indexing without removing the page. */
   robots?: Metadata["robots"];
 }): Metadata {
-  const fullTitle = documentTitle(title);
+  const override = staticSeo[path];
+  const fullTitle = override ? override.title : fitTitle(title);
+  const fullDescription = override
+    ? override.description
+    : fitDescription(description);
   const share = image
     ? {
         url: image.url,
@@ -61,23 +66,23 @@ export function pageMetadata({
         height: defaultShareImage.height,
       };
   return {
-    title: path === "/" ? { absolute: fullTitle } : title,
-    description,
+    title: { absolute: fullTitle },
+    description: fullDescription,
     alternates: { canonical: path },
     ...(robots ? { robots } : {}),
     openGraph: {
       title: fullTitle,
-      description,
+      description: fullDescription,
       url: path,
       siteName,
       type,
-      locale: "en",
+      locale: "en_GB",
       images: [share],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
-      description,
+      description: fullDescription,
       images: [share.url],
     },
   };

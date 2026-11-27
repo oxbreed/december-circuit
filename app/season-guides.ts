@@ -125,6 +125,30 @@ export const seasonGuideIndex: SeasonGuideMeta[] = [
   },
   {
     year: SEASON_YEAR,
+    slug: "things-to-do-in-lagos-in-december-2026",
+    path: "/guides/things-to-do-in-lagos-in-december-2026",
+    title: "Things to do in Lagos in December 2026",
+    description:
+      "Lagos events by date, restaurants, clubs, beaches, landmarks and hotels already listed, each with a link to the organiser or venue page.",
+  },
+  {
+    year: SEASON_YEAR,
+    slug: "detty-december-calendar-2026",
+    path: "/detty-december/calendar",
+    title: "Detty December 2026 calendar",
+    description:
+      "Every confirmed Detty December 2026 event by date and city, with links to each event page.",
+  },
+  {
+    year: SEASON_YEAR,
+    slug: "detty-december-ticket-safety-2026",
+    path: "/guides/detty-december-ticket-safety-2026",
+    title: "Detty December 2026 ticket safety",
+    description:
+      "How to reach the real ticket page for each event, with the organiser or ticket link on file and how sources are labelled.",
+  },
+  {
+    year: SEASON_YEAR,
     slug: "accra-ghana-2026",
     path: "/guides/accra-ghana-2026",
     title: "Accra and Ghana December 2026",

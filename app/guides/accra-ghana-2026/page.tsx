@@ -7,6 +7,8 @@ import {
   OutboundLink,
   SeasonGuideShell,
 } from "../../components/season-guide-chrome";
+import { EventDateList } from "../../components/event-date-list";
+import { events } from "../../events";
 import { breadcrumbJsonLd } from "../../jsonld";
 import {
   accraArrivalFlights,
@@ -64,7 +66,8 @@ export default function AccraGhana2026Page() {
         kicker="Ghana · GTA programme · Accra"
         title={
           <>
-            Accra and Ghana <span className="italic text-oxide">2026</span>
+            Accra December <span className="italic text-oxide">2026</span>: events and the
+            Ghana season
           </>
         }
         lede={
@@ -77,6 +80,31 @@ export default function AccraGhana2026Page() {
         currentPath={path}
       >
         <section className="mt-12">
+          <h2 className="font-display text-3xl tracking-tight">Accra events in December 2026, by date</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+            Every Accra event on file, earliest first, with a link to its page and source.
+            {" "}
+            <Link
+              href="/detty-december/calendar"
+              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              See the full calendar
+            </Link>
+            {" · "}
+            <Link
+              href="/cities/accra"
+              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              Accra city page
+            </Link>
+            .
+          </p>
+          <div className="mt-6">
+            <EventDateList list={events.filter((event) => event.region === "Accra")} />
+          </div>
+        </section>
+
+        <section className="mt-14 border-t border-ink/10 pt-10">
           <h2 className="font-display text-3xl tracking-tight">GTA programme on file</h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
             Season dates and framing come from the named MyJoyOnline report of the Ghana Tourism

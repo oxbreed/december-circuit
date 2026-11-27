@@ -17,6 +17,7 @@ import {
 import { placesInCategory } from "../../place-catalog";
 import { poiCities } from "../../poi-client";
 import { pageMetadata } from "../../site";
+import { fitTitleFrom } from "../../seo";
 import { shareImageForCity } from "../../share-images";
 
 export function generateStaticParams() {
@@ -39,7 +40,12 @@ export async function generateMetadata({
       ? `${cat.count} sourced ${cat.category.toLowerCase()} organiser pages across West Africa cities on dirtydecember.info.`
       : `${cat.category} on dirtydecember.info — map / third-party Explore data for Lagos, Accra, and Calabar; curated organiser rows only when sourced.`;
   return pageMetadata({
-    title: `${cat.category} in West Africa`,
+    title: fitTitleFrom([
+      `${cat.category} in Lagos, Accra & West Africa: Detty December`,
+      `${cat.category} in Lagos, Accra & West Africa Guide`,
+      `${cat.category} in West Africa: Lagos, Accra, Abidjan`,
+      `${cat.category} in West Africa`,
+    ]),
     description: `${countBit}${exploreBit} Outbound links only; no prices or ratings invented here.`,
     path: `/categories/${cat.slug}`,
     image: shareImageForCity("Lagos"),

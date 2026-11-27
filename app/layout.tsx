@@ -8,12 +8,12 @@ import { SiteChrome } from "./components/site-chrome";
 import { SupportChatSlot } from "./components/support-chat-slot";
 import { organizationJsonLd, siteJsonLd } from "./jsonld";
 import {
-  defaultDescription,
   defaultShareImage,
   publisherName,
   siteName,
   siteUrl,
 } from "./site";
+import { staticSeo } from "./seo";
 import "./globals.css";
 
 function gaMeasurementId() {
@@ -50,21 +50,21 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: siteName,
+    default: staticSeo["/"].title,
     template: `%s · ${siteName}`,
   },
-  description: defaultDescription,
+  description: staticSeo["/"].description,
   applicationName: siteName,
   authors: [{ name: publisherName }],
   publisher: publisherName,
   alternates: { canonical: "/" },
   openGraph: {
-    title: siteName,
-    description: defaultDescription,
+    title: staticSeo["/"].title,
+    description: staticSeo["/"].description,
     url: "/",
     siteName,
     type: "website",
-    locale: "en",
+    locale: "en_GB",
     images: [
       {
         url: defaultShareImage.url,
@@ -76,8 +76,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: siteName,
-    description: defaultDescription,
+    title: staticSeo["/"].title,
+    description: staticSeo["/"].description,
     images: [defaultShareImage.url],
   },
   robots: { index: true, follow: true },

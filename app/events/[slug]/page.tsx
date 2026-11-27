@@ -8,6 +8,7 @@ import { AddToCalendar } from "../../components/add-to-calendar";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { ListingRatings } from "../../components/listing-ratings";
 import { JsonLd } from "../../components/json-ld";
+import { RelatedEvents } from "../../components/related-events";
 import { DateBlock, PrimaryAction } from "../../components/event-card";
 import { ExperiencePartners, StayPartners, seasonCities } from "../../components/partner-modules";
 import { SaveTripButton } from "../../components/save-trip-button";
@@ -24,6 +25,7 @@ import { breadcrumbJsonLd, eventJsonLd } from "../../jsonld";
 import { shareImageForEvent } from "../../share-images";
 import { isFeaturedEvent } from "../../sponsors";
 import { pageMetadata } from "../../site";
+import { eventSeoDescription, eventSeoTitle } from "../../event-seo";
 
 export function generateStaticParams() {
   return events.map((event) => ({ slug: eventSlug(event) }));
@@ -39,10 +41,9 @@ export async function generateMetadata({
   if (!resolved) return { title: "Event" };
   const { event } = resolved;
   const view = presentEvent(event);
-  const whenLabel = fullEventDateLabel(event.when);
   return pageMetadata({
-    title: `${view.name} — ${view.region}`,
-    description: `${event.summary} ${whenLabel}. Sourced listing on dirtydecember.info for Detty December / December ${view.region}. Tickets and organiser pages leave this site.`,
+    title: eventSeoTitle(event),
+    description: eventSeoDescription(event),
     path: view.href,
     image: shareImageForEvent(event),
   });
@@ -224,6 +225,8 @@ export default async function EventPage({
           />
         </section>
       ) : null}
+
+      <RelatedEvents event={event} />
 
       <p className="mt-8 text-sm leading-7 text-muted">
         <Link href="/events" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
