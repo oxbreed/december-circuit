@@ -5,7 +5,7 @@ import { homeCard } from "./home-section";
 import { SaveTripButton } from "./save-trip-button";
 
 /** First N cards: a swipe rail on small screens, four across from `lg`. */
-const RAIL_COUNT = 6;
+const RAIL_COUNT = 7;
 const DESKTOP_COUNT = 4;
 
 /** Every poster fills the same 4:5 frame; wide artwork is cropped, not boxed in black. */

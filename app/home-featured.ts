@@ -58,6 +58,14 @@ export const homeFeatureKeys: ReadonlyArray<HomeFeatureKey> = [
     poster: "/landmarks/detty-december-fest-lauryn-hill-2026.jpg",
   },
   {
+    id: "abe-lagos-christmas-night",
+    artist: "All Black Everything",
+    title: "ABE Lagos, Christmas Night, Landmark Event Centre",
+    date: "25 December",
+    sourceId: "abe-lagos-christmas-night",
+    poster: "/landmarks/abe-lagos-christmas-night-2026.jpg",
+  },
+  {
     id: "lil-baby-rhythm-unplugged",
     artist: "Lil Baby",
     title: "Coca-Cola Rhythm Unplugged",
