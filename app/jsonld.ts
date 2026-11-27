@@ -401,3 +401,67 @@ export function eventJsonLd(event: CircuitEvent) {
   if (event.url) data.sameAs = event.ticketsUrl ?? event.url;
   return data;
 }
+
+
+function markdownToPlain(value: string) {
+  return value
+    .replace(/\[([^\]]+)\](\([^)]+\))/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function articleJsonLd({
+  path,
+  headline,
+  description,
+  image,
+  datePublished,
+  dateModified,
+}: {
+  path: string;
+  headline: string;
+  description: string;
+  image: string;
+  datePublished: string;
+  dateModified?: string;
+}) {
+  const url = absoluteUrl(path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": url,
+    headline,
+    description,
+    datePublished,
+    dateModified: dateModified ?? datePublished,
+    url,
+    mainEntityOfPage: url,
+    inLanguage: "en",
+    image: [absoluteUrl(image)],
+    author: {
+      "@type": "Organization",
+      name: publisherName,
+      url: publisherUrl,
+    },
+    publisher: { "@id": `${siteUrl}/#organization` },
+  };
+}
+
+export function faqPageJsonLdFor(
+  path: string,
+  items: { question: string; answer: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${absoluteUrl(path)}#faq`,
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: markdownToPlain(item.answer),
+      },
+    })),
+  };
+}
