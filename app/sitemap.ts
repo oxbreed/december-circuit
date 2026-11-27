@@ -7,9 +7,36 @@ import { landmarks } from "./landmarks";
 import { categoryIndex } from "./explore-categories";
 import { placesOnFile } from "./place-catalog";
 import { seasonGuideIndex, visaCheck } from "./season-guides";
+import { placeIsThin } from "./place-seo";
 import { absoluteUrl } from "./site";
+import lastmodFile from "../data/lastmod.json";
 
-const checked = new Date("2026-10-26");
+type LastMod = {
+  events: string;
+  places: string;
+  cities: string;
+  home: string;
+  static: Record<string, string | null>;
+};
+const lastmod = lastmodFile as LastMod;
+
+/** Pages whose content does not follow the events or places data. */
+const pageOnly = new Set([
+  "/about", "/privacy", "/terms", "/eula", "/cookies", "/disclosure",
+  "/faq", "/list", "/get-featured", "/feedback", "/sign-in", "/visa",
+]);
+
+/** Real last-change dates from data/lastmod.json (node scripts/update-lastmod.mjs). */
+function modified(path: string): Date {
+  let iso: string | null | undefined;
+  if (path === "/") iso = lastmod.home;
+  else if (path.startsWith("/events/") && !lastmod.static[path]) iso = lastmod.events;
+  else if (path.startsWith("/place/")) iso = lastmod.places;
+  else if (/^\/(cities|countries|categories)\//.test(path)) iso = lastmod.cities;
+  else if (pageOnly.has(path)) iso = lastmod.static[path] ?? lastmod.events;
+  else iso = [lastmod.static[path], lastmod.events].filter(Boolean).sort().at(-1);
+  return new Date(iso ?? lastmod.events);
+}
 
 // Fixture /preview pages are not listed here. They also return 404 in production.
 
@@ -86,7 +113,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: "weekly" as const,
         priority: 0.8,
       })),
-    ...placesOnFile().map((place) => ({
+    // Thin places (no area, detail or coordinates) are noindex, so they stay out of the sitemap.
+    ...placesOnFile()
+      .filter((place) => !placeIsThin(place))
+      .map((place) => ({
       path: `/place/${place.slug}`,
       changeFrequency: "weekly" as const,
       priority: 0.75,
@@ -95,7 +125,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return entries.map((entry) => ({
     url: absoluteUrl(entry.path),
-    lastModified: checked,
+    lastModified: modified(entry.path),
     changeFrequency: entry.changeFrequency,
     priority: entry.priority,
     ...(entry.images ? { images: entry.images } : {}),

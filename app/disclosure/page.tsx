@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { disclaimer } from "../brand";
 import { pageMetadata } from "../site";
+import { JsonLd } from "../components/json-ld";
+import { breadcrumbJsonLd } from "../jsonld";
 
 export const metadata = pageMetadata({
   title: "Affiliate & paid placement disclosure",
@@ -14,6 +16,7 @@ const link = "underline decoration-ink/30 underline-offset-4 hover:text-oxide";
 export default function DisclosurePage() {
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pb-28 pt-28 md:px-8 md:pt-32">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Disclosure", path: "/disclosure" }])} />
       <p className="text-[11px] uppercase tracking-[0.28em] text-brass">Disclosure</p>
       <h1 className="mt-4 font-display text-5xl leading-none tracking-tight md:text-6xl">
         Affiliate links &amp; paid placements

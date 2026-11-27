@@ -64,6 +64,7 @@ async function PlacesPageBody() {
         aria-label="Organiser pages on file"
         className="mx-auto w-full max-w-6xl px-5 pb-2 md:px-8"
       >
+<h1 className="sr-only">Hotels, restaurants, clubs and places in Lagos, Accra, Abuja, Abidjan and West Africa</h1>
         <h2 className="sr-only">Organiser pages on file</h2>
         <ul className="sr-only">
           {crawlPlaces.map((place) => (

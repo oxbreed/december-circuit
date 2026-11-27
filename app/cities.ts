@@ -85,15 +85,19 @@ export function cityIsThin(city: CityRecord) {
 }
 
 export function cityDescription(city: CityRecord) {
-  const pages = `${city.places.length} organiser ${
-    city.places.length === 1 ? "page" : "pages"
-  }`;
-  const hub = `${city.city}, ${city.country} — West Africa tourism directory on dirtydecember.info.`;
+  const where = `${city.city}, ${city.country}`;
+  const places = city.places.length;
+  const kinds = [...new Set(city.places.map((place) => place.category.toLowerCase()))]
+    .slice(0, 3)
+    .join(", ");
+  const placeBit = places
+    ? `${places} ${places === 1 ? "place" : "places"} listed${kinds ? `, from ${kinds}` : ""}`
+    : "";
   if (city.events.length === 0) {
-    return `${hub} ${pages} listed. No confirmed event is listed for this city yet.`;
+    return `${where} guide for Detty December 2026: ${placeBit || "places on file"}. No confirmed December event is listed for this city yet.`;
   }
-  const confirmed = `${city.events.length} confirmed December ${
+  const eventBit = `${city.events.length} confirmed December 2026 ${
     city.events.length === 1 ? "event" : "events"
   }`;
-  return `${hub} ${confirmed} and ${pages} listed for Detty December planning and the season.`;
+  return `${where} guide for Detty December 2026: ${eventBit}${placeBit ? ` and ${placeBit}` : ""}. See dates, venues and official links.`;
 }

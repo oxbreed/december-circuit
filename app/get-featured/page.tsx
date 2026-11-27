@@ -4,6 +4,8 @@ import { disclaimer } from "../brand";
 import { FeaturedEnquiryLink } from "../components/tracked-link";
 import { pageMetadata } from "../site";
 import { livePlacements } from "../live-directory";
+import { JsonLd } from "../components/json-ld";
+import { breadcrumbJsonLd } from "../jsonld";
 
 export const metadata = pageMetadata({
   title: "Get featured — organisers & businesses",
@@ -71,9 +73,9 @@ function GetFeaturedFallback() {
   return (
     <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-16 pt-16 sm:px-6 md:px-8 md:pt-32">
       <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">For organisers &amp; businesses</p>
-      <h1 className="mt-2 max-w-3xl font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
+      <p className="mt-2 max-w-3xl font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
         Get featured
-      </h1>
+      </p>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">Loading placements…</p>
     </main>
   );
@@ -94,6 +96,7 @@ async function GetFeaturedPageBody() {
 
   return (
     <main id="top" className="mx-auto w-full min-w-0 max-w-3xl px-4 pb-16 pt-16 sm:px-6 md:px-8 md:pt-32">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Get featured", path: "/get-featured" }])} />
       <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">For organisers &amp; businesses</p>
       <h1 className="mt-2 max-w-3xl font-display text-[2.15rem] leading-[0.95] tracking-tight sm:text-5xl md:text-6xl">
         Get featured

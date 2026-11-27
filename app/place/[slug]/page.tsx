@@ -2,7 +2,11 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { disclaimer } from "../../brand";
+import { eventSlug, presentEvent } from "../../event-view";
+import { events } from "../../events";
+import { fullEventDateLabel } from "../../event-dates";
 import { cityRecordFor } from "../../cities";
 import { countriesOnFile } from "../../countries";
 import { Breadcrumbs } from "../../components/breadcrumbs";
@@ -22,6 +26,8 @@ import {
 } from "../../place-catalog";
 import { livePlaceBySlug, livePlacesOnFile } from "../../live-directory";
 import { pageMetadata } from "../../site";
+import { categorySingular, fitTitleFrom } from "../../seo";
+import { placeIsThin } from "../../place-seo";
 import { shareImageForCity } from "../../share-images";
 
 function sourceLabel(url: string) {
@@ -45,10 +51,18 @@ export async function generateMetadata({
   const place = (await livePlaceBySlug(slug)) ?? placeBySlug(slug);
   if (!place) return { title: "Place" };
   return pageMetadata({
-    title: `${place.name} — ${place.city}`,
+    title: fitTitleFrom([
+      `${place.name}: ${categorySingular(place.category)} in ${place.city}, ${place.country}`,
+      `${place.name}: ${categorySingular(place.category)} in ${place.city}`,
+      `${place.name}, ${place.city}: ${categorySingular(place.category)} Guide`,
+      `${place.name}, ${place.city}, ${place.country}`,
+    ]),
     description: placeDescription(place),
     path: `/place/${place.slug}`,
     image: shareImageForCity(place.city),
+    ...(placeIsThin(place)
+      ? { robots: { index: false, follow: true, googleBot: { index: false, follow: true } } }
+      : {}),
   });
 }
 
@@ -70,8 +84,13 @@ export default async function PlacePage({
         item.slug !== place.slug &&
         item.city === place.city &&
         item.country === place.country,
-    )
-    .slice(0, 8);
+    );
+  const cityEvents = events.filter((event) => event.region === place.city).slice(0, 4);
+  const sameCategory = related.filter((item) => item.category === place.category);
+  const otherKinds = related.filter((item) => item.category !== place.category);
+  const nearby = [...sameCategory, ...otherKinds].slice(0, 8);
+  const cityPhoto = shareImageForCity(place.city);
+  const hasCityPhoto = cityPhoto.url !== "/hero-lagos-night.jpg";
   const path = `/place/${place.slug}`;
   const catPath = `/categories/${categorySlug(place.category)}`;
 
@@ -108,6 +127,21 @@ export default async function PlacePage({
         {place.city}, {place.country}
       </p>
       <p className="mt-6 text-base leading-8 text-ink">{placeDescription(place)}</p>
+      {hasCityPhoto ? (
+        <figure className="mt-6">
+          <Image
+            src={cityPhoto.url}
+            alt={`${cityPhoto.alt.replace(/ — dirtydecember\.info$/, "")}: ${place.city}, where ${place.name} is`}
+            width={960}
+            height={540}
+            sizes="(max-width: 768px) 100vw, 672px"
+            className="h-auto w-full border border-ink/15"
+          />
+          <figcaption className="mt-2 text-[11px] leading-5 text-muted">
+            {place.city} city photo. It is not a photo of {place.name}.
+          </figcaption>
+        </figure>
+      ) : null}
       {place.detail ? (
         <p className="mt-4 text-base leading-8 text-ink">{place.detail}</p>
       ) : null}
@@ -162,11 +196,40 @@ export default async function PlacePage({
         />
       ) : null}
 
-      {related.length > 0 ? (
+      {cityEvents.length > 0 ? (
         <section className="mt-12">
-          <h2 className="font-display text-3xl tracking-tight">Also in {place.city}</h2>
+          <h2 className="font-display text-3xl tracking-tight">
+            Detty December 2026 events in {place.city}
+          </h2>
           <ul className="mt-4 space-y-2 text-sm leading-6">
-            {related.map((item) => (
+            {cityEvents.map((event) => (
+              <li key={eventSlug(event)}>
+                <Link
+                  href={`/events/${eventSlug(event)}`}
+                  className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+                >
+                  {presentEvent(event).name}
+                </Link>
+                <span className="text-muted"> — {fullEventDateLabel(event.when)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-sm">
+            <Link
+              href="/detty-december/calendar"
+              className="underline decoration-ink/30 underline-offset-4 hover:text-oxide"
+            >
+              Full Detty December 2026 calendar
+            </Link>
+          </p>
+        </section>
+      ) : null}
+
+      {nearby.length > 0 ? (
+        <section className="mt-12">
+          <h2 className="font-display text-3xl tracking-tight">More in {place.city}</h2>
+          <ul className="mt-4 space-y-2 text-sm leading-6">
+            {nearby.map((item) => (
               <li key={item.slug}>
                 <Link
                   href={`/place/${item.slug}`}

@@ -18,6 +18,7 @@ import {
   countryJsonLd,
 } from "../../jsonld";
 import { pageMetadata } from "../../site";
+import { fitTitleFrom } from "../../seo";
 
 export function generateStaticParams() {
   return countriesOnFile().map((country) => ({ slug: country.slug }));
@@ -32,7 +33,11 @@ export async function generateMetadata({
   const country = countryBySlug(slug);
   if (!country) return { title: "Country" };
   return pageMetadata({
-    title: `${country.country} — cities & December events`,
+    title: fitTitleFrom([
+      `${country.country} Travel Guide: Cities & December 2026 Events`,
+      `${country.country} Detty December 2026: Cities & Events`,
+      `${country.country} Travel Guide: Cities, Places & Events`,
+    ]),
     description: countryDescription(country),
     path: `/countries/${country.slug}`,
   });

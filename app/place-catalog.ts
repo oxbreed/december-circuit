@@ -1,5 +1,7 @@
 import { slugify } from "./cities";
+import { events } from "./events";
 import { places, type Place } from "./places";
+import { categorySingular } from "./seo";
 
 export type PlaceRecord = Place & { slug: string };
 
@@ -62,5 +64,15 @@ export function categoryBySlug(slug: string) {
 }
 
 export function placeDescription(place: Place) {
-  return `${place.name} — ${place.category} in ${place.city}, ${place.country}. Organiser page listed on dirtydecember.info for West Africa tourism and Detty December planning. Booking opens that site; no payment here.`;
+  const kind = categorySingular(place.category).toLowerCase();
+  const where = place.area
+    ? `${place.area}, ${place.city}, ${place.country}`
+    : `${place.city}, ${place.country}`;
+  const detail = place.detail ? ` ${place.detail.replace(/\.$/, "")}.` : "";
+  const cityEvents = events.filter((event) => event.region === place.city).length;
+  const eventBit =
+    cityEvents > 0
+      ? ` ${cityEvents} Detty December 2026 ${cityEvents === 1 ? "event is" : "events are"} listed in ${place.city}.`
+      : "";
+  return `${place.name} is a ${kind} in ${where}.${detail}${eventBit} Open the organiser page for details and booking.`;
 }

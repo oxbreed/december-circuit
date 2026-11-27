@@ -24,6 +24,7 @@ export default function ExplorePage() {
         ])}
       />
       <div className="mx-auto w-full max-w-6xl px-5 pt-28 md:px-8 md:pt-36">
+        <h1 className="sr-only">Explore hotels, restaurants, clubs and landmarks in Lagos, Accra and Calabar</h1>
         <Breadcrumbs
           items={[
             { name: "Home", href: "/" },

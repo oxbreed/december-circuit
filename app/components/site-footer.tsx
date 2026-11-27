@@ -28,6 +28,10 @@ const footerGroups = [
     title: "Plan",
     links: [
       ["Season guides", "/guides"],
+      ["2026 calendar", "/detty-december/calendar"],
+      ["Things to do in Lagos", "/guides/things-to-do-in-lagos-in-december-2026"],
+      ["Accra December guide", "/guides/accra-ghana-2026"],
+      ["Ticket safety", "/guides/detty-december-ticket-safety-2026"],
       ["Travel guide", "/guide"],
       ["Get around", "/guide#around"],
       ["Flights", "/flights"],

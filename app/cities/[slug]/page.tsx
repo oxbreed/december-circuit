@@ -21,6 +21,7 @@ import {
 import { countriesOnFile } from "../../countries";
 import { shareImageForCity } from "../../share-images";
 import { pageMetadata } from "../../site";
+import { fitTitleFrom } from "../../seo";
 
 export function generateStaticParams() {
   return citiesOnFile().map((city) => ({ slug: city.slug }));
@@ -36,7 +37,12 @@ export async function generateMetadata({
   if (!city) return { title: "City" };
   const thin = cityIsThin(city);
   return pageMetadata({
-    title: `${city.city}, ${city.country}`,
+    title: fitTitleFrom([
+      `${city.city} Detty December 2026: Events, Hotels & Places`,
+      `${city.city}, ${city.country}: December 2026 Events & Places`,
+      `${city.city} Guide: Detty December 2026 Events & Places`,
+      `${city.city}, ${city.country} Travel & Events Guide 2026`,
+    ]),
     description: cityDescription(city),
     path: `/cities/${city.slug}`,
     image: shareImageForCity(city.city),
@@ -94,6 +100,9 @@ export default async function CityPage({
       </p>
       <h1 className="mt-3 font-display text-5xl leading-none tracking-tight md:text-7xl">
         {city.city}
+        <span className="mt-3 block font-sans text-lg font-normal leading-7 tracking-normal text-muted md:text-xl">
+          Detty December 2026 guide: events, hotels and places
+        </span>
       </h1>
       <p className="mt-5 max-w-2xl text-base leading-7 text-muted">{description}</p>
       {thin ? (
@@ -128,6 +137,34 @@ export default async function CityPage({
         <Link href="/map" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
           Map
         </Link>
+        {" · "}
+        <Link href="/detty-december/calendar" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+          Detty December 2026 calendar
+        </Link>
+        {country ? (
+          <>
+            {" · "}
+            <Link href={`/countries/${country.slug}`} className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+              {country.country} guide
+            </Link>
+          </>
+        ) : null}
+        {city.slug === "lagos" ? (
+          <>
+            {" · "}
+            <Link href="/guides/things-to-do-in-lagos-in-december-2026" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+              Things to do in Lagos
+            </Link>
+          </>
+        ) : null}
+        {city.slug === "accra" ? (
+          <>
+            {" · "}
+            <Link href="/guides/accra-ghana-2026" className="underline decoration-ink/30 underline-offset-4 hover:text-oxide">
+              Accra December guide
+            </Link>
+          </>
+        ) : null}
       </p>
       <p className="mt-6 max-w-xl text-sm leading-7 text-muted">{disclaimer}</p>
     </main>

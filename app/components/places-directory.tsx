@@ -255,9 +255,9 @@ export function PlacesDirectory() {
         <p className="text-[11px] uppercase tracking-[0.28em] text-lagoon">
           dirtydecember.info
         </p>
-        <h1 className="mt-3 max-w-3xl font-display text-4xl leading-none tracking-tight md:text-6xl">
+        <h2 className="mt-3 max-w-3xl font-display text-4xl leading-none tracking-tight md:text-6xl">
           Places & organiser pages
-        </h1>
+        </h2>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
           Sourced organiser and business pages across West Africa — Lagos, Accra,
           Calabar, and cities on file. Browse by category or city, then open their

@@ -49,6 +49,7 @@ async function EventsPageBody() {
         ])}
       />
       <div className="mx-auto w-full max-w-6xl px-5 pt-28 md:px-8 md:pt-36">
+        <h1 className="sr-only">Detty December 2026 events: concerts, festivals and parties in Lagos, Abuja, Accra, Calabar and Abidjan</h1>
         <Breadcrumbs
           items={[
             { name: "Home", href: "/" },
