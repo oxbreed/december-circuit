@@ -98,6 +98,7 @@ export const HERO_POSTER_SLIDES: ReadonlyArray<{
   { src: "/landmarks/lagbaja-afrojazz-fest-2026.jpg" },
   { src: "/landmarks/adekunle-gold-greatest-showman-2026.jpg" },
   { src: "/landmarks/iconiq-fest-abuja-2026.jpg" },
+  { src: "/landmarks/abe-lagos-christmas-night-2026.jpg" },
 ];
 
 export type HeroStagePoster = {

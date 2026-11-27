@@ -303,4 +303,13 @@ export const landmarks: FramePhoto[] = [
     alt: "Mother Africa Festival 2026 poster for Quavo, 27 and 28 December, Marcory Zone 4, Abidjan",
     credit: "Poster supplied by Oxbreed Studio. Betting sponsor mark removed.",
   },
+  {
+    // Save-the-date flyer supplied by the organiser, All Black Everything (ABE).
+    // Resized to 1290 px wide to match the other event posters.
+    name: "ABE Lagos, Christmas Night",
+    city: "Lagos",
+    src: "/landmarks/abe-lagos-christmas-night-2026.jpg",
+    alt: "All Black Everything save-the-date poster, ABE Lagos, Christmas Night, Friday 25 December 2026, table bookings at abetour.com",
+    credit: "Poster supplied by the organiser, All Black Everything.",
+  },
 ];

@@ -306,6 +306,20 @@ export const seedEvents: CircuitEvent[] = [
     ticketsUrl: "https://tikerama.com/fr/evenements/mother-africa-festival-2026",
     sourceId: "mother-africa-festival-tikerama",
   },
+  {
+    region: "Lagos",
+    when: "25 December",
+    summary:
+      "ABE Lagos, Christmas Night by All Black Everything, at the Landmark Event Centre. Oniru, Victoria Island. Organised by Stephanie Williams. Starts at 9pm till late. Theme and dress code: Casino Royale, All Black Everything. Tickets and VIP tables through the organiser. No ticket prices are listed.",
+    // Organiser: Stephanie Williams, All Black Everything (ABE). Date and venue
+    // from the organiser's save-the-date flyer and the organiser's own details.
+    // The flyer names abetour.com for table bookings; the site did not resolve
+    // from our server when this row was added, so re-check before deploy.
+    url: "https://abetour.com",
+    urlLabel: "Organiser's page",
+    ticketsUrl: "https://abetour.com",
+    sourceId: "abe-lagos-christmas-night",
+  },
 ];
 
 function publishedFromSnapshot(): IngestEvent[] {
