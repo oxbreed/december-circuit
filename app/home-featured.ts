@@ -197,3 +197,21 @@ export function homeFeaturesFrom(rows: CircuitEvent[]): HomeFeature[] {
 export function homeFeatures(): HomeFeature[] {
   return homeFeaturesFrom(events);
 }
+
+/**
+ * The organiser poster for an event page, when one is on file. Only an exact
+ * match counts: the same sourceId, and either the same `when` as the feature
+ * key or the night shown on the card equal to the row's date. A multi-night
+ * festival page never borrows one night's poster.
+ */
+export function posterForEvent(event: CircuitEvent): HomePoster | null {
+  if (!event.sourceId) return null;
+  const key = homeFeatureKeys.find(
+    (item) =>
+      item.sourceId === event.sourceId &&
+      (item.when !== undefined ? item.when === event.when : item.date === event.when),
+  );
+  if (!key) return null;
+  const shot = landmarks.find((item) => item.src === key.poster);
+  return shot ? posterFrom(shot) : null;
+}

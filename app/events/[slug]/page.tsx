@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { disclaimer } from "../../brand";
@@ -15,6 +16,7 @@ import { calendarLinksFor } from "../../event-calendar";
 import { eventDateSpan, fullEventDateLabel } from "../../event-dates";
 import { checkedOn, eventBySlug, eventSlug, isNewsSource, presentEvent } from "../../event-view";
 import { events } from "../../events";
+import { posterForEvent } from "../../home-featured";
 import { liveEventBySlug } from "../../live-directory";
 import { nearbyStaysFor } from "../../nearby-stays";
 import { eventTripId } from "../../trip";
@@ -68,6 +70,7 @@ export default async function EventPage({
   const sourceLabel = event.urlLabel ?? "Source";
   const partnerCity = seasonCities.find((item) => item.city === view.region);
   const featured = isFeaturedEvent(eventSlug(event));
+  const poster = posterForEvent(event);
 
   return (
     <main id="top" className="mx-auto w-full max-w-3xl px-5 pt-28 pb-28 md:px-8 md:pt-36 lg:pb-20">
@@ -112,6 +115,24 @@ export default async function EventPage({
         </div>
       </div>
       <p className="mt-8 text-base leading-8 text-ink">{event.summary}</p>
+      {poster ? (
+        <figure className="mt-8 max-w-sm">
+          <div className="border border-ink/15 bg-ink shadow-[4px_4px_0_0_rgba(184,67,47,0.12)]">
+            <Image
+              src={poster.src}
+              alt={poster.alt}
+              width={1290}
+              height={1612}
+              sizes="(max-width: 640px) 90vw, 384px"
+              priority
+              className="h-auto w-full"
+            />
+          </div>
+          {poster.credit ? (
+            <figcaption className="mt-2 text-[11px] leading-5 text-muted">{poster.credit}</figcaption>
+          ) : null}
+        </figure>
+      ) : null}
 
       {isNewsSource(event) && event.url ? null : event.url ? (
         <p className="mt-6 text-sm leading-7 text-muted">
