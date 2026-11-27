@@ -155,6 +155,38 @@ export const seasonGuideIndex: SeasonGuideMeta[] = [
     description:
       "December in Ghana 2026 from the GTA programme on file, tourism links to visitghana.com and ghana.travel, and a sourced NewsGhana section — no invented stories.",
   },
+  {
+    year: SEASON_YEAR,
+    slug: "best-december-parties-lagos-2026",
+    path: "/guides/best-december-parties-lagos-2026",
+    title: "Best December parties in Lagos 2026",
+    description:
+      "A date-by-date roundup of the best December parties in Lagos 2026, from festival nights to Christmas parties, using only events already listed on this site.",
+  },
+  {
+    year: SEASON_YEAR,
+    slug: "lagos-club-nightlife-guide-2026",
+    path: "/guides/lagos-club-nightlife-guide-2026",
+    title: "Lagos club and nightlife guide 2026",
+    description:
+      "A Lagos club and nightlife guide for December 2026, covering Victoria Island, Lekki and Ikoyi with venues already on file and tips for planning a night out.",
+  },
+  {
+    year: SEASON_YEAR,
+    slug: "detty-december-2026-concerts-lagos-accra",
+    path: "/guides/detty-december-2026-concerts-lagos-accra",
+    title: "Detty December 2026 concerts",
+    description:
+      "Every major Detty December 2026 concert on file in Lagos and Accra, from Wizkid, Davido and ICONIQ Fest to Black Sherif, Stonebwoy and the AfroFuture residency.",
+  },
+  {
+    year: SEASON_YEAR,
+    slug: "detty-december-first-timer-guide-2026",
+    path: "/guides/detty-december-first-timer-guide-2026",
+    title: "Detty December first-timer's guide 2026",
+    description:
+      "A first-timer's Detty December 2026 guide for Lagos: transport, budgeting, what to wear, tickets and safety, with links to official pages and listings on file.",
+  },
 ];
 
 export function flytimeTracker(): FlytimeTracker {

@@ -220,6 +220,26 @@ export const staticSeo: Record<string, { title: string; description: string }> =
     description:
       "Flytime Fest 2026 in Lagos at the Eko Convention Centre, 22 to 24 December: the lineup named so far, House of R&B and Circle, with a dated changelog.",
   },
+  "/guides/best-december-parties-lagos-2026": {
+    title: "Best December Parties in Lagos 2026: Dates & Vibes",
+    description:
+      "A date-by-date roundup of the best December parties in Lagos 2026, from festival nights to Christmas parties, using only events already listed on this site.",
+  },
+  "/guides/lagos-club-nightlife-guide-2026": {
+    title: "Lagos Club and Nightlife Guide 2026: VI, Lekki, Ikoyi",
+    description:
+      "A Lagos club and nightlife guide for December 2026, covering Victoria Island, Lekki and Ikoyi with venues already on file and tips for planning a night out.",
+  },
+  "/guides/detty-december-2026-concerts-lagos-accra": {
+    title: "Detty December 2026 Concerts: Lagos and Accra Shows",
+    description:
+      "Every major Detty December 2026 concert on file in Lagos and Accra, from Wizkid, Davido and ICONIQ Fest to Black Sherif, Stonebwoy and the AfroFuture residency.",
+  },
+  "/guides/detty-december-first-timer-guide-2026": {
+    title: "Detty December 2026 First-Timer's Guide: Lagos Tips",
+    description:
+      "A first-timer's Detty December 2026 guide for Lagos: transport, budgeting, what to wear, tickets and safety, with links to official pages and listings on file.",
+  },
   "/feedback": {
     title: "Send Feedback or Report a Correction | Dirty December",
     description:
